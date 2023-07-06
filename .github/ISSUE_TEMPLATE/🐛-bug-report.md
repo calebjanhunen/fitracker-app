@@ -1,12 +1,13 @@
 ---
 name: "\U0001F41B Bug report"
 about: Create a report to help us improve
-title: ''
-labels: ''
+title: "\U0001F41B "
+labels: 'Type: Bug'
 assignees: ''
 
 ---
 
+## Summary
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -23,6 +24,7 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
+## More Info
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
