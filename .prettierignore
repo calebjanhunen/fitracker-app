@@ -1,0 +1,11 @@
+# Ignore:
+node_modules
+
+# Ignore build output
+dist
+build
+lib
+public
+
+# Ignore coverage
+coverage
