@@ -18,6 +18,7 @@
         "react"
     ],
     "rules": {
-        "key-spacing": "error"
+        "key-spacing": "error",
+        "@typescript-eslint/strict-boolean-expressions": 0
     }
 }
