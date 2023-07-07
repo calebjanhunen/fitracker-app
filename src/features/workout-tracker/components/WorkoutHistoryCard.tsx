@@ -1,8 +1,13 @@
 import React from 'react';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { styled } from 'styled-components';
 import { Spacer, Text } from '../../../components';
+import { type Workout } from '../../../interfaces/Workout';
+
+interface Props {
+    workout: Workout;
+}
 
 const Container = styled(View)`
     padding: ${(props) => props.theme.spacing.md};
@@ -10,21 +15,24 @@ const Container = styled(View)`
     border-radius: ${(props) => props.theme.borderRadius};
 `;
 
-export default function WorkoutHistoryCard(): React.ReactElement {
+export default function WorkoutHistoryCard({ workout }: Props): React.ReactElement {
     return (
         <Container>
-            <Text variant='headline'>Push</Text>
+            <Text variant='headline'>{workout.name}</Text>
             <Text variant='subhead' color='light'>
-                Wednesday July 5th, 2023
+                {workout.dateCreated}
             </Text>
             <Spacer size='xxs' />
             <Text variant='headline'>Exercises</Text>
-            <Text variant='body'>Barbell Bench Press: 3 sets</Text>
-            <Text variant='body'>Incline Bench Press: 3 sets</Text>
-            <Text variant='body'>Chest Fly: 3 sets</Text>
-            <Text variant='body'>Cable Lateral Raise: 3 sets</Text>
-            <Text variant='body'>Skullcrushers: 3 sets</Text>
-            <Text variant='body'>Triceps Extension (Cable): 3 sets</Text>
+            <FlatList
+                data={workout.exercises}
+                renderItem={({ item }) => (
+                    <Text variant='body'>
+                        {item.name}: {item.sets} sets
+                    </Text>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+            />
         </Container>
     );
 }
