@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { PageView, Spacer, Text } from '../../../components';
+import { Button, PageView, Spacer, Text } from '../../../components';
 import WorkoutHistoryCard from '../components/WorkoutHistoryCard';
 
 export default function WorkoutTrackerMainScreen(): React.ReactElement {
@@ -10,12 +10,17 @@ export default function WorkoutTrackerMainScreen(): React.ReactElement {
             <Text variant='headline'>WORKOUT HISTORY</Text>
             <Spacer size='xs' />
             <FlatList
-                data={[0, 1, 2, 3, 4]}
+                style={{ flex: 1 }}
+                data={[0, 1, 2]}
                 renderItem={({ item }) => <WorkoutHistoryCard />}
                 keyExtractor={(item, index) => index.toString()}
                 ItemSeparatorComponent={() => <Spacer size='xl' />}
-                ListFooterComponent={() => <Spacer size='xxxl' />}
             />
+            <Spacer size='xxs' />
+            <Button backgroundColor='primary' textColor='white' onClick={() => {}}>
+                Start Workout
+            </Button>
+            <Spacer size='xxs' />
         </PageView>
     );
 }

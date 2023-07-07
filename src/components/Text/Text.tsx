@@ -29,11 +29,18 @@ const body = (theme: ThemeType): string => `
   font-family: ${theme.fonts.regular};
 `;
 
+const button = (theme: ThemeType): string => `
+  ont-size: ${theme.fontSize.button}px;
+  font-family: ${theme.fonts.bold};
+  text-transform: uppercase;
+`;
+
 const variants = {
     title,
     headline,
     subhead,
     body,
+    button,
 };
 
 const CustomText = styled(DefaultText)<{ variant: Props['variant']; color: Props['color'] }>`
