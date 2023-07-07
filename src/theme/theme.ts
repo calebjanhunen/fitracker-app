@@ -1,6 +1,7 @@
 export type ThemeType = typeof theme;
 
 export const theme = {
+    borderRadius: '16px',
     fonts: {
         regular: 'Inter_400Regular',
         semibold: 'Inter_600SemiBold',
@@ -29,6 +30,7 @@ export const theme = {
         primary: '#5E69EE',
         secondary: '#39AFEA',
         white: '#FFFFFF',
+        black: '#000000',
         error: '#CC0000',
         success: '#4BB543',
     },
