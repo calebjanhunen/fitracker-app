@@ -16,6 +16,5 @@ const SpacingComponent = styled(View)<Props>`
 `;
 
 export default function Spacer(props: Props): React.ReactElement {
-    console.log(props);
     return <SpacingComponent horizontal={props.horizontal} size={props.size} />;
 }

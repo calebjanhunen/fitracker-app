@@ -10,22 +10,22 @@ interface Props {
 }
 
 const title = (theme: ThemeType): string => `
-  font-size: ${theme.fontSize.title1};
+  font-size: ${theme.fontSize.title1}px;
   font-family: ${theme.fonts.regular};
 `;
 
 const headline = (theme: ThemeType): string => `
-  font-size: ${theme.fontSize.headline};
+  font-size: ${theme.fontSize.headline}px;
   font-family: ${theme.fonts.semibold};
 `;
 
 const subhead = (theme: ThemeType): string => `
-  font-size: ${theme.fontSize.subhead};
+  font-size: ${theme.fontSize.subhead}px;
   font-family: ${theme.fonts.regular};
 `;
 
 const body = (theme: ThemeType): string => `
-  font-size: ${theme.fontSize.body};
+  font-size: ${theme.fontSize.body}px;
   font-family: ${theme.fonts.regular};
 `;
 
