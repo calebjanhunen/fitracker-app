@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export default function SocialFeed() {
+export default function MessagingMainScreen() {
     return (
         <View>
-            <Text>SocialFeed</Text>
+            <Text>Messaging</Text>
         </View>
     );
 }
