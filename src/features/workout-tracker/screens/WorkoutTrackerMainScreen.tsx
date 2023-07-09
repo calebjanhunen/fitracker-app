@@ -27,6 +27,7 @@ export default function WorkoutTrackerMainScreen(): React.ReactElement {
             />
             <Spacer size='xxs' />
             <Button
+                variant='full'
                 backgroundColor='primary'
                 textColor='white'
                 onPress={() => {

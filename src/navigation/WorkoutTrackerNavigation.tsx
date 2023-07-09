@@ -16,7 +16,15 @@ export default function WorkoutTrackerNavigation(): React.ReactElement {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='WorkoutTrackerHome' component={WorkoutTrackerMainScreen} />
-            <Stack.Screen name='StartWorkout' component={StartWorkoutScreen} />
+            <Stack.Screen
+                options={{
+                    headerShown: true,
+                    title: 'Start Workout',
+                    headerBackTitle: ' ',
+                }}
+                name='StartWorkout'
+                component={StartWorkoutScreen}
+            />
         </Stack.Navigator>
     );
 }
