@@ -10,12 +10,12 @@ interface Props {
     children: React.ReactNode;
     backgroundColor: keyof typeof theme.colors;
     textColor: keyof typeof theme.fontColors;
-    onClick: () => void;
+    onPress: () => void;
 }
 
 const CustomButton = styled(TouchableOpacity)<{
     backgroundColor: Props['backgroundColor'];
-    onClick: Props['onClick'];
+    onPress: Props['onPress'];
 }>`
     background-color: ${({ backgroundColor, theme }) => theme.colors[backgroundColor]};
     width: 100%;
@@ -28,7 +28,7 @@ const CustomButton = styled(TouchableOpacity)<{
 
 export default function Button(props: Props): React.ReactElement {
     return (
-        <CustomButton backgroundColor={props.backgroundColor} onClick={props.onClick}>
+        <CustomButton backgroundColor={props.backgroundColor} onPress={props.onPress}>
             <Text variant='button' color={props.textColor}>
                 {props.children}
             </Text>

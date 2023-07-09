@@ -30,7 +30,7 @@ const body = (theme: ThemeType): string => `
 `;
 
 const button = (theme: ThemeType): string => `
-  ont-size: ${theme.fontSize.button}px;
+  font-size: ${theme.fontSize.button}px;
   font-family: ${theme.fonts.bold};
   text-transform: uppercase;
 `;

@@ -1,11 +1,19 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+import { type StackNavigationProp } from '@react-navigation/stack';
+
 import { Button, PageView, Spacer, Text } from '../../../components';
 import { type Workout } from '../../../interfaces/Workout';
+import { type RootStackParamList } from '../../../navigation/WorkoutTrackerNavigation';
 import WorkoutHistoryCard from '../components/WorkoutHistoryCard';
 
+type StackNavigationType = StackNavigationProp<RootStackParamList>;
+
 export default function WorkoutTrackerMainScreen(): React.ReactElement {
+    const navigation = useNavigation<StackNavigationType>();
+
     return (
         <PageView>
             <Text variant='headline'>WORKOUT HISTORY</Text>
@@ -18,7 +26,13 @@ export default function WorkoutTrackerMainScreen(): React.ReactElement {
                 ItemSeparatorComponent={() => <Spacer size='xl' />}
             />
             <Spacer size='xxs' />
-            <Button backgroundColor='primary' textColor='white' onClick={() => {}}>
+            <Button
+                backgroundColor='primary'
+                textColor='white'
+                onPress={() => {
+                    navigation.navigate('StartWorkout');
+                }}
+            >
                 Start Workout
             </Button>
             <Spacer size='xxs' />
@@ -28,7 +42,7 @@ export default function WorkoutTrackerMainScreen(): React.ReactElement {
 
 const mockWorkoutData: Workout[] = [
     {
-        name: 'Push1',
+        name: 'Push 1',
         dateCreated: 'Wednesday July 5th, 2023',
         exercises: [
             {
