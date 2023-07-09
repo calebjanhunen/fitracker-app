@@ -7,6 +7,7 @@ interface Props {
     children: React.ReactNode;
     variant: keyof typeof variants;
     color?: keyof typeof theme.fontColors;
+    numberOfLines?: number;
 }
 
 const title = (theme: ThemeType): string => `
@@ -30,7 +31,7 @@ const body = (theme: ThemeType): string => `
 `;
 
 const button = (theme: ThemeType): string => `
-  ont-size: ${theme.fontSize.button}px;
+  font-size: ${theme.fontSize.button}px;
   font-family: ${theme.fonts.bold};
   text-transform: uppercase;
 `;
@@ -43,14 +44,18 @@ const variants = {
     button,
 };
 
-const CustomText = styled(DefaultText)<{ variant: Props['variant']; color: Props['color'] }>`
+const CustomText = styled(DefaultText)<{
+    variant: Props['variant'];
+    color: Props['color'];
+    numberOfLines: Props['numberOfLines'];
+}>`
     ${({ variant, theme }) => variants[variant](theme)};
     color: ${({ color, theme }) => (color ? theme.fontColors[color] : theme.fontColors.primary)};
 `;
 
 export default function Text(props: Props): React.ReactElement {
     return (
-        <CustomText variant={props.variant} color={props.color}>
+        <CustomText variant={props.variant} color={props.color} numberOfLines={props.numberOfLines}>
             {props.children}
         </CustomText>
     );
