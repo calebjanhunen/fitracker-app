@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { styled } from 'styled-components';
 
-import { Button, Container, PageView, Spacer, Text } from '../../../components';
+import { Button, PageView, Spacer, Text } from '../../../components';
 import { type WorkoutTemplate } from '../../../interfaces/WorkoutTemplate';
 import WorkoutTemplateCard from '../components/WorkoutTemplateCard';
+import WorkoutTemplateModal from '../components/WorkoutTemplateModal';
 
 const HeaderView = styled(View)`
     padding-top: ${(props) => props.theme.spacing.xs};
@@ -15,8 +16,16 @@ const HeaderView = styled(View)`
 `;
 
 export default function StartWorkoutScreen(): React.ReactElement {
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [modalData, setModalData] = useState<WorkoutTemplate>({ name: '', exercises: [] });
+
     return (
         <PageView>
+            <WorkoutTemplateModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                workoutTemplate={modalData}
+            />
             <HeaderView>
                 <Text variant='headline'>TEMPLATES</Text>
                 <Button
@@ -35,7 +44,13 @@ export default function StartWorkoutScreen(): React.ReactElement {
                 style={{ flex: 1 }}
                 data={mockWorkoutTemplate}
                 numColumns={2}
-                renderItem={({ item }) => <WorkoutTemplateCard template={item} />}
+                renderItem={({ item }) => (
+                    <WorkoutTemplateCard
+                        template={item}
+                        setModalVisible={setModalVisible}
+                        setModalData={setModalData}
+                    />
+                )}
                 ItemSeparatorComponent={() => <Spacer size='xs' />}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
             />
@@ -98,212 +113,7 @@ const mockWorkoutTemplate: WorkoutTemplate[] = [
         ],
     },
     {
-        name: 'Push 1',
-        exercises: [
-            {
-                name: 'Barbell Bench Press',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Incline Bench Press (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Chest Fly (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Lateral Raise (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Skullcrusher (Dumbbell)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Triceps Extension (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-        ],
-    },
-    {
-        name: 'Push 1',
-        exercises: [
-            {
-                name: 'Barbell Bench Press',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Incline Bench Press (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Chest Fly (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Lateral Raise (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Skullcrusher (Dumbbell)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Triceps Extension (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-        ],
-    },
-    {
-        name: 'Push 1',
-        exercises: [
-            {
-                name: 'Barbell Bench Press',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Incline Bench Press (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Chest Fly (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Lateral Raise (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Skullcrusher (Dumbbell)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Triceps Extension (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-        ],
-    },
-    {
-        name: 'Push 1',
-        exercises: [
-            {
-                name: 'Barbell Bench Press',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Incline Bench Press (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Chest Fly (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Lateral Raise (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Skullcrusher (Dumbbell)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Triceps Extension (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-        ],
-    },
-    {
-        name: 'Push 1',
-        exercises: [
-            {
-                name: 'Barbell Bench Press',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Incline Bench Press (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Chest Fly (Machine)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Lateral Raise (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Skullcrusher (Dumbbell)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-            {
-                name: 'Triceps Extension (Cable)',
-                sets: 3,
-                reps: 12,
-                rpe: 10,
-            },
-        ],
-    },
-    {
-        name: 'Push 1',
+        name: 'Push 2',
         exercises: [
             {
                 name: 'Barbell Bench Press',

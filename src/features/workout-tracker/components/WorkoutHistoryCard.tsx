@@ -1,7 +1,6 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 
-import { styled } from 'styled-components';
 import { Container, Spacer, Text } from '../../../components';
 import { type Workout } from '../../../interfaces/Workout';
 
@@ -11,7 +10,11 @@ interface Props {
 
 export default function WorkoutHistoryCard({ workout }: Props): React.ReactElement {
     return (
-        <Container>
+        <Container
+            onPress={() => {
+                // TODO: Open workout history modal
+            }}
+        >
             <Text variant='headline'>{workout.name}</Text>
             <Text variant='subhead' color='light'>
                 {workout.dateCreated}
