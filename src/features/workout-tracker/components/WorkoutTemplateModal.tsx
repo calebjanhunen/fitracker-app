@@ -39,8 +39,6 @@ const Icon = styled(IonIcons)`
 `;
 
 export default function WorkoutTemplateModal(props: Props): React.ReactElement {
-    console.log(props.workoutTemplate);
-
     return (
         <Modal visible={props.modalVisible} animationType='fade' transparent={true}>
             <TouchableOpacity
@@ -57,7 +55,7 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                                 <Text variant='headline'>{props.workoutTemplate.name}</Text>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        // TODO: open edit menu
+                                        // TODO: Open more options menu
                                     }}
                                 >
                                     <Icon name='ellipsis-horizontal' size={34} />
