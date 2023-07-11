@@ -15,6 +15,11 @@ const title = (theme: ThemeType): string => `
   font-family: ${theme.fonts.regular};
 `;
 
+const smallTitle = (theme: ThemeType): string => `
+  font-size: ${theme.fontSize.title3}px;
+  font-family: ${theme.fonts.regular};
+`;
+
 const headline = (theme: ThemeType): string => `
   font-size: ${theme.fontSize.headline}px;
   font-family: ${theme.fonts.semibold};
@@ -38,6 +43,7 @@ const button = (theme: ThemeType): string => `
 
 const variants = {
     title,
+    smallTitle,
     headline,
     subhead,
     body,
