@@ -1,6 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { View } from 'react-native';
+
+import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
 
 import {
@@ -24,11 +26,13 @@ export default function App(): React.ReactElement | null {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <View style={{ flex: 1 }}>
-                <AppNavigation />
-                <StatusBar style='auto' />
-            </View>
-        </ThemeProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ThemeProvider theme={theme}>
+                <View style={{ flex: 1 }}>
+                    <AppNavigation />
+                    <StatusBar style='auto' />
+                </View>
+            </ThemeProvider>
+        </GestureHandlerRootView>
     );
 }

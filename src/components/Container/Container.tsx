@@ -1,14 +1,15 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import styled from 'styled-components';
 
 interface Props {
     children: React.ReactNode;
     width?: string;
+    onPress: () => void;
 }
 
-const ContainerView = styled(View)<{ width: Props['width'] }>`
+const ContainerView = styled(TouchableOpacity)<{ width: Props['width'] }>`
     padding: ${(props) => props.theme.spacing.md};
     border: 1px solid ${(props) => props.theme.colors.black};
     border-radius: ${(props) => props.theme.borderRadius};
@@ -16,5 +17,9 @@ const ContainerView = styled(View)<{ width: Props['width'] }>`
 `;
 
 export default function Container(props: Props): React.ReactElement {
-    return <ContainerView width={props.width}>{props.children}</ContainerView>;
+    return (
+        <ContainerView width={props.width} onPress={props.onPress}>
+            {props.children}
+        </ContainerView>
+    );
 }
