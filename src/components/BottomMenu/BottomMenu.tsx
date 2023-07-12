@@ -9,8 +9,14 @@ import {
 
 import type IonIcons from '@expo/vector-icons/Ionicons';
 
-import { Button, Spacer, Text } from '..';
-import { Icon, MenuContainer, MenuItemContainer, MenuItemSeperator } from './BottomMenuStyles';
+import { Spacer, Text } from '..';
+import {
+    Icon,
+    MenuButton,
+    MenuContainer,
+    MenuItemContainer,
+    MenuItemSeperator,
+} from './BottomMenuStyles';
 
 interface MenuProps {
     moreOptionsVisible: boolean;
@@ -48,14 +54,11 @@ export default function MoreOptionsMenu({
                             ItemSeparatorComponent={MenuItemSeperator}
                         />
                         <Spacer size='xs' />
-                        <Button
-                            variant='full'
-                            backgroundColor='white'
-                            textColor='onWhite'
-                            onPress={closeMenu}
-                        >
-                            Cancel
-                        </Button>
+                        <MenuButton onPress={closeMenu}>
+                            <Text variant='button' color='onWhite'>
+                                Cancel
+                            </Text>
+                        </MenuButton>
                     </MenuContainer>
                 </TouchableWithoutFeedback>
             </TouchableOpacity>
