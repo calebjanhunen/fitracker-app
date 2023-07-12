@@ -26,3 +26,12 @@ export const MenuItemContainer = styled(TouchableOpacity)`
 export const Icon = styled(IonIcons)`
     color: ${(props) => props.theme.colors.primary};
 `;
+
+export const MenuButton = styled(TouchableOpacity)`
+    padding: ${(props) => props.theme.spacing.md} 0;
+    background-color: ${(props) => props.theme.colors.white};
+    border-radius: ${(props) => props.theme.borderRadius};
+
+    display: flex;
+    align-items: center;
+`;
