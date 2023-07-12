@@ -6,7 +6,7 @@ import { styled } from 'styled-components';
 import { Button, PageView, Spacer, Text } from '../../../components';
 import { type WorkoutTemplate } from '../../../interfaces/WorkoutTemplate';
 import WorkoutTemplateCard from '../components/WorkoutTemplateCard';
-import WorkoutTemplateModal from '../components/WorkoutTemplateModal';
+import WorkoutTemplateModal from '../components/WorkoutTemplateModal/WorkoutTemplateModal';
 
 const HeaderView = styled(View)`
     padding-top: ${(props) => props.theme.spacing.xs};

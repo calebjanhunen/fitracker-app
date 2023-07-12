@@ -1,12 +1,22 @@
-import React from 'react';
-import { FlatList, Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+    FlatList,
+    Modal,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    type ListRenderItem,
+} from 'react-native';
 
-import IonIcons from '@expo/vector-icons/Ionicons';
-import { BlurView } from 'expo-blur';
-import { styled } from 'styled-components';
-
-import { Button, Spacer, Text } from '../../../components';
-import { type WorkoutTemplate } from '../../../interfaces/WorkoutTemplate';
+import { BottomMenu, Button, Spacer, Text } from '../../../../components';
+import { type Exercise } from '../../../../interfaces/Exercise';
+import { type WorkoutTemplate } from '../../../../interfaces/WorkoutTemplate';
+import {
+    Icon,
+    ModalContainer,
+    ModalHeader,
+    ModalOverlay,
+    ModalView,
+} from './WorkoutTemplateModalStyles';
 
 interface Props {
     modalVisible: boolean;
@@ -14,40 +24,30 @@ interface Props {
     workoutTemplate: WorkoutTemplate;
 }
 
-const ModalContainer = styled(BlurView)`
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.4);
-`;
-
-const ModalView = styled(View)`
-    background-color: ${(props) => props.theme.colors.white};
-    border-radius: ${(props) => props.theme.borderRadius};
-    padding: ${(props) => props.theme.spacing.md};
-    width: 90%;
-`;
-
-const ModalHeader = styled(View)`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const Icon = styled(IonIcons)`
-    color: ${(props) => props.theme.colors.primary};
-`;
+const renderExercise: ListRenderItem<Exercise> = ({ item }) => (
+    <Text variant='body'>
+        {item.sets} x {item.name}
+    </Text>
+);
 
 export default function WorkoutTemplateModal(props: Props): React.ReactElement {
+    const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
+
+    const closeModal = (): void => {
+        props.setModalVisible(false);
+    };
+
     return (
         <Modal visible={props.modalVisible} animationType='fade' transparent={true}>
-            <TouchableOpacity
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)', flex: 1 }}
-                onPress={() => {
-                    props.setModalVisible(false);
-                }}
-                activeOpacity={1}
-            >
+            <BottomMenu
+                moreOptionsVisible={moreOptionsVisible}
+                setMoreOptionsVisible={setMoreOptionsVisible}
+                menuItemProps={[
+                    { icon: 'create-outline', text: 'Edit Template' },
+                    { icon: 'trash-outline', text: 'Delete Template' },
+                ]}
+            />
+            <ModalOverlay onPress={closeModal} activeOpacity={1}>
                 <ModalContainer intensity={40}>
                     <TouchableWithoutFeedback>
                         <ModalView>
@@ -55,7 +55,7 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                                 <Text variant='headline'>{props.workoutTemplate.name}</Text>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        // TODO: Open more options menu
+                                        setMoreOptionsVisible(true);
                                     }}
                                 >
                                     <Icon name='ellipsis-horizontal' size={34} />
@@ -64,11 +64,7 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                             <Spacer size='xs' />
                             <FlatList
                                 data={props.workoutTemplate.exercises}
-                                renderItem={({ item }) => (
-                                    <Text variant='body'>
-                                        {item.sets} x {item.name}
-                                    </Text>
-                                )}
+                                renderItem={renderExercise}
                                 ItemSeparatorComponent={() => <Spacer size='xs' />}
                             />
                             <Spacer size='xs' />
@@ -85,7 +81,7 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                         </ModalView>
                     </TouchableWithoutFeedback>
                 </ModalContainer>
-            </TouchableOpacity>
+            </ModalOverlay>
         </Modal>
     );
 }

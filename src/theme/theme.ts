@@ -25,11 +25,13 @@ export const theme = {
         primary: '#000000',
         light: '#636363',
         placeholder: '#9E9E9E',
+        onWhite: '#5E69EE',
     },
     colors: {
         primary: '#5E69EE',
         secondary: '#39AFEA',
         white: '#FFFFFF',
+        grey: '#999999',
         black: '#000000',
         error: '#CC0000',
         success: '#4BB543',
