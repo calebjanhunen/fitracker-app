@@ -9,7 +9,7 @@ import { type WorkoutTemplate } from '../../../interfaces/WorkoutTemplate';
 import ResumeWorkoutButton from '../components/ResumeWorkoutButton';
 import WorkoutTemplateCard from '../components/WorkoutTemplateCard';
 import WorkoutTemplateModal from '../components/WorkoutTemplateModal/WorkoutTemplateModal';
-import WorkoutTrackerModal from './WorkoutTrackerModal';
+import WorkoutTrackerModal from './WorkoutTrackerModal/WorkoutTrackerModal';
 
 const HeaderView = styled(View)`
     padding-top: ${(props) => props.theme.spacing.xs};

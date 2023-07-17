@@ -3,7 +3,7 @@ import { SafeAreaView, View } from 'react-native';
 
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { styled } from 'styled-components';
-import { PageView, TextInput } from '../../../components';
+import { PageView, TextInput } from '../../../../components';
 
 interface Props {
     sheetRef: React.RefObject<BottomSheetModal>;
