@@ -9,7 +9,8 @@ import {
 
 import type IonIcons from '@expo/vector-icons/Ionicons';
 
-import { Spacer, Text } from '..';
+import Spacer from '../Spacer/Spacer';
+import Text from '../Text/Text';
 import {
     Icon,
     MenuButton,

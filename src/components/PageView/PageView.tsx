@@ -9,11 +9,12 @@ interface Props {
 const CustomView = styled(View)`
     padding: 0 16px;
     flex: 1;
+    background-color: ${(props) => props.theme.colors.white};
 `;
 
 export default function PageView({ children }: Props): React.ReactElement {
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <CustomView>{children}</CustomView>
         </SafeAreaView>
     );
