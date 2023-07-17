@@ -29,14 +29,16 @@ export default function App(): React.ReactElement | null {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ThemeProvider theme={theme}>
-                <BottomSheetModalProvider>
-                    <View style={{ flex: 1 }}>
-                        <AppNavigation />
-                        <StatusBar style='auto' />
-                    </View>
-                </BottomSheetModalProvider>
-            </ThemeProvider>
+            <PortalProvider>
+                <ThemeProvider theme={theme}>
+                    <BottomSheetModalProvider>
+                        <View style={{ flex: 1 }}>
+                            <AppNavigation />
+                            <StatusBar style='auto' />
+                        </View>
+                    </BottomSheetModalProvider>
+                </ThemeProvider>
+            </PortalProvider>
         </GestureHandlerRootView>
     );
 }

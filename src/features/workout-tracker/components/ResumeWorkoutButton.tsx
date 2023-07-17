@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Animated, Pressable, View } from 'react-native';
 
 import IonIcons from '@expo/vector-icons/Ionicons';
+import { Portal } from '@gorhom/portal';
 import { styled } from 'styled-components';
 
 import { Text } from '../../../components';
@@ -34,7 +35,6 @@ const Icon = styled(IonIcons)`
 `;
 
 export default function ResumeWorkoutButton(props: Props): React.ReactElement {
-    const [toggle, setToggle] = useState(false);
     const moveYPosAnim = useRef<Animated.Value>(new Animated.Value(60)).current;
 
     props.isBottomSheetHidden
@@ -51,18 +51,20 @@ export default function ResumeWorkoutButton(props: Props): React.ReactElement {
 
     console.log(props.isBottomSheetHidden);
     return (
-        <ButtonContainer
-            onPress={() => {
-                props.onPress();
-            }}
-            style={{ transform: [{ translateY: moveYPosAnim }] }}
-        >
-            <TextContainer>
-                <Icon name='chevron-up-outline' size={32} />
-                <Text variant='button' color='white'>
-                    Resume Workout
-                </Text>
-            </TextContainer>
-        </ButtonContainer>
+        <Portal hostName='ResumeWorkoutButtonHost'>
+            <ButtonContainer
+                onPress={() => {
+                    props.onPress();
+                }}
+                style={{ transform: [{ translateY: moveYPosAnim }] }}
+            >
+                <TextContainer>
+                    <Icon name='chevron-up-outline' size={32} />
+                    <Text variant='button' color='white'>
+                        Resume Workout
+                    </Text>
+                </TextContainer>
+            </ButtonContainer>
+        </Portal>
     );
 }
