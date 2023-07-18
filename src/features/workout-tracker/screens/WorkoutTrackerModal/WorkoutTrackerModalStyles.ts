@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from 'react-native';
+import { Animated, TouchableOpacity, View } from 'react-native';
 
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import styled from 'styled-components';
@@ -23,6 +23,10 @@ export const CustomBottomSheetModal = styled(BottomSheetModal)<{ sheetHidden: bo
 `;
 
 export const WorkoutModalView = styled(View)`
+    flex: 1;
+`;
+
+export const PaddedContainer = styled(View)`
     padding: 0 ${(props) => props.theme.spacing.md};
 `;
 
@@ -39,4 +43,10 @@ export const HeaderButton = styled(TouchableOpacity)<{ backgroundColor: 'error' 
     border-radius: 100px;
     width: 35%;
     padding: 5px 0;
+`;
+
+export const Line = styled(Animated.View)`
+    height: 1px;
+    width: 100%;
+    background-color: ${(props) => props.theme.colors.grey};
 `;

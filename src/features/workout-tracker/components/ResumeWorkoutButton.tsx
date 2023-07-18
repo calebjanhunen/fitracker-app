@@ -49,7 +49,6 @@ export default function ResumeWorkoutButton(props: Props): React.ReactElement {
               useNativeDriver: true,
           }).start();
 
-    console.log(props.isBottomSheetHidden);
     return (
         <Portal hostName='ResumeWorkoutButtonHost'>
             <ButtonContainer
