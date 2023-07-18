@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View } from 'react-native';
 
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { styled } from 'styled-components';
-import { PageView, TextInput } from '../../../../components';
+import { type BottomSheetModal } from '@gorhom/bottom-sheet';
+
+import { Button, Spacer, Text, TextInput } from '../../../../components';
+import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
+import {
+    CustomBottomSheetModal,
+    Header,
+    HeaderButton,
+    WorkoutModalView,
+    shadowStyle,
+} from './WorkoutTrackerModalStyles';
 
 interface Props {
     sheetRef: React.RefObject<BottomSheetModal>;
     isBottomSheetHidden: boolean;
     setIsBottomSheetHidden: (val: boolean) => void;
 }
-
-const CustomBottomSheetModal = styled(BottomSheetModal)<{
-    sheetHidden: boolean;
-}>`
-    border-radius: ${(props) => props.theme.borderRadius};
-    ${(props) => (props.sheetHidden ? 'display: none;' : '')}
-    background-color: ${(props) => props.theme.colors.white};
-`;
 
 export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     const [workoutName, setWorkoutName] = useState<string>('');
@@ -44,27 +43,50 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
             sheetHidden={props.isBottomSheetHidden}
             onChange={onSheetChange}
         >
-            <View>
+            <WorkoutModalView>
+                <Header>
+                    <HeaderButton
+                        backgroundColor='error'
+                        onPress={() => {
+                            // TODO: Clear workout states and close modal
+                        }}
+                    >
+                        <Text variant='button' color='white'>
+                            Cancel
+                        </Text>
+                    </HeaderButton>
+                    <HeaderButton
+                        backgroundColor='success'
+                        onPress={() => {
+                            // TODO: call finish workout api (future)
+                        }}
+                    >
+                        <Text variant='button' color='white'>
+                            Finish
+                        </Text>
+                    </HeaderButton>
+                </Header>
+                <Spacer size='xs' />
                 <TextInput
                     variant='smallTitle'
                     placeholder='Enter Workout Name...'
                     value={workoutName}
                     onChangeText={changeWorkoutName}
                 />
-            </View>
+                <Spacer size='xl' />
+                <WorkoutTrackerExercise />
+                <Spacer size='md' />
+                <Button
+                    variant='full'
+                    backgroundColor='primary'
+                    textColor='white'
+                    onPress={() => {
+                        // TODO: open add exercise modal
+                    }}
+                >
+                    Add Exercise
+                </Button>
+            </WorkoutModalView>
         </CustomBottomSheetModal>
     );
 }
-
-const shadowStyle = {
-    // backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: {
-        width: 0,
-        height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.0,
-
-    elevation: 24,
-};
