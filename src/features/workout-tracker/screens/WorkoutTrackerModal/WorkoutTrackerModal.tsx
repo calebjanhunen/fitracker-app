@@ -30,7 +30,44 @@ interface WorkoutModalFooterProps {
 
 export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     const [workoutName, setWorkoutName] = useState<string>('');
-    const [exercises, setExercises] = useState<Exercise[]>([]);
+    const [exercises, setExercises] = useState<Exercise[]>([
+        {
+            name: 'static name',
+            id: 0,
+            sets: [
+                {
+                    reps: null,
+                    weight: null,
+                    rpe: null,
+                    previous: {
+                        reps: 20,
+                        weight: 124,
+                        rpe: 10,
+                    },
+                },
+                {
+                    reps: null,
+                    weight: null,
+                    rpe: null,
+                    previous: {
+                        reps: 20,
+                        weight: 222,
+                        rpe: 10,
+                    },
+                },
+                {
+                    reps: null,
+                    weight: null,
+                    rpe: null,
+                    previous: {
+                        reps: 20,
+                        weight: 444,
+                        rpe: 10,
+                    },
+                },
+            ],
+        },
+    ]);
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
 
@@ -96,7 +133,7 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
                         value={workoutName}
                         onChangeText={changeWorkoutName}
                     />
-                    <Spacer size='xl' />
+                    <Spacer size='xs' />
                 </PaddedContainer>
                 <Line style={{ opacity: opacityAnimation }} />
                 <FlatList
@@ -131,6 +168,7 @@ function addExercise(
         ...prevExercises,
         {
             name: 'static name',
+            id: exercises.length,
             sets: [
                 {
                     reps: null,

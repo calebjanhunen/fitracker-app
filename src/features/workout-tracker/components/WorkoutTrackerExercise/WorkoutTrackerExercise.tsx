@@ -1,9 +1,9 @@
 import React, { type Dispatch, type SetStateAction } from 'react';
 
-import { Button, Spacer, Text, TextInput } from '../../../../components';
-
 import { FlatList, TouchableOpacity } from 'react-native';
-import { type Exercise, type ExerciseSet } from '../../../../interfaces/Exercise';
+import { Button, Spacer, Text } from '../../../../components';
+import { type Exercise } from '../../../../interfaces/Exercise';
+import ExerciseSetComponent from './ExerciseSetComponent';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
 
 interface ExerciseProps {
@@ -11,11 +11,6 @@ interface ExerciseProps {
     exerciseIndex: number;
     allExercises: Exercise[];
     setExercises: Dispatch<SetStateAction<Exercise[]>>;
-}
-
-interface ExerciseSetProps {
-    set: ExerciseSet;
-    index: number;
 }
 
 function addExerciseSet(
@@ -62,7 +57,14 @@ export default function WorkoutTrackerExercise({
                 data={exercise.sets}
                 extraData={allExercises}
                 ListHeaderComponent={ExerciseSetHeader}
-                renderItem={({ item, index }) => <ExerciseSetComponent set={item} index={index} />}
+                renderItem={({ item, index }) => (
+                    <ExerciseSetComponent
+                        set={item}
+                        setIndex={index}
+                        setExercises={setExercises}
+                        exercise={exercise}
+                    />
+                )}
                 ItemSeparatorComponent={() => <Spacer size='xxs' />}
             />
             <Spacer size='xs' />
@@ -104,31 +106,6 @@ function ExerciseSetHeader(): React.ReactElement {
                 <Text variant='headline' color='primary'>
                     Reps
                 </Text>
-            </FlexView>
-        </Row>
-    );
-}
-
-function ExerciseSetComponent({ set, index }: ExerciseSetProps): React.ReactElement {
-    return (
-        <Row>
-            <FlexView flex={0.5}>
-                <Text variant='body' color='primary'>
-                    {index + 1}
-                </Text>
-            </FlexView>
-            <FlexView flex={2}>
-                <Text variant='body' color='light'>
-                    {set.previous
-                        ? `${set.previous?.reps} x ${set.previous?.weight} @ ${set.previous?.rpe}`
-                        : ''}
-                </Text>
-            </FlexView>
-            <FlexView flex={1}>
-                <TextInput variant='body' inputMode='numeric' textAlign='center' maxLength={4} />
-            </FlexView>
-            <FlexView flex={1}>
-                <TextInput variant='body' inputMode='numeric' textAlign='center' maxLength={4} />
             </FlexView>
         </Row>
     );
