@@ -20,7 +20,10 @@ const HeaderView = styled(View)`
 
 export default function StartWorkoutScreen(): React.ReactElement {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [modalData, setModalData] = useState<WorkoutTemplate>({ name: '', exercises: [] });
+    const [modalData, setModalData] = useState<WorkoutTemplate>({
+        name: '',
+        exercises: [{ name: '', sets: 0 }],
+    });
 
     const workoutTrackerModalRef = useRef<BottomSheetModal>(null);
     const [workoutTrackerActive, setWorkoutTrackerActive] = useState<boolean>(false);
@@ -105,38 +108,26 @@ const mockWorkoutTemplate: WorkoutTemplate[] = [
             {
                 name: 'Barbell Bench Press',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Incline Bench Press (Machine)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Chest Fly (Machine)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Lateral Raise (Cable)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Skullcrusher (Dumbbell)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Triceps Extension (Cable)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
         ],
     },
@@ -146,38 +137,26 @@ const mockWorkoutTemplate: WorkoutTemplate[] = [
             {
                 name: 'Barbell Bench Press',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Incline Bench Press (Machine)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Chest Fly (Machine)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Lateral Raise (Cable)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Skullcrusher (Dumbbell)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
             {
                 name: 'Triceps Extension (Cable)',
                 sets: 3,
-                reps: 12,
-                rpe: 10,
             },
         ],
     },

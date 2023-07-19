@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 
@@ -24,6 +24,7 @@ interface Props {
 
 export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     const [workoutName, setWorkoutName] = useState<string>('');
+    const [exercises, setExercises] = useState({});
     const [hasScrolled, setHasScrolled] = useState<boolean>(false);
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
@@ -44,20 +45,12 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
         setWorkoutName(text);
     };
 
-    function onSheetChange(index: number): void {
-        if (index === 0) {
-            props.setIsBottomSheetHidden(true);
-        } else {
-            props.setIsBottomSheetHidden(false);
-        }
+    function onSheetChangePosition(index: number): void {
+        index === 0 ? props.setIsBottomSheetHidden(true) : props.setIsBottomSheetHidden(false);
     }
 
     function onExerciseListScroll(event: NativeSyntheticEvent<NativeScrollEvent>): void {
-        if (event.nativeEvent.contentOffset.y > 0) {
-            setHasScrolled(true);
-        } else {
-            setHasScrolled(false);
-        }
+        event.nativeEvent.contentOffset.y > 0 ? setHasScrolled(true) : setHasScrolled(false);
     }
 
     return (
@@ -67,7 +60,7 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
             snapPoints={snapPoints}
             style={shadowStyle}
             sheetHidden={props.isBottomSheetHidden}
-            onChange={onSheetChange}
+            onChange={onSheetChangePosition}
         >
             <WorkoutModalView>
                 <PaddedContainer>

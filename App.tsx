@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { PortalHost, PortalProvider } from '@gorhom/portal';
+import { PortalProvider } from '@gorhom/portal';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';

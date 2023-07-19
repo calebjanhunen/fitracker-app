@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Animated, Pressable, View } from 'react-native';
 
 import IonIcons from '@expo/vector-icons/Ionicons';
