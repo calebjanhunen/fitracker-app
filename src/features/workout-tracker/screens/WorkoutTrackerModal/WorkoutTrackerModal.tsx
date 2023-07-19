@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, type Dispatch, type SetStateAction } from 'react';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, Spacer, Text, TextInput } from '../../../../components';
+import { type Exercise } from '../../../../interfaces/Exercise';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import {
     CustomBottomSheetModal,
@@ -22,24 +23,16 @@ interface Props {
     setIsBottomSheetHidden: (val: boolean) => void;
 }
 
+interface WorkoutModalFooterProps {
+    exercises: Exercise[];
+    setExercises: Dispatch<SetStateAction<Exercise[]>>;
+}
+
 export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     const [workoutName, setWorkoutName] = useState<string>('');
-    const [exercises, setExercises] = useState({});
-    const [hasScrolled, setHasScrolled] = useState<boolean>(false);
+    const [exercises, setExercises] = useState<Exercise[]>([]);
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
-
-    hasScrolled
-        ? Animated.timing(opacityAnimation, {
-              toValue: 100,
-              duration: 50,
-              useNativeDriver: true,
-          }).start()
-        : Animated.timing(opacityAnimation, {
-              toValue: 0,
-              duration: 50,
-              useNativeDriver: true,
-          }).start();
 
     const changeWorkoutName = (text: string): void => {
         setWorkoutName(text);
@@ -50,7 +43,17 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     }
 
     function onExerciseListScroll(event: NativeSyntheticEvent<NativeScrollEvent>): void {
-        event.nativeEvent.contentOffset.y > 0 ? setHasScrolled(true) : setHasScrolled(false);
+        event.nativeEvent.contentOffset.y > 0
+            ? Animated.timing(opacityAnimation, {
+                  toValue: 100,
+                  duration: 50,
+                  useNativeDriver: true,
+              }).start()
+            : Animated.timing(opacityAnimation, {
+                  toValue: 0,
+                  duration: 50,
+                  useNativeDriver: true,
+              }).start();
     }
 
     return (
@@ -99,10 +102,20 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
                 <FlatList
                     onScroll={onExerciseListScroll}
                     style={{ flex: 1 }}
-                    data={[0, 1, 2]}
-                    renderItem={() => <WorkoutTrackerExercise />}
+                    data={exercises}
+                    extraData={exercises}
+                    renderItem={({ item, index }) => (
+                        <WorkoutTrackerExercise
+                            exercise={item}
+                            exerciseIndex={index}
+                            allExercises={exercises}
+                            setExercises={setExercises}
+                        />
+                    )}
                     ItemSeparatorComponent={() => <Spacer size='xl' />}
-                    ListFooterComponent={WorkoutModalFooter}
+                    ListFooterComponent={
+                        <WorkoutModalFooter exercises={exercises} setExercises={setExercises} />
+                    }
                     contentContainerStyle={{ padding: 16 }}
                 />
             </WorkoutModalView>
@@ -110,7 +123,30 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     );
 }
 
-function WorkoutModalFooter(): React.ReactElement {
+function addExercise(
+    exercises: Exercise[],
+    setExercises: Dispatch<SetStateAction<Exercise[]>>
+): void {
+    setExercises((prevExercises) => [
+        ...prevExercises,
+        {
+            name: 'static name',
+            sets: [
+                {
+                    reps: null,
+                    weight: null,
+                    rpe: null,
+                    previous: null,
+                },
+            ],
+        },
+    ]);
+}
+
+function WorkoutModalFooter({
+    exercises,
+    setExercises,
+}: WorkoutModalFooterProps): React.ReactElement {
     return (
         <View>
             <Spacer size='xxl' />
@@ -119,7 +155,7 @@ function WorkoutModalFooter(): React.ReactElement {
                 backgroundColor='primary'
                 textColor='white'
                 onPress={() => {
-                    // TODO: open add exercise modal
+                    addExercise(exercises, setExercises);
                 }}
             >
                 Add Exercise

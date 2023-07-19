@@ -1,16 +1,53 @@
-import React from 'react';
+import React, { type Dispatch, type SetStateAction } from 'react';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
 
 import { FlatList, TouchableOpacity } from 'react-native';
+import { type Exercise, type ExerciseSet } from '../../../../interfaces/Exercise';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
 
-export default function WorkoutTrackerExercise(): React.ReactElement {
+interface ExerciseProps {
+    exercise: Exercise;
+    exerciseIndex: number;
+    allExercises: Exercise[];
+    setExercises: Dispatch<SetStateAction<Exercise[]>>;
+}
+
+interface ExerciseSetProps {
+    set: ExerciseSet;
+    index: number;
+}
+
+function addExerciseSet(
+    exercise: Exercise,
+    exerciseIndex: number,
+    setExercises: Dispatch<SetStateAction<Exercise[]>>
+): void {
+    setExercises((prevExercises) => {
+        // console.log(prevExercises[exerciseIndex]);
+        prevExercises[exerciseIndex].sets.push({
+            previous: null,
+            reps: null,
+            weight: null,
+            rpe: null,
+        });
+        // console.log(prevExercises[exerciseIndex]);
+        return [...prevExercises];
+    });
+}
+
+export default function WorkoutTrackerExercise({
+    exercise,
+    exerciseIndex,
+    allExercises,
+    setExercises,
+}: ExerciseProps): React.ReactElement {
+    // console.log(exercise);
     return (
         <ExerciseContainer>
             <Row>
                 <Text variant='headline' color='onWhite'>
-                    Barbell Bench Press
+                    {exercise.name}
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
@@ -22,9 +59,10 @@ export default function WorkoutTrackerExercise(): React.ReactElement {
             </Row>
             <Spacer size='xs' />
             <FlatList
-                data={[0, 1, 2, 3]}
+                data={exercise.sets}
+                extraData={allExercises}
                 ListHeaderComponent={ExerciseSetHeader}
-                renderItem={ExerciseSet}
+                renderItem={({ item, index }) => <ExerciseSetComponent set={item} index={index} />}
                 ItemSeparatorComponent={() => <Spacer size='xxs' />}
             />
             <Spacer size='xs' />
@@ -35,7 +73,7 @@ export default function WorkoutTrackerExercise(): React.ReactElement {
                 borderColor='primary'
                 thin
                 onPress={() => {
-                    // TODO: ADD set
+                    addExerciseSet(exercise, exerciseIndex, setExercises);
                 }}
             >
                 Add Set
@@ -71,17 +109,19 @@ function ExerciseSetHeader(): React.ReactElement {
     );
 }
 
-function ExerciseSet(): React.ReactElement {
+function ExerciseSetComponent({ set, index }: ExerciseSetProps): React.ReactElement {
     return (
         <Row>
             <FlexView flex={0.5}>
                 <Text variant='body' color='primary'>
-                    1
+                    {index + 1}
                 </Text>
             </FlexView>
             <FlexView flex={2}>
                 <Text variant='body' color='light'>
-                    140 3 X 10 (10)
+                    {set.previous
+                        ? `${set.previous?.reps} x ${set.previous?.weight} @ ${set.previous?.rpe}`
+                        : ''}
                 </Text>
             </FlexView>
             <FlexView flex={1}>
