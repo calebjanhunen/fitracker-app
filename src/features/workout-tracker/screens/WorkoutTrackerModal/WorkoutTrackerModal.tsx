@@ -71,6 +71,8 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
 
+    // console.log('exercises: ', exercises);
+
     const changeWorkoutName = (text: string): void => {
         setWorkoutName(text);
     };

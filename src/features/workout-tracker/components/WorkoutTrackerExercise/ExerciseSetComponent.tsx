@@ -1,11 +1,5 @@
-import React, {
-    MutableRefObject,
-    useRef,
-    useState,
-    type Dispatch,
-    type SetStateAction,
-} from 'react';
-import { Dimensions, type Animated, type LayoutChangeEvent, type Text } from 'react-native';
+import React, { useRef, type Dispatch, type SetStateAction } from 'react';
+import { Dimensions, type Animated } from 'react-native';
 
 import { Swipeable } from 'react-native-gesture-handler';
 
@@ -13,7 +7,6 @@ import { AnimatedText, Text as CustomText, TextInput } from '../../../../compone
 import { type Exercise, type ExerciseSet } from '../../../../interfaces/Exercise';
 import {
     DeleteSetContainer,
-    DeleteSetText,
     ExerciseSetContainer,
     FlexView,
     Row,
@@ -68,7 +61,41 @@ function deleteSet(
         prevExercises.map((exerc) => (exerc.id === newExercise.id ? newExercise : exerc))
     );
     // Close the swipeable component
-    // swipeableRef?.current?.openRight();
+    swipeableRef?.current?.close();
+}
+
+function updateWeightInput(
+    text: string,
+    exercise: Exercise,
+    setIndex: number,
+    setExercises: Dispatch<SetStateAction<Exercise[]>>
+): void {
+    const newSets = exercise.sets.map((set, i) =>
+        i === setIndex ? { ...set, weight: Number(text) } : set
+    );
+
+    const newExercise = { ...exercise, sets: newSets };
+
+    setExercises((prevExercises) =>
+        prevExercises.map((exerc) => (exerc.id === newExercise.id ? newExercise : exerc))
+    );
+}
+
+function updateRepsInput(
+    text: string,
+    exercise: Exercise,
+    setIndex: number,
+    setExercises: Dispatch<SetStateAction<Exercise[]>>
+): void {
+    const newSets = exercise.sets.map((set, i) =>
+        i === setIndex ? { ...set, reps: Number(text) } : set
+    );
+
+    const newExercise = { ...exercise, sets: newSets };
+
+    setExercises((prevExercises) =>
+        prevExercises.map((exerc) => (exerc.id === newExercise.id ? newExercise : exerc))
+    );
 }
 
 export default function ExerciseSetComponent({
@@ -108,7 +135,10 @@ export default function ExerciseSetComponent({
                             inputMode='numeric'
                             textAlign='center'
                             maxLength={4}
-                            value={set.weight?.toString()}
+                            value={set?.weight?.toString() ?? ''}
+                            onChangeText={(text) => {
+                                updateWeightInput(text, exercise, setIndex, setExercises);
+                            }}
                         />
                     </FlexView>
                     <FlexView flex={1}>
@@ -117,7 +147,10 @@ export default function ExerciseSetComponent({
                             inputMode='numeric'
                             textAlign='center'
                             maxLength={4}
-                            value={set.reps?.toString()}
+                            value={set.reps?.toString() ?? ''}
+                            onChangeText={(text) => {
+                                updateRepsInput(text, exercise, setIndex, setExercises);
+                            }}
                         />
                     </FlexView>
                 </Row>

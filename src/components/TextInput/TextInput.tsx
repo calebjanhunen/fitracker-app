@@ -40,6 +40,7 @@ export default function TextInput(props: Props): React.ReactElement {
             inputMode={props.inputMode}
             maxLength={props.maxLength}
             textAlign={props.textAlign}
+            value={props.value}
         />
     );
 }

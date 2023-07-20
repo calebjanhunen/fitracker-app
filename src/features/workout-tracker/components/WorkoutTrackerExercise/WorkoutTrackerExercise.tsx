@@ -37,7 +37,7 @@ export default function WorkoutTrackerExercise({
     allExercises,
     setExercises,
 }: ExerciseProps): React.ReactElement {
-    // console.log(exercise);
+    console.log(`exercise ${exerciseIndex}: `, exercise);
     return (
         <ExerciseContainer>
             <Row>
@@ -86,27 +86,30 @@ export default function WorkoutTrackerExercise({
 
 function ExerciseSetHeader(): React.ReactElement {
     return (
-        <Row>
-            <FlexView flex={0.5}>
-                <Text variant='headline' color='primary'>
-                    Set
-                </Text>
-            </FlexView>
-            <FlexView flex={2}>
-                <Text variant='headline' color='primary'>
-                    Previous
-                </Text>
-            </FlexView>
-            <FlexView flex={1}>
-                <Text variant='headline' color='primary'>
-                    lbs
-                </Text>
-            </FlexView>
-            <FlexView flex={1}>
-                <Text variant='headline' color='primary'>
-                    Reps
-                </Text>
-            </FlexView>
-        </Row>
+        <>
+            <Row>
+                <FlexView flex={0.5}>
+                    <Text variant='headline' color='primary'>
+                        Set
+                    </Text>
+                </FlexView>
+                <FlexView flex={2}>
+                    <Text variant='headline' color='primary'>
+                        Previous
+                    </Text>
+                </FlexView>
+                <FlexView flex={1}>
+                    <Text variant='headline' color='primary'>
+                        lbs
+                    </Text>
+                </FlexView>
+                <FlexView flex={1}>
+                    <Text variant='headline' color='primary'>
+                        Reps
+                    </Text>
+                </FlexView>
+            </Row>
+            <Spacer size='xxs' />
+        </>
     );
 }
