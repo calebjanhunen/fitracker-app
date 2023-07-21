@@ -24,6 +24,7 @@ interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
     workoutTemplate: WorkoutTemplate;
+    isWorkoutTrackerActive: boolean;
 }
 
 const renderExercise: ListRenderItem<WorkoutTemplateExercise> = ({ item }) => (
@@ -70,16 +71,18 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                                 ItemSeparatorComponent={() => <Spacer size='xs' />}
                             />
                             <Spacer size='xs' />
-                            <Button
-                                variant='full'
-                                backgroundColor='primary'
-                                textColor='white'
-                                onPress={() => {
-                                    // TODO: Link to workout modal
-                                }}
-                            >
-                                START WORKOUT ({props.workoutTemplate.name})
-                            </Button>
+                            {!props.isWorkoutTrackerActive && (
+                                <Button
+                                    variant='full'
+                                    backgroundColor='primary'
+                                    textColor='white'
+                                    onPress={() => {
+                                        // TODO: Link to workout modal
+                                    }}
+                                >
+                                    START WORKOUT ({props.workoutTemplate.name})
+                                </Button>
+                            )}
                         </ModalView>
                     </TouchableWithoutFeedback>
                 </ModalContainer>

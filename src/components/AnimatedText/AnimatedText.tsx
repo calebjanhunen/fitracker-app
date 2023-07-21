@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Text, View, type LayoutChangeEvent } from 'react-native';
+import { Animated, type LayoutChangeEvent } from 'react-native';
 
 import { styled } from 'styled-components';
 

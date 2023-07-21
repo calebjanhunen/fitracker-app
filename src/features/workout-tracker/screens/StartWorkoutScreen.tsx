@@ -41,6 +41,7 @@ export default function StartWorkoutScreen(): React.ReactElement {
                     modalVisible={modalVisible}
                     setModalVisible={setModalVisible}
                     workoutTemplate={modalData}
+                    isWorkoutTrackerActive={workoutTrackerActive}
                 />
                 <HeaderView>
                     <Text variant='headline'>TEMPLATES</Text>

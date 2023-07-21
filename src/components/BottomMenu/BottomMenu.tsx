@@ -28,6 +28,7 @@ interface MenuProps {
 interface MenuItemProps {
     icon: keyof typeof IonIcons.glyphMap;
     text: string;
+    onPress?: () => void;
 }
 
 export default function MoreOptionsMenu({
@@ -36,7 +37,7 @@ export default function MoreOptionsMenu({
     menuItemProps,
 }: MenuProps): React.ReactElement {
     const renderMenuItem: ListRenderItem<MenuItemProps> = ({ item }) => (
-        <MenuItem icon={item.icon} text={item.text} />
+        <MenuItem icon={item.icon} text={item.text} onPress={item.onPress} />
     );
 
     const closeMenu = (): void => {
@@ -49,7 +50,7 @@ export default function MoreOptionsMenu({
                 <TouchableWithoutFeedback>
                     <MenuContainer>
                         <FlatList
-                            style={{ backgroundColor: 'white', borderRadius: 16 }}
+                            style={{ borderRadius: 16 }}
                             data={menuItemProps}
                             renderItem={renderMenuItem}
                             ItemSeparatorComponent={MenuItemSeperator}
@@ -67,11 +68,13 @@ export default function MoreOptionsMenu({
     );
 }
 
-function MenuItem({ icon, text }: MenuItemProps): React.ReactElement {
+function MenuItem({ icon, text, onPress }: MenuItemProps): React.ReactElement {
     return (
-        <MenuItemContainer onPress={() => {}}>
+        <MenuItemContainer onPress={onPress}>
             <Icon name={icon} size={34} />
-            <Text variant='smallTitle'>{text}</Text>
+            <Text variant='smallTitle' color='white'>
+                {text}
+            </Text>
         </MenuItemContainer>
     );
 }

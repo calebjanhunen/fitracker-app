@@ -1,7 +1,7 @@
-import React, { type Dispatch, type SetStateAction } from 'react';
+import React, { useState, type Dispatch, type SetStateAction } from 'react';
 
 import { FlatList, TouchableOpacity } from 'react-native';
-import { Button, Spacer, Text } from '../../../../components';
+import { BottomMenu, Button, Spacer, Text } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import ExerciseSetComponent from './ExerciseSetComponent';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
@@ -37,16 +37,32 @@ export default function WorkoutTrackerExercise({
     allExercises,
     setExercises,
 }: ExerciseProps): React.ReactElement {
-    console.log(`exercise ${exerciseIndex}: `, exercise);
+    const [moreOptionsMenuVisible, setMoreOptionsMenuVisible] = useState<boolean>(false);
+
+    function deleteExercise(): void {
+        const newExercises = allExercises.filter((e) => e.id !== exercise.id);
+
+        setExercises(newExercises);
+    }
+
     return (
         <ExerciseContainer>
+            {/* Bottom More options Menu */}
+            <BottomMenu
+                moreOptionsVisible={moreOptionsMenuVisible}
+                setMoreOptionsVisible={setMoreOptionsMenuVisible}
+                menuItemProps={[
+                    { icon: 'trash-outline', text: 'Delete Exercise', onPress: deleteExercise },
+                ]}
+            />
+            {/* Exercise */}
             <Row>
                 <Text variant='headline' color='onWhite'>
                     {exercise.name}
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        // TODO: Open modal (idk what will be displayed)
+                        setMoreOptionsMenuVisible(true);
                     }}
                 >
                     <Icon name='ellipsis-horizontal' size={34} />
