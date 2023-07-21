@@ -1,6 +1,9 @@
-import { type Exercise } from './Exercise';
-
 export interface WorkoutTemplate {
     name: string;
-    exercises: Exercise[];
+    exercises: WorkoutTemplateExercise[];
+}
+
+export interface WorkoutTemplateExercise {
+    name: string;
+    sets: number;
 }

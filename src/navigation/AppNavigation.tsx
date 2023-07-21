@@ -7,6 +7,7 @@ import FindFriendsMainScreen from '../features/find-friends/screens/FindFriendsM
 import MessagingMainScreen from '../features/messaging/screens/MessagingMainScreen';
 import ProfileMainScreen from '../features/profile/screens/ProfileMainScreen';
 import SocialFeedMainScreen from '../features/social-feed/screens/SocialFeedMainScreen';
+import ScreenDisplay from './ScreenDisplay';
 import WorkoutTrackerNavigation from './WorkoutTrackerNavigation';
 
 const Tab = createBottomTabNavigator();
@@ -20,11 +21,21 @@ export default function AppNavigation(): React.ReactElement {
     return (
         <NavigationContainer>
             <Tab.Navigator screenOptions={screenOptions} initialRouteName='Workout Tracker'>
-                <Tab.Screen name='Home' component={SocialFeedMainScreen} />
-                <Tab.Screen name='Friends' component={FindFriendsMainScreen} />
-                <Tab.Screen name='Workout Tracker' component={WorkoutTrackerNavigation} />
-                <Tab.Screen name='Message' component={MessagingMainScreen} />
-                <Tab.Screen name='Profile' component={ProfileMainScreen} />
+                <Tab.Screen name='Home'>
+                    {() => <ScreenDisplay screenComponent={<SocialFeedMainScreen />} />}
+                </Tab.Screen>
+                <Tab.Screen name='Friends'>
+                    {() => <ScreenDisplay screenComponent={<FindFriendsMainScreen />} />}
+                </Tab.Screen>
+                <Tab.Screen name='Workout Tracker'>
+                    {() => <ScreenDisplay screenComponent={<WorkoutTrackerNavigation />} />}
+                </Tab.Screen>
+                <Tab.Screen name='Messaging'>
+                    {() => <ScreenDisplay screenComponent={<MessagingMainScreen />} />}
+                </Tab.Screen>
+                <Tab.Screen name='Profile'>
+                    {() => <ScreenDisplay screenComponent={<ProfileMainScreen />} />}
+                </Tab.Screen>
             </Tab.Navigator>
         </NavigationContainer>
     );

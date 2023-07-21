@@ -21,6 +21,7 @@ export const MenuItemContainer = styled(TouchableOpacity)`
     flex-direction: row;
     align-items: center;
     gap: ${(props) => props.theme.spacing.sm};
+    background-color: #808080;
 `;
 
 export const Icon = styled(IonIcons)`

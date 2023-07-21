@@ -11,6 +11,8 @@ interface Props {
     variant: keyof typeof variants;
     backgroundColor: keyof typeof theme.colors;
     textColor: keyof typeof theme.fontColors;
+    borderColor?: keyof typeof theme.colors;
+    thin?: boolean;
     onPress: () => void;
 }
 
@@ -32,6 +34,8 @@ const CustomButton = styled(TouchableOpacity)<{
     backgroundColor: Props['backgroundColor'];
     variant: Props['variant'];
     onPress: Props['onPress'];
+    borderColor: Props['borderColor'];
+    thin: Props['thin'];
 }>`
     background-color: ${({ backgroundColor, theme }) => theme.colors[backgroundColor]};
     ${({ variant, theme }) => variants[variant](theme)};
@@ -39,6 +43,9 @@ const CustomButton = styled(TouchableOpacity)<{
     align-items: center;
     justify-content: center;
     border-radius: 100px;
+    ${({ theme, borderColor }) =>
+        borderColor ? `border: 1px solid ${theme.colors[borderColor]};` : ''}
+    ${({ theme, thin }) => (thin ? `padding: ${theme.spacing.xxxs} 0;` : '')}
 `;
 
 export default function Button(props: Props): React.ReactElement {
@@ -47,6 +54,8 @@ export default function Button(props: Props): React.ReactElement {
             backgroundColor={props.backgroundColor}
             onPress={props.onPress}
             variant={props.variant}
+            borderColor={props.borderColor}
+            thin={props.thin}
         >
             <Text variant='button' color={props.textColor}>
                 {props.children}

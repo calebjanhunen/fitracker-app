@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 
 import { BottomMenu, Button, Spacer, Text } from '../../../../components';
-import { type Exercise } from '../../../../interfaces/Exercise';
-import { type WorkoutTemplate } from '../../../../interfaces/WorkoutTemplate';
+import {
+    type WorkoutTemplate,
+    type WorkoutTemplateExercise,
+} from '../../../../interfaces/WorkoutTemplate';
 import {
     Icon,
     ModalContainer,
@@ -22,9 +24,10 @@ interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
     workoutTemplate: WorkoutTemplate;
+    isWorkoutTrackerActive: boolean;
 }
 
-const renderExercise: ListRenderItem<Exercise> = ({ item }) => (
+const renderExercise: ListRenderItem<WorkoutTemplateExercise> = ({ item }) => (
     <Text variant='body'>
         {item.sets} x {item.name}
     </Text>
@@ -68,16 +71,18 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                                 ItemSeparatorComponent={() => <Spacer size='xs' />}
                             />
                             <Spacer size='xs' />
-                            <Button
-                                variant='full'
-                                backgroundColor='primary'
-                                textColor='white'
-                                onPress={() => {
-                                    // TODO: Link to workout modal
-                                }}
-                            >
-                                START WORKOUT ({props.workoutTemplate.name})
-                            </Button>
+                            {!props.isWorkoutTrackerActive && (
+                                <Button
+                                    variant='full'
+                                    backgroundColor='primary'
+                                    textColor='white'
+                                    onPress={() => {
+                                        // TODO: Link to workout modal
+                                    }}
+                                >
+                                    START WORKOUT ({props.workoutTemplate.name})
+                                </Button>
+                            )}
                         </ModalView>
                     </TouchableWithoutFeedback>
                 </ModalContainer>
