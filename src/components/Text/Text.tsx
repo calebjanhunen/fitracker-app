@@ -8,6 +8,7 @@ interface Props {
     variant: keyof typeof variants;
     color?: keyof typeof theme.fontColors;
     numberOfLines?: number;
+    textAlign?: 'center';
 }
 
 const title = (theme: ThemeType): string => `
@@ -54,14 +55,21 @@ const CustomText = styled(DefaultText)<{
     variant: Props['variant'];
     color: Props['color'];
     numberOfLines: Props['numberOfLines'];
+    textAlign: Props['textAlign'];
 }>`
     ${({ variant, theme }) => variants[variant](theme)};
     color: ${({ color, theme }) => (color ? theme.fontColors[color] : theme.fontColors.primary)};
+    ${(props) => (props.textAlign ? 'text-align: center;' : '')}
 `;
 
 export default function Text(props: Props): React.ReactElement {
     return (
-        <CustomText variant={props.variant} color={props.color} numberOfLines={props.numberOfLines}>
+        <CustomText
+            variant={props.variant}
+            color={props.color}
+            numberOfLines={props.numberOfLines}
+            textAlign={props.textAlign}
+        >
             {props.children}
         </CustomText>
     );
