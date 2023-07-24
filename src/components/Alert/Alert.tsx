@@ -1,46 +1,28 @@
 import React from 'react';
 import { Modal, TouchableWithoutFeedback } from 'react-native';
 
-import Text from '../Text/Text';
+import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { type theme } from '../../theme/theme';
-import Button from '../Button/Button';
 import Spacer from '../Spacer/Spacer';
-import { AlertModalContainer, AlertModalOverlay, Blur } from './AlertStyles';
+import Text from '../Text/Text';
+import { AlertButton, AlertModalContainer, AlertModalOverlay, Blur } from './AlertStyles';
 
-interface Props {
+interface Props<T> {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
     title: string;
     desc: string;
-    buttons: buttonProps[];
+    ctaBtn: {
+        text: string;
+        backgroundColor: keyof typeof theme.colors;
+        textColor: keyof typeof theme.fontColors;
+    };
+    ctaFunction: (params: T) => void;
+    ctaFunctionArgs: T;
 }
 
-interface buttonProps {
-    text: string;
-    backgroundColor: keyof typeof theme.colors;
-    textColor: keyof typeof theme.fontColors;
-}
-
-function buttonDisplay(buttons: buttonProps[]): React.ReactElement {
-    return (
-        <>
-            {buttons.map((button, index) => (
-                <Button
-                    key={index}
-                    variant='full'
-                    backgroundColor={button.backgroundColor}
-                    textColor={button.textColor}
-                    onPress={() => {}}
-                >
-                    {button.text}
-                </Button>
-            ))}
-        </>
-    );
-}
-
-export default function Alert(props: Props): React.ReactElement {
+export default function Alert<T>(props: Props<T>): React.ReactElement {
     return (
         <Modal transparent={true} visible={props.modalVisible}>
             {/* Modal Overlay */}
@@ -59,7 +41,33 @@ export default function Alert(props: Props): React.ReactElement {
                             <Text variant='body' textAlign='center'>
                                 {props.desc}
                             </Text>
-                            {buttonDisplay(props.buttons)}
+                            <Spacer size='xs' />
+
+                            {/* CTA Button */}
+                            <AlertButton
+                                backgroundColor={props.ctaBtn.backgroundColor}
+                                onPress={() => {
+                                    props.ctaFunction(props.ctaFunctionArgs);
+                                }}
+                            >
+                                <Text variant='button' color={props.ctaBtn.textColor}>
+                                    {props.ctaBtn.text}
+                                </Text>
+                            </AlertButton>
+                            <Spacer size='xxs' />
+
+                            {/* Back Button */}
+                            <AlertButton
+                                backgroundColor='white'
+                                borderColor='primary'
+                                onPress={() => {
+                                    props.setModalVisible(false);
+                                }}
+                            >
+                                <Text variant='button' color='onWhite'>
+                                    Back
+                                </Text>
+                            </AlertButton>
                         </AlertModalContainer>
                     </TouchableWithoutFeedback>
                 </Blur>
