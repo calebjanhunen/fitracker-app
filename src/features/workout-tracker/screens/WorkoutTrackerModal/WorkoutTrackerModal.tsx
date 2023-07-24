@@ -1,10 +1,9 @@
 import React, { useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
-
-import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Button, Spacer, Text, TextInput } from '../../../../components';
+import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import {
@@ -21,6 +20,7 @@ interface Props {
     sheetRef: React.RefObject<BottomSheetModal>;
     isBottomSheetHidden: boolean;
     setIsBottomSheetHidden: (val: boolean) => void;
+    setWorkoutTrackerActive: (val: boolean) => void;
 }
 
 interface WorkoutModalFooterProps {
@@ -28,18 +28,42 @@ interface WorkoutModalFooterProps {
     setExercises: Dispatch<SetStateAction<Exercise[]>>;
 }
 
-export default function WorkoutTrackerModal(props: Props): React.ReactElement {
+interface CancelWorkoutParams {
+    setWorkoutName: (val: string) => void;
+    setExercises: (val: []) => void;
+    setAlertModalVisible: (val: boolean) => void;
+    setWorkoutTrackerActive: (val: boolean) => void;
+    sheetRef: React.RefObject<BottomSheetModal>;
+}
+
+function cancelWorkout(params: CancelWorkoutParams): void {
+    params.setWorkoutName('');
+    console.log('cancel workout');
+    params.setExercises([]);
+    params.setAlertModalVisible(false);
+    params.setWorkoutTrackerActive(false);
+    params.sheetRef.current?.close();
+}
+
+export default function WorkoutTrackerModal({
+    sheetRef,
+    isBottomSheetHidden,
+    setIsBottomSheetHidden,
+    setWorkoutTrackerActive,
+}: Props): React.ReactElement {
     const [workoutName, setWorkoutName] = useState<string>('');
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
+
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
 
     const changeWorkoutName = (text: string): void => {
         setWorkoutName(text);
     };
 
     function onSheetChangePosition(index: number): void {
-        index === 0 ? props.setIsBottomSheetHidden(true) : props.setIsBottomSheetHidden(false);
+        index === 0 ? setIsBottomSheetHidden(true) : setIsBottomSheetHidden(false);
     }
 
     function onExerciseListScroll(event: NativeSyntheticEvent<NativeScrollEvent>): void {
@@ -59,12 +83,31 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
     return (
         <CustomBottomSheetModal
             index={1}
-            ref={props.sheetRef}
+            ref={sheetRef}
             snapPoints={snapPoints}
             style={shadowStyle}
-            sheetHidden={props.isBottomSheetHidden}
+            sheetHidden={isBottomSheetHidden}
             onChange={onSheetChangePosition}
         >
+            <Alert
+                modalVisible={alertModalVisible}
+                setModalVisible={setAlertModalVisible}
+                title='Cancel Workout'
+                desc='Are you sure you want to cancel this workout?'
+                ctaBtn={{
+                    text: 'Cancel',
+                    backgroundColor: 'error',
+                    textColor: 'white',
+                }}
+                ctaFunction={cancelWorkout}
+                ctaFunctionArgs={{
+                    setWorkoutName,
+                    setExercises,
+                    setAlertModalVisible,
+                    sheetRef,
+                    setWorkoutTrackerActive,
+                }}
+            />
             <WorkoutModalView>
                 <PaddedContainer>
                     <Header>
@@ -72,6 +115,7 @@ export default function WorkoutTrackerModal(props: Props): React.ReactElement {
                             backgroundColor='error'
                             onPress={() => {
                                 // TODO: Clear workout states and close modal
+                                setAlertModalVisible(true);
                             }}
                         >
                             <Text variant='button' color='white'>

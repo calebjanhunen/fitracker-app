@@ -97,6 +97,7 @@ export default function StartWorkoutScreen(): React.ReactElement {
                 sheetRef={workoutTrackerModalRef}
                 isBottomSheetHidden={isBottomSheetHidden}
                 setIsBottomSheetHidden={setIsBottomSheetHidden}
+                setWorkoutTrackerActive={setWorkoutTrackerActive}
             />
         </>
     );
