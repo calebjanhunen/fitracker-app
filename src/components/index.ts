@@ -1,3 +1,4 @@
+import Alert from './Alert/Alert';
 import AnimatedText from './AnimatedText/AnimatedText';
 import BottomMenu from './BottomMenu/BottomMenu';
 import Button from './Button/Button';
@@ -7,4 +8,4 @@ import Spacer from './Spacer/Spacer';
 import Text from './Text/Text';
 import TextInput from './TextInput/TextInput';
 
-export { AnimatedText, BottomMenu, Button, Container, PageView, Spacer, Text, TextInput };
+export { Alert, AnimatedText, BottomMenu, Button, Container, PageView, Spacer, Text, TextInput };
