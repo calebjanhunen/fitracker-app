@@ -6,6 +6,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { type theme } from '../../../../theme/theme';
+import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import {
     CustomBottomSheetModal,
@@ -22,11 +23,6 @@ interface Props {
     isBottomSheetHidden: boolean;
     setIsBottomSheetHidden: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
-}
-
-interface WorkoutModalFooterProps {
-    exercises: Exercise[];
-    setExercises: Dispatch<SetStateAction<Exercise[]>>;
 }
 
 interface AlertModalVars {
@@ -121,6 +117,7 @@ export default function WorkoutTrackerModal({
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
     const [workoutName, setWorkoutName] = useState<string>('');
     const [exercises, setExercises] = useState<Exercise[]>([]);
+    const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
 
@@ -166,6 +163,11 @@ export default function WorkoutTrackerModal({
                     ctaFunctionArgs={alertModalVars.ctaFunctionArgs}
                 />
             )}
+            <AddExerciseModal
+                modalVisible={addExerciseModalVisible}
+                setModalVisible={setAddExerciseModalVisible}
+                setExercises={setExercises}
+            />
             <WorkoutModalView>
                 <PaddedContainer>
                     <Header>
@@ -227,7 +229,9 @@ export default function WorkoutTrackerModal({
                     )}
                     ItemSeparatorComponent={() => <Spacer size='xl' />}
                     ListFooterComponent={
-                        <WorkoutModalFooter exercises={exercises} setExercises={setExercises} />
+                        <WorkoutModalFooter
+                            setAddExerciseModalVisible={setAddExerciseModalVisible}
+                        />
                     }
                     contentContainerStyle={{ padding: 16 }}
                 />
@@ -236,31 +240,34 @@ export default function WorkoutTrackerModal({
     );
 }
 
-function addExercise(
-    exercises: Exercise[],
-    setExercises: Dispatch<SetStateAction<Exercise[]>>
-): void {
-    setExercises((prevExercises) => [
-        ...prevExercises,
-        {
-            name: 'static name',
-            id: exercises.length,
-            sets: [
-                {
-                    reps: null,
-                    weight: null,
-                    rpe: null,
-                    previous: null,
-                },
-            ],
-        },
-    ]);
+// function addExercise(
+//     exercises: Exercise[],
+//     setExercises: Dispatch<SetStateAction<Exercise[]>>
+// ): void {
+//     setExercises((prevExercises) => [
+//         ...prevExercises,
+//         {
+//             name: 'static name',
+//             id: exercises.length,
+//             sets: [
+//                 {
+//                     reps: null,
+//                     weight: null,
+//                     rpe: null,
+//                     previous: null,
+//                 },
+//             ],
+//         },
+//     ]);
+// }
+
+interface WOrkoutModalFooterProps {
+    setAddExerciseModalVisible: (val: boolean) => void;
 }
 
 function WorkoutModalFooter({
-    exercises,
-    setExercises,
-}: WorkoutModalFooterProps): React.ReactElement {
+    setAddExerciseModalVisible,
+}: WOrkoutModalFooterProps): React.ReactElement {
     return (
         <View>
             <Spacer size='xxl' />
@@ -269,7 +276,7 @@ function WorkoutModalFooter({
                 backgroundColor='primary'
                 textColor='white'
                 onPress={() => {
-                    addExercise(exercises, setExercises);
+                    setAddExerciseModalVisible(true);
                 }}
             >
                 Add Exercise

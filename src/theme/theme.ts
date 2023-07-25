@@ -29,6 +29,7 @@ export const theme = {
     },
     colors: {
         primary: '#5E69EE',
+        primaryTranslucent: 'rgba(94, 105, 238, 0.4)',
         secondary: '#39AFEA',
         white: '#FFFFFF',
         grey: '#999999',
