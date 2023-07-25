@@ -5,6 +5,7 @@ import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
+import { type theme } from '../../../../theme/theme';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import {
     CustomBottomSheetModal,
@@ -28,6 +29,18 @@ interface WorkoutModalFooterProps {
     setExercises: Dispatch<SetStateAction<Exercise[]>>;
 }
 
+interface AlertModalVars {
+    title: string;
+    desc: string;
+    ctaBtn: {
+        text: string;
+        backgroundColor: keyof typeof theme.colors;
+        textColor: keyof typeof theme.fontColors;
+    };
+    ctaFunction: (params: CancelWorkoutParams | FinishWorkoutParams) => void;
+    ctaFunctionArgs: CancelWorkoutParams | FinishWorkoutParams;
+}
+
 interface CancelWorkoutParams {
     setWorkoutName: (val: string) => void;
     setExercises: (val: []) => void;
@@ -36,9 +49,62 @@ interface CancelWorkoutParams {
     sheetRef: React.RefObject<BottomSheetModal>;
 }
 
+interface FinishWorkoutParams {
+    setWorkoutName: (val: string) => void;
+    setExercises: (val: []) => void;
+    setAlertModalVisible: (val: boolean) => void;
+    setWorkoutTrackerActive: (val: boolean) => void;
+    sheetRef: React.RefObject<BottomSheetModal>;
+}
+
+function openAlertWindow(
+    alertType: 'cancel' | 'finish',
+    setAlertModalVisible: (val: boolean) => void,
+    setAlertModalVars: (val: AlertModalVars) => void,
+    alertModalCTAFunctionVars: FinishWorkoutParams | CancelWorkoutParams
+): void {
+    if (alertType === 'finish') {
+        setAlertModalVars({
+            title: 'Finish Workout',
+            desc: 'Are you sure you want to finish this workout?',
+            ctaBtn: {
+                text: 'Finish',
+                backgroundColor: 'success',
+                textColor: 'white',
+            },
+            ctaFunction: finishWorkout,
+            ctaFunctionArgs: alertModalCTAFunctionVars,
+        });
+    } else {
+        setAlertModalVars({
+            title: 'Cancel Workout',
+            desc: 'Are you sure you want to cancel this workout?',
+            ctaBtn: {
+                text: 'Cancel',
+                backgroundColor: 'error',
+                textColor: 'white',
+            },
+            ctaFunction: cancelWorkout,
+            ctaFunctionArgs: alertModalCTAFunctionVars,
+        });
+    }
+
+    setAlertModalVisible(true);
+}
+
 function cancelWorkout(params: CancelWorkoutParams): void {
     params.setWorkoutName('');
-    console.log('cancel workout');
+    params.setExercises([]);
+    params.setAlertModalVisible(false);
+    params.setWorkoutTrackerActive(false);
+    params.sheetRef.current?.close();
+}
+
+function finishWorkout(params: FinishWorkoutParams): void {
+    // TODO: Send api request to save workout
+    // Go to a screen displaying to user that they ended workout?
+
+    params.setWorkoutName('');
     params.setExercises([]);
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
@@ -51,12 +117,12 @@ export default function WorkoutTrackerModal({
     setIsBottomSheetHidden,
     setWorkoutTrackerActive,
 }: Props): React.ReactElement {
-    const [workoutName, setWorkoutName] = useState<string>('');
-    const [exercises, setExercises] = useState<Exercise[]>([]);
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
-
-    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [workoutName, setWorkoutName] = useState<string>('');
+    const [exercises, setExercises] = useState<Exercise[]>([]);
+    const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
+    const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
 
     const changeWorkoutName = (text: string): void => {
         setWorkoutName(text);
@@ -89,33 +155,30 @@ export default function WorkoutTrackerModal({
             sheetHidden={isBottomSheetHidden}
             onChange={onSheetChangePosition}
         >
-            <Alert
-                modalVisible={alertModalVisible}
-                setModalVisible={setAlertModalVisible}
-                title='Cancel Workout'
-                desc='Are you sure you want to cancel this workout?'
-                ctaBtn={{
-                    text: 'Cancel',
-                    backgroundColor: 'error',
-                    textColor: 'white',
-                }}
-                ctaFunction={cancelWorkout}
-                ctaFunctionArgs={{
-                    setWorkoutName,
-                    setExercises,
-                    setAlertModalVisible,
-                    sheetRef,
-                    setWorkoutTrackerActive,
-                }}
-            />
+            {alertModalVars && (
+                <Alert
+                    modalVisible={alertModalVisible}
+                    setModalVisible={setAlertModalVisible}
+                    title={alertModalVars.title}
+                    desc={alertModalVars.desc}
+                    ctaBtn={alertModalVars.ctaBtn}
+                    ctaFunction={alertModalVars.ctaFunction}
+                    ctaFunctionArgs={alertModalVars.ctaFunctionArgs}
+                />
+            )}
             <WorkoutModalView>
                 <PaddedContainer>
                     <Header>
                         <HeaderButton
                             backgroundColor='error'
                             onPress={() => {
-                                // TODO: Clear workout states and close modal
-                                setAlertModalVisible(true);
+                                openAlertWindow('cancel', setAlertModalVisible, setAlertModalVars, {
+                                    setWorkoutName,
+                                    setExercises,
+                                    setAlertModalVisible,
+                                    sheetRef,
+                                    setWorkoutTrackerActive,
+                                });
                             }}
                         >
                             <Text variant='button' color='white'>
@@ -125,7 +188,13 @@ export default function WorkoutTrackerModal({
                         <HeaderButton
                             backgroundColor='success'
                             onPress={() => {
-                                // TODO: call finish workout api (future)
+                                openAlertWindow('finish', setAlertModalVisible, setAlertModalVars, {
+                                    setWorkoutName,
+                                    setExercises,
+                                    setAlertModalVisible,
+                                    sheetRef,
+                                    setWorkoutTrackerActive,
+                                });
                             }}
                         >
                             <Text variant='button' color='white'>
