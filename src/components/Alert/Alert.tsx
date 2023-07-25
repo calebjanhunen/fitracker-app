@@ -1,8 +1,6 @@
 import React from 'react';
 import { Modal, TouchableWithoutFeedback } from 'react-native';
 
-import { type BottomSheetModal } from '@gorhom/bottom-sheet';
-
 import { type theme } from '../../theme/theme';
 import Spacer from '../Spacer/Spacer';
 import Text from '../Text/Text';

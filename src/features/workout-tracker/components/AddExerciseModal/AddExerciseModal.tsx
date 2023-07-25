@@ -25,8 +25,14 @@ function closeModal(setModalVisible: (val: boolean) => void): void {
 
 function addExercisesToWorkout(
     selectedExercises: number[],
-    setExercises: Dispatch<SetStateAction<ExerciseInterface[]>>
-): void {}
+    setSelectedExercises: Dispatch<SetStateAction<number[]>>,
+    setExercises: Dispatch<SetStateAction<ExerciseInterface[]>>,
+    setModalVisible: (val: boolean) => void
+): void {
+    // TODO: Add exercises to exercises state
+    setSelectedExercises([]);
+    setModalVisible(false);
+}
 
 export default function AddExerciseModal(props: Props): React.ReactElement {
     const [selectedExercises, setSelectedExercises] = useState<number[]>([]);
@@ -95,7 +101,14 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                     variant='full'
                                     backgroundColor='primary'
                                     textColor='white'
-                                    onPress={() => {}}
+                                    onPress={() => {
+                                        addExercisesToWorkout(
+                                            selectedExercises,
+                                            setSelectedExercises,
+                                            props.setExercises,
+                                            props.setModalVisible
+                                        );
+                                    }}
                                     disabled={!(selectedExercises.length > 0)}
                                 >
                                     {buttonText()}

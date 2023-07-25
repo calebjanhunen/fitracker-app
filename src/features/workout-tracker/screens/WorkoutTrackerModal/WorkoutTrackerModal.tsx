@@ -1,4 +1,4 @@
-import React, { useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import React, { useRef, useState } from 'react';
 import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
