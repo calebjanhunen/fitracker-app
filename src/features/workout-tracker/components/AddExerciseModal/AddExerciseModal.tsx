@@ -81,6 +81,7 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                     backgroundColor='primary'
                                     textColor='white'
                                     onPress={() => {}}
+                                    disabled={!(selectedExercises.length > 0)}
                                 >
                                     Add Exercise
                                 </Button>

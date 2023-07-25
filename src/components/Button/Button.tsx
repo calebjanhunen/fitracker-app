@@ -1,12 +1,12 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, type TouchableOpacityProps } from 'react-native';
 
 import styled from 'styled-components';
 
 import { type theme, type ThemeType } from '../../theme/theme';
 import Text from '../Text/Text';
 
-interface Props {
+interface Props extends TouchableOpacityProps {
     children: React.ReactNode;
     variant: keyof typeof variants;
     backgroundColor: keyof typeof theme.colors;
@@ -36,8 +36,10 @@ const CustomButton = styled(TouchableOpacity)<{
     onPress: Props['onPress'];
     borderColor: Props['borderColor'];
     thin: Props['thin'];
+    disabled: Props['disabled'];
 }>`
-    background-color: ${({ backgroundColor, theme }) => theme.colors[backgroundColor]};
+    background-color: ${({ backgroundColor, theme, disabled }) =>
+        disabled ? theme.colors.grey : theme.colors[backgroundColor]};
     ${({ variant, theme }) => variants[variant](theme)};
     display: flex;
     align-items: center;
@@ -56,6 +58,7 @@ export default function Button(props: Props): React.ReactElement {
             variant={props.variant}
             borderColor={props.borderColor}
             thin={props.thin}
+            disabled={props.disabled}
         >
             <Text variant='button' color={props.textColor}>
                 {props.children}
