@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState } from 'react';
+import React, { useReducer, useRef, useState, type Dispatch } from 'react';
 import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -35,31 +35,23 @@ interface AlertModalVars {
         backgroundColor: keyof typeof theme.colors;
         textColor: keyof typeof theme.fontColors;
     };
-    ctaFunction: (params: CancelWorkoutParams | FinishWorkoutParams) => void;
-    ctaFunctionArgs: CancelWorkoutParams | FinishWorkoutParams;
+    ctaFunction: (params: alertModalCTAFunctionParams) => void;
+    ctaFunctionArgs: alertModalCTAFunctionParams;
 }
 
-interface CancelWorkoutParams {
+interface alertModalCTAFunctionParams {
     setWorkoutName: (val: string) => void;
-    setExercises: (val: []) => void;
     setAlertModalVisible: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
     sheetRef: React.RefObject<BottomSheetModal>;
-}
-
-interface FinishWorkoutParams {
-    setWorkoutName: (val: string) => void;
-    setExercises: (val: []) => void;
-    setAlertModalVisible: (val: boolean) => void;
-    setWorkoutTrackerActive: (val: boolean) => void;
-    sheetRef: React.RefObject<BottomSheetModal>;
+    dispatchExercises: Dispatch<ExercisesActions>;
 }
 
 function openAlertWindow(
     alertType: 'cancel' | 'finish',
     setAlertModalVisible: (val: boolean) => void,
     setAlertModalVars: (val: AlertModalVars) => void,
-    alertModalCTAFunctionVars: FinishWorkoutParams | CancelWorkoutParams
+    alertModalCTAFunctionVars: alertModalCTAFunctionParams
 ): void {
     if (alertType === 'finish') {
         setAlertModalVars({
@@ -90,20 +82,19 @@ function openAlertWindow(
     setAlertModalVisible(true);
 }
 
-function cancelWorkout(params: CancelWorkoutParams): void {
+function cancelWorkout(params: alertModalCTAFunctionParams): void {
     params.setWorkoutName('');
-    params.setExercises([]);
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
+    params.dispatchExercises({ type: 'end-workout' });
     params.sheetRef.current?.close();
 }
 
-function finishWorkout(params: FinishWorkoutParams): void {
+function finishWorkout(params: alertModalCTAFunctionParams): void {
     // TODO: Send api request to save workout
     // Go to a screen displaying to user that they ended workout?
 
     params.setWorkoutName('');
-    params.setExercises([]);
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
     params.sheetRef.current?.close();
@@ -128,6 +119,8 @@ function exercisesReducer(exercises: Exercise[], action: ExercisesActions): Exer
             ];
         case 'delete-exercise':
             return exercises.filter((exercise) => exercise.id !== action.payload);
+        case 'end-workout':
+            return [];
         default:
             return exercises;
     }
@@ -151,7 +144,7 @@ export default function WorkoutTrackerModal({
     };
 
     // USEREDUCER EXPERIMENTATION
-    const [exercises, dispatch] = useReducer(exercisesReducer, []);
+    const [exercises, dispatchExercises] = useReducer(exercisesReducer, []);
 
     function onSheetChangePosition(index: number): void {
         index === 0 ? setIsBottomSheetHidden(true) : setIsBottomSheetHidden(false);
@@ -202,13 +195,13 @@ export default function WorkoutTrackerModal({
                         <HeaderButton
                             backgroundColor='error'
                             onPress={() => {
-                                // openAlertWindow('cancel', setAlertModalVisible, setAlertModalVars, {
-                                //     setWorkoutName,
-                                //     setExercises,
-                                //     setAlertModalVisible,
-                                //     sheetRef,
-                                //     setWorkoutTrackerActive,
-                                // });
+                                openAlertWindow('cancel', setAlertModalVisible, setAlertModalVars, {
+                                    setWorkoutName,
+                                    setAlertModalVisible,
+                                    setWorkoutTrackerActive,
+                                    sheetRef,
+                                    dispatchExercises,
+                                });
                             }}
                         >
                             <Text variant='button' color='white'>
@@ -248,13 +241,16 @@ export default function WorkoutTrackerModal({
                     data={exercises}
                     extraData={exercises}
                     renderItem={({ item, index }) => (
-                        <WorkoutTrackerExercise exercise={item} dispatchExercises={dispatch} />
+                        <WorkoutTrackerExercise
+                            exercise={item}
+                            dispatchExercises={dispatchExercises}
+                        />
                     )}
                     ItemSeparatorComponent={() => <Spacer size='xl' />}
                     ListFooterComponent={
                         <WorkoutModalFooter
                             setAddExerciseModalVisible={setAddExerciseModalVisible}
-                            dispatch={dispatch}
+                            dispatchExercises={dispatchExercises}
                         />
                     }
                     contentContainerStyle={{ padding: 16 }}
@@ -266,12 +262,12 @@ export default function WorkoutTrackerModal({
 
 interface WOrkoutModalFooterProps {
     setAddExerciseModalVisible: (val: boolean) => void;
-    dispatch: (action: ExercisesActions) => void;
+    dispatchExercises: (action: ExercisesActions) => void;
 }
 
 function WorkoutModalFooter({
     setAddExerciseModalVisible,
-    dispatch,
+    dispatchExercises,
 }: WOrkoutModalFooterProps): React.ReactElement {
     return (
         <View>
@@ -282,7 +278,7 @@ function WorkoutModalFooter({
                 textColor='white'
                 onPress={() => {
                     // setAddExerciseModalVisible(true);
-                    dispatch({ type: 'add-exercise' });
+                    dispatchExercises({ type: 'add-exercise' });
                 }}
             >
                 Add Exercise
