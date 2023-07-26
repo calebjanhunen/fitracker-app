@@ -1,4 +1,4 @@
-import React, { useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import React, { useRef, useState, type Dispatch } from 'react';
 import { Dimensions, type Animated } from 'react-native';
 
 import { Swipeable } from 'react-native-gesture-handler';

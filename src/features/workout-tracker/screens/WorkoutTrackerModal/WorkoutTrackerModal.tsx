@@ -8,7 +8,7 @@ import uuid from 'react-native-uuid';
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { type theme } from '../../../../theme/theme';
-import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
+// import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import {
     CustomBottomSheetModal,
@@ -97,6 +97,7 @@ function finishWorkout(params: alertModalCTAFunctionParams): void {
     params.setWorkoutName('');
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
+    params.dispatchExercises({ type: 'end-workout' });
     params.sheetRef.current?.close();
 }
 
@@ -132,10 +133,10 @@ export default function WorkoutTrackerModal({
     setIsBottomSheetHidden,
     setWorkoutTrackerActive,
 }: Props): React.ReactElement {
+    // const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
     const [workoutName, setWorkoutName] = useState<string>('');
-    const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
 
@@ -184,6 +185,7 @@ export default function WorkoutTrackerModal({
                     ctaFunctionArgs={alertModalVars.ctaFunctionArgs}
                 />
             )}
+            {/* TODO: Implement add exercise modal when api to get exercises is implemented */}
             {/* <AddExerciseModal
                 modalVisible={addExerciseModalVisible}
                 setModalVisible={setAddExerciseModalVisible}
@@ -211,13 +213,13 @@ export default function WorkoutTrackerModal({
                         <HeaderButton
                             backgroundColor='success'
                             onPress={() => {
-                                // openAlertWindow('finish', setAlertModalVisible, setAlertModalVars, {
-                                //     setWorkoutName,
-                                //     setExercises,
-                                //     setAlertModalVisible,
-                                //     sheetRef,
-                                //     setWorkoutTrackerActive,
-                                // });
+                                openAlertWindow('finish', setAlertModalVisible, setAlertModalVars, {
+                                    setWorkoutName,
+                                    setAlertModalVisible,
+                                    setWorkoutTrackerActive,
+                                    sheetRef,
+                                    dispatchExercises,
+                                });
                             }}
                         >
                             <Text variant='button' color='white'>
@@ -249,7 +251,7 @@ export default function WorkoutTrackerModal({
                     ItemSeparatorComponent={() => <Spacer size='xl' />}
                     ListFooterComponent={
                         <WorkoutModalFooter
-                            setAddExerciseModalVisible={setAddExerciseModalVisible}
+                            // setAddExerciseModalVisible={setAddExerciseModalVisible}
                             dispatchExercises={dispatchExercises}
                         />
                     }
@@ -261,12 +263,12 @@ export default function WorkoutTrackerModal({
 }
 
 interface WOrkoutModalFooterProps {
-    setAddExerciseModalVisible: (val: boolean) => void;
+    // setAddExerciseModalVisible: (val: boolean) => void;
     dispatchExercises: (action: ExercisesActions) => void;
 }
 
 function WorkoutModalFooter({
-    setAddExerciseModalVisible,
+    // setAddExerciseModalVisible,
     dispatchExercises,
 }: WOrkoutModalFooterProps): React.ReactElement {
     return (
