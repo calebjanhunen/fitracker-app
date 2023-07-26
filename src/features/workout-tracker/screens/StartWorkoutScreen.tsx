@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useReducer, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { styled } from 'styled-components';
@@ -6,9 +6,11 @@ import { styled } from 'styled-components';
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Button, PageView, Spacer, Text } from '../../../components';
 import { type WorkoutTemplate } from '../../../interfaces/WorkoutTemplate';
+import { mockWorkoutTemplate } from '../../../mock-data/WorkoutTemplatesMock';
 import ResumeWorkoutButton from '../components/ResumeWorkoutButton';
 import WorkoutTemplateCard from '../components/WorkoutTemplateCard';
 import WorkoutTemplateModal from '../components/WorkoutTemplateModal/WorkoutTemplateModal';
+import { exercisesReducer } from '../reducers/ExercisesReducer';
 import WorkoutTrackerModal from './WorkoutTrackerModal/WorkoutTrackerModal';
 
 const HeaderView = styled(View)`
@@ -22,18 +24,17 @@ export default function StartWorkoutScreen(): React.ReactElement {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [modalData, setModalData] = useState<WorkoutTemplate>({
         name: '',
-        exercises: [{ name: '', sets: 0 }],
+        exercises: [],
     });
-
-    const workoutTrackerModalRef = useRef<BottomSheetModal>(null);
     const [workoutTrackerActive, setWorkoutTrackerActive] = useState<boolean>(false);
     const [isBottomSheetHidden, setIsBottomSheetHidden] = useState<boolean>(false);
+    const workoutTrackerModalRef = useRef<BottomSheetModal>(null);
+    const [exercises, dispatchExercises] = useReducer(exercisesReducer, []);
 
     function onResumePress(): void {
         setIsBottomSheetHidden(!isBottomSheetHidden);
         workoutTrackerModalRef.current?.snapToIndex(1);
     }
-
     return (
         <>
             <PageView>
@@ -42,6 +43,9 @@ export default function StartWorkoutScreen(): React.ReactElement {
                     setModalVisible={setModalVisible}
                     workoutTemplate={modalData}
                     isWorkoutTrackerActive={workoutTrackerActive}
+                    setIsWorkoutTrackerActive={setWorkoutTrackerActive}
+                    dispatchExercises={dispatchExercises}
+                    workoutTrackerModalRef={workoutTrackerModalRef}
                 />
                 <HeaderView>
                     <Text variant='headline'>TEMPLATES</Text>
@@ -98,68 +102,9 @@ export default function StartWorkoutScreen(): React.ReactElement {
                 isBottomSheetHidden={isBottomSheetHidden}
                 setIsBottomSheetHidden={setIsBottomSheetHidden}
                 setWorkoutTrackerActive={setWorkoutTrackerActive}
+                exercises={exercises}
+                dispatchExercises={dispatchExercises}
             />
         </>
     );
 }
-
-const mockWorkoutTemplate: WorkoutTemplate[] = [
-    {
-        name: 'Push 1',
-        exercises: [
-            {
-                name: 'Barbell Bench Press',
-                sets: 3,
-            },
-            {
-                name: 'Incline Bench Press (Machine)',
-                sets: 3,
-            },
-            {
-                name: 'Chest Fly (Machine)',
-                sets: 3,
-            },
-            {
-                name: 'Lateral Raise (Cable)',
-                sets: 3,
-            },
-            {
-                name: 'Skullcrusher (Dumbbell)',
-                sets: 3,
-            },
-            {
-                name: 'Triceps Extension (Cable)',
-                sets: 3,
-            },
-        ],
-    },
-    {
-        name: 'Push 2',
-        exercises: [
-            {
-                name: 'Barbell Bench Press',
-                sets: 3,
-            },
-            {
-                name: 'Incline Bench Press (Machine)',
-                sets: 3,
-            },
-            {
-                name: 'Chest Fly (Machine)',
-                sets: 3,
-            },
-            {
-                name: 'Lateral Raise (Cable)',
-                sets: 3,
-            },
-            {
-                name: 'Skullcrusher (Dumbbell)',
-                sets: 3,
-            },
-            {
-                name: 'Triceps Extension (Cable)',
-                sets: 3,
-            },
-        ],
-    },
-];

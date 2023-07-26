@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type Dispatch, type SetStateAction } from 'react';
 import {
     FlatList,
     Modal,
@@ -7,11 +7,13 @@ import {
     type ListRenderItem,
 } from 'react-native';
 
+import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { BottomMenu, Button, Spacer, Text } from '../../../../components';
 import {
     type WorkoutTemplate,
     type WorkoutTemplateExercise,
 } from '../../../../interfaces/WorkoutTemplate';
+import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import {
     Icon,
     ModalContainer,
@@ -22,16 +24,35 @@ import {
 
 interface Props {
     modalVisible: boolean;
-    setModalVisible: (val: boolean) => void;
+    setModalVisible: Dispatch<SetStateAction<boolean>>;
     workoutTemplate: WorkoutTemplate;
     isWorkoutTrackerActive: boolean;
+    setIsWorkoutTrackerActive: Dispatch<SetStateAction<boolean>>;
+    dispatchExercises: Dispatch<ExercisesActions>;
+    workoutTrackerModalRef: React.RefObject<BottomSheetModal>;
 }
 
 const renderExercise: ListRenderItem<WorkoutTemplateExercise> = ({ item }) => (
     <Text variant='body'>
-        {item.sets} x {item.name}
+        {item.numSets} x {item.name}
     </Text>
 );
+
+function openWorkoutTrackerModalWithTemplate(
+    workoutTemplate: WorkoutTemplate,
+    dispatchExercises: Dispatch<ExercisesActions>,
+    setIsWorkoutTrackerActive: Dispatch<SetStateAction<boolean>>,
+    setModalVisible: Dispatch<SetStateAction<boolean>>,
+    workoutTrackerModalRef: React.RefObject<BottomSheetModal>
+): void {
+    dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
+    workoutTemplate.exercises.forEach((exercise) => {
+        dispatchExercises({ type: ExercisesActionsTypes.ADD_EXERCISE, payload: exercise });
+    });
+    setIsWorkoutTrackerActive(true);
+    setModalVisible(false);
+    workoutTrackerModalRef.current?.present();
+}
 
 export default function WorkoutTemplateModal(props: Props): React.ReactElement {
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
@@ -77,7 +98,13 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                                     backgroundColor='primary'
                                     textColor='white'
                                     onPress={() => {
-                                        // TODO: Link to workout modal
+                                        openWorkoutTrackerModalWithTemplate(
+                                            props.workoutTemplate,
+                                            props.dispatchExercises,
+                                            props.setIsWorkoutTrackerActive,
+                                            props.setModalVisible,
+                                            props.workoutTrackerModalRef
+                                        );
                                     }}
                                 >
                                     START WORKOUT ({props.workoutTemplate.name})

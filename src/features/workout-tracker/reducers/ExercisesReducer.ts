@@ -10,7 +10,11 @@ export enum ExercisesActionsTypes {
 
 export interface ExercisesActions {
     type: string;
-    payload?: string | number[];
+    payload?: {
+        id?: string | number[];
+        name?: string;
+        numSets?: number;
+    };
 }
 
 export function exercisesReducer(exercises: Exercise[], action: ExercisesActions): Exercise[] {
@@ -20,13 +24,14 @@ export function exercisesReducer(exercises: Exercise[], action: ExercisesActions
             return [
                 ...exercises,
                 {
-                    name: `Exercise: ${exerciseId.toString().slice(0, 8)}`,
-                    id: exerciseId,
+                    name: action.payload?.name ?? `Exercise: ${exerciseId.toString().slice(0, 8)}`,
+                    id: action.payload?.id ?? exerciseId,
+                    numSets: action.payload?.numSets ?? 1,
                     sets: [],
                 },
             ];
         case ExercisesActionsTypes.DELETE_EXERCISE:
-            return exercises.filter((exercise) => exercise.id !== action.payload);
+            return exercises.filter((exercise) => exercise.id !== action.payload?.id);
         case ExercisesActionsTypes.DELETE_ALL_EXERCISES:
             return [];
         default:
