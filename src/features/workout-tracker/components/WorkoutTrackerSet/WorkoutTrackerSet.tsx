@@ -9,12 +9,7 @@ import {
     ExerciseSetsActionsTypes,
     type ExerciseSetsActions,
 } from '../../reducers/ExerciseSetsReducer';
-import {
-    DeleteSetContainer,
-    ExerciseSetContainer,
-    FlexView,
-    Row,
-} from './WorkoutTrackerExerciseStyles';
+import { DeleteSetContainer, ExerciseSetContainer, FlexView, Row } from './WorkoutTrackerSetStyles';
 
 interface Props {
     set: ExerciseSet;

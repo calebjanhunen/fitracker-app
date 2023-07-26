@@ -9,8 +9,8 @@ import {
     type ExerciseSetsActions,
 } from '../../reducers/ExerciseSetsReducer';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
+import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
-import WorkoutTrackerSet from './WorkoutTrackerSet';
 
 interface ExerciseProps {
     exercise: Exercise;
