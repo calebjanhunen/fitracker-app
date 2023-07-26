@@ -4,8 +4,9 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import uuid from 'react-native-uuid';
 
 import { Button, Spacer, Text } from '../../../../components';
-import { type Exercise, type ExerciseSet } from '../../../../interfaces/Exercise';
-import { type ExercisesActions } from '../../screens/WorkoutTrackerModal/WorkoutTrackerModal';
+import { type Exercise } from '../../../../interfaces/Exercise';
+import { ExerciseSetsActionsTypes, exerciseSetsReducer } from '../../reducers/ExerciseSetsReducer';
+import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import ExerciseSetComponent from './ExerciseSetComponent';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
 
@@ -14,38 +15,11 @@ interface ExerciseProps {
     dispatchExercises: Dispatch<ExercisesActions>;
 }
 
-export interface ExerciseSetsActions {
-    type: string;
-    payload?: {
-        id: string | number[];
-        weight?: number;
-        reps?: number;
-        rpe?: number;
-    };
-}
-
 function deleteExercise(
     dispatchExercises: Dispatch<ExercisesActions>,
     exerciseId: string | number[]
 ): void {
-    dispatchExercises({ type: 'delete-exercise', payload: exerciseId });
-}
-
-function exerciseSetsReducer(
-    exerciseSets: ExerciseSet[],
-    action: ExerciseSetsActions
-): ExerciseSet[] {
-    switch (action.type) {
-        case 'add-set':
-            return [
-                ...exerciseSets,
-                { id: uuid.v4(), reps: null, weight: null, rpe: null, previous: null },
-            ];
-        case 'delete-set':
-            return exerciseSets.filter((set) => set.id !== action.payload?.id);
-        default:
-            return exerciseSets;
-    }
+    dispatchExercises({ type: ExercisesActionsTypes.DELETE_EXERCISE, payload: exerciseId });
 }
 
 export default function WorkoutTrackerExercise({
@@ -94,7 +68,7 @@ export default function WorkoutTrackerExercise({
                 borderColor='primary'
                 thin
                 onPress={() => {
-                    dispatchSets({ type: 'add-set' });
+                    dispatchSets({ type: ExerciseSetsActionsTypes.ADD_SET });
                 }}
             >
                 Add Set

@@ -5,7 +5,10 @@ import { Swipeable } from 'react-native-gesture-handler';
 
 import { AnimatedText, Text as CustomText, TextInput } from '../../../../components';
 import { type ExerciseSet } from '../../../../interfaces/Exercise';
-import { type ExerciseSetsActions } from './WorkoutTrackerExercise';
+import {
+    ExerciseSetsActionsTypes,
+    type ExerciseSetsActions,
+} from '../../reducers/ExerciseSetsReducer';
 import {
     DeleteSetContainer,
     ExerciseSetContainer,
@@ -49,7 +52,7 @@ function deleteSet(
     dispatchSets: Dispatch<ExerciseSetsActions>,
     swipeableRef: React.RefObject<Swipeable>
 ): void {
-    dispatchSets({ type: 'delete-set', payload: { id: set.id } });
+    dispatchSets({ type: ExerciseSetsActionsTypes.DELETE_SET, payload: { id: set.id } });
     swipeableRef?.current?.close();
 }
 
