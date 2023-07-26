@@ -7,6 +7,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
 import { type theme } from '../../../../theme/theme';
 // import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
+import { type Exercise } from '../../../../interfaces/Exercise';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import {
     ExercisesActionsTypes,
@@ -28,6 +29,8 @@ interface Props {
     isBottomSheetHidden: boolean;
     setIsBottomSheetHidden: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
+    exercises: Exercise[];
+    dispatchExercises: Dispatch<ExercisesActions>;
 }
 
 interface AlertModalVars {
@@ -109,6 +112,8 @@ export default function WorkoutTrackerModal({
     isBottomSheetHidden,
     setIsBottomSheetHidden,
     setWorkoutTrackerActive,
+    exercises,
+    dispatchExercises,
 }: Props): React.ReactElement {
     // const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const snapPoints = ['1%', '92%'];
@@ -120,9 +125,6 @@ export default function WorkoutTrackerModal({
     const changeWorkoutName = (text: string): void => {
         setWorkoutName(text);
     };
-
-    // USEREDUCER EXPERIMENTATION
-    const [exercises, dispatchExercises] = useReducer(exercisesReducer, []);
 
     function onSheetChangePosition(index: number): void {
         index === 0 ? setIsBottomSheetHidden(true) : setIsBottomSheetHidden(false);
@@ -143,14 +145,7 @@ export default function WorkoutTrackerModal({
     }
 
     return (
-        <CustomBottomSheetModal
-            index={1}
-            ref={sheetRef}
-            snapPoints={snapPoints}
-            style={shadowStyle}
-            sheetHidden={isBottomSheetHidden}
-            onChange={onSheetChangePosition}
-        >
+        <>
             {alertModalVars && (
                 <Alert
                     modalVisible={alertModalVisible}
@@ -168,74 +163,93 @@ export default function WorkoutTrackerModal({
                 setModalVisible={setAddExerciseModalVisible}
                 setExercises={setExercises}
             /> */}
-            <WorkoutModalView>
-                <PaddedContainer>
-                    <Header>
-                        <HeaderButton
-                            backgroundColor='error'
-                            onPress={() => {
-                                openAlertWindow('cancel', setAlertModalVisible, setAlertModalVars, {
-                                    setWorkoutName,
-                                    setAlertModalVisible,
-                                    setWorkoutTrackerActive,
-                                    sheetRef,
-                                    dispatchExercises,
-                                });
-                            }}
-                        >
-                            <Text variant='button' color='white'>
-                                Cancel
-                            </Text>
-                        </HeaderButton>
-                        <HeaderButton
-                            backgroundColor='success'
-                            onPress={() => {
-                                openAlertWindow('finish', setAlertModalVisible, setAlertModalVars, {
-                                    setWorkoutName,
-                                    setAlertModalVisible,
-                                    setWorkoutTrackerActive,
-                                    sheetRef,
-                                    dispatchExercises,
-                                });
-                            }}
-                        >
-                            <Text variant='button' color='white'>
-                                Finish
-                            </Text>
-                        </HeaderButton>
-                    </Header>
-                    <Spacer size='xs' />
-                    <TextInput
-                        variant='smallTitle'
-                        placeholder='Enter Workout Name...'
-                        value={workoutName}
-                        onChangeText={changeWorkoutName}
+            <CustomBottomSheetModal
+                index={1}
+                ref={sheetRef}
+                snapPoints={snapPoints}
+                style={shadowStyle}
+                sheetHidden={isBottomSheetHidden}
+                onChange={onSheetChangePosition}
+            >
+                <WorkoutModalView>
+                    <PaddedContainer>
+                        <Header>
+                            <HeaderButton
+                                backgroundColor='error'
+                                onPress={() => {
+                                    openAlertWindow(
+                                        'cancel',
+                                        setAlertModalVisible,
+                                        setAlertModalVars,
+                                        {
+                                            setWorkoutName,
+                                            setAlertModalVisible,
+                                            setWorkoutTrackerActive,
+                                            sheetRef,
+                                            dispatchExercises,
+                                        }
+                                    );
+                                }}
+                            >
+                                <Text variant='button' color='white'>
+                                    Cancel
+                                </Text>
+                            </HeaderButton>
+                            <HeaderButton
+                                backgroundColor='success'
+                                onPress={() => {
+                                    openAlertWindow(
+                                        'finish',
+                                        setAlertModalVisible,
+                                        setAlertModalVars,
+                                        {
+                                            setWorkoutName,
+                                            setAlertModalVisible,
+                                            setWorkoutTrackerActive,
+                                            sheetRef,
+                                            dispatchExercises,
+                                        }
+                                    );
+                                }}
+                            >
+                                <Text variant='button' color='white'>
+                                    Finish
+                                </Text>
+                            </HeaderButton>
+                        </Header>
+                        <Spacer size='xs' />
+                        <TextInput
+                            variant='smallTitle'
+                            placeholder='Enter Workout Name...'
+                            value={workoutName}
+                            onChangeText={changeWorkoutName}
+                        />
+                        <Spacer size='xs' />
+                    </PaddedContainer>
+                    <Line style={{ opacity: opacityAnimation }} />
+                    <FlatList
+                        onScroll={onExerciseListScroll}
+                        style={{ flex: 1 }}
+                        data={exercises}
+                        extraData={exercises}
+                        renderItem={({ item, index }) => (
+                            <WorkoutTrackerExercise
+                                exercise={item}
+                                dispatchExercises={dispatchExercises}
+                            />
+                        )}
+                        ItemSeparatorComponent={() => <Spacer size='xl' />}
+                        ListFooterComponent={
+                            <WorkoutModalFooter
+                                // setAddExerciseModalVisible={setAddExerciseModalVisible}
+                                dispatchExercises={dispatchExercises}
+                            />
+                        }
+                        contentContainerStyle={{ padding: 16 }}
                     />
-                    <Spacer size='xs' />
-                </PaddedContainer>
-                <Line style={{ opacity: opacityAnimation }} />
-                <FlatList
-                    onScroll={onExerciseListScroll}
-                    style={{ flex: 1 }}
-                    data={exercises}
-                    extraData={exercises}
-                    renderItem={({ item, index }) => (
-                        <WorkoutTrackerExercise
-                            exercise={item}
-                            dispatchExercises={dispatchExercises}
-                        />
-                    )}
-                    ItemSeparatorComponent={() => <Spacer size='xl' />}
-                    ListFooterComponent={
-                        <WorkoutModalFooter
-                            // setAddExerciseModalVisible={setAddExerciseModalVisible}
-                            dispatchExercises={dispatchExercises}
-                        />
-                    }
-                    contentContainerStyle={{ padding: 16 }}
-                />
-            </WorkoutModalView>
-        </CustomBottomSheetModal>
+                </WorkoutModalView>
+            </CustomBottomSheetModal>
+        </>
     );
 }
 

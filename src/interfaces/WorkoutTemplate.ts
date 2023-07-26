@@ -5,5 +5,6 @@ export interface WorkoutTemplate {
 
 export interface WorkoutTemplateExercise {
     name: string;
-    sets: number;
+    id: string | number[];
+    numSets: number;
 }

@@ -13,5 +13,6 @@ export interface ExerciseSet {
 export interface Exercise {
     id: string | number[];
     name: string;
+    numSets: number;
     sets: ExerciseSet[];
 }

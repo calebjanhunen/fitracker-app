@@ -1,11 +1,13 @@
-import React, { useReducer, type Dispatch } from 'react';
+import React, { useEffect, useReducer, type Dispatch } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
-
-import uuid from 'react-native-uuid';
 
 import { Button, Spacer, Text } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
-import { ExerciseSetsActionsTypes, exerciseSetsReducer } from '../../reducers/ExerciseSetsReducer';
+import {
+    ExerciseSetsActionsTypes,
+    exerciseSetsReducer,
+    type ExerciseSetsActions,
+} from '../../reducers/ExerciseSetsReducer';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import ExerciseSetComponent from './ExerciseSetComponent';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
@@ -19,22 +21,24 @@ function deleteExercise(
     dispatchExercises: Dispatch<ExercisesActions>,
     exerciseId: string | number[]
 ): void {
-    dispatchExercises({ type: ExercisesActionsTypes.DELETE_EXERCISE, payload: exerciseId });
+    dispatchExercises({ type: ExercisesActionsTypes.DELETE_EXERCISE, payload: { id: exerciseId } });
+}
+
+function initializeSets(exercise: Exercise, dispatchSets: Dispatch<ExerciseSetsActions>): void {
+    for (let i = 0; i < exercise.numSets; i++) {
+        dispatchSets({ type: ExerciseSetsActionsTypes.ADD_SET });
+    }
 }
 
 export default function WorkoutTrackerExercise({
     exercise,
     dispatchExercises,
 }: ExerciseProps): React.ReactElement {
-    const [exerciseSets, dispatchSets] = useReducer(exerciseSetsReducer, [
-        {
-            id: uuid.v4(),
-            reps: null,
-            weight: null,
-            rpe: null,
-            previous: null,
-        },
-    ]);
+    const [exerciseSets, dispatchSets] = useReducer(exerciseSetsReducer, []);
+    useEffect(() => {
+        console.log('exercise rendered: ', exercise.id);
+        initializeSets(exercise, dispatchSets);
+    }, []);
 
     return (
         <ExerciseContainer>
