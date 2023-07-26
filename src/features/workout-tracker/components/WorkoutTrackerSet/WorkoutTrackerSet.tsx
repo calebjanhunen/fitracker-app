@@ -1,4 +1,4 @@
-import React, { useRef, useState, type Dispatch } from 'react';
+import React, { memo, useRef, useState, type Dispatch } from 'react';
 import { Dimensions, type Animated } from 'react-native';
 
 import { Swipeable } from 'react-native-gesture-handler';
@@ -9,12 +9,7 @@ import {
     ExerciseSetsActionsTypes,
     type ExerciseSetsActions,
 } from '../../reducers/ExerciseSetsReducer';
-import {
-    DeleteSetContainer,
-    ExerciseSetContainer,
-    FlexView,
-    Row,
-} from './WorkoutTrackerExerciseStyles';
+import { DeleteSetContainer, ExerciseSetContainer, FlexView, Row } from './WorkoutTrackerSetStyles';
 
 interface Props {
     set: ExerciseSet;
@@ -56,7 +51,7 @@ function deleteSet(
     swipeableRef?.current?.close();
 }
 
-export default function ExerciseSetComponent({
+const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
     set,
     setIndex,
     dispatchSets,
@@ -65,6 +60,8 @@ export default function ExerciseSetComponent({
     const swipeableRef = useRef<Swipeable>(null);
     const [weight, setWeight] = useState<number>();
     const [reps, setReps] = useState<number>();
+
+    console.log('set rendered: ', set.id);
 
     return (
         <Swipeable
@@ -116,4 +113,6 @@ export default function ExerciseSetComponent({
             </ExerciseSetContainer>
         </Swipeable>
     );
-}
+});
+
+export default WorkoutTrackerSet;

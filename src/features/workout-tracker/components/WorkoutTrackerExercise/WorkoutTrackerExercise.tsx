@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, type Dispatch } from 'react';
+import React, { memo, useEffect, useReducer, type Dispatch } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
 import { Button, Spacer, Text } from '../../../../components';
@@ -9,7 +9,7 @@ import {
     type ExerciseSetsActions,
 } from '../../reducers/ExerciseSetsReducer';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
-import ExerciseSetComponent from './ExerciseSetComponent';
+import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
 
 interface ExerciseProps {
@@ -30,13 +30,12 @@ function initializeSets(exercise: Exercise, dispatchSets: Dispatch<ExerciseSetsA
     }
 }
 
-export default function WorkoutTrackerExercise({
+const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
     exercise,
     dispatchExercises,
 }: ExerciseProps): React.ReactElement {
     const [exerciseSets, dispatchSets] = useReducer(exerciseSetsReducer, []);
     useEffect(() => {
-        console.log('exercise rendered: ', exercise.id);
         initializeSets(exercise, dispatchSets);
     }, []);
 
@@ -60,7 +59,7 @@ export default function WorkoutTrackerExercise({
                 data={exerciseSets}
                 ListHeaderComponent={ExerciseSetHeader}
                 renderItem={({ item, index }) => (
-                    <ExerciseSetComponent set={item} setIndex={index} dispatchSets={dispatchSets} />
+                    <WorkoutTrackerSet set={item} setIndex={index} dispatchSets={dispatchSets} />
                 )}
                 ItemSeparatorComponent={() => <Spacer size='xxs' />}
             />
@@ -79,7 +78,9 @@ export default function WorkoutTrackerExercise({
             </Button>
         </ExerciseContainer>
     );
-}
+});
+
+export default WorkoutTrackerExercise;
 
 function ExerciseSetHeader(): React.ReactElement {
     return (
