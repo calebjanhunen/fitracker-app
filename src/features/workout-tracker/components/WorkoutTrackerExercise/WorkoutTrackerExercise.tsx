@@ -1,60 +1,69 @@
-import React, { useState, type Dispatch, type SetStateAction } from 'react';
-
+import React, { useReducer, type Dispatch } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
-import { BottomMenu, Button, Spacer, Text } from '../../../../components';
-import { type Exercise } from '../../../../interfaces/Exercise';
+
+import uuid from 'react-native-uuid';
+
+import { Button, Spacer, Text } from '../../../../components';
+import { type Exercise, type ExerciseSet } from '../../../../interfaces/Exercise';
+import { type ExercisesActions } from '../../screens/WorkoutTrackerModal/WorkoutTrackerModal';
 import ExerciseSetComponent from './ExerciseSetComponent';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
 
 interface ExerciseProps {
     exercise: Exercise;
-    exerciseIndex: number;
-    allExercises: Exercise[];
-    setExercises: Dispatch<SetStateAction<Exercise[]>>;
+    dispatchExercises: Dispatch<ExercisesActions>;
 }
 
-function addExerciseSet(
-    exercise: Exercise,
-    exerciseIndex: number,
-    setExercises: Dispatch<SetStateAction<Exercise[]>>
+export interface ExerciseSetsActions {
+    type: string;
+    payload?: {
+        id: string | number[];
+        weight?: number;
+        reps?: number;
+        rpe?: number;
+    };
+}
+
+function deleteExercise(
+    dispatchExercises: Dispatch<ExercisesActions>,
+    exerciseId: string | number[]
 ): void {
-    setExercises((prevExercises) => {
-        // console.log(prevExercises[exerciseIndex]);
-        prevExercises[exerciseIndex].sets.push({
-            previous: null,
-            reps: null,
-            weight: null,
-            rpe: null,
-        });
-        // console.log(prevExercises[exerciseIndex]);
-        return [...prevExercises];
-    });
+    dispatchExercises({ type: 'delete-exercise', payload: exerciseId });
+}
+
+function exerciseSetsReducer(
+    exerciseSets: ExerciseSet[],
+    action: ExerciseSetsActions
+): ExerciseSet[] {
+    switch (action.type) {
+        case 'add-set':
+            return [
+                ...exerciseSets,
+                { id: uuid.v4(), reps: null, weight: null, rpe: null, previous: null },
+            ];
+        case 'delete-set':
+            return exerciseSets.filter((set) => set.id !== action.payload?.id);
+        default:
+            return exerciseSets;
+    }
 }
 
 export default function WorkoutTrackerExercise({
     exercise,
-    exerciseIndex,
-    allExercises,
-    setExercises,
+    dispatchExercises,
 }: ExerciseProps): React.ReactElement {
-    const [moreOptionsMenuVisible, setMoreOptionsMenuVisible] = useState<boolean>(false);
-
-    function deleteExercise(): void {
-        const newExercises = allExercises.filter((e) => e.id !== exercise.id);
-
-        setExercises(newExercises);
-    }
+    const [exerciseSets, dispatchSets] = useReducer(exerciseSetsReducer, [
+        {
+            id: uuid.v4(),
+            reps: null,
+            weight: null,
+            rpe: null,
+            previous: null,
+        },
+    ]);
 
     return (
         <ExerciseContainer>
-            {/* Bottom More options Menu */}
-            <BottomMenu
-                moreOptionsVisible={moreOptionsMenuVisible}
-                setMoreOptionsVisible={setMoreOptionsMenuVisible}
-                menuItemProps={[
-                    { icon: 'trash-outline', text: 'Delete Exercise', onPress: deleteExercise },
-                ]}
-            />
             {/* Exercise */}
             <Row>
                 <Text variant='headline' color='onWhite'>
@@ -62,24 +71,18 @@ export default function WorkoutTrackerExercise({
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        setMoreOptionsMenuVisible(true);
+                        deleteExercise(dispatchExercises, exercise.id);
                     }}
                 >
-                    <Icon name='ellipsis-horizontal' size={34} />
+                    <Icon name='trash-outline' size={24} />
                 </TouchableOpacity>
             </Row>
             <Spacer size='xs' />
             <FlatList
-                data={exercise.sets}
-                extraData={allExercises}
+                data={exerciseSets}
                 ListHeaderComponent={ExerciseSetHeader}
                 renderItem={({ item, index }) => (
-                    <ExerciseSetComponent
-                        set={item}
-                        setIndex={index}
-                        setExercises={setExercises}
-                        exercise={exercise}
-                    />
+                    <ExerciseSetComponent set={item} setIndex={index} dispatchSets={dispatchSets} />
                 )}
                 ItemSeparatorComponent={() => <Spacer size='xxs' />}
             />
@@ -91,7 +94,7 @@ export default function WorkoutTrackerExercise({
                 borderColor='primary'
                 thin
                 onPress={() => {
-                    addExerciseSet(exercise, exerciseIndex, setExercises);
+                    dispatchSets({ type: 'add-set' });
                 }}
             >
                 Add Set
