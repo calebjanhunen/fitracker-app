@@ -3,13 +3,16 @@ import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } fro
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
-import uuid from 'react-native-uuid';
 
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
-import { type Exercise } from '../../../../interfaces/Exercise';
 import { type theme } from '../../../../theme/theme';
 // import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
+import {
+    ExercisesActionsTypes,
+    exercisesReducer,
+    type ExercisesActions,
+} from '../../reducers/ExercisesReducer';
 import {
     CustomBottomSheetModal,
     Header,
@@ -86,7 +89,7 @@ function cancelWorkout(params: alertModalCTAFunctionParams): void {
     params.setWorkoutName('');
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
-    params.dispatchExercises({ type: 'end-workout' });
+    params.dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
     params.sheetRef.current?.close();
 }
 
@@ -97,34 +100,8 @@ function finishWorkout(params: alertModalCTAFunctionParams): void {
     params.setWorkoutName('');
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
-    params.dispatchExercises({ type: 'end-workout' });
+    params.dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
     params.sheetRef.current?.close();
-}
-
-export interface ExercisesActions {
-    type: string;
-    payload?: string | number[];
-}
-
-function exercisesReducer(exercises: Exercise[], action: ExercisesActions): Exercise[] {
-    const exerciseId = uuid.v4();
-    switch (action.type) {
-        case 'add-exercise':
-            return [
-                ...exercises,
-                {
-                    name: `Exercise: ${exerciseId.toString().slice(0, 8)}`,
-                    id: exerciseId,
-                    sets: [],
-                },
-            ];
-        case 'delete-exercise':
-            return exercises.filter((exercise) => exercise.id !== action.payload);
-        case 'end-workout':
-            return [];
-        default:
-            return exercises;
-    }
 }
 
 export default function WorkoutTrackerModal({
@@ -280,7 +257,7 @@ function WorkoutModalFooter({
                 textColor='white'
                 onPress={() => {
                     // setAddExerciseModalVisible(true);
-                    dispatchExercises({ type: 'add-exercise' });
+                    dispatchExercises({ type: ExercisesActionsTypes.ADD_EXERCISE });
                 }}
             >
                 Add Exercise
