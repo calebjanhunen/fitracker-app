@@ -16,7 +16,7 @@ export const Row = styled(View)`
 `;
 
 export const Icon = styled(Ionicons)`
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.error};
 `;
 
 export const FlexView = styled(View)<{ flex: number }>`
