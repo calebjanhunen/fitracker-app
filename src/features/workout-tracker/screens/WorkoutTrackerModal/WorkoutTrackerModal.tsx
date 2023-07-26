@@ -8,7 +8,7 @@ import uuid from 'react-native-uuid';
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { type theme } from '../../../../theme/theme';
-import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
+// import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import {
     CustomBottomSheetModal,
@@ -133,10 +133,10 @@ export default function WorkoutTrackerModal({
     setIsBottomSheetHidden,
     setWorkoutTrackerActive,
 }: Props): React.ReactElement {
+    // const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
     const [workoutName, setWorkoutName] = useState<string>('');
-    const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
 
@@ -251,7 +251,7 @@ export default function WorkoutTrackerModal({
                     ItemSeparatorComponent={() => <Spacer size='xl' />}
                     ListFooterComponent={
                         <WorkoutModalFooter
-                            setAddExerciseModalVisible={setAddExerciseModalVisible}
+                            // setAddExerciseModalVisible={setAddExerciseModalVisible}
                             dispatchExercises={dispatchExercises}
                         />
                     }
@@ -263,12 +263,12 @@ export default function WorkoutTrackerModal({
 }
 
 interface WOrkoutModalFooterProps {
-    setAddExerciseModalVisible: (val: boolean) => void;
+    // setAddExerciseModalVisible: (val: boolean) => void;
     dispatchExercises: (action: ExercisesActions) => void;
 }
 
 function WorkoutModalFooter({
-    setAddExerciseModalVisible,
+    // setAddExerciseModalVisible,
     dispatchExercises,
 }: WOrkoutModalFooterProps): React.ReactElement {
     return (
