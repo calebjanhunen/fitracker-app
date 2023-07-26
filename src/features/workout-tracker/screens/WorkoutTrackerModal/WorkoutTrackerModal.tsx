@@ -97,6 +97,7 @@ function finishWorkout(params: alertModalCTAFunctionParams): void {
     params.setWorkoutName('');
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
+    params.dispatchExercises({ type: 'end-workout' });
     params.sheetRef.current?.close();
 }
 
@@ -184,6 +185,7 @@ export default function WorkoutTrackerModal({
                     ctaFunctionArgs={alertModalVars.ctaFunctionArgs}
                 />
             )}
+            {/* TODO: Implement add exercise modal when api to get exercises is implemented */}
             {/* <AddExerciseModal
                 modalVisible={addExerciseModalVisible}
                 setModalVisible={setAddExerciseModalVisible}
@@ -211,13 +213,13 @@ export default function WorkoutTrackerModal({
                         <HeaderButton
                             backgroundColor='success'
                             onPress={() => {
-                                // openAlertWindow('finish', setAlertModalVisible, setAlertModalVars, {
-                                //     setWorkoutName,
-                                //     setExercises,
-                                //     setAlertModalVisible,
-                                //     sheetRef,
-                                //     setWorkoutTrackerActive,
-                                // });
+                                openAlertWindow('finish', setAlertModalVisible, setAlertModalVars, {
+                                    setWorkoutName,
+                                    setAlertModalVisible,
+                                    setWorkoutTrackerActive,
+                                    sheetRef,
+                                    dispatchExercises,
+                                });
                             }}
                         >
                             <Text variant='button' color='white'>
