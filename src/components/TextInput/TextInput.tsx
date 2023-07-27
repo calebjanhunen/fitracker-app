@@ -50,6 +50,7 @@ export default function TextInput(props: Props): React.ReactElement {
             value={props.value}
             paddingTopAndBot={props.paddingTopAndBot}
             secureTextEntry={props.secureTextEntry}
+            autoComplete={props.autoComplete}
             autoCapitalize={props.autoCapitalize}
             autoCorrect={props.autoCorrect}
             keyboardType={props.keyboardType}
