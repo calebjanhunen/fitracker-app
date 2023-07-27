@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState, type Dispatch } from 'react';
+import React, { useRef, useState, type Dispatch } from 'react';
 import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -9,11 +9,7 @@ import { type theme } from '../../../../theme/theme';
 // import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
-import {
-    ExercisesActionsTypes,
-    exercisesReducer,
-    type ExercisesActions,
-} from '../../reducers/ExercisesReducer';
+import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import {
     CustomBottomSheetModal,
     Header,
