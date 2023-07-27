@@ -14,6 +14,7 @@ import {
 } from '@expo-google-fonts/inter';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BaseNavigation from './src/navigation';
+import { AuthProvider } from './src/services/auth/authContext';
 import { theme } from './src/theme/theme';
 
 export default function App(): React.ReactElement | null {
@@ -29,16 +30,18 @@ export default function App(): React.ReactElement | null {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <PortalProvider>
-                <ThemeProvider theme={theme}>
-                    <BottomSheetModalProvider>
-                        <View style={{ flex: 1 }}>
-                            <BaseNavigation />
-                            <StatusBar style='auto' />
-                        </View>
-                    </BottomSheetModalProvider>
-                </ThemeProvider>
-            </PortalProvider>
+            <AuthProvider>
+                <PortalProvider>
+                    <ThemeProvider theme={theme}>
+                        <BottomSheetModalProvider>
+                            <View style={{ flex: 1 }}>
+                                <BaseNavigation />
+                                <StatusBar style='auto' />
+                            </View>
+                        </BottomSheetModalProvider>
+                    </ThemeProvider>
+                </PortalProvider>
+            </AuthProvider>
         </GestureHandlerRootView>
     );
 }

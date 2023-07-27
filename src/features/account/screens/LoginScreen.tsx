@@ -1,12 +1,13 @@
-import React, { useState, type Dispatch, type SetStateAction } from 'react';
+import React, { useContext, useState, type Dispatch, type SetStateAction } from 'react';
 
 import { styled } from 'styled-components';
 
 import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button, PageView, Spacer, Text, TextInput } from '../../../components';
+import { AuthContext } from '../../../services/auth/authContext';
 
-const LoginForm = styled(View)<{ top: number }>`
+const LoginForm = styled(View)`
     flex: 1;
     padding-top: ${(props) => props.theme.spacing.xxxxl};
 `;
@@ -25,7 +26,6 @@ function login(
     setPassword: Dispatch<SetStateAction<string>>
 ): void {
     // TODO: log user in and navigate to home page
-    console.log(username, password);
     setUsername('');
     setPassword('');
 }
@@ -33,6 +33,8 @@ function login(
 export default function LoginScreen(): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
+    const { signIn } = useContext(AuthContext);
 
     return (
         <PageView>
@@ -67,6 +69,7 @@ export default function LoginScreen(): React.ReactElement {
                     backgroundColor='primary'
                     textColor='white'
                     onPress={() => {
+                        signIn(username, password);
                         login(username, setUsername, password, setPassword);
                     }}
                 >
