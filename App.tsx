@@ -13,7 +13,7 @@ import {
     useFonts,
 } from '@expo-google-fonts/inter';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import AppNavigation from './src/navigation/AppNavigation';
+import BaseNavigation from './src/navigation';
 import { theme } from './src/theme/theme';
 
 export default function App(): React.ReactElement | null {
@@ -33,7 +33,7 @@ export default function App(): React.ReactElement | null {
                 <ThemeProvider theme={theme}>
                     <BottomSheetModalProvider>
                         <View style={{ flex: 1 }}>
-                            <AppNavigation />
+                            <BaseNavigation />
                             <StatusBar style='auto' />
                         </View>
                     </BottomSheetModalProvider>

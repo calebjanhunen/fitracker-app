@@ -8,6 +8,7 @@ export const theme = {
         bold: 'Inter_700Bold',
     },
     fontSize: {
+        appTitle: 61,
         largeTitle: 34,
         title1: 28,
         title2: 22,
@@ -38,6 +39,7 @@ export const theme = {
         success: '#4BB543',
     },
     spacing: {
+        xxxxl: '180px',
         xxxl: '65px',
         xxl: '40px',
         xl: '25px',

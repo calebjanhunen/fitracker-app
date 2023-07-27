@@ -11,6 +11,11 @@ interface Props {
     textAlign?: 'center';
 }
 
+const appTitle = (theme: ThemeType): string => `
+  font-size: ${theme.fontSize.appTitle}px;
+  font-family: ${theme.fonts.regular};
+`;
+
 const title = (theme: ThemeType): string => `
   font-size: ${theme.fontSize.title1}px;
   font-family: ${theme.fonts.regular};
@@ -43,6 +48,7 @@ const button = (theme: ThemeType): string => `
 `;
 
 const variants = {
+    appTitle,
     title,
     smallTitle,
     headline,
