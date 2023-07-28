@@ -51,7 +51,9 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
-                        onPress={() => {}}
+                        onPress={() => {
+                            navigation.push('FitnessGoals');
+                        }}
                     >
                         Next
                     </Button>
