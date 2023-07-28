@@ -47,7 +47,7 @@ export default function Chip(props: Props): React.ReactElement {
             style={{
                 backgroundColor: chipSelectionAnim.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [theme.colors.white, theme.colors.secondary],
+                    outputRange: [theme.colors.white, theme.colors.primary],
                 }),
                 borderColor: chipSelectionAnim.interpolate({
                     inputRange: [0, 1],
