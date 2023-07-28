@@ -12,10 +12,6 @@ interface Props {
 }
 
 const ChipComponent = styled(TouchableOpacity)`
-    /* background-color: ${({ isSelected, theme }) =>
-        isSelected ? theme.colors.secondary : theme.colors.white}; */
-    /* border: 1px solid
-        ${({ isSelected, theme }) => (isSelected ? theme.colors.white : theme.colors.black)}; */
     border: 1px solid ${(props) => props.theme.colors.black};
     padding: ${(props) => props.theme.spacing.xxxs} ${(props) => props.theme.spacing.xxs};
     margin-bottom: 15px;
@@ -37,12 +33,12 @@ export default function Chip(props: Props): React.ReactElement {
     props.isSelected
         ? Animated.timing(chipSelectionAnim, {
               toValue: 1,
-              duration: 90,
+              duration: 200,
               useNativeDriver: false,
           }).start()
         : Animated.timing(chipSelectionAnim, {
               toValue: 0,
-              duration: 90,
+              duration: 200,
               useNativeDriver: false,
           }).start();
 
