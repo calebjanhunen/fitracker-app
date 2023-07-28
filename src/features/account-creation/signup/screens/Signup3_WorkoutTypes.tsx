@@ -1,19 +1,23 @@
-import { type StackScreenProps } from '@react-navigation/stack';
 import React, { useState, type Dispatch, type SetStateAction } from 'react';
+
+import { type StackScreenProps } from '@react-navigation/stack';
+
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { SignupBody, SignupFooter } from '../components';
 
-const fitnessGoals = [
-    { name: 'Weight Loss', id: 1 },
-    { name: 'Endurance/Stamina', id: 2 },
-    { name: 'Injury Rehab', id: 3 },
-    { name: 'Muscle Gain', id: 4 },
-    { name: 'Core Strength and Stability', id: 5 },
-    { name: 'Stress Relief', id: 6 },
-    { name: 'Flexibility/Mobility', id: 7 },
-    { name: 'Cardiovascular Improvements', id: 8 },
-    { name: 'Mental Health', id: 9 },
+type Props = StackScreenProps<RootStackParamList, 'WorkoutTypes'>;
+
+const workoutTypes = [
+    { name: 'Strength Training', id: 1 },
+    { name: 'Cardio', id: 2 },
+    { name: 'Weight Lifting', id: 3 },
+    { name: 'Endurance/Stamina', id: 4 },
+    { name: 'Yoga', id: 5 },
+    { name: 'Pilates', id: 6 },
+    { name: 'Functional Training', id: 7 },
+    { name: 'Circuit Training', id: 8 },
+    { name: 'Bodyweight Exercises', id: 9 },
 ];
 
 function toggleSelectedChip(
@@ -30,30 +34,27 @@ function toggleSelectedChip(
     }
 }
 
-type Props = StackScreenProps<RootStackParamList, 'FitnessGoals'>;
-
-export default function FitnessGoals({ navigation }: Props): React.ReactElement {
+export default function WorkoutTypes({ navigation }: Props): React.ReactElement {
     const [selectedChips, setSelectedChips] = useState<number[]>([]);
 
     return (
         <PageView>
             <Text variant='title' textAlign='center'>
-                Select Fitness Goals
+                Select Workout Types
             </Text>
             <Text variant='smallTitle' color='light' textAlign='center'>
-                Choose at least 3
+                Choose at least 2
             </Text>
             <SignupBody>
-                <Spacer size='xl' />
                 <ChipContainer>
-                    {fitnessGoals.map((goal) => (
+                    {workoutTypes.map((workoutType) => (
                         <Chip
-                            text={goal.name}
-                            key={goal.id}
+                            text={workoutType.name}
+                            key={workoutType.id}
                             onPress={() => {
-                                toggleSelectedChip(goal.id, selectedChips, setSelectedChips);
+                                toggleSelectedChip(workoutType.id, selectedChips, setSelectedChips);
                             }}
-                            isSelected={selectedChips.includes(goal.id)}
+                            isSelected={selectedChips.includes(workoutType.id)}
                         />
                     ))}
                 </ChipContainer>
@@ -62,9 +63,7 @@ export default function FitnessGoals({ navigation }: Props): React.ReactElement 
                     variant='full'
                     backgroundColor='primary'
                     textColor='white'
-                    onPress={() => {
-                        navigation.push('WorkoutTypes');
-                    }}
+                    onPress={() => {}}
                 >
                     Next
                 </Button>
