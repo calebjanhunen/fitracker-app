@@ -1,7 +1,8 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useRef } from 'react';
+import { Animated, TouchableOpacity, View } from 'react-native';
 
 import { styled } from 'styled-components';
+import { theme } from '../../theme/theme';
 import Text from '../Text/Text';
 
 interface Props {
@@ -10,12 +11,12 @@ interface Props {
     isSelected: boolean;
 }
 
-const ChipComponent = styled(TouchableOpacity)<{ isSelected: Props['isSelected'] }>`
-    background-color: ${({ isSelected, theme }) =>
-        isSelected ? theme.colors.primaryTranslucent : theme.colors.white};
-    /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25); */
-    border: 1px solid
-        ${({ isSelected, theme }) => (isSelected ? theme.colors.white : theme.colors.black)};
+const ChipComponent = styled(TouchableOpacity)`
+    /* background-color: ${({ isSelected, theme }) =>
+        isSelected ? theme.colors.secondary : theme.colors.white}; */
+    /* border: 1px solid
+        ${({ isSelected, theme }) => (isSelected ? theme.colors.white : theme.colors.black)}; */
+    border: 1px solid ${(props) => props.theme.colors.black};
     padding: ${(props) => props.theme.spacing.xxxs} ${(props) => props.theme.spacing.xxs};
     margin-bottom: 15px;
     border-radius: 100px;
@@ -28,10 +29,41 @@ export const ChipContainer = styled(View)`
     justify-content: center;
 `;
 
+const AnimatedChip = Animated.createAnimatedComponent(ChipComponent);
+
 export default function Chip(props: Props): React.ReactElement {
+    const chipSelectionAnim = useRef(new Animated.Value(0)).current;
+
+    props.isSelected
+        ? Animated.timing(chipSelectionAnim, {
+              toValue: 1,
+              duration: 90,
+              useNativeDriver: false,
+          }).start()
+        : Animated.timing(chipSelectionAnim, {
+              toValue: 0,
+              duration: 90,
+              useNativeDriver: false,
+          }).start();
+
     return (
-        <ChipComponent activeOpacity={1} onPress={props.onPress} isSelected={props.isSelected}>
-            <Text variant='body'>{props.text}</Text>
-        </ChipComponent>
+        <AnimatedChip
+            style={{
+                backgroundColor: chipSelectionAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [theme.colors.white, theme.colors.secondary],
+                }),
+                borderColor: chipSelectionAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [theme.colors.black, theme.colors.white],
+                }),
+            }}
+            activeOpacity={1}
+            onPress={props.onPress}
+        >
+            <Text variant='body' color={props.isSelected ? 'white' : 'primary'}>
+                {props.text}
+            </Text>
+        </AnimatedChip>
     );
 }

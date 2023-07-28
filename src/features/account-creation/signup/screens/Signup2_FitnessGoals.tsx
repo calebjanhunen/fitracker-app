@@ -1,5 +1,8 @@
+import { type StackScreenProps } from '@react-navigation/stack';
 import React, { useState, type Dispatch, type SetStateAction } from 'react';
-import { Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
+import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
+import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { SignupBody, SignupFooter } from '../components';
 
 const fitnessGoals = [
     { name: 'Weight Loss', id: 1 },
@@ -27,7 +30,9 @@ function toggleSelectedChip(
     }
 }
 
-export default function FitnessGoals(): React.ReactElement {
+type Props = StackScreenProps<RootStackParamList, 'FitnessGoals'>;
+
+export default function FitnessGoals({ navigation }: Props): React.ReactElement {
     const [selectedChips, setSelectedChips] = useState<number[]>([]);
 
     return (
@@ -38,19 +43,31 @@ export default function FitnessGoals(): React.ReactElement {
             <Text variant='smallTitle' color='light' textAlign='center'>
                 Choose at least 3
             </Text>
-            <Spacer size='xl' />
-            <ChipContainer>
-                {fitnessGoals.map((goal) => (
-                    <Chip
-                        text={goal.name}
-                        key={goal.id}
-                        onPress={() => {
-                            toggleSelectedChip(goal.id, selectedChips, setSelectedChips);
-                        }}
-                        isSelected={selectedChips.includes(goal.id)}
-                    />
-                ))}
-            </ChipContainer>
+            <SignupBody>
+                <Spacer size='xl' />
+                <ChipContainer>
+                    {fitnessGoals.map((goal) => (
+                        <Chip
+                            text={goal.name}
+                            key={goal.id}
+                            onPress={() => {
+                                toggleSelectedChip(goal.id, selectedChips, setSelectedChips);
+                            }}
+                            isSelected={selectedChips.includes(goal.id)}
+                        />
+                    ))}
+                </ChipContainer>
+                <Spacer size='xl' />
+                <Button
+                    variant='full'
+                    backgroundColor='primary'
+                    textColor='white'
+                    onPress={() => {}}
+                >
+                    Next
+                </Button>
+            </SignupBody>
+            <SignupFooter navigation={navigation} />
         </PageView>
     );
 }
