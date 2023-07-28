@@ -63,7 +63,9 @@ export default function WorkoutTypes({ navigation }: Props): React.ReactElement 
                     variant='full'
                     backgroundColor='primary'
                     textColor='white'
-                    onPress={() => {}}
+                    onPress={() => {
+                        navigation.push('SkillLevel');
+                    }}
                 >
                     Next
                 </Button>
