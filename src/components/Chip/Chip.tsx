@@ -19,6 +19,7 @@ const ChipComponent = styled(TouchableOpacity)`
 `;
 
 export const ChipContainer = styled(View)`
+    flex: 1;
     flex-direction: row;
     flex-wrap: wrap;
     gap: ${(props) => props.theme.spacing.xs};
