@@ -38,6 +38,7 @@ export default function SkillLevel({ navigation }: Props): React.ReactElement {
                     variant='full'
                     backgroundColor='primary'
                     textColor='white'
+                    disabled={selectedLevel === -1}
                     onPress={() => {
                         // navigation.push();
                     }}
