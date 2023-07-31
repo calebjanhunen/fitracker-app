@@ -19,20 +19,12 @@ export default function SkillLevel({ navigation }: Props): React.ReactElement {
                 Select Skill Level
             </Text>
             <SignupBody>
-                <FlatList
+                <Accordion
                     data={data}
-                    renderItem={({ item, index }) => (
-                        <Accordion
-                            title={item.title}
-                            text={item.text}
-                            id={index}
-                            selectedSection={selectedLevel}
-                            setSelectedSection={setSelectedLevel}
-                            expandedSection={expandedLevel}
-                            setExpandedSection={setExpendedLevel}
-                        />
-                    )}
-                    scrollEnabled={false}
+                    selectedSection={selectedLevel}
+                    setSelectedSection={setSelectedLevel}
+                    expandedSection={expandedLevel}
+                    setExpandedSection={setExpendedLevel}
                 />
                 <Button
                     variant='full'
@@ -56,17 +48,21 @@ const data = [
     {
         title: 'New',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendislaudantium tempore molestias eaque excepturi quis deserunt illo iusto voluptatibus doloribus facere enim provident. Perferendis tempora, ratione vero obcaecati repellendus eos.',
+        id: 0,
     },
     {
         title: 'Beginner',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendislaudantium tempore molestias eaque excepturi quis deserunt illo iusto voluptatibus doloribus facere enim provident. Perferendis tempora, ratione vero obcaecati repellendus eos.',
+        id: 1,
     },
     {
         title: 'Intermediate',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendislaudantium tempore molestias eaque excepturi quis deserunt illo iusto voluptatibus doloribus facere enim provident. Perferendis tempora, ratione vero obcaecati repellendus eos.',
+        id: 2,
     },
     {
         title: 'Expert',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendislaudantium tempore molestias eaque excepturi quis deserunt illo iusto voluptatibus doloribus facere enim provident. Perferendis tempora, ratione vero obcaecati repellendus eos.',
+        id: 3,
     },
 ];
