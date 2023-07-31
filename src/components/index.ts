@@ -1,3 +1,4 @@
+import Accordion from './Accordion/Accordion';
 import Alert from './Alert/Alert';
 import AnimatedText from './AnimatedText/AnimatedText';
 import BottomMenu from './BottomMenu/BottomMenu';
@@ -11,6 +12,7 @@ import Text from './Text/Text';
 import TextInput from './TextInput/TextInput';
 
 export {
+    Accordion,
     Alert,
     AnimatedText,
     BottomMenu,
