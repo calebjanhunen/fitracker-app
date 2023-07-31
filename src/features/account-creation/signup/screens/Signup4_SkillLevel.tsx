@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FlatList } from 'react-native';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
@@ -32,7 +31,7 @@ export default function SkillLevel({ navigation }: Props): React.ReactElement {
                     textColor='white'
                     disabled={selectedLevel === -1}
                     onPress={() => {
-                        // navigation.push();
+                        navigation.push('EnterLocation');
                     }}
                 >
                     Next
