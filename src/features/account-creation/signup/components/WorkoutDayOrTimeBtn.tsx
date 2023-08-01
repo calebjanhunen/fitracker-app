@@ -1,5 +1,5 @@
 import React, { type Dispatch, type SetStateAction } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { styled } from 'styled-components';
@@ -9,6 +9,7 @@ import { Text } from '../../../../components';
 interface Props {
     id: number;
     text: string;
+    subText?: string;
     selectedIds: number[];
     setSelectedIds: Dispatch<SetStateAction<number[]>>;
 }
@@ -20,13 +21,17 @@ const WorkoutDayButtonComponent = styled(TouchableOpacity)<{ isSelected: boolean
     padding: ${(props) => props.theme.spacing.md} ${(props) => props.theme.spacing.xl};
     background-color: ${({ isSelected, theme }) =>
         isSelected ? theme.colors.secondary : theme.colors.white};
+    flex-direction: row;
+    align-items: center;
+    gap: ${(props) => props.theme.spacing.md};
 `;
 
 const Icon = styled(Ionicons)<{ isSelected: boolean }>`
-    position: absolute;
-    left: ${(props) => props.theme.spacing.xl};
-    top: 65%;
     color: ${({ isSelected, theme }) => (isSelected ? theme.colors.white : theme.colors.black)};
+`;
+
+const TextContainer = styled(View)`
+    gap: ${(props) => props.theme.spacing.xxxs};
 `;
 
 function toggleSelectedBtn(
@@ -44,6 +49,7 @@ function toggleSelectedBtn(
 export default function WorkoutDayOrTimeBtn({
     id,
     text,
+    subText,
     selectedIds,
     setSelectedIds,
 }: Props): React.ReactElement {
@@ -62,9 +68,16 @@ export default function WorkoutDayOrTimeBtn({
                 size={24}
                 isSelected={isSelected}
             />
-            <Text variant='button' textAlign='center' color={isSelected ? 'white' : 'primary'}>
-                {text}
-            </Text>
+            <TextContainer>
+                <Text variant='button' color={isSelected ? 'white' : 'primary'}>
+                    {text}
+                </Text>
+                {subText && (
+                    <Text variant='subhead' color={isSelected ? 'white' : 'light'}>
+                        {subText}
+                    </Text>
+                )}
+            </TextContainer>
         </WorkoutDayButtonComponent>
     );
 }

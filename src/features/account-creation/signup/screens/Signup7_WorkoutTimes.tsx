@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
@@ -7,25 +7,26 @@ import { Button, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { SignupBody, SignupFooter, WorkoutDayOrTimeBtn } from '../components';
 
-type Props = StackScreenProps<RootStackParamList, 'WorkoutDays'>;
+type Props = StackScreenProps<RootStackParamList, 'WorkoutTimes'>;
 
-export default function WorkoutDays({ navigation }: Props): React.ReactElement {
-    const [selectedDays, setSelectedDays] = useState<number[]>([]);
+export default function WorkoutTimes({ navigation }: Props): React.ReactElement {
+    const [selectedTimes, setSelectedTimes] = useState<number[]>([]);
 
     return (
         <PageView>
             <Text variant='title' textAlign='center'>
-                Select Workout Days
+                Select Workout Times
             </Text>
             <SignupBody>
                 <FlatList
-                    data={workoutDays}
+                    data={workoutTimes}
                     renderItem={({ item, index }) => (
                         <WorkoutDayOrTimeBtn
                             id={index}
-                            text={item.day}
-                            selectedIds={selectedDays}
-                            setSelectedIds={setSelectedDays}
+                            text={item.text}
+                            subText={item.subText}
+                            selectedIds={selectedTimes}
+                            setSelectedIds={setSelectedTimes}
                         />
                     )}
                     ItemSeparatorComponent={() => <Spacer size='md' />}
@@ -36,10 +37,10 @@ export default function WorkoutDays({ navigation }: Props): React.ReactElement {
                 backgroundColor='primary'
                 textColor='white'
                 onPress={() => {
-                    navigation.push('WorkoutTimes');
+                    // TODO: send values to backend to create account
                 }}
             >
-                Next
+                Sign up
             </Button>
             <Spacer size='xl' />
             <SignupFooter navigation={navigation} />
@@ -47,12 +48,9 @@ export default function WorkoutDays({ navigation }: Props): React.ReactElement {
     );
 }
 
-const workoutDays = [
-    { day: 'Sunday' },
-    { day: 'Monday' },
-    { day: 'Tuesday' },
-    { day: 'Wednesday' },
-    { day: 'Thursday' },
-    { day: 'Friday' },
-    { day: 'Saturday' },
+const workoutTimes = [
+    { text: 'Morning', subText: '6AM-12PM' },
+    { text: 'Afternoon', subText: '12PM-6PM' },
+    { text: 'Evening', subText: '6PM-12AM' },
+    { text: 'Night', subText: '12AM-6AM' },
 ];
