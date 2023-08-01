@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
@@ -11,12 +11,19 @@ import {
     TextInput,
 } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { SignupDataContext } from '../../../../services/signup/SignupDataContext';
+import { SignupActionTypes } from '../../../../services/signup/SignupDataReducer';
 import { SignupBody, SignupFooter } from '../components';
 
 type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
 export default function Signup1({ navigation }: Props): React.ReactElement {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const { signupData, dispatchSignupData } = useContext(SignupDataContext);
+    const [email, setEmail] = useState<string>('calebjanhunen@gmail.com');
+    const [username, setUsername] = useState<string>('calebjanhunen');
+    const [password, setPassword] = useState<string>('123');
+    const [confirmPassword, setConfirmPassword] = useState<string>('123');
+
     return (
         <DismissKeyboardContainer>
             <PageView>
@@ -30,21 +37,40 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                         autoComplete='email'
                         autoCapitalize='none'
                         keyboardType='email-address'
+                        value={email}
+                        onChangeText={(text) => {
+                            setEmail(text);
+                        }}
                     />
                     <Spacer size='xl' />
                     <TextInput
                         autoCapitalize='none'
                         variant='smallTitle'
                         placeholder='Username'
-                        onChangeText={(text) => {}}
+                        value={username}
+                        onChangeText={(text) => {
+                            setUsername(text);
+                        }}
                     />
                     <Spacer size='xl' />
-                    <TextInput variant='smallTitle' placeholder='Password' secureTextEntry />
+                    <TextInput
+                        variant='smallTitle'
+                        placeholder='Password'
+                        secureTextEntry
+                        value={password}
+                        onChangeText={(text) => {
+                            setPassword(text);
+                        }}
+                    />
                     <Spacer size='xl' />
                     <TextInput
                         variant='smallTitle'
                         placeholder='Confirm Password'
                         secureTextEntry
+                        value={confirmPassword}
+                        onChangeText={(text) => {
+                            setConfirmPassword(text);
+                        }}
                     />
                     <Spacer size='xl' />
                     <Button
@@ -52,6 +78,11 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                         backgroundColor='primary'
                         textColor='white'
                         onPress={() => {
+                            dispatchSignupData({
+                                type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
+                                payload: { email, username, password },
+                            });
+                            console.log(signupData);
                             navigation.push('FitnessGoals');
                         }}
                     >

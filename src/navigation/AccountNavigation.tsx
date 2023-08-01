@@ -13,6 +13,7 @@ import SkillLevel from '../features/account-creation/signup/screens/Signup4_Skil
 import EnterLocation from '../features/account-creation/signup/screens/Signup5_EnterLocation';
 import WorkoutDays from '../features/account-creation/signup/screens/Signup6_WorkoutDays';
 import WorkoutTimes from '../features/account-creation/signup/screens/Signup7_WorkoutTimes';
+import SignupDataProvider from '../services/signup/SignupDataContext';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {
@@ -34,27 +35,33 @@ const Icon = styled(Ionicons)`
 
 export default function AccountNavigation(): React.ReactElement {
     return (
-        <Stack.Navigator
-            screenOptions={({ navigation }) => ({
-                headerShown: true,
-                headerBackTitleVisible: false,
-                headerShadowVisible: false,
-                title: '',
-                headerLeft: () => (
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Icon name='chevron-back-outline' size={36} />
-                    </TouchableOpacity>
-                ),
-            })}
-        >
-            <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Signup1' component={Signup1} />
-            <Stack.Screen name='FitnessGoals' component={FitnessGoals} />
-            <Stack.Screen name='WorkoutTypes' component={WorkoutTypes} />
-            <Stack.Screen name='SkillLevel' component={SkillLevel} />
-            <Stack.Screen name='EnterLocation' component={EnterLocation} />
-            <Stack.Screen name='WorkoutDays' component={WorkoutDays} />
-            <Stack.Screen name='WorkoutTimes' component={WorkoutTimes} />
-        </Stack.Navigator>
+        <SignupDataProvider>
+            <Stack.Navigator
+                screenOptions={({ navigation }) => ({
+                    headerShown: true,
+                    headerBackTitleVisible: false,
+                    headerShadowVisible: false,
+                    title: '',
+                    headerLeft: () => (
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Icon name='chevron-back-outline' size={36} />
+                        </TouchableOpacity>
+                    ),
+                })}
+            >
+                <Stack.Screen
+                    name='Login'
+                    component={LoginScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name='Signup1' component={Signup1} />
+                <Stack.Screen name='FitnessGoals' component={FitnessGoals} />
+                <Stack.Screen name='WorkoutTypes' component={WorkoutTypes} />
+                <Stack.Screen name='SkillLevel' component={SkillLevel} />
+                <Stack.Screen name='EnterLocation' component={EnterLocation} />
+                <Stack.Screen name='WorkoutDays' component={WorkoutDays} />
+                <Stack.Screen name='WorkoutTimes' component={WorkoutTimes} />
+            </Stack.Navigator>
+        </SignupDataProvider>
     );
 }
