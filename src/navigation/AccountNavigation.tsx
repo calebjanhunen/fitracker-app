@@ -10,6 +10,7 @@ import Signup1 from '../features/account-creation/signup/screens/Signup1_Account
 import FitnessGoals from '../features/account-creation/signup/screens/Signup2_FitnessGoals';
 import WorkoutTypes from '../features/account-creation/signup/screens/Signup3_WorkoutTypes';
 import SkillLevel from '../features/account-creation/signup/screens/Signup4_SkillLevel';
+import EnterLocation from '../features/account-creation/signup/screens/Signup5_EnterLocation';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {
@@ -18,7 +19,7 @@ export type RootStackParamList = {
     FitnessGoals: undefined;
     WorkoutTypes: undefined;
     SkillLevel: undefined;
-    SelectLocation: undefined;
+    EnterLocation: undefined;
     WorkoutDays: undefined;
     WorkoutTimes: undefined;
 };
@@ -49,6 +50,7 @@ export default function AccountNavigation(): React.ReactElement {
             <Stack.Screen name='FitnessGoals' component={FitnessGoals} />
             <Stack.Screen name='WorkoutTypes' component={WorkoutTypes} />
             <Stack.Screen name='SkillLevel' component={SkillLevel} />
+            <Stack.Screen name='EnterLocation' component={EnterLocation} />
         </Stack.Navigator>
     );
 }
