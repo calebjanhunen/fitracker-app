@@ -16,7 +16,7 @@ import {
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { SignupBody, SignupFooter } from '../components';
 
-type Props = StackScreenProps<RootStackParamList, 'SkillLevel'>;
+type Props = StackScreenProps<RootStackParamList, 'EnterLocation'>;
 
 const Row = styled(View)`
     flex-direction: row;
@@ -65,7 +65,7 @@ export default function EnterLocation({ navigation }: Props): React.ReactElement
                     backgroundColor='primary'
                     textColor='white'
                     onPress={() => {
-                        // navigation.push('');
+                        navigation.push('WorkoutDays');
                     }}
                 >
                     Next
