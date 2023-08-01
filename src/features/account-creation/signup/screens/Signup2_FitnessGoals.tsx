@@ -34,7 +34,6 @@ type Props = StackScreenProps<RootStackParamList, 'FitnessGoals'>;
 
 export default function FitnessGoals({ navigation }: Props): React.ReactElement {
     const [selectedChips, setSelectedChips] = useState<number[]>([]);
-
     return (
         <PageView>
             <Text variant='title' textAlign='center'>
