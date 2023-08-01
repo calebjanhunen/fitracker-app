@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
@@ -11,6 +11,7 @@ type Props = StackScreenProps<RootStackParamList, 'WorkoutTimes'>;
 
 export default function WorkoutTimes({ navigation }: Props): React.ReactElement {
     const [selectedTimes, setSelectedTimes] = useState<number[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     return (
         <PageView>
@@ -38,9 +39,10 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
                 textColor='white'
                 onPress={() => {
                     // TODO: send values to backend to create account
+                    setLoading(!loading);
                 }}
             >
-                Sign up
+                {loading ? <ActivityIndicator color='white' /> : 'Sign up'}
             </Button>
             <Spacer size='xl' />
             <SignupFooter navigation={navigation} />
