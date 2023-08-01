@@ -18,11 +18,17 @@ import { SignupBody, SignupFooter } from '../components';
 type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
 export default function Signup1({ navigation }: Props): React.ReactElement {
-    const { signupData, dispatchSignupData } = useContext(SignupDataContext);
+    const { dispatchSignupData } = useContext(SignupDataContext);
     const [email, setEmail] = useState<string>('calebjanhunen@gmail.com');
     const [username, setUsername] = useState<string>('calebjanhunen');
     const [password, setPassword] = useState<string>('123');
     const [confirmPassword, setConfirmPassword] = useState<string>('123');
+
+    const isBtnDisabled =
+        email.length === 0 ||
+        username.length === 0 ||
+        password.length === 0 ||
+        confirmPassword.length === 0;
 
     return (
         <DismissKeyboardContainer>
@@ -77,12 +83,12 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
+                        disabled={isBtnDisabled}
                         onPress={() => {
                             dispatchSignupData({
                                 type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
                                 payload: { email, username, password },
                             });
-                            console.log(signupData);
                             navigation.push('FitnessGoals');
                         }}
                     >
