@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
 import { Accordion, Button, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { SignupDataContext } from '../../../../services/signup/SignupDataContext';
+import { SignupActionTypes } from '../../../../services/signup/SignupDataReducer';
 import { SignupBody, SignupFooter } from '../components';
 
 type Props = StackScreenProps<RootStackParamList, 'SkillLevel'>;
 
 export default function SkillLevel({ navigation }: Props): React.ReactElement {
+    const { dispatchSignupData } = useContext(SignupDataContext);
     const [selectedLevel, setSelectedLevel] = useState<number>(-1);
     const [expandedLevel, setExpendedLevel] = useState<number>(-1);
 
@@ -31,7 +34,12 @@ export default function SkillLevel({ navigation }: Props): React.ReactElement {
                     textColor='white'
                     disabled={selectedLevel === -1}
                     onPress={() => {
+                        dispatchSignupData({
+                            type: SignupActionTypes.ADD_SKILL_LEVEL,
+                            payload: data[selectedLevel].title,
+                        });
                         navigation.push('EnterLocation');
+                        setExpendedLevel(-1);
                     }}
                 >
                     Next
