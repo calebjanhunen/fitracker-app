@@ -1,6 +1,7 @@
 export enum SignupActionTypes {
     UPDATE_ACCOUNT_INFO = 'update-account-info',
     ADD_FITNESS_GOALS = 'add-fitness-goals',
+    ADD_WORKOUT_TYPES = 'add-workout-types',
 }
 
 interface FitnessGoalsOrWorkoutTypes {
@@ -33,6 +34,10 @@ export type ActionProps =
     | {
           type: SignupActionTypes.ADD_FITNESS_GOALS;
           payload: FitnessGoalsOrWorkoutTypes[];
+      }
+    | {
+          type: SignupActionTypes.ADD_WORKOUT_TYPES;
+          payload: FitnessGoalsOrWorkoutTypes[];
       };
 
 export function signupReducer(signupData: SignupData, action: ActionProps): SignupData {
@@ -48,6 +53,11 @@ export function signupReducer(signupData: SignupData, action: ActionProps): Sign
             return {
                 ...signupData,
                 fitnessGoals: action.payload,
+            };
+        case SignupActionTypes.ADD_WORKOUT_TYPES:
+            return {
+                ...signupData,
+                workoutTypes: action.payload,
             };
         default:
             return signupData;

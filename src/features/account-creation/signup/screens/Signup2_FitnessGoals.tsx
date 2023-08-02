@@ -3,7 +3,7 @@ import React, { useContext, useState, type Dispatch, type SetStateAction } from 
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { SignupDataContext } from '../../../../services/signup/SignupDataContext';
-import { SignupActionTypes, type ActionProps } from '../../../../services/signup/SignupDataReducer';
+import { SignupActionTypes } from '../../../../services/signup/SignupDataReducer';
 import { SignupBody, SignupFooter } from '../components';
 
 interface FitnessGoalsInterface {
