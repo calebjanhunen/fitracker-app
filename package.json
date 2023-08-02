@@ -15,6 +15,7 @@
         "@expo-google-fonts/inter": "^0.2.3",
         "@gorhom/bottom-sheet": "^4.4.7",
         "@gorhom/portal": "^1.0.14",
+        "@react-native-async-storage/async-storage": "^1.19.1",
         "@react-navigation/bottom-tabs": "^6.5.8",
         "@react-navigation/native": "^6.1.7",
         "@react-navigation/stack": "^6.3.17",
@@ -23,6 +24,7 @@
         "expo": "~48.0.18",
         "expo-blur": "~12.2.2",
         "expo-status-bar": "~1.4.4",
+        "parse": "^4.1.0",
         "react": "18.2.0",
         "react-native": "0.71.8",
         "react-native-dropdown-picker": "^5.4.6",
@@ -44,6 +46,7 @@
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-react": "^7.32.2",
         "prettier": "^3.0.0",
+        "react-native-dotenv": "^3.4.9",
         "react-native-uuid": "^2.0.1",
         "typescript": "^5.1.6"
     },

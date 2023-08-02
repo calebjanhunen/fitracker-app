@@ -34,19 +34,19 @@ const RowElement = styled(View)<{ flex: number }>`
 export default function EnterLocation({ navigation }: Props): React.ReactElement {
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
     const [country, setCountry] = useState<string>(
-        signupData.location?.country ? signupData.location.country : ''
+        signupData.location?.country ? signupData.location.country : 'Canada'
     );
     const [city, setCity] = useState<string>(
-        signupData.location?.city ? signupData.location.city : ''
+        signupData.location?.city ? signupData.location.city : 'Guelph'
     );
     const [province, setProvince] = useState<string>(
-        signupData.location?.province ? signupData.location.province : ''
+        signupData.location?.province ? signupData.location.province : 'ON'
     );
 
     // Dropdown vars
     const [open, setOpen] = useState<boolean>(false);
     const [gymDropdownVal, setGymDropdownVal] = useState<string>(
-        signupData.location?.gym ? signupData.location.gym : ''
+        signupData.location?.gym ? signupData.location.gym : 'ggac'
     );
     const gyms = [{ label: 'Guelph Gryphons Athletic Centre', value: 'ggac' }];
 

@@ -39,7 +39,6 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
             : []
     );
     const [loading, setLoading] = useState<boolean>(false);
-
     return (
         <PageView>
             <Text variant='title' textAlign='center'>
