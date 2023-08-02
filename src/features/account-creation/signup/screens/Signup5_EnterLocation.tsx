@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 
 import { type StackScreenProps } from '@react-navigation/stack';
@@ -14,6 +14,8 @@ import {
     TextInput,
 } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { SignupDataContext } from '../../../../services/signup/SignupDataContext';
+import { SignupActionTypes } from '../../../../services/signup/SignupDataReducer';
 import { SignupBody, SignupFooter } from '../components';
 
 type Props = StackScreenProps<RootStackParamList, 'EnterLocation'>;
@@ -30,9 +32,30 @@ const RowElement = styled(View)<{ flex: number }>`
 `;
 
 export default function EnterLocation({ navigation }: Props): React.ReactElement {
+    const { signupData, dispatchSignupData } = useContext(SignupDataContext);
+    const [country, setCountry] = useState<string>(
+        signupData.location?.country ? signupData.location.country : ''
+    );
+    const [city, setCity] = useState<string>(
+        signupData.location?.city ? signupData.location.city : ''
+    );
+    const [province, setProvince] = useState<string>(
+        signupData.location?.province ? signupData.location.province : ''
+    );
+
+    // Dropdown vars
     const [open, setOpen] = useState<boolean>(false);
-    const [gymDropdownVal, setGymDropdownVal] = useState<string>('');
-    const [gyms, setGyms] = useState([{ label: 'Guelph Gryphons Athletic Centre', value: 'ggac' }]);
+    const [gymDropdownVal, setGymDropdownVal] = useState<string>(
+        signupData.location?.gym ? signupData.location.gym : ''
+    );
+    const gyms = [{ label: 'Guelph Gryphons Athletic Centre', value: 'ggac' }];
+
+    const isNextBtnDisabled =
+        gymDropdownVal.length === 0 ||
+        country.length === 0 ||
+        city.length === 0 ||
+        province.length === 0;
+
     return (
         <DismissKeyboardContainer>
             <PageView>
@@ -40,14 +63,36 @@ export default function EnterLocation({ navigation }: Props): React.ReactElement
                     Enter location
                 </Text>
                 <SignupBody>
-                    <TextInput variant='smallTitle' placeholder='Country' />
+                    <TextInput
+                        variant='smallTitle'
+                        placeholder='Country'
+                        value={country}
+                        onChangeText={(text) => {
+                            setCountry(text);
+                        }}
+                    />
                     <Spacer size='xl' />
                     <Row>
                         <RowElement flex={1}>
-                            <TextInput variant='smallTitle' placeholder='City' />
+                            <TextInput
+                                variant='smallTitle'
+                                placeholder='City'
+                                value={city}
+                                onChangeText={(text) => {
+                                    setCity(text);
+                                }}
+                            />
                         </RowElement>
                         <RowElement flex={0.5}>
-                            <TextInput variant='smallTitle' placeholder='Province' maxLength={2} />
+                            <TextInput
+                                variant='smallTitle'
+                                placeholder='Province'
+                                maxLength={2}
+                                value={province}
+                                onChangeText={(text) => {
+                                    setProvince(text);
+                                }}
+                            />
                         </RowElement>
                     </Row>
                     <Spacer size='xl' />
@@ -64,7 +109,12 @@ export default function EnterLocation({ navigation }: Props): React.ReactElement
                     variant='full'
                     backgroundColor='primary'
                     textColor='white'
+                    disabled={isNextBtnDisabled}
                     onPress={() => {
+                        dispatchSignupData({
+                            type: SignupActionTypes.ADD_LOCATION,
+                            payload: { country, city, province, gym: gymDropdownVal },
+                        });
                         navigation.push('WorkoutDays');
                     }}
                 >

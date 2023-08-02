@@ -3,11 +3,19 @@ export enum SignupActionTypes {
     ADD_FITNESS_GOALS = 'add-fitness-goals',
     ADD_WORKOUT_TYPES = 'add-workout-types',
     ADD_SKILL_LEVEL = 'add-skill-level',
+    ADD_LOCATION = 'add-location',
 }
 
 interface FitnessGoalsOrWorkoutTypes {
     id: number;
     name: string;
+}
+
+interface Location {
+    country: string;
+    city: string;
+    province: string;
+    gym: string;
 }
 
 export interface SignupData {
@@ -17,12 +25,7 @@ export interface SignupData {
     fitnessGoals: FitnessGoalsOrWorkoutTypes[];
     workoutTypes: FitnessGoalsOrWorkoutTypes[];
     skillLevel: string;
-    location: {
-        country: string;
-        city: string;
-        province: string;
-        gym: string;
-    };
+    location: Location;
     workoutDays: string[];
     workoutTimes: string[];
 }
@@ -43,6 +46,10 @@ export type ActionProps =
     | {
           type: SignupActionTypes.ADD_SKILL_LEVEL;
           payload: string;
+      }
+    | {
+          type: SignupActionTypes.ADD_LOCATION;
+          payload: Location;
       };
 
 export function signupReducer(signupData: SignupData, action: ActionProps): SignupData {
@@ -68,6 +75,11 @@ export function signupReducer(signupData: SignupData, action: ActionProps): Sign
             return {
                 ...signupData,
                 skillLevel: action.payload,
+            };
+        case SignupActionTypes.ADD_LOCATION:
+            return {
+                ...signupData,
+                location: action.payload,
             };
         default:
             return signupData;
