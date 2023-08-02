@@ -1,16 +1,43 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import React, { useContext, useState, type Dispatch } from 'react';
+import { ActivityIndicator, FlatList } from 'react-native';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
 import { Button, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { SignupDataContext } from '../../../../services/signup/SignupDataContext';
+import {
+    SignupActionTypes,
+    type ActionProps,
+    type SignupData,
+} from '../../../../services/signup/SignupDataReducer';
 import { SignupBody, SignupFooter, WorkoutDayOrTimeBtn } from '../components';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutTimes'>;
 
+function signupUser(
+    selectedTimeIds: number[],
+    signupData: SignupData,
+    dispatchSignupData: Dispatch<ActionProps>
+): void {
+    const selectedTimes = selectedTimeIds.map((id) => workoutTimes[id].text);
+    dispatchSignupData({
+        type: SignupActionTypes.ADD_WORKOUT_TIMES,
+        payload: selectedTimes,
+    });
+
+    // TODO: send values to backend to create account
+}
+
 export default function WorkoutTimes({ navigation }: Props): React.ReactElement {
-    const [selectedTimes, setSelectedTimes] = useState<number[]>([]);
+    const { signupData, dispatchSignupData } = useContext(SignupDataContext);
+    const [selectedTimeIds, setSelectedTimeIds] = useState<number[]>(
+        signupData.workoutTimes
+            ? signupData.workoutTimes.map((time) =>
+                  workoutTimes.findIndex((workoutTime) => workoutTime.text === time)
+              )
+            : []
+    );
     const [loading, setLoading] = useState<boolean>(false);
 
     return (
@@ -26,8 +53,8 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
                             id={index}
                             text={item.text}
                             subText={item.subText}
-                            selectedIds={selectedTimes}
-                            setSelectedIds={setSelectedTimes}
+                            selectedIds={selectedTimeIds}
+                            setSelectedIds={setSelectedTimeIds}
                         />
                     )}
                     ItemSeparatorComponent={() => <Spacer size='md' />}
@@ -38,8 +65,8 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
                 backgroundColor='primary'
                 textColor='white'
                 onPress={() => {
-                    // TODO: send values to backend to create account
                     setLoading(!loading);
+                    signupUser(selectedTimeIds, signupData, dispatchSignupData);
                 }}
             >
                 {loading ? <ActivityIndicator color='white' /> : 'Sign up'}
