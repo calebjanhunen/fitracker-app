@@ -5,13 +5,13 @@ import { type StackScreenProps } from '@react-navigation/stack';
 
 import { Button, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { SignupDataContext } from '../../../../services/signup/SignupDataContext';
+import { SignupBody, SignupFooter, WorkoutDayOrTimeBtn } from '../components';
+import { SignupDataContext } from '../signup-context/SignupDataContext';
 import {
     SignupActionTypes,
     type ActionProps,
     type SignupData,
-} from '../../../../services/signup/SignupDataReducer';
-import { SignupBody, SignupFooter, WorkoutDayOrTimeBtn } from '../components';
+} from '../signup-context/SignupDataReducer';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutTimes'>;
 
