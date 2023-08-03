@@ -1,6 +1,6 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/CapitalizeFirstLetter';
-import { loginUser } from './authService';
+import { checkIfUserLoggedIn, loginUser } from './authService';
 
 interface Props {
     children: React.ReactNode;
@@ -41,6 +41,22 @@ export function AuthProvider({ children }: Props): React.ReactElement {
             setIsLoading(false);
         }
     }
+
+    async function isUserLoggedIn(): Promise<void> {
+        try {
+            const currentUser = await checkIfUserLoggedIn();
+            if (currentUser) {
+                setSessionToken(currentUser.getSessionToken());
+                setUsername(currentUser.get('username'));
+            }
+        } catch (error) {
+            console.log('User not logged in');
+        }
+    }
+
+    useEffect(() => {
+        void isUserLoggedIn();
+    }, []);
 
     return (
         <AuthContext.Provider value={{ sessionToken, username, errorMessage, login, isLoading }}>
