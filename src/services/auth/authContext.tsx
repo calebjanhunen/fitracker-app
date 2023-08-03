@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import { capitalizeFirstLetter } from '../../utils/CapitalizeFirstLetter';
 import { loginUser } from './authService';
 
 interface Props {
@@ -6,42 +7,43 @@ interface Props {
 }
 
 export interface AuthContextData {
-    isAuthenticated: boolean;
-    authData: AuthData;
-    error: string;
-    login: (username: string, password: string) => Promise<boolean>;
-}
-
-interface AuthData {
-    username: string;
+    sessionToken: string | null;
+    username: string | null;
+    errorMessage: string | null;
+    isLoading: boolean;
+    login: (username: string, password: string) => Promise<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({ children }: Props): React.ReactElement {
-    const [authData, setAuthData] = useState<AuthData>({ username: '' });
-    const [error, setError] = useState<string>('');
+    const [sessionToken, setSessionToken] = useState<string | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    async function login(username: string, password: string): Promise<boolean> {
+    async function login(username: string, password: string): Promise<void> {
+        setErrorMessage(null);
+        setIsLoading(true);
         try {
             const response = await loginUser(username, password);
-            setAuthData({ username: response.get('username') });
-            return true;
+
+            setUsername(response.get('username'));
+            setSessionToken(response.getSessionToken());
+            setIsLoading(false);
         } catch (error) {
-            let errorMessage = 'Failed to login.';
+            let errorString = 'Failed to login.';
             if (error instanceof Error) {
-                errorMessage = error.message;
+                errorString = error.message;
             }
-            setError(errorMessage);
-            return false;
+            setErrorMessage(capitalizeFirstLetter(errorString));
+            setIsLoading(false);
         }
     }
 
     return (
-        <AuthContext.Provider
-            value={{ isAuthenticated: !!authData.username, authData, error, login }}
-        >
+        <AuthContext.Provider value={{ sessionToken, username, errorMessage, login, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

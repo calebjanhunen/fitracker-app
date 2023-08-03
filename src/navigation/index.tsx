@@ -7,11 +7,11 @@ import AccountNavigation from './AccountNavigation';
 import AppNavigation from './AppNavigation';
 
 export default function BaseNavigation(): React.ReactElement {
-    const { isAuthenticated } = useContext(AuthContext);
+    const { sessionToken } = useContext(AuthContext);
 
     return (
         <NavigationContainer>
-            {isAuthenticated ? <AppNavigation /> : <AccountNavigation />}
+            {sessionToken !== null ? <AppNavigation /> : <AccountNavigation />}
         </NavigationContainer>
     );
 }

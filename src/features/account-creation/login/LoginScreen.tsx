@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { type StackScreenProps } from '@react-navigation/stack';
 import { styled } from 'styled-components';
 
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
     Button,
@@ -33,16 +33,10 @@ const LoginFooter = styled(View)`
 export default function LoginScreen({ navigation }: Props): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const { login, error } = useContext(AuthContext);
+    const { login, errorMessage, isLoading } = useContext(AuthContext);
 
     async function onLoginPress(): Promise<void> {
-        const signInSuccessful = await login(username, password);
-        if (signInSuccessful) {
-            setUsername('');
-            setPassword('');
-        } else {
-            setPassword('');
-        }
+        await login(username, password);
     }
 
     return (
@@ -72,17 +66,21 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                             setPassword(text);
                         }}
                     />
+                    <Spacer size='xxs' />
                     <Text textAlign='center' variant='body' color='error'>
-                        {error}
+                        {errorMessage ?? ' '}
                     </Text>
                     <Spacer size='lg' />
                     <Button
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
-                        onPress={onLoginPress}
+                        disabled={!errorMessage}
+                        onPress={() => {
+                            void onLoginPress();
+                        }}
                     >
-                        Login
+                        {isLoading ? <ActivityIndicator /> : 'Login'}
                     </Button>
                 </LoginForm>
 
