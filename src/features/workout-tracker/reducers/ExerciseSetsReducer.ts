@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import uuid from 'react-native-uuid';
 
 import { type ExerciseSet } from '../../../interfaces/Exercise';

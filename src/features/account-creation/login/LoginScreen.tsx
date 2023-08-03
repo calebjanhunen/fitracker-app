@@ -33,8 +33,17 @@ const LoginFooter = styled(View)`
 export default function LoginScreen({ navigation }: Props): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const { login, error } = useContext(AuthContext);
 
-    const { signIn } = useContext(AuthContext);
+    async function onLoginPress(): Promise<void> {
+        const signInSuccessful = await login(username, password);
+        if (signInSuccessful) {
+            setUsername('');
+            setPassword('');
+        } else {
+            setPassword('');
+        }
+    }
 
     return (
         <DismissKeyboardContainer>
@@ -63,16 +72,15 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                             setPassword(text);
                         }}
                     />
+                    <Text textAlign='center' variant='body' color='error'>
+                        {error}
+                    </Text>
                     <Spacer size='lg' />
                     <Button
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
-                        onPress={() => {
-                            signIn(username, password);
-                            setUsername('');
-                            setPassword('');
-                        }}
+                        onPress={onLoginPress}
                     >
                         Login
                     </Button>

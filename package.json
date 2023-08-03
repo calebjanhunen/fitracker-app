@@ -37,6 +37,8 @@
     },
     "devDependencies": {
         "@babel/core": "^7.20.0",
+        "@types/parse": "^3.0.4",
+        "@types/react-native-get-random-values": "^1.8.0",
         "@typescript-eslint/eslint-plugin": "^5.61.0",
         "eslint": "^8.44.0",
         "eslint-config-prettier": "^8.8.0",
@@ -47,6 +49,7 @@
         "eslint-plugin-react": "^7.32.2",
         "prettier": "^3.0.0",
         "react-native-dotenv": "^3.4.9",
+        "react-native-get-random-values": "^1.9.0",
         "react-native-uuid": "^2.0.1",
         "typescript": "^5.1.6"
     },
