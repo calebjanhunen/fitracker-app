@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/CapitalizeFirstLetter';
-import { checkIfUserLoggedIn, loginUser } from './authService';
+import { checkIfUserLoggedIn, loginUser, logoutUser } from './authService';
 
 interface Props {
     children: React.ReactNode;
@@ -13,6 +13,7 @@ export interface AuthContextData {
     isLoading: boolean;
     isFetchingUser: boolean;
     login: (username: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -44,6 +45,12 @@ export function AuthProvider({ children }: Props): React.ReactElement {
         }
     }
 
+    async function logout(): Promise<void> {
+        await logoutUser();
+        setUsername(null);
+        setSessionToken(null);
+    }
+
     async function isUserLoggedIn(): Promise<void> {
         setIsFetchingUser(true);
         try {
@@ -64,7 +71,15 @@ export function AuthProvider({ children }: Props): React.ReactElement {
 
     return (
         <AuthContext.Provider
-            value={{ sessionToken, username, errorMessage, login, isLoading, isFetchingUser }}
+            value={{
+                sessionToken,
+                username,
+                errorMessage,
+                login,
+                logout,
+                isLoading,
+                isFetchingUser,
+            }}
         >
             {children}
         </AuthContext.Provider>
