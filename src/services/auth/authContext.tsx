@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/CapitalizeFirstLetter';
-import { checkIfUserLoggedIn, loginUser } from './authService';
+import { checkIfUserLoggedIn, loginUser, logoutUser } from './authService';
 
 interface Props {
     children: React.ReactNode;
@@ -42,6 +42,13 @@ export function AuthProvider({ children }: Props): React.ReactElement {
             setErrorMessage(capitalizeFirstLetter(errorString));
             setIsLoading(false);
         }
+    }
+
+    async function logout(): Promise<void> {
+        const user = await logoutUser();
+        setUsername(null);
+        setSessionToken(null);
+        // console.log(user);
     }
 
     async function isUserLoggedIn(): Promise<void> {
