@@ -11,6 +11,7 @@ export interface AuthContextData {
     username: string | null;
     errorMessage: string | null;
     isLoading: boolean;
+    isFetchingUser: boolean;
     login: (username: string, password: string) => Promise<void>;
 }
 
@@ -22,6 +23,7 @@ export function AuthProvider({ children }: Props): React.ReactElement {
     const [username, setUsername] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isFetchingUser, setIsFetchingUser] = useState<boolean>(false);
 
     async function login(username: string, password: string): Promise<void> {
         setErrorMessage(null);
@@ -43,14 +45,16 @@ export function AuthProvider({ children }: Props): React.ReactElement {
     }
 
     async function isUserLoggedIn(): Promise<void> {
+        setIsFetchingUser(true);
         try {
             const currentUser = await checkIfUserLoggedIn();
             if (currentUser) {
                 setSessionToken(currentUser.getSessionToken());
                 setUsername(currentUser.get('username'));
             }
+            setIsFetchingUser(false);
         } catch (error) {
-            console.log('User not logged in');
+            setIsFetchingUser(false);
         }
     }
 
@@ -59,7 +63,9 @@ export function AuthProvider({ children }: Props): React.ReactElement {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ sessionToken, username, errorMessage, login, isLoading }}>
+        <AuthContext.Provider
+            value={{ sessionToken, username, errorMessage, login, isLoading, isFetchingUser }}
+        >
             {children}
         </AuthContext.Provider>
     );

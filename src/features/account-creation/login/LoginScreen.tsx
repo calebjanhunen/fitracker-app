@@ -75,7 +75,7 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
-                        disabled={!errorMessage}
+                        disabled={isLoading}
                         onPress={() => {
                             void onLoginPress();
                         }}
