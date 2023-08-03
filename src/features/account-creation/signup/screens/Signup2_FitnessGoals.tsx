@@ -2,9 +2,9 @@ import { type StackScreenProps } from '@react-navigation/stack';
 import React, { useContext, useState, type Dispatch, type SetStateAction } from 'react';
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { SignupDataContext } from '../../../../services/signup/SignupDataContext';
-import { SignupActionTypes } from '../../../../services/signup/SignupDataReducer';
 import { SignupBody, SignupFooter } from '../components';
+import { SignupDataContext } from '../signup-context/SignupDataContext';
+import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
 interface FitnessGoalsInterface {
     id: number;

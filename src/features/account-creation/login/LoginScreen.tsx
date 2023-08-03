@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { type StackScreenProps } from '@react-navigation/stack';
 import { styled } from 'styled-components';
 
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
     Button,
@@ -33,8 +33,11 @@ const LoginFooter = styled(View)`
 export default function LoginScreen({ navigation }: Props): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const { login, errorMessage, isLoading } = useContext(AuthContext);
 
-    const { signIn } = useContext(AuthContext);
+    async function onLoginPress(): Promise<void> {
+        await login(username, password);
+    }
 
     return (
         <DismissKeyboardContainer>
@@ -63,18 +66,21 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                             setPassword(text);
                         }}
                     />
+                    <Spacer size='xxs' />
+                    <Text textAlign='center' variant='body' color='error'>
+                        {errorMessage ?? ' '}
+                    </Text>
                     <Spacer size='lg' />
                     <Button
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
+                        disabled={isLoading}
                         onPress={() => {
-                            signIn(username, password);
-                            setUsername('');
-                            setPassword('');
+                            void onLoginPress();
                         }}
                     >
-                        Login
+                        {isLoading ? <ActivityIndicator /> : 'Login'}
                     </Button>
                 </LoginForm>
 

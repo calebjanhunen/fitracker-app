@@ -1,8 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { APPLICATION_ID, JS_KEY, SERVER_URL } from '@env';
 import { PortalProvider } from '@gorhom/portal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
+import Parse from 'parse/react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
 
@@ -27,6 +30,10 @@ export default function App(): React.ReactElement | null {
     if (!fontLoaded) {
         return null;
     }
+
+    Parse.setAsyncStorage(AsyncStorage);
+    Parse.initialize(APPLICATION_ID, JS_KEY);
+    Parse.serverURL = SERVER_URL;
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>

@@ -13,7 +13,7 @@ import SkillLevel from '../features/account-creation/signup/screens/Signup4_Skil
 import EnterLocation from '../features/account-creation/signup/screens/Signup5_EnterLocation';
 import WorkoutDays from '../features/account-creation/signup/screens/Signup6_WorkoutDays';
 import WorkoutTimes from '../features/account-creation/signup/screens/Signup7_WorkoutTimes';
-import SignupDataProvider from '../services/signup/SignupDataContext';
+import SignupDataProvider from '../features/account-creation/signup/signup-context/SignupDataContext';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {

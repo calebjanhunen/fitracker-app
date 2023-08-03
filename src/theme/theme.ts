@@ -27,6 +27,7 @@ export const theme = {
         light: '#636363',
         placeholder: '#9E9E9E',
         onWhite: '#5E69EE',
+        error: '#CC0000',
     },
     colors: {
         primary: '#5E69EE',
