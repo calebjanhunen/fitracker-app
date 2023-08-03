@@ -13,6 +13,7 @@ export interface AuthContextData {
     isLoading: boolean;
     isFetchingUser: boolean;
     login: (username: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -45,10 +46,9 @@ export function AuthProvider({ children }: Props): React.ReactElement {
     }
 
     async function logout(): Promise<void> {
-        const user = await logoutUser();
+        await logoutUser();
         setUsername(null);
         setSessionToken(null);
-        // console.log(user);
     }
 
     async function isUserLoggedIn(): Promise<void> {
@@ -71,7 +71,15 @@ export function AuthProvider({ children }: Props): React.ReactElement {
 
     return (
         <AuthContext.Provider
-            value={{ sessionToken, username, errorMessage, login, isLoading, isFetchingUser }}
+            value={{
+                sessionToken,
+                username,
+                errorMessage,
+                login,
+                logout,
+                isLoading,
+                isFetchingUser,
+            }}
         >
             {children}
         </AuthContext.Provider>
