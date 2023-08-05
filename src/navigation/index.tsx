@@ -8,16 +8,15 @@ import AccountNavigation from './AccountNavigation';
 import AppNavigation from './AppNavigation';
 
 export default function BaseNavigation(): React.ReactElement {
-    const { sessionToken, isFetchingUser } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     // TODO: Change to better loading screen eventually
-    if (isFetchingUser) {
-        return <ActivityIndicator style={{ flex: 1 }} size='large' />;
-    }
-
+    // if (isFetchingUser) {
+    //     return <ActivityIndicator style={{ flex: 1 }} size='large' />;
+    // }
     return (
         <NavigationContainer>
-            {sessionToken !== null ? <AppNavigation /> : <AccountNavigation />}
+            {user.sessionToken ? <AppNavigation /> : <AccountNavigation />}
         </NavigationContainer>
     );
 }

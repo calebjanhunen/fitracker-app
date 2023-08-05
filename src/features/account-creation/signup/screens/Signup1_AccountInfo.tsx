@@ -11,6 +11,7 @@ import {
     TextInput,
 } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { AuthContext } from '../../../../services/auth/authContext';
 import { SignupBody, SignupFooter } from '../components';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
@@ -19,6 +20,7 @@ type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
 export default function Signup1({ navigation }: Props): React.ReactElement {
     const { dispatchSignupData } = useContext(SignupDataContext);
+    const { signup } = useContext(AuthContext);
     const [email, setEmail] = useState<string>('calebjanhunen@gmail.com');
     const [username, setUsername] = useState<string>('calebjanhunen');
     const [password, setPassword] = useState<string>('123');
@@ -29,6 +31,19 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
         username.length === 0 ||
         password.length === 0 ||
         confirmPassword.length === 0;
+
+    async function onSignupBtnPress(): Promise<void> {
+        dispatchSignupData({
+            type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
+            payload: { email, username, password },
+        });
+        try {
+            await signup(username, email, password);
+            navigation.push('FitnessGoals');
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <DismissKeyboardContainer>
@@ -85,14 +100,10 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                         textColor='white'
                         disabled={isBtnDisabled}
                         onPress={() => {
-                            dispatchSignupData({
-                                type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
-                                payload: { email, username, password },
-                            });
-                            navigation.push('FitnessGoals');
+                            void onSignupBtnPress();
                         }}
                     >
-                        Next
+                        Sign up
                     </Button>
                 </SignupBody>
                 <SignupFooter navigation={navigation} />

@@ -13,6 +13,7 @@ import {
     Text,
     TextInput,
 } from '../../../components';
+import { useAuth } from '../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../navigation/AccountNavigation';
 import { AuthContext } from '../../../services/auth/authContext';
 
@@ -33,10 +34,22 @@ const LoginFooter = styled(View)`
 export default function LoginScreen({ navigation }: Props): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const { login, errorMessage, isLoading } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { login } = useAuth();
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     async function onLoginPress(): Promise<void> {
-        await login(username, password);
+        setErrorMessage('');
+        setIsLoading(true);
+        try {
+            await login(username, password);
+        } catch (error) {
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            }
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -80,7 +93,7 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                             void onLoginPress();
                         }}
                     >
-                        {isLoading ? <ActivityIndicator /> : 'Login'}
+                        {isLoading ? <ActivityIndicator color='blue' /> : 'Login'}
                     </Button>
                 </LoginForm>
 
