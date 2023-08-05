@@ -7,6 +7,7 @@ import { capitalizeFirstLetter } from '../utils/CapitalizeFirstLetter';
 
 interface useAuthReturnType {
     login: (username: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 export function useAuth(): useAuthReturnType {
@@ -32,5 +33,9 @@ export function useAuth(): useAuthReturnType {
         }
     }
 
-    return { login };
+    async function logout(): Promise<void> {
+        await Parse.User.logOut();
+    }
+
+    return { login, logout };
 }
