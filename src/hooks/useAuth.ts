@@ -11,7 +11,7 @@ interface useAuthReturnType {
 }
 
 export function useAuth(): useAuthReturnType {
-    const { setUser } = useContext(AuthContext);
+    const { setUser, user } = useContext(AuthContext);
 
     async function login(username: string, password: string): Promise<void> {
         try {
@@ -35,6 +35,7 @@ export function useAuth(): useAuthReturnType {
 
     async function logout(): Promise<void> {
         await Parse.User.logOut();
+        setUser({ username: '', sessionToken: null });
     }
 
     return { login, logout };
