@@ -8,10 +8,11 @@ import { capitalizeFirstLetter } from '../utils/CapitalizeFirstLetter';
 interface useAuthReturnType {
     login: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    persistLogin: () => Promise<void>;
 }
 
 export function useAuth(): useAuthReturnType {
-    const { setUser, user } = useContext(AuthContext);
+    const { setUser } = useContext(AuthContext);
 
     async function login(username: string, password: string): Promise<void> {
         try {
@@ -38,5 +39,17 @@ export function useAuth(): useAuthReturnType {
         setUser({ username: '', sessionToken: null });
     }
 
-    return { login, logout };
+    async function persistLogin(): Promise<void> {
+        try {
+            const currentUser = await Parse.User.currentAsync();
+            if (currentUser) {
+                setUser({
+                    username: currentUser.get('username'),
+                    sessionToken: currentUser.getSessionToken(),
+                });
+            }
+        } catch (error) {}
+    }
+
+    return { login, logout, persistLogin };
 }
