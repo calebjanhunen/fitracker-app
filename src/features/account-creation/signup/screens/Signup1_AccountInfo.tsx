@@ -10,6 +10,7 @@ import {
     Text,
     TextInput,
 } from '../../../../components';
+import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { AuthContext } from '../../../../services/auth/authContext';
 import { SignupBody, SignupFooter } from '../components';
@@ -20,11 +21,12 @@ type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
 export default function Signup1({ navigation }: Props): React.ReactElement {
     const { dispatchSignupData } = useContext(SignupDataContext);
-    const { signup } = useContext(AuthContext);
     const [email, setEmail] = useState<string>('calebjanhunen@gmail.com');
-    const [username, setUsername] = useState<string>('calebjanhunen');
+    const [username, setUsername] = useState<string>('caleb');
     const [password, setPassword] = useState<string>('123');
     const [confirmPassword, setConfirmPassword] = useState<string>('123');
+    const { signup } = useAuth();
+    const { isLoading } = useContext(AuthContext);
 
     const isBtnDisabled =
         email.length === 0 ||
@@ -33,12 +35,12 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
         confirmPassword.length === 0;
 
     async function onSignupBtnPress(): Promise<void> {
-        dispatchSignupData({
-            type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
-            payload: { email, username, password },
-        });
+        // dispatchSignupData({
+        //     type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
+        //     payload: { email, username, password },
+        // });
         try {
-            await signup(username, email, password);
+            await signup(username, password, email);
             navigation.push('FitnessGoals');
         } catch (error) {
             console.log(error);

@@ -13,9 +13,10 @@ interface useAuthReturnType {
 }
 
 export function useAuth(): useAuthReturnType {
-    const { setUser } = useContext(AuthContext);
+    const { setUser, setIsLoading } = useContext(AuthContext);
 
     async function login(username: string, password: string): Promise<void> {
+        setIsLoading(true);
         try {
             const response = await Parse.User.logIn(username, password);
             setUser({
@@ -32,6 +33,8 @@ export function useAuth(): useAuthReturnType {
             } else {
                 throw new Error('Login failed.');
             }
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -53,6 +56,8 @@ export function useAuth(): useAuthReturnType {
             } else {
                 throw new Error('Signup failed.');
             }
+        } finally {
+            setIsLoading(false);
         }
     }
 
