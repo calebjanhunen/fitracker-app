@@ -7,6 +7,7 @@ import { capitalizeFirstLetter } from '../utils/CapitalizeFirstLetter';
 
 interface useAuthReturnType {
     login: (username: string, password: string) => Promise<void>;
+    signup: (username: string, password: string, email: string) => Promise<void>;
     logout: () => Promise<void>;
     persistLogin: () => Promise<void>;
 }
@@ -34,6 +35,27 @@ export function useAuth(): useAuthReturnType {
         }
     }
 
+    async function signup(username: string, password: string, email: string): Promise<void> {
+        const user = new Parse.User();
+        user.set('username', username);
+        user.set('password', password);
+        user.set('email', email);
+        try {
+            const response = await user.signUp();
+            console.log(response);
+            setUser({
+                username: response.get('username'),
+                sessionToken: response.getSessionToken(),
+            });
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(capitalizeFirstLetter(error.message));
+            } else {
+                throw new Error('Signup failed.');
+            }
+        }
+    }
+
     async function logout(): Promise<void> {
         await Parse.User.logOut();
         setUser({ username: '', sessionToken: null });
@@ -51,5 +73,5 @@ export function useAuth(): useAuthReturnType {
         } catch (error) {}
     }
 
-    return { login, logout, persistLogin };
+    return { login, signup, logout, persistLogin };
 }

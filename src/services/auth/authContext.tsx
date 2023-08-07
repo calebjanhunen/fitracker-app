@@ -1,12 +1,5 @@
-import React, {
-    createContext,
-    useEffect,
-    useState,
-    type Dispatch,
-    type SetStateAction,
-} from 'react';
+import React, { createContext, useState, type Dispatch, type SetStateAction } from 'react';
 
-import { useAuth } from '../../hooks/useAuth';
 import { type User } from '../../interfaces/User';
 
 interface Props {
