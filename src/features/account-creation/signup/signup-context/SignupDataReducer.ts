@@ -1,3 +1,5 @@
+import { type SignupData } from '../../../../interfaces/User';
+
 export enum SignupActionTypes {
     ADD_FITNESS_GOALS = 'add-fitness-goals',
     ADD_WORKOUT_TYPES = 'add-workout-types',
@@ -12,15 +14,6 @@ interface Location {
     city: string;
     province: string;
     gym: string;
-}
-
-export interface SignupData {
-    fitnessGoals: string[];
-    workoutTypes: string[];
-    skillLevel: string;
-    location: Location;
-    workoutDays: string[];
-    workoutTimes: string[];
 }
 
 export type ActionProps =

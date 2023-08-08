@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import Parse from 'parse/react-native';
 
+import { type SignupData } from '../interfaces/User';
 import { AuthContext } from '../services/auth/authContext';
 import { capitalizeFirstLetter } from '../utils/CapitalizeFirstLetter';
 
@@ -61,12 +62,15 @@ export function useAuth(): useAuthReturnType {
         }
     }
 
+    async function updateUserInfo(signupData: SignupData): Promise<void> {}
+
     async function logout(): Promise<void> {
         await Parse.User.logOut();
         setUser({ username: '', sessionToken: null });
     }
 
     async function persistLogin(): Promise<void> {
+        Parse.User.enableUnsafeCurrentUser();
         try {
             const currentUser = await Parse.User.currentAsync();
             if (currentUser) {

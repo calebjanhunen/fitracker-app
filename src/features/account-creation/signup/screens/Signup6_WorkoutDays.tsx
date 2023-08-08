@@ -15,7 +15,7 @@ export default function WorkoutDays({ navigation }: Props): React.ReactElement {
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
     const [selectedDayIds, setSelectedDayIds] = useState<number[]>(
         signupData.workoutDays
-            ? signupData.workoutDays.map((day) =>
+            ? signupData.workoutDays.map((day: string) =>
                   workoutDays.findIndex((workoutDay) => workoutDay.day === day)
               )
             : []

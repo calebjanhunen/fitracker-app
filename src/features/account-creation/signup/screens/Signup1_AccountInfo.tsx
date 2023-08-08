@@ -14,13 +14,10 @@ import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { AuthContext } from '../../../../services/auth/authContext';
 import { SignupBody, SignupFooter } from '../components';
-import { SignupDataContext } from '../signup-context/SignupDataContext';
-import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
 type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
 export default function Signup1({ navigation }: Props): React.ReactElement {
-    const { dispatchSignupData } = useContext(SignupDataContext);
     const [email, setEmail] = useState<string>('calebjanhunen@gmail.com');
     const [username, setUsername] = useState<string>('caleb');
     const [password, setPassword] = useState<string>('123');

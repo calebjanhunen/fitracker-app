@@ -4,14 +4,11 @@ import { ActivityIndicator, FlatList } from 'react-native';
 import { type StackScreenProps } from '@react-navigation/stack';
 
 import { Button, PageView, Spacer, Text } from '../../../../components';
+import { type SignupData } from '../../../../interfaces/User';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { SignupBody, SignupFooter, WorkoutDayOrTimeBtn } from '../components';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
-import {
-    SignupActionTypes,
-    type ActionProps,
-    type SignupData,
-} from '../signup-context/SignupDataReducer';
+import { SignupActionTypes, type ActionProps } from '../signup-context/SignupDataReducer';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutTimes'>;
 
@@ -25,7 +22,7 @@ function signupUser(
         type: SignupActionTypes.ADD_WORKOUT_TIMES,
         payload: selectedTimes,
     });
-
+    console.log(signupData);
     // TODO: send values to backend to create account
 }
 
@@ -33,7 +30,7 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
     const [selectedTimeIds, setSelectedTimeIds] = useState<number[]>(
         signupData.workoutTimes
-            ? signupData.workoutTimes.map((time) =>
+            ? signupData.workoutTimes.map((time: string) =>
                   workoutTimes.findIndex((workoutTime) => workoutTime.text === time)
               )
             : []
