@@ -11,6 +11,7 @@ interface useAuthReturnType {
     signup: (username: string, password: string, email: string) => Promise<void>;
     logout: () => Promise<void>;
     persistLogin: () => Promise<void>;
+    updateUserInfo: (signupData: SignupData) => Promise<void>;
 }
 
 export function useAuth(): useAuthReturnType {
@@ -20,10 +21,10 @@ export function useAuth(): useAuthReturnType {
         setIsLoading(true);
         try {
             const response = await Parse.User.logIn(username, password);
-            setUser({
-                username: response.get('username'),
-                sessionToken: response.getSessionToken(),
-            });
+            // setUser({
+            //     username: response.get('username'),
+            //     sessionToken: response.getSessionToken(),
+            // });
         } catch (error) {
             if (error instanceof Error) {
                 if (error.message === 'username/email is required.') {
@@ -47,10 +48,10 @@ export function useAuth(): useAuthReturnType {
         try {
             const response = await user.signUp();
             console.log(response);
-            setUser({
-                username: response.get('username'),
-                sessionToken: response.getSessionToken(),
-            });
+            // setUser({
+            //     username: response.get('username'),
+            //     sessionToken: response.getSessionToken(),
+            // });
         } catch (error) {
             if (error instanceof Error) {
                 throw new Error(capitalizeFirstLetter(error.message));
@@ -62,7 +63,33 @@ export function useAuth(): useAuthReturnType {
         }
     }
 
-    async function updateUserInfo(signupData: SignupData): Promise<void> {}
+    async function updateUserInfo(signupData: SignupData): Promise<void> {
+        setIsLoading(true);
+        await login('caleb', '123');
+
+        try {
+            const currentUser = await Parse.User.currentAsync();
+            console.log(currentUser);
+            currentUser?.set('fitnessGoals', signupData.fitnessGoals);
+            currentUser?.set('workoutTypes', signupData.workoutTypes);
+            currentUser?.set('skillLevel', signupData.skillLevel);
+            currentUser?.set('country', signupData.location.country);
+            currentUser?.set('city', signupData.location.city);
+            currentUser?.set('province', signupData.location.province);
+            currentUser?.set('gym', signupData.location.gym);
+            currentUser?.set('workoutDays', signupData.workoutDays);
+            currentUser?.set('workoutTimes', signupData.workoutTimes);
+            await currentUser?.save();
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(capitalizeFirstLetter(error.message));
+            } else {
+                throw new Error('Failed to update User.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     async function logout(): Promise<void> {
         await Parse.User.logOut();
@@ -74,13 +101,13 @@ export function useAuth(): useAuthReturnType {
         try {
             const currentUser = await Parse.User.currentAsync();
             if (currentUser) {
-                setUser({
-                    username: currentUser.get('username'),
-                    sessionToken: currentUser.getSessionToken(),
-                });
+                // setUser({
+                //     username: currentUser.get('username'),
+                //     sessionToken: currentUser.getSessionToken(),
+                // });
             }
         } catch (error) {}
     }
 
-    return { login, signup, logout, persistLogin };
+    return { login, signup, logout, persistLogin, updateUserInfo };
 }

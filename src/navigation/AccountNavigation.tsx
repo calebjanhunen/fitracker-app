@@ -48,6 +48,7 @@ export default function AccountNavigation(): React.ReactElement {
                         </TouchableOpacity>
                     ),
                 })}
+                initialRouteName='WorkoutTimes' // TODO: Remove line (dev purposes)
             >
                 <Stack.Screen
                     name='Login'
