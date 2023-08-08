@@ -1,39 +1,24 @@
-import { type StackScreenProps } from '@react-navigation/stack';
 import React, { useContext, useState, type Dispatch, type SetStateAction } from 'react';
+
+import { type StackScreenProps } from '@react-navigation/stack';
+
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { fitnessGoals } from '../../../../utils/FitnessGoals';
 import { SignupBody, SignupFooter } from '../components';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
-interface FitnessGoalsInterface {
-    id: number;
-    name: string;
-}
-
-const fitnessGoals: FitnessGoalsInterface[] = [
-    { name: 'Weight Loss', id: 1 },
-    { name: 'Endurance/Stamina', id: 2 },
-    { name: 'Injury Rehab', id: 3 },
-    { name: 'Muscle Gain', id: 4 },
-    { name: 'Core Strength and Stability', id: 5 },
-    { name: 'Stress Relief', id: 6 },
-    { name: 'Flexibility/Mobility', id: 7 },
-    { name: 'Cardiovascular Improvements', id: 8 },
-    { name: 'Mental Health', id: 9 },
-];
-
 function toggleSelectedChip(
-    id: number,
     name: string,
-    selectedChips: FitnessGoalsInterface[],
-    setSelectedChip: Dispatch<SetStateAction<FitnessGoalsInterface[]>>
+    selectedChips: string[],
+    setSelectedChip: Dispatch<SetStateAction<string[]>>
 ): void {
-    const indexOfChip = selectedChips.findIndex((chip) => chip.id === id);
-    if (indexOfChip === -1) {
-        setSelectedChip((prevChips) => [...prevChips, { id, name }]);
+    const foundName = selectedChips.includes(name);
+    if (!foundName) {
+        setSelectedChip((prevNames) => [...prevNames, name]);
     } else {
-        setSelectedChip((prevChips) => prevChips.filter((chip) => chip.id !== id));
+        setSelectedChip((prevNames) => prevNames.filter((prevName) => prevName !== name));
     }
 }
 
@@ -41,9 +26,7 @@ type Props = StackScreenProps<RootStackParamList, 'FitnessGoals'>;
 
 export default function FitnessGoals({ navigation }: Props): React.ReactElement {
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
-    const [selectedChips, setSelectedChips] = useState<FitnessGoalsInterface[]>(
-        signupData.fitnessGoals ? signupData.fitnessGoals : []
-    );
+    const [selectedChips, setSelectedChips] = useState<string[]>([]);
 
     const isNextBtnDisabled = selectedChips.length < 3;
 
@@ -58,19 +41,14 @@ export default function FitnessGoals({ navigation }: Props): React.ReactElement 
             <SignupBody>
                 <Spacer size='xl' />
                 <ChipContainer>
-                    {fitnessGoals.map((goal) => (
+                    {fitnessGoals.map((goal, index) => (
                         <Chip
-                            text={goal.name}
-                            key={goal.id}
+                            text={goal}
+                            key={index}
                             onPress={() => {
-                                toggleSelectedChip(
-                                    goal.id,
-                                    goal.name,
-                                    selectedChips,
-                                    setSelectedChips
-                                );
+                                toggleSelectedChip(goal, selectedChips, setSelectedChips);
                             }}
-                            isSelected={Boolean(selectedChips.find((chip) => chip.id === goal.id))}
+                            isSelected={selectedChips.includes(goal)}
                         />
                     ))}
                 </ChipContainer>

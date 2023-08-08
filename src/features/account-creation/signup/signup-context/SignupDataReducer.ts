@@ -24,7 +24,7 @@ export interface SignupData {
     email: string;
     username: string;
     password: string;
-    fitnessGoals: FitnessGoalsOrWorkoutTypes[];
+    fitnessGoals: string[];
     workoutTypes: FitnessGoalsOrWorkoutTypes[];
     skillLevel: string;
     location: Location;
@@ -39,7 +39,7 @@ export type ActionProps =
       }
     | {
           type: SignupActionTypes.ADD_FITNESS_GOALS;
-          payload: FitnessGoalsOrWorkoutTypes[];
+          payload: string[];
       }
     | {
           type: SignupActionTypes.ADD_WORKOUT_TYPES;

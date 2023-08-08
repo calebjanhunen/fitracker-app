@@ -95,19 +95,20 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                             setConfirmPassword(text);
                         }}
                     />
-                    <Spacer size='xl' />
-                    <Button
-                        variant='full'
-                        backgroundColor='primary'
-                        textColor='white'
-                        disabled={isBtnDisabled}
-                        onPress={() => {
-                            void onSignupBtnPress();
-                        }}
-                    >
-                        Sign up
-                    </Button>
                 </SignupBody>
+                <Spacer size='xl' />
+                <Button
+                    variant='full'
+                    backgroundColor='primary'
+                    textColor='white'
+                    disabled={isBtnDisabled}
+                    onPress={() => {
+                        void onSignupBtnPress();
+                    }}
+                >
+                    Sign up
+                </Button>
+                <Spacer size='xl' />
                 <SignupFooter navigation={navigation} />
             </PageView>
         </DismissKeyboardContainer>
