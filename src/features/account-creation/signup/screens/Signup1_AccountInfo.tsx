@@ -40,7 +40,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
         //     payload: { email, username, password },
         // });
         try {
-            await signup(username, password, email);
+            // await signup(username, password, email);
             navigation.push('FitnessGoals');
         } catch (error) {
             console.log(error);

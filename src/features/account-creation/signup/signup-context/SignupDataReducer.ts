@@ -8,11 +8,6 @@ export enum SignupActionTypes {
     ADD_WORKOUT_TIMES = 'add-workout-times',
 }
 
-interface FitnessGoalsOrWorkoutTypes {
-    id: number;
-    name: string;
-}
-
 interface Location {
     country: string;
     city: string;
@@ -25,7 +20,7 @@ export interface SignupData {
     username: string;
     password: string;
     fitnessGoals: string[];
-    workoutTypes: FitnessGoalsOrWorkoutTypes[];
+    workoutTypes: string[];
     skillLevel: string;
     location: Location;
     workoutDays: string[];
@@ -43,7 +38,7 @@ export type ActionProps =
       }
     | {
           type: SignupActionTypes.ADD_WORKOUT_TYPES;
-          payload: FitnessGoalsOrWorkoutTypes[];
+          payload: string[];
       }
     | {
           type: SignupActionTypes.ADD_SKILL_LEVEL;

@@ -4,8 +4,8 @@ import { type StackScreenProps } from '@react-navigation/stack';
 
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { fitnessGoals } from '../../../../utils/FitnessGoals';
 import { SignupBody, SignupFooter } from '../components';
+import { fitnessGoals } from '../data/FitnessGoals';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
@@ -26,7 +26,9 @@ type Props = StackScreenProps<RootStackParamList, 'FitnessGoals'>;
 
 export default function FitnessGoals({ navigation }: Props): React.ReactElement {
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
-    const [selectedChips, setSelectedChips] = useState<string[]>([]);
+    const [selectedChips, setSelectedChips] = useState<string[]>(
+        signupData.fitnessGoals ? signupData.fitnessGoals : []
+    );
 
     const isNextBtnDisabled = selectedChips.length < 3;
 
