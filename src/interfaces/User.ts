@@ -3,11 +3,18 @@ export interface User {
     sessionToken: string | null;
 }
 
+export interface UserLocation {
+    country: string;
+    city: string;
+    province: string;
+    gym: string;
+}
+
 export interface SignupData {
     fitnessGoals: string[];
     workoutTypes: string[];
     skillLevel: string;
-    location: Location;
+    location: UserLocation;
     workoutDays: string[];
     workoutTimes: string[];
 }

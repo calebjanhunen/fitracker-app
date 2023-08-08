@@ -1,4 +1,4 @@
-import { type SignupData } from '../../../../interfaces/User';
+import { type SignupData, type UserLocation } from '../../../../interfaces/User';
 
 export enum SignupActionTypes {
     ADD_FITNESS_GOALS = 'add-fitness-goals',
@@ -7,13 +7,6 @@ export enum SignupActionTypes {
     ADD_LOCATION = 'add-location',
     ADD_WORKOUT_DAYS = 'add-workout-days',
     ADD_WORKOUT_TIMES = 'add-workout-times',
-}
-
-interface Location {
-    country: string;
-    city: string;
-    province: string;
-    gym: string;
 }
 
 export type ActionProps =
@@ -31,7 +24,7 @@ export type ActionProps =
       }
     | {
           type: SignupActionTypes.ADD_LOCATION;
-          payload: Location;
+          payload: UserLocation;
       }
     | {
           type: SignupActionTypes.ADD_WORKOUT_DAYS;
