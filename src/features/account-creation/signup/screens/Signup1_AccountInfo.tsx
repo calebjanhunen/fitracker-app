@@ -35,10 +35,6 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
         confirmPassword.length === 0;
 
     async function onSignupBtnPress(): Promise<void> {
-        // dispatchSignupData({
-        //     type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
-        //     payload: { email, username, password },
-        // });
         try {
             // await signup(username, password, email);
             navigation.push('FitnessGoals');

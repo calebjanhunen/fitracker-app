@@ -1,5 +1,4 @@
 export enum SignupActionTypes {
-    UPDATE_ACCOUNT_INFO = 'update-account-info',
     ADD_FITNESS_GOALS = 'add-fitness-goals',
     ADD_WORKOUT_TYPES = 'add-workout-types',
     ADD_SKILL_LEVEL = 'add-skill-level',
@@ -16,9 +15,6 @@ interface Location {
 }
 
 export interface SignupData {
-    email: string;
-    username: string;
-    password: string;
     fitnessGoals: string[];
     workoutTypes: string[];
     skillLevel: string;
@@ -28,10 +24,6 @@ export interface SignupData {
 }
 
 export type ActionProps =
-    | {
-          type: SignupActionTypes.UPDATE_ACCOUNT_INFO;
-          payload: { email: string; username: string; password: string };
-      }
     | {
           type: SignupActionTypes.ADD_FITNESS_GOALS;
           payload: string[];
@@ -59,13 +51,6 @@ export type ActionProps =
 
 export function signupReducer(signupData: SignupData, action: ActionProps): SignupData {
     switch (action.type) {
-        case SignupActionTypes.UPDATE_ACCOUNT_INFO:
-            return {
-                ...signupData,
-                email: action.payload.email,
-                username: action.payload.username,
-                password: action.payload.password,
-            };
         case SignupActionTypes.ADD_FITNESS_GOALS:
             return {
                 ...signupData,
