@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, type Dispatch } from 'react';
 
-import { signupReducer, type ActionProps, type SignupData } from './SignupDataReducer';
+import { type SignupData } from '../../../../interfaces/User';
+import { signupReducer, type ActionProps } from './SignupDataReducer';
 
 interface Props {
     children: React.ReactNode;

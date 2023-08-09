@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
+import { ActivityIndicator } from 'react-native';
 import {
     Button,
     DismissKeyboardContainer,
@@ -10,21 +11,21 @@ import {
     Text,
     TextInput,
 } from '../../../../components';
+import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { AuthContext } from '../../../../services/auth/authContext';
 import { SignupBody, SignupFooter } from '../components';
-import { SignupDataContext } from '../signup-context/SignupDataContext';
-import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
 type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
 export default function Signup1({ navigation }: Props): React.ReactElement {
-    const { dispatchSignupData } = useContext(SignupDataContext);
-    const { signup } = useContext(AuthContext);
-    const [email, setEmail] = useState<string>('calebjanhunen@gmail.com');
-    const [username, setUsername] = useState<string>('calebjanhunen');
-    const [password, setPassword] = useState<string>('123');
-    const [confirmPassword, setConfirmPassword] = useState<string>('123');
+    const [email, setEmail] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const { signup } = useAuth();
+    const { isLoading } = useContext(AuthContext);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const isBtnDisabled =
         email.length === 0 ||
@@ -32,16 +33,15 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
         password.length === 0 ||
         confirmPassword.length === 0;
 
-    async function onSignupBtnPress(): Promise<void> {
-        dispatchSignupData({
-            type: SignupActionTypes.UPDATE_ACCOUNT_INFO,
-            payload: { email, username, password },
-        });
+    async function onBtnPress(): Promise<void> {
+        setErrorMessage('');
         try {
-            await signup(username, email, password);
+            await signup(username, password, email);
             navigation.push('FitnessGoals');
         } catch (error) {
-            console.log(error);
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            }
         }
     }
 
@@ -93,19 +93,25 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                             setConfirmPassword(text);
                         }}
                     />
-                    <Spacer size='xl' />
-                    <Button
-                        variant='full'
-                        backgroundColor='primary'
-                        textColor='white'
-                        disabled={isBtnDisabled}
-                        onPress={() => {
-                            void onSignupBtnPress();
-                        }}
-                    >
-                        Sign up
-                    </Button>
                 </SignupBody>
+                <Spacer size='xl' />
+                <Text variant='body' color='error' textAlign='center'>
+                    {errorMessage}
+                </Text>
+                <Spacer size='md' />
+                <Button
+                    variant='full'
+                    backgroundColor='primary'
+                    textColor='white'
+                    disabled={isBtnDisabled}
+                    loading={isLoading}
+                    onPress={() => {
+                        void onBtnPress();
+                    }}
+                >
+                    {isLoading ? <ActivityIndicator /> : 'Next'}
+                </Button>
+                <Spacer size='xl' />
                 <SignupFooter navigation={navigation} />
             </PageView>
         </DismissKeyboardContainer>

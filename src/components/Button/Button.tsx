@@ -14,6 +14,7 @@ interface Props extends TouchableOpacityProps {
     borderColor?: keyof typeof theme.colors;
     thin?: boolean;
     onPress: () => void;
+    loading?: boolean;
 }
 
 const full = (theme: ThemeType): string => `
@@ -37,9 +38,10 @@ const CustomButton = styled(TouchableOpacity)<{
     borderColor: Props['borderColor'];
     thin: Props['thin'];
     disabled: Props['disabled'];
+    loading: Props['loading'];
 }>`
-    background-color: ${({ backgroundColor, theme, disabled }) =>
-        disabled ? theme.colors.grey : theme.colors[backgroundColor]};
+    background-color: ${({ backgroundColor, theme, disabled, loading }) =>
+        disabled && !loading ? theme.colors.grey : theme.colors[backgroundColor]};
     ${({ variant, theme }) => variants[variant](theme)};
     display: flex;
     align-items: center;
@@ -59,6 +61,7 @@ export default function Button(props: Props): React.ReactElement {
             borderColor={props.borderColor}
             thin={props.thin}
             disabled={props.disabled}
+            loading={props.loading}
         >
             <Text variant='button' color={props.textColor}>
                 {props.children}

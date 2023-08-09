@@ -34,21 +34,18 @@ const LoginFooter = styled(View)`
 export default function LoginScreen({ navigation }: Props): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { login } = useAuth();
+    const { isLoading } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     async function onLoginPress(): Promise<void> {
         setErrorMessage('');
-        setIsLoading(true);
         try {
             await login(username, password);
         } catch (error) {
             if (error instanceof Error) {
                 setErrorMessage(error.message);
             }
-        } finally {
-            setIsLoading(false);
         }
     }
 
@@ -103,6 +100,8 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
+                            setUsername('');
+                            setPassword('');
                             navigation.push('Signup1');
                         }}
                     >
