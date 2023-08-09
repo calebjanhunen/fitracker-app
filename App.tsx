@@ -17,7 +17,7 @@ import {
 } from '@expo-google-fonts/inter';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BaseNavigation from './src/navigation';
-import { AuthProvider } from './src/services/auth/authContext';
+import { AuthProvider } from './src/services/context/AuthContext';
 import { theme } from './src/theme/theme';
 
 export default function App(): React.ReactElement | null {

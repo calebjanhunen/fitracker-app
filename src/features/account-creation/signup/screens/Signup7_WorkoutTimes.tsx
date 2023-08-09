@@ -8,7 +8,7 @@ import { useAuth } from '../../../../hooks/useAuth';
 import { type SignupData } from '../../../../interfaces/User';
 import { SignupDataMock } from '../../../../mock-data/SignupDataMock';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { AuthContext } from '../../../../services/auth/authContext';
+import { AuthContext } from '../../../../services/context/AuthContext';
 import { SignupBody, WorkoutDayOrTimeBtn } from '../components';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes, type ActionProps } from '../signup-context/SignupDataReducer';

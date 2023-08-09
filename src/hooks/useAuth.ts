@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import Parse from 'parse/react-native';
 
 import { type SignupData } from '../interfaces/User';
-import { AuthContext } from '../services/auth/authContext';
+import { AuthContext } from '../services/context/AuthContext';
 import { capitalizeFirstLetter } from '../utils/CapitalizeFirstLetter';
 
 interface useAuthReturnType {

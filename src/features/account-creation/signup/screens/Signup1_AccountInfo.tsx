@@ -13,7 +13,7 @@ import {
 } from '../../../../components';
 import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { AuthContext } from '../../../../services/auth/authContext';
+import { AuthContext } from '../../../../services/context/AuthContext';
 import { SignupBody, SignupFooter } from '../components';
 
 type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
