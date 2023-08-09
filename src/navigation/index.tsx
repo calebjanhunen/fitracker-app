@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { ActivityIndicator } from 'react-native';
 import { useAuth } from '../hooks/useAuth';
-import { AuthContext } from '../services/auth/authContext';
+import { AuthContext } from '../services/context/AuthContext';
 import AccountNavigation from './AccountNavigation';
 import AppNavigation from './AppNavigation';
 

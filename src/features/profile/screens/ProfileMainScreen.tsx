@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { Button, PageView, Text } from '../../../components';
 import { useAuth } from '../../../hooks/useAuth';
-import { AuthContext } from '../../../services/auth/authContext';
+import { AuthContext } from '../../../services/context/AuthContext';
 
 export default function ProfileMainScreen(): React.ReactElement {
     const { logout } = useAuth();

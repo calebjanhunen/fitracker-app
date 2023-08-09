@@ -15,7 +15,7 @@ import {
 } from '../../../components';
 import { useAuth } from '../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../navigation/AccountNavigation';
-import { AuthContext } from '../../../services/auth/authContext';
+import { AuthContext } from '../../../services/context/AuthContext';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
 
