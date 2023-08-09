@@ -9,7 +9,7 @@ import { type SignupData } from '../../../../interfaces/User';
 import { SignupDataMock } from '../../../../mock-data/SignupDataMock';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { AuthContext } from '../../../../services/auth/authContext';
-import { SignupBody, SignupFooter, WorkoutDayOrTimeBtn } from '../components';
+import { SignupBody, WorkoutDayOrTimeBtn } from '../components';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes, type ActionProps } from '../signup-context/SignupDataReducer';
 
@@ -89,7 +89,6 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
                 {isLoading ? <ActivityIndicator color='white' /> : 'Sign up'}
             </Button>
             <Spacer size='xl' />
-            <SignupFooter navigation={navigation} />
         </PageView>
     );
 }

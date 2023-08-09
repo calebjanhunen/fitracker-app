@@ -48,7 +48,6 @@ export default function AccountNavigation(): React.ReactElement {
                         </TouchableOpacity>
                     ),
                 })}
-                initialRouteName='WorkoutTimes' // TODO: Remove line (dev purposes)
             >
                 <Stack.Screen
                     name='Login'
@@ -56,7 +55,11 @@ export default function AccountNavigation(): React.ReactElement {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name='Signup1' component={Signup1} />
-                <Stack.Screen name='FitnessGoals' component={FitnessGoals} />
+                <Stack.Screen
+                    name='FitnessGoals'
+                    component={FitnessGoals}
+                    options={{ headerLeft: () => null }}
+                />
                 <Stack.Screen name='WorkoutTypes' component={WorkoutTypes} />
                 <Stack.Screen name='SkillLevel' component={SkillLevel} />
                 <Stack.Screen name='EnterLocation' component={EnterLocation} />

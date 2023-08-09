@@ -100,6 +100,8 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
+                            setUsername('');
+                            setPassword('');
                             navigation.push('Signup1');
                         }}
                     >

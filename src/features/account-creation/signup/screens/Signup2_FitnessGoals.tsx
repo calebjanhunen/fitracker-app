@@ -4,7 +4,7 @@ import { type StackScreenProps } from '@react-navigation/stack';
 
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { SignupBody, SignupFooter } from '../components';
+import { SignupBody } from '../components';
 import { fitnessGoals } from '../data/FitnessGoals';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
@@ -72,7 +72,6 @@ export default function FitnessGoals({ navigation }: Props): React.ReactElement 
                 </Button>
                 <Spacer size='xl' />
             </SignupBody>
-            <SignupFooter navigation={navigation} />
         </PageView>
     );
 }

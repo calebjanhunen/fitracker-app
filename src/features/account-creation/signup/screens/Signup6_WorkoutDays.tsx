@@ -5,7 +5,7 @@ import { type StackScreenProps } from '@react-navigation/stack';
 
 import { Button, PageView, Spacer, Text } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { SignupBody, SignupFooter, WorkoutDayOrTimeBtn } from '../components';
+import { SignupBody, WorkoutDayOrTimeBtn } from '../components';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
@@ -57,7 +57,6 @@ export default function WorkoutDays({ navigation }: Props): React.ReactElement {
                 Next
             </Button>
             <Spacer size='xl' />
-            <SignupFooter navigation={navigation} />
         </PageView>
     );
 }

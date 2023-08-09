@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
+import { ActivityIndicator } from 'react-native';
 import {
     Button,
     DismissKeyboardContainer,
@@ -18,12 +19,13 @@ import { SignupBody, SignupFooter } from '../components';
 type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
 export default function Signup1({ navigation }: Props): React.ReactElement {
-    const [email, setEmail] = useState<string>('calebjanhunen@gmail.com');
-    const [username, setUsername] = useState<string>('caleb');
-    const [password, setPassword] = useState<string>('123');
-    const [confirmPassword, setConfirmPassword] = useState<string>('123');
+    const [email, setEmail] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
     const { signup } = useAuth();
     const { isLoading } = useContext(AuthContext);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const isBtnDisabled =
         email.length === 0 ||
@@ -31,12 +33,15 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
         password.length === 0 ||
         confirmPassword.length === 0;
 
-    async function onSignupBtnPress(): Promise<void> {
+    async function onBtnPress(): Promise<void> {
+        setErrorMessage('');
         try {
-            // await signup(username, password, email);
+            await signup(username, password, email);
             navigation.push('FitnessGoals');
         } catch (error) {
-            console.log(error);
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            }
         }
     }
 
@@ -90,16 +95,21 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                     />
                 </SignupBody>
                 <Spacer size='xl' />
+                <Text variant='body' color='error' textAlign='center'>
+                    {errorMessage}
+                </Text>
+                <Spacer size='md' />
                 <Button
                     variant='full'
                     backgroundColor='primary'
                     textColor='white'
                     disabled={isBtnDisabled}
+                    loading={isLoading}
                     onPress={() => {
-                        void onSignupBtnPress();
+                        void onBtnPress();
                     }}
                 >
-                    Sign up
+                    {isLoading ? <ActivityIndicator /> : 'Next'}
                 </Button>
                 <Spacer size='xl' />
                 <SignupFooter navigation={navigation} />

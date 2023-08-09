@@ -21,10 +21,10 @@ export function useAuth(): useAuthReturnType {
         setIsLoading(true);
         try {
             const response = await Parse.User.logIn(username, password);
-            // setUser({
-            //     username: response.get('username'),
-            //     sessionToken: response.getSessionToken(),
-            // });
+            setUser({
+                username: response.get('username'),
+                sessionToken: response.getSessionToken(),
+            });
         } catch (error) {
             if (error instanceof Error) {
                 if (error.message === 'username/email is required.') {
@@ -41,17 +41,13 @@ export function useAuth(): useAuthReturnType {
     }
 
     async function signup(username: string, password: string, email: string): Promise<void> {
+        setIsLoading(true);
         const user = new Parse.User();
         user.set('username', username);
         user.set('password', password);
         user.set('email', email);
         try {
-            const response = await user.signUp();
-            console.log(response);
-            // setUser({
-            //     username: response.get('username'),
-            //     sessionToken: response.getSessionToken(),
-            // });
+            await user.signUp();
         } catch (error) {
             if (error instanceof Error) {
                 throw new Error(capitalizeFirstLetter(error.message));
@@ -65,21 +61,24 @@ export function useAuth(): useAuthReturnType {
 
     async function updateUserInfo(signupData: SignupData): Promise<void> {
         setIsLoading(true);
-        await login('caleb', '123');
-
         try {
             const currentUser = await Parse.User.currentAsync();
-            console.log(currentUser);
-            currentUser?.set('fitnessGoals', signupData.fitnessGoals);
-            currentUser?.set('workoutTypes', signupData.workoutTypes);
-            currentUser?.set('skillLevel', signupData.skillLevel);
-            currentUser?.set('country', signupData.location.country);
-            currentUser?.set('city', signupData.location.city);
-            currentUser?.set('province', signupData.location.province);
-            currentUser?.set('gym', signupData.location.gym);
-            currentUser?.set('workoutDays', signupData.workoutDays);
-            currentUser?.set('workoutTimes', signupData.workoutTimes);
-            await currentUser?.save();
+            if (currentUser) {
+                currentUser.set('fitnessGoals', signupData.fitnessGoals);
+                currentUser.set('workoutTypes', signupData.workoutTypes);
+                currentUser.set('skillLevel', signupData.skillLevel);
+                currentUser.set('country', signupData.location.country);
+                currentUser.set('city', signupData.location.city);
+                currentUser.set('province', signupData.location.province);
+                currentUser.set('gym', signupData.location.gym);
+                currentUser.set('workoutDays', signupData.workoutDays);
+                currentUser.set('workoutTimes', signupData.workoutTimes);
+                await currentUser.save();
+                setUser({
+                    username: currentUser.get('username'),
+                    sessionToken: currentUser.getSessionToken(),
+                });
+            }
         } catch (error) {
             if (error instanceof Error) {
                 throw new Error(capitalizeFirstLetter(error.message));
@@ -101,10 +100,10 @@ export function useAuth(): useAuthReturnType {
         try {
             const currentUser = await Parse.User.currentAsync();
             if (currentUser) {
-                // setUser({
-                //     username: currentUser.get('username'),
-                //     sessionToken: currentUser.getSessionToken(),
-                // });
+                setUser({
+                    username: currentUser.get('username'),
+                    sessionToken: currentUser.getSessionToken(),
+                });
             }
         } catch (error) {}
     }
