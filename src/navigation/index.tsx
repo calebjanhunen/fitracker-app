@@ -9,7 +9,7 @@ import AccountNavigation from './AccountNavigation';
 import AppNavigation from './AppNavigation';
 
 export default function BaseNavigation(): React.ReactElement {
-    const { user } = useContext(AuthContext);
+    const { session } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { persistLogin } = useAuth();
 
@@ -28,7 +28,7 @@ export default function BaseNavigation(): React.ReactElement {
     }
     return (
         <NavigationContainer>
-            {user.sessionToken ? <AppNavigation /> : <AccountNavigation />}
+            {session ? <AppNavigation /> : <AccountNavigation />}
         </NavigationContainer>
     );
 }

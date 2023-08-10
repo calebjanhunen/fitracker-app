@@ -1,6 +1,6 @@
 export interface User {
-    username: string;
-    sessionToken: string | null;
+    username: string | null;
+    session: string | null;
 }
 
 export interface UserLocation {

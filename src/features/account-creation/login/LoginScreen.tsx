@@ -32,16 +32,18 @@ const LoginFooter = styled(View)`
 `;
 
 export default function LoginScreen({ navigation }: Props): React.ReactElement {
-    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const { login } = useAuth();
     const { isLoading } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+    const isLoginBtnDisabled = email.length === 0 || password.length === 0;
+
     async function onLoginPress(): Promise<void> {
         setErrorMessage('');
         try {
-            await login(username, password);
+            await login(email, password);
         } catch (error) {
             if (error instanceof Error) {
                 setErrorMessage(error.message);
@@ -60,10 +62,11 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     <TextInput
                         autoCapitalize='none'
                         variant='smallTitle'
-                        placeholder='Username'
-                        value={username}
+                        placeholder='Email'
+                        keyboardType='email-address'
+                        value={email}
                         onChangeText={(text) => {
-                            setUsername(text);
+                            setEmail(text);
                         }}
                     />
                     <Spacer size='md' />
@@ -78,19 +81,20 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     />
                     <Spacer size='xxs' />
                     <Text textAlign='center' variant='body' color='error'>
-                        {errorMessage ?? ' '}
+                        {errorMessage || ' '}
                     </Text>
                     <Spacer size='lg' />
                     <Button
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
-                        disabled={isLoading}
+                        disabled={isLoginBtnDisabled}
+                        loading={isLoading}
                         onPress={() => {
                             void onLoginPress();
                         }}
                     >
-                        {isLoading ? <ActivityIndicator color='blue' /> : 'Login'}
+                        {isLoading ? <ActivityIndicator /> : 'Login'}
                     </Button>
                 </LoginForm>
 
@@ -100,7 +104,7 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
-                            setUsername('');
+                            setEmail('');
                             setPassword('');
                             navigation.push('Signup1');
                         }}
