@@ -19,7 +19,6 @@ export function useAuth(): useAuthReturnType {
         setIsLoading(true);
         const { data, error } = await AuthAPI.login(email, password);
         setIsLoading(false);
-        console.log(data);
         if (error) {
             throw new Error(error.message);
         }
@@ -86,16 +85,10 @@ export function useAuth(): useAuthReturnType {
     }
 
     async function persistLogin(): Promise<void> {
-        // Parse.User.enableUnsafeCurrentUser();
-        // try {
-        //     const currentUser = await Parse.User.currentAsync();
-        //     if (currentUser) {
-        //         setUser({
-        //             username: currentUser.get('username'),
-        //             sessionToken: currentUser.getSessionToken(),
-        //         });
-        //     }
-        // } catch (error) {}
+        const { data } = await AuthAPI.getCurrentUser();
+        if (data.session !== null) {
+            setSession(data.session);
+        }
     }
 
     return { login, signup, logout, persistLogin, updateUserInfo };

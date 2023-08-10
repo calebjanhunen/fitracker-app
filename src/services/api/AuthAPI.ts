@@ -10,4 +10,7 @@ export const AuthAPI = {
     logout: async () => {
         return await apiClient.auth.signOut();
     },
+    getCurrentUser: async () => {
+        return await apiClient.auth.getSession();
+    },
 };
