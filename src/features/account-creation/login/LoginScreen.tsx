@@ -32,7 +32,7 @@ const LoginFooter = styled(View)`
 `;
 
 export default function LoginScreen({ navigation }: Props): React.ReactElement {
-    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const { login } = useAuth();
     const { isLoading } = useContext(AuthContext);
@@ -41,7 +41,7 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
     async function onLoginPress(): Promise<void> {
         setErrorMessage('');
         try {
-            await login(username, password);
+            await login(email, password);
         } catch (error) {
             if (error instanceof Error) {
                 setErrorMessage(error.message);
@@ -60,10 +60,11 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     <TextInput
                         autoCapitalize='none'
                         variant='smallTitle'
-                        placeholder='Username'
-                        value={username}
+                        placeholder='Email'
+                        keyboardType='email-address'
+                        value={email}
                         onChangeText={(text) => {
-                            setUsername(text);
+                            setEmail(text);
                         }}
                     />
                     <Spacer size='md' />
@@ -86,6 +87,7 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                         backgroundColor='primary'
                         textColor='white'
                         disabled={isLoading}
+                        loading={isLoading}
                         onPress={() => {
                             void onLoginPress();
                         }}
@@ -100,7 +102,7 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
-                            setUsername('');
+                            setEmail('');
                             setPassword('');
                             navigation.push('Signup1');
                         }}

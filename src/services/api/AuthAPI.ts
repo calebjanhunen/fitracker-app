@@ -1,0 +1,10 @@
+import { apiClient } from './config/apiConfig';
+
+export const AuthAPI = {
+    login: async (email: string, password: string) => {
+        return await apiClient.auth.signInWithPassword({
+            email,
+            password,
+        });
+    },
+};
