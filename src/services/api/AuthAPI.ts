@@ -7,4 +7,7 @@ export const AuthAPI = {
             password,
         });
     },
+    logout: async () => {
+        return await apiClient.auth.signOut();
+    },
 };

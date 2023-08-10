@@ -78,8 +78,11 @@ export function useAuth(): useAuthReturnType {
     }
 
     async function logout(): Promise<void> {
-        // await Parse.User.logOut();
-        // setUser({ username: '', sessionToken: null });
+        const { error } = await AuthAPI.logout();
+        if (error) {
+            console.error(error);
+        }
+        setSession(null);
     }
 
     async function persistLogin(): Promise<void> {
