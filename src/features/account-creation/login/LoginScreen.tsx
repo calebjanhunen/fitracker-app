@@ -92,7 +92,7 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                             void onLoginPress();
                         }}
                     >
-                        {isLoading ? <ActivityIndicator color='blue' /> : 'Login'}
+                        {isLoading ? <ActivityIndicator /> : 'Login'}
                     </Button>
                 </LoginForm>
 
