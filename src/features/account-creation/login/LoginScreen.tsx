@@ -38,6 +38,8 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
     const { isLoading } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+    const isLoginBtnDisabled = email.length === 0 || password.length === 0;
+
     async function onLoginPress(): Promise<void> {
         setErrorMessage('');
         try {
@@ -79,14 +81,14 @@ export default function LoginScreen({ navigation }: Props): React.ReactElement {
                     />
                     <Spacer size='xxs' />
                     <Text textAlign='center' variant='body' color='error'>
-                        {errorMessage ?? ' '}
+                        {errorMessage || ' '}
                     </Text>
                     <Spacer size='lg' />
                     <Button
                         variant='full'
                         backgroundColor='primary'
                         textColor='white'
-                        disabled={isLoading}
+                        disabled={isLoginBtnDisabled}
                         loading={isLoading}
                         onPress={() => {
                             void onLoginPress();
