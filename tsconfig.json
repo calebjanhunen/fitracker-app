@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
+    "useUnknownInCatchVariables": false,
     "types": [
       "styled-components"
     ]

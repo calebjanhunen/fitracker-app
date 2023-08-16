@@ -11,8 +11,8 @@ import {
     Text,
     TextInput,
 } from '../../../../components';
-import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { UserAPI } from '../../../../services/api/UserAPI';
 import { AuthContext } from '../../../../services/context/AuthContext';
 import { SignupBody, SignupFooter } from '../components';
 
@@ -23,7 +23,6 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
-    const { signup } = useAuth();
     const { isLoading } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -36,12 +35,14 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
     async function onBtnPress(): Promise<void> {
         setErrorMessage('');
         try {
-            await signup(username, password, email);
+            const alreadyExistingUser = await UserAPI.getByUsername(username);
+            if (alreadyExistingUser) {
+                setErrorMessage('User already exists.');
+                return;
+            }
             navigation.push('FitnessGoals');
         } catch (error) {
-            if (error instanceof Error) {
-                setErrorMessage(error.message);
-            }
+            setErrorMessage(error.message);
         }
     }
 
