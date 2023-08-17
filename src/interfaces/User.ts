@@ -13,6 +13,9 @@ export interface UserLocation {
 }
 
 export interface SignupData {
+    username: string;
+    password: string;
+    email: string;
     fitnessGoals: Array<Tables<'fitness_goals'>['id']>;
     workoutTypes: Array<Tables<'workout_types'>['id']>;
     skillLevel: string;
