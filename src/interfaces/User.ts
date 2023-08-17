@@ -14,7 +14,7 @@ export interface UserLocation {
 
 export interface SignupData {
     fitnessGoals: Array<Tables<'fitness_goals'>['id']>;
-    workoutTypes: string[];
+    workoutTypes: Array<Tables<'workout_types'>['id']>;
     skillLevel: string;
     location: UserLocation;
     workoutDays: string[];

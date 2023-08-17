@@ -17,7 +17,7 @@ export type ActionProps =
       }
     | {
           type: SignupActionTypes.ADD_WORKOUT_TYPES;
-          payload: string[];
+          payload: Array<Tables<'workout_types'>['id']>;
       }
     | {
           type: SignupActionTypes.ADD_SKILL_LEVEL;

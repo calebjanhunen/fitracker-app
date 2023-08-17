@@ -20,6 +20,7 @@ export function useChipData(
             const { data, error } = await apiClient
                 .from(`${fitnessGoalsOrWorkoutTypes}`)
                 .select('*');
+            console.log(data);
             if (error) {
                 console.error(error);
             }
