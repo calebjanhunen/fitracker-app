@@ -9,7 +9,7 @@ export interface UserLocation {
     country: string;
     city: string;
     province: string;
-    gym: string;
+    gym: number;
 }
 
 export interface SignupData {
