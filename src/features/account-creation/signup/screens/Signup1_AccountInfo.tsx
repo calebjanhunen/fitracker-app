@@ -24,7 +24,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const { isLoading } = useContext(AuthContext);
-    const { signup } = useAuth();
+    const { checkIfUserAlreadyExists } = useAuth();
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const isBtnDisabled =
@@ -36,7 +36,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
     async function onBtnPress(): Promise<void> {
         setErrorMessage('');
         try {
-            await signup(username, email, password);
+            await checkIfUserAlreadyExists(username, email);
             navigation.push('FitnessGoals');
         } catch (error) {
             setErrorMessage(error.message);

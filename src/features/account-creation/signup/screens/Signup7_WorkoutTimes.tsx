@@ -31,7 +31,6 @@ function updateSignupContext(
 export default function WorkoutTimes({ navigation }: Props): React.ReactElement {
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
     const { isLoading } = useContext(AuthContext);
-    const { updateUserInfo } = useAuth();
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [selectedTimeIds, setSelectedTimeIds] = useState<number[]>(
         signupData.workoutTimes
@@ -83,10 +82,10 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
                 loading={isLoading}
                 onPress={() => {
                     updateSignupContext(selectedTimeIds, signupData, dispatchSignupData);
-                    void signupUser();
+                    // void signupUser();
                 }}
             >
-                {isLoading ? <ActivityIndicator color='white' /> : 'Sign up'}
+                {isLoading ? <ActivityIndicator color='white' /> : 'Finish'}
             </Button>
             <Spacer size='xl' />
         </PageView>
