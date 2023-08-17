@@ -25,12 +25,12 @@ function updateSignupContext(
         type: SignupActionTypes.ADD_WORKOUT_TIMES,
         payload: selectedTimes,
     });
-    console.log(signupData);
 }
 
 export default function WorkoutTimes({ navigation }: Props): React.ReactElement {
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
     const { isLoading } = useContext(AuthContext);
+    const { signup } = useAuth();
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [selectedTimeIds, setSelectedTimeIds] = useState<number[]>(
         signupData.workoutTimes
@@ -43,11 +43,9 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
     async function signupUser(): Promise<void> {
         setErrorMessage('');
         try {
-            await updateUserInfo(SignupDataMock);
+            await signup(signupData);
         } catch (error) {
-            if (error instanceof Error) {
-                setErrorMessage(error.message);
-            }
+            console.log(error);
         }
     }
 
@@ -82,7 +80,7 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
                 loading={isLoading}
                 onPress={() => {
                     updateSignupContext(selectedTimeIds, signupData, dispatchSignupData);
-                    // void signupUser();
+                    void signupUser();
                 }}
             >
                 {isLoading ? <ActivityIndicator color='white' /> : 'Finish'}

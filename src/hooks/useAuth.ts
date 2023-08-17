@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 
+import { type SignupData } from '../interfaces/User';
 import { AuthAPI } from '../services/api/AuthAPI';
 import { UsersAPI } from '../services/api/UsersAPI';
 import { AuthContext } from '../services/context/AuthContext';
 
 interface useAuthReturnType {
     login: (email: string, password: string) => Promise<void>;
-    signup: (username: string, password: string, email: string) => Promise<void>;
+    signup: (signupData: SignupData) => Promise<void>;
     logout: () => Promise<void>;
     persistLogin: () => Promise<void>;
     checkIfUserAlreadyExists: (username: string, email: string) => Promise<void>;
@@ -26,13 +27,11 @@ export function useAuth(): useAuthReturnType {
         setSession(data.session);
     }
 
-    async function signup(username: string, email: string, password: string): Promise<void> {
+    async function signup(signupData: SignupData): Promise<void> {
         setIsLoading(true);
         try {
-            const { error } = await AuthAPI.signup(username, email, password);
-            if (error) {
-                throw new Error(error.message);
-            }
+            const newUser = await AuthAPI.signup(signupData);
+            console.log(newUser);
         } catch (error) {
             throw new Error(error.message);
         } finally {
