@@ -26,23 +26,20 @@ export function useAuth(): useAuthReturnType {
         setSession(data.session);
     }
 
-    async function signup(username: string, password: string, email: string): Promise<void> {
-        // setIsLoading(true);
-        // const user = new Parse.User();
-        // user.set('username', username);
-        // user.set('password', password);
-        // user.set('email', email);
-        // try {
-        //     await user.signUp();
-        // } catch (error) {
-        //     if (error instanceof Error) {
-        //         throw new Error(capitalizeFirstLetter(error.message));
-        //     } else {
-        //         throw new Error('Signup failed.');
-        //     }
-        // } finally {
-        //     setIsLoading(false);
-        // }
+    async function signup(username: string, email: string, password: string): Promise<void> {
+        setIsLoading(true);
+        try {
+            const { data, error } = await AuthAPI.signup(username, email, password);
+            console.log(data, error);
+            // if (error) {
+            //     throw new Error(error.message);
+            // }
+            // console.log(data);
+        } catch (error) {
+            throw new Error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     async function updateUserInfo(signupData: SignupData): Promise<void> {

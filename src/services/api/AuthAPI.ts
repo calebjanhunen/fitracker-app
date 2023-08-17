@@ -10,6 +10,17 @@ export const AuthAPI = {
     logout: async () => {
         return await apiClient.auth.signOut();
     },
+    signup: async (username: string, email: string, password: string) => {
+        return await apiClient.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    username,
+                },
+            },
+        });
+    },
     getCurrentUser: async () => {
         return await apiClient.auth.getSession();
     },

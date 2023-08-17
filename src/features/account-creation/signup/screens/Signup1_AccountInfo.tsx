@@ -11,6 +11,7 @@ import {
     Text,
     TextInput,
 } from '../../../../components';
+import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { UserAPI } from '../../../../services/api/UserAPI';
 import { AuthContext } from '../../../../services/context/AuthContext';
@@ -24,6 +25,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const { isLoading } = useContext(AuthContext);
+    const { signup } = useAuth();
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const isBtnDisabled =
@@ -35,12 +37,13 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
     async function onBtnPress(): Promise<void> {
         setErrorMessage('');
         try {
-            const alreadyExistingUser = await UserAPI.getByUsername(username);
-            if (alreadyExistingUser) {
-                setErrorMessage('User already exists.');
-                return;
-            }
-            navigation.push('FitnessGoals');
+            await signup(username, email, password);
+            // const alreadyExistingUser = await UserAPI.getByUsername(username);
+            // if (alreadyExistingUser) {
+            //     setErrorMessage('User already exists.');
+            //     return;
+            // }
+            // navigation.push('FitnessGoals');
         } catch (error) {
             setErrorMessage(error.message);
         }
@@ -78,7 +81,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                     <TextInput
                         variant='smallTitle'
                         placeholder='Password'
-                        secureTextEntry
+                        // secureTextEntry
                         value={password}
                         onChangeText={(text) => {
                             setPassword(text);
@@ -88,7 +91,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                     <TextInput
                         variant='smallTitle'
                         placeholder='Confirm Password'
-                        secureTextEntry
+                        // secureTextEntry
                         value={confirmPassword}
                         onChangeText={(text) => {
                             setConfirmPassword(text);
