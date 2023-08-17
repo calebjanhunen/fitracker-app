@@ -29,12 +29,10 @@ export function useAuth(): useAuthReturnType {
     async function signup(username: string, email: string, password: string): Promise<void> {
         setIsLoading(true);
         try {
-            const { data, error } = await AuthAPI.signup(username, email, password);
-            console.log(data, error);
-            // if (error) {
-            //     throw new Error(error.message);
-            // }
-            // console.log(data);
+            const { error } = await AuthAPI.signup(username, email, password);
+            if (error) {
+                throw new Error(error.message);
+            }
         } catch (error) {
             throw new Error(error.message);
         } finally {

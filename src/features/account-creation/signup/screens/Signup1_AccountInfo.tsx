@@ -13,7 +13,6 @@ import {
 } from '../../../../components';
 import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
-import { UserAPI } from '../../../../services/api/UserAPI';
 import { AuthContext } from '../../../../services/context/AuthContext';
 import { SignupBody, SignupFooter } from '../components';
 
@@ -38,12 +37,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
         setErrorMessage('');
         try {
             await signup(username, email, password);
-            // const alreadyExistingUser = await UserAPI.getByUsername(username);
-            // if (alreadyExistingUser) {
-            //     setErrorMessage('User already exists.');
-            //     return;
-            // }
-            // navigation.push('FitnessGoals');
+            navigation.push('FitnessGoals');
         } catch (error) {
             setErrorMessage(error.message);
         }

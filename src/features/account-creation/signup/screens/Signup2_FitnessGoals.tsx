@@ -1,35 +1,34 @@
-import React, { useContext, useState, type Dispatch, type SetStateAction } from 'react';
+import React, { useContext, useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 
+import { ActivityIndicator } from 'react-native';
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
+import { useChipData } from '../../../../hooks/useChipData';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { SignupBody } from '../components';
-import { fitnessGoals } from '../data/FitnessGoals';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
 function toggleSelectedChip(
-    name: string,
-    selectedChips: string[],
-    setSelectedChip: Dispatch<SetStateAction<string[]>>
+    id: number,
+    selectedChips: number[],
+    setSelectedChip: Dispatch<SetStateAction<number[]>>
 ): void {
-    const foundName = selectedChips.includes(name);
+    const foundName = selectedChips.includes(id);
     if (!foundName) {
-        setSelectedChip((prevNames) => [...prevNames, name]);
+        setSelectedChip((prevIds) => [...prevIds, id]);
     } else {
-        setSelectedChip((prevNames) => prevNames.filter((prevName) => prevName !== name));
+        setSelectedChip((prevNames) => prevNames.filter((prevIds) => prevIds !== id));
     }
 }
 
 type Props = StackScreenProps<RootStackParamList, 'FitnessGoals'>;
 
 export default function FitnessGoals({ navigation }: Props): React.ReactElement {
+    const { chips: fitnessGoals, isLoading } = useChipData('fitness_goals');
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
-    const [selectedChips, setSelectedChips] = useState<string[]>(
-        signupData.fitnessGoals ? signupData.fitnessGoals : []
-    );
-
+    const [selectedChips, setSelectedChips] = useState<number[]>([]);
     const isNextBtnDisabled = selectedChips.length < 3;
 
     return (
@@ -41,37 +40,47 @@ export default function FitnessGoals({ navigation }: Props): React.ReactElement 
                 Choose at least 3
             </Text>
             <SignupBody>
-                <Spacer size='xl' />
-                <ChipContainer>
-                    {fitnessGoals.map((goal, index) => (
-                        <Chip
-                            text={goal}
-                            key={index}
-                            onPress={() => {
-                                toggleSelectedChip(goal, selectedChips, setSelectedChips);
-                            }}
-                            isSelected={selectedChips.includes(goal)}
-                        />
-                    ))}
-                </ChipContainer>
-                <Spacer size='xl' />
-                <Button
-                    variant='full'
-                    backgroundColor='primary'
-                    textColor='white'
-                    disabled={isNextBtnDisabled}
-                    onPress={() => {
-                        dispatchSignupData({
-                            type: SignupActionTypes.ADD_FITNESS_GOALS,
-                            payload: selectedChips,
-                        });
-                        navigation.push('WorkoutTypes');
-                    }}
-                >
-                    Next
-                </Button>
-                <Spacer size='xl' />
+                {isLoading ? (
+                    <ActivityIndicator />
+                ) : (
+                    <>
+                        <Spacer size='xl' />
+                        <ChipContainer>
+                            {fitnessGoals.map((goal) => (
+                                <Chip
+                                    text={goal.name}
+                                    key={goal.id}
+                                    onPress={() => {
+                                        toggleSelectedChip(
+                                            goal.id,
+                                            selectedChips,
+                                            setSelectedChips
+                                        );
+                                    }}
+                                    isSelected={selectedChips.includes(goal.id)}
+                                />
+                            ))}
+                        </ChipContainer>
+                        <Spacer size='xl' />
+                    </>
+                )}
             </SignupBody>
+            <Button
+                variant='full'
+                backgroundColor='primary'
+                textColor='white'
+                disabled={isNextBtnDisabled}
+                onPress={() => {
+                    dispatchSignupData({
+                        type: SignupActionTypes.ADD_FITNESS_GOALS,
+                        payload: selectedChips,
+                    });
+                    navigation.push('WorkoutTypes');
+                }}
+            >
+                Next
+            </Button>
+            <Spacer size='xl' />
         </PageView>
     );
 }
