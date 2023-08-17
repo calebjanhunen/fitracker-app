@@ -28,7 +28,7 @@ type Props = StackScreenProps<RootStackParamList, 'FitnessGoals'>;
 export default function FitnessGoals({ navigation }: Props): React.ReactElement {
     const { chips: fitnessGoals, isLoading } = useChipData('fitness_goals');
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
-    const [selectedChips, setSelectedChips] = useState<number[]>([]);
+    const [selectedChips, setSelectedChips] = useState<number[]>(signupData.fitnessGoals ?? []);
     const isNextBtnDisabled = selectedChips.length < 3;
 
     return (

@@ -1,3 +1,4 @@
+import { type Tables } from '../../../../interfaces/Tables';
 import { type SignupData, type UserLocation } from '../../../../interfaces/User';
 
 export enum SignupActionTypes {
@@ -12,7 +13,7 @@ export enum SignupActionTypes {
 export type ActionProps =
     | {
           type: SignupActionTypes.ADD_FITNESS_GOALS;
-          payload: string[];
+          payload: Array<Tables<'fitness_goals'>['id']>;
       }
     | {
           type: SignupActionTypes.ADD_WORKOUT_TYPES;
