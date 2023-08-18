@@ -50,6 +50,7 @@ export function useAuth(): useAuthReturnType {
                     newUser.user.id
                 );
             }
+            setSession(newUser.session);
         } catch (error) {
             throw new Error(error.message);
         } finally {
@@ -77,8 +78,11 @@ export function useAuth(): useAuthReturnType {
         try {
             const userByUsername = await UsersAPI.getByField('username', username);
             const userByEmail = await UsersAPI.getByField('email', email);
-            if (userByUsername || userByEmail) {
-                throw new Error('User already exists.');
+            if (userByUsername) {
+                throw new Error('Username is taken.');
+            }
+            if (userByEmail) {
+                throw new Error('Email is already in use.');
             }
         } catch (error) {
             throw new Error(error.message);

@@ -34,11 +34,11 @@ export type ActionProps =
       }
     | {
           type: SignupActionTypes.ADD_WORKOUT_DAYS;
-          payload: string[];
+          payload: number[];
       }
     | {
           type: SignupActionTypes.ADD_WORKOUT_TIMES;
-          payload: string[];
+          payload: number[];
       };
 
 export function signupReducer(signupData: SignupData, action: ActionProps): SignupData {

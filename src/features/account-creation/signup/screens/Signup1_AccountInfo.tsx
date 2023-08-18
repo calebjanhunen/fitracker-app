@@ -97,7 +97,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                     <TextInput
                         variant='smallTitle'
                         placeholder='Password'
-                        // secureTextEntry
+                        secureTextEntry
                         value={password}
                         onChangeText={(text) => {
                             setPassword(text);
@@ -107,7 +107,7 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
                     <TextInput
                         variant='smallTitle'
                         placeholder='Confirm Password'
-                        // secureTextEntry
+                        secureTextEntry
                         value={confirmPassword}
                         onChangeText={(text) => {
                             setConfirmPassword(text);
