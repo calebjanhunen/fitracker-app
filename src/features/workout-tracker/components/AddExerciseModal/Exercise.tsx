@@ -1,44 +1,41 @@
-import React, { type Dispatch, type SetStateAction } from 'react';
+import React, { memo, type Dispatch, type SetStateAction } from 'react';
 
 import { Spacer, Text } from '../../../../components';
 import { ExerciseContainer } from './AddExerciseModalStyles';
 
 interface Props {
-    selectedExercises: number[];
     setSelectedExercises: Dispatch<SetStateAction<number[]>>;
     id: number;
     name: string;
     bodyPart: string[];
+    isExerciseSelected: boolean;
 }
 
 function toggleExercise(
-    selectedExercises: number[],
     setSelectedExercises: Dispatch<SetStateAction<number[]>>,
     id: number
 ): void {
-    let newSelectedExercises = [...selectedExercises];
-
-    if (selectedExercises.includes(id)) {
-        newSelectedExercises = newSelectedExercises.filter((exerciseId) => exerciseId !== id);
-    } else {
-        newSelectedExercises.push(id);
-    }
-
-    setSelectedExercises(newSelectedExercises);
+    setSelectedExercises((prevExerciseIds) => {
+        if (prevExerciseIds.includes(id)) {
+            return prevExerciseIds.filter((exerciseId) => exerciseId !== id);
+        } else {
+            return [...prevExerciseIds, id];
+        }
+    });
 }
 
-export default function Exercise({
-    selectedExercises,
+const Exercise = memo(function Exercise({
     setSelectedExercises,
     id,
     name,
     bodyPart,
+    isExerciseSelected,
 }: Props): React.ReactElement {
-    const isExerciseSelected = selectedExercises.includes(id);
+    console.log(id, name, ' rendered');
     return (
         <ExerciseContainer
             onPress={() => {
-                toggleExercise(selectedExercises, setSelectedExercises, id);
+                toggleExercise(setSelectedExercises, id);
             }}
             activeOpacity={1}
             backgroundColor={isExerciseSelected ? 'primaryTranslucent' : 'white'}
@@ -50,4 +47,6 @@ export default function Exercise({
             </Text>
         </ExerciseContainer>
     );
-}
+});
+
+export default Exercise;

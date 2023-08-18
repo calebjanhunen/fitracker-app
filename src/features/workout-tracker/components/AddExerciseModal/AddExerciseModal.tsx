@@ -2,7 +2,6 @@ import React, { useEffect, useState, type Dispatch, type SetStateAction } from '
 import { FlatList, Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
-import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { type Tables } from '../../../../interfaces/Tables';
 import { ExercisesAPI } from '../../../../services/api/ExercisesAPI';
 import {
@@ -107,11 +106,11 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                 data={exercises}
                                 renderItem={({ item }) => (
                                     <Exercise
-                                        selectedExercises={selectedExercises}
                                         setSelectedExercises={setSelectedExercises}
                                         id={item.id}
                                         name={item.name}
                                         bodyPart={item.primary_muscle}
+                                        isExerciseSelected={selectedExercises.includes(item.id)}
                                     />
                                 )}
                                 ItemSeparatorComponent={() => (
