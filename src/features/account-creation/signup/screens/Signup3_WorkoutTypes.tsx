@@ -1,32 +1,35 @@
 import React, { useContext, useState, type Dispatch, type SetStateAction } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
+import { ActivityIndicator } from 'react-native';
 
 import { Button, Chip, ChipContainer, PageView, Spacer, Text } from '../../../../components';
+import { useChipData } from '../../../../hooks/useChipData';
+import { type Tables } from '../../../../interfaces/Tables';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { SignupBody } from '../components';
-import { workoutTypes } from '../data/WorkoutTypes';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutTypes'>;
 
 function toggleSelectedChip(
-    name: string,
-    selectedChips: string[],
-    setSelectedChip: Dispatch<SetStateAction<string[]>>
+    id: Tables<'workout_types'>['id'],
+    selectedChips: Array<Tables<'workout_types'>['id']>,
+    setSelectedChip: Dispatch<SetStateAction<Array<Tables<'workout_types'>['id']>>>
 ): void {
-    const doesNameExist: boolean = selectedChips.includes(name);
+    const doesNameExist: boolean = selectedChips.includes(id);
     if (!doesNameExist) {
-        setSelectedChip((prevChips) => [...prevChips, name]);
+        setSelectedChip((prevChips) => [...prevChips, id]);
     } else {
-        setSelectedChip((prevChips) => prevChips.filter((prevChip) => prevChip !== name));
+        setSelectedChip((prevChips) => prevChips.filter((prevChip) => prevChip !== id));
     }
 }
 
 export default function WorkoutTypes({ navigation }: Props): React.ReactElement {
+    const { chips: workoutTypes, isLoading } = useChipData('workout_types');
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
-    const [selectedChips, setSelectedChips] = useState<string[]>(
+    const [selectedChips, setSelectedChips] = useState<Array<Tables<'workout_types'>['id']>>(
         signupData.workoutTypes ? signupData.workoutTypes : []
     );
 
@@ -41,18 +44,26 @@ export default function WorkoutTypes({ navigation }: Props): React.ReactElement 
                 Choose at least 2
             </Text>
             <SignupBody>
-                <ChipContainer>
-                    {workoutTypes.map((workoutType, index) => (
-                        <Chip
-                            text={workoutType}
-                            key={index}
-                            onPress={() => {
-                                toggleSelectedChip(workoutType, selectedChips, setSelectedChips);
-                            }}
-                            isSelected={selectedChips.includes(workoutType)}
-                        />
-                    ))}
-                </ChipContainer>
+                {isLoading ? (
+                    <ActivityIndicator />
+                ) : (
+                    <ChipContainer>
+                        {workoutTypes.map((workoutType, index) => (
+                            <Chip
+                                text={workoutType.name}
+                                key={index}
+                                onPress={() => {
+                                    toggleSelectedChip(
+                                        workoutType.id,
+                                        selectedChips,
+                                        setSelectedChips
+                                    );
+                                }}
+                                isSelected={selectedChips.includes(workoutType.id)}
+                            />
+                        ))}
+                    </ChipContainer>
+                )}
                 <Spacer size='xl' />
                 <Button
                     variant='full'

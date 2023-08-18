@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { type StackScreenProps } from '@react-navigation/stack';
@@ -14,6 +14,7 @@ import {
     TextInput,
 } from '../../../../components';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
+import { GymsAPI } from '../../../../services/api/GymsAPI';
 import { SignupBody } from '../components';
 import { SignupDataContext } from '../signup-context/SignupDataContext';
 import { SignupActionTypes } from '../signup-context/SignupDataReducer';
@@ -45,13 +46,24 @@ export default function EnterLocation({ navigation }: Props): React.ReactElement
 
     // Dropdown vars
     const [open, setOpen] = useState<boolean>(false);
-    const [gymDropdownVal, setGymDropdownVal] = useState<string>(
-        signupData.location?.gym ? signupData.location.gym : ''
+    const [selectedGym, setSelectedGym] = useState<string>(
+        signupData.location?.gym.toString() || ''
     );
-    const gyms = [{ label: 'Guelph Gryphons Athletic Centre', value: 'ggac' }];
+    const [gyms, setGyms] = useState<Array<{ label: string; value: string }>>([]);
+
+    useEffect(() => {
+        async function getGyms(): Promise<void> {
+            const data = await GymsAPI.getAll();
+            data?.forEach((gym) => {
+                setGyms((prevGyms) => [...prevGyms, { label: gym.name, value: gym.id.toString() }]);
+            });
+        }
+
+        void getGyms();
+    }, []);
 
     const isNextBtnDisabled =
-        gymDropdownVal.length === 0 ||
+        selectedGym.length === 0 ||
         country.length === 0 ||
         city.length === 0 ||
         province.length === 0;
@@ -98,10 +110,10 @@ export default function EnterLocation({ navigation }: Props): React.ReactElement
                     <Spacer size='xl' />
                     <DropDownPicker
                         open={open}
-                        value={gymDropdownVal}
+                        value={selectedGym}
                         items={gyms}
                         setOpen={setOpen}
-                        setValue={setGymDropdownVal}
+                        setValue={setSelectedGym}
                         placeholder='Select a Gym'
                     />
                 </SignupBody>
@@ -113,7 +125,7 @@ export default function EnterLocation({ navigation }: Props): React.ReactElement
                     onPress={() => {
                         dispatchSignupData({
                             type: SignupActionTypes.ADD_LOCATION,
-                            payload: { country, city, province, gym: gymDropdownVal },
+                            payload: { country, city, province, gym: parseInt(selectedGym) },
                         });
                         navigation.push('WorkoutDays');
                     }}

@@ -2,14 +2,16 @@ import { useContext } from 'react';
 
 import { type SignupData } from '../interfaces/User';
 import { AuthAPI } from '../services/api/AuthAPI';
+import { JunctionTableAPI } from '../services/api/JunctionTablesAPI';
+import { UsersAPI } from '../services/api/UsersAPI';
 import { AuthContext } from '../services/context/AuthContext';
 
 interface useAuthReturnType {
     login: (email: string, password: string) => Promise<void>;
-    signup: (username: string, password: string, email: string) => Promise<void>;
+    signup: (signupData: SignupData) => Promise<void>;
     logout: () => Promise<void>;
     persistLogin: () => Promise<void>;
-    updateUserInfo: (signupData: SignupData) => Promise<void>;
+    checkIfUserAlreadyExists: (username: string, email: string) => Promise<void>;
 }
 
 export function useAuth(): useAuthReturnType {
@@ -26,54 +28,34 @@ export function useAuth(): useAuthReturnType {
         setSession(data.session);
     }
 
-    async function signup(username: string, password: string, email: string): Promise<void> {
-        // setIsLoading(true);
-        // const user = new Parse.User();
-        // user.set('username', username);
-        // user.set('password', password);
-        // user.set('email', email);
-        // try {
-        //     await user.signUp();
-        // } catch (error) {
-        //     if (error instanceof Error) {
-        //         throw new Error(capitalizeFirstLetter(error.message));
-        //     } else {
-        //         throw new Error('Signup failed.');
-        //     }
-        // } finally {
-        //     setIsLoading(false);
-        // }
-    }
-
-    async function updateUserInfo(signupData: SignupData): Promise<void> {
-        // setIsLoading(true);
-        // try {
-        //     const currentUser = await Parse.User.currentAsync();
-        //     if (currentUser) {
-        //         currentUser.set('fitnessGoals', signupData.fitnessGoals);
-        //         currentUser.set('workoutTypes', signupData.workoutTypes);
-        //         currentUser.set('skillLevel', signupData.skillLevel);
-        //         currentUser.set('country', signupData.location.country);
-        //         currentUser.set('city', signupData.location.city);
-        //         currentUser.set('province', signupData.location.province);
-        //         currentUser.set('gym', signupData.location.gym);
-        //         currentUser.set('workoutDays', signupData.workoutDays);
-        //         currentUser.set('workoutTimes', signupData.workoutTimes);
-        //         await currentUser.save();
-        //         setUser({
-        //             username: currentUser.get('username'),
-        //             sessionToken: currentUser.getSessionToken(),
-        //         });
-        //     }
-        // } catch (error) {
-        //     if (error instanceof Error) {
-        //         throw new Error(capitalizeFirstLetter(error.message));
-        //     } else {
-        //         throw new Error('Failed to update User.');
-        //     }
-        // } finally {
-        //     setIsLoading(false);
-        // }
+    async function signup(signupData: SignupData): Promise<void> {
+        setIsLoading(true);
+        try {
+            const newUser = await AuthAPI.signup(signupData);
+            if (newUser?.user) {
+                await JunctionTableAPI.insertIntoUserFitnessGoals(
+                    signupData.fitnessGoals,
+                    newUser.user.id
+                );
+                await JunctionTableAPI.insertIntoUserWorkoutTypes(
+                    signupData.workoutTypes,
+                    newUser.user.id
+                );
+                await JunctionTableAPI.insertIntoUserWorkoutDays(
+                    signupData.workoutDays,
+                    newUser.user.id
+                );
+                await JunctionTableAPI.insertIntoUserWorkoutTimes(
+                    signupData.workoutTimes,
+                    newUser.user.id
+                );
+            }
+            setSession(newUser.session);
+        } catch (error) {
+            throw new Error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     async function logout(): Promise<void> {
@@ -91,5 +73,23 @@ export function useAuth(): useAuthReturnType {
         }
     }
 
-    return { login, signup, logout, persistLogin, updateUserInfo };
+    async function checkIfUserAlreadyExists(username: string, email: string): Promise<void> {
+        setIsLoading(true);
+        try {
+            const userByUsername = await UsersAPI.getByField('username', username);
+            const userByEmail = await UsersAPI.getByField('email', email);
+            if (userByUsername) {
+                throw new Error('Username is taken.');
+            }
+            if (userByEmail) {
+                throw new Error('Email is already in use.');
+            }
+        } catch (error) {
+            throw new Error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return { login, signup, logout, persistLogin, checkIfUserAlreadyExists };
 }

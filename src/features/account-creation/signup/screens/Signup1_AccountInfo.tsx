@@ -15,6 +15,8 @@ import { useAuth } from '../../../../hooks/useAuth';
 import { type RootStackParamList } from '../../../../navigation/AccountNavigation';
 import { AuthContext } from '../../../../services/context/AuthContext';
 import { SignupBody, SignupFooter } from '../components';
+import { SignupDataContext } from '../signup-context/SignupDataContext';
+import { SignupActionTypes } from '../signup-context/SignupDataReducer';
 
 type Props = StackScreenProps<RootStackParamList, 'Signup1'>;
 
@@ -23,8 +25,9 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
-    const { signup } = useAuth();
+    const { dispatchSignupData } = useContext(SignupDataContext);
     const { isLoading } = useContext(AuthContext);
+    const { checkIfUserAlreadyExists } = useAuth();
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const isBtnDisabled =
@@ -35,14 +38,31 @@ export default function Signup1({ navigation }: Props): React.ReactElement {
 
     async function onBtnPress(): Promise<void> {
         setErrorMessage('');
+        if (!validateInput()) return;
+
         try {
-            await signup(username, password, email);
+            await checkIfUserAlreadyExists(username, email);
+            dispatchSignupData({
+                type: SignupActionTypes.ADD_ACCOUNT_INFO,
+                payload: { username, password, email },
+            });
             navigation.push('FitnessGoals');
         } catch (error) {
-            if (error instanceof Error) {
-                setErrorMessage(error.message);
-            }
+            setErrorMessage(error.message);
         }
+    }
+
+    function validateInput(): boolean {
+        if (password.length < 6) {
+            setErrorMessage('Password must be at least 6 characters');
+            return false;
+        }
+        if (password !== confirmPassword) {
+            setErrorMessage('Passwords must match.');
+            return false;
+        }
+
+        return true;
     }
 
     return (

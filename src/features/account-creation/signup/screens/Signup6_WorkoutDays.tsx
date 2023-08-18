@@ -13,14 +13,9 @@ type Props = StackScreenProps<RootStackParamList, 'WorkoutDays'>;
 
 export default function WorkoutDays({ navigation }: Props): React.ReactElement {
     const { signupData, dispatchSignupData } = useContext(SignupDataContext);
-    const [selectedDayIds, setSelectedDayIds] = useState<number[]>(
-        signupData.workoutDays
-            ? signupData.workoutDays.map((day: string) =>
-                  workoutDays.findIndex((workoutDay) => workoutDay.day === day)
-              )
-            : []
-    );
+    const [selectedDayIds, setSelectedDayIds] = useState<number[]>(signupData.workoutDays || []);
     const isNextBtnDisabled = selectedDayIds.length === 0;
+
     return (
         <PageView>
             <Text variant='title' textAlign='center'>
@@ -29,9 +24,9 @@ export default function WorkoutDays({ navigation }: Props): React.ReactElement {
             <SignupBody>
                 <FlatList
                     data={workoutDays}
-                    renderItem={({ item, index }) => (
+                    renderItem={({ item }) => (
                         <WorkoutDayOrTimeBtn
-                            id={index}
+                            id={item.id}
                             text={item.day}
                             selectedIds={selectedDayIds}
                             setSelectedIds={setSelectedDayIds}
@@ -46,10 +41,9 @@ export default function WorkoutDays({ navigation }: Props): React.ReactElement {
                 textColor='white'
                 disabled={isNextBtnDisabled}
                 onPress={() => {
-                    const selectedDays = selectedDayIds.map((id) => workoutDays[id].day);
                     dispatchSignupData({
                         type: SignupActionTypes.ADD_WORKOUT_DAYS,
-                        payload: selectedDays,
+                        payload: selectedDayIds,
                     });
                     navigation.push('WorkoutTimes');
                 }}
@@ -62,11 +56,11 @@ export default function WorkoutDays({ navigation }: Props): React.ReactElement {
 }
 
 const workoutDays = [
-    { day: 'Sunday' },
-    { day: 'Monday' },
-    { day: 'Tuesday' },
-    { day: 'Wednesday' },
-    { day: 'Thursday' },
-    { day: 'Friday' },
-    { day: 'Saturday' },
+    { id: 1, day: 'Sunday' },
+    { id: 2, day: 'Monday' },
+    { id: 3, day: 'Tuesday' },
+    { id: 4, day: 'Wednesday' },
+    { id: 5, day: 'Thursday' },
+    { id: 6, day: 'Friday' },
+    { id: 7, day: 'Saturday' },
 ];
