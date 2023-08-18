@@ -16,7 +16,6 @@ import Exercise from './Exercise';
 interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
-    setExercises: Dispatch<SetStateAction<ExerciseInterface[]>>;
 }
 
 function closeModal(setModalVisible: (val: boolean) => void): void {
@@ -26,7 +25,6 @@ function closeModal(setModalVisible: (val: boolean) => void): void {
 function addExercisesToWorkout(
     selectedExercises: number[],
     setSelectedExercises: Dispatch<SetStateAction<number[]>>,
-    setExercises: Dispatch<SetStateAction<ExerciseInterface[]>>,
     setModalVisible: (val: boolean) => void
 ): void {
     // TODO: Add exercises to exercises state
@@ -105,7 +103,6 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                         addExercisesToWorkout(
                                             selectedExercises,
                                             setSelectedExercises,
-                                            props.setExercises,
                                             props.setModalVisible
                                         );
                                     }}
