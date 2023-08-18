@@ -7,6 +7,8 @@ interface Props {
     selectedExercises: number[];
     setSelectedExercises: Dispatch<SetStateAction<number[]>>;
     id: number;
+    name: string;
+    bodyPart: string[];
 }
 
 function toggleExercise(
@@ -29,6 +31,8 @@ export default function Exercise({
     selectedExercises,
     setSelectedExercises,
     id,
+    name,
+    bodyPart,
 }: Props): React.ReactElement {
     const isExerciseSelected = selectedExercises.includes(id);
     return (
@@ -39,10 +43,10 @@ export default function Exercise({
             activeOpacity={1}
             backgroundColor={isExerciseSelected ? 'primaryTranslucent' : 'white'}
         >
-            <Text variant='headline'>Exercise Name</Text>
+            <Text variant='headline'>{name}</Text>
             <Spacer size='xxxs' />
             <Text variant='body' color='light'>
-                Body Part
+                {bodyPart}
             </Text>
         </ExerciseContainer>
     );

@@ -16,7 +16,7 @@ export interface Database {
           instructions: string[] | null
           level: string | null
           name: string
-          primary_muscle: string[] | null
+          primary_muscle: string[]
           secondary_muscle: string[] | null
         }
         Insert: {
@@ -25,7 +25,7 @@ export interface Database {
           instructions?: string[] | null
           level?: string | null
           name: string
-          primary_muscle?: string[] | null
+          primary_muscle: string[]
           secondary_muscle?: string[] | null
         }
         Update: {
@@ -34,7 +34,7 @@ export interface Database {
           instructions?: string[] | null
           level?: string | null
           name?: string
-          primary_muscle?: string[] | null
+          primary_muscle?: string[]
           secondary_muscle?: string[] | null
         }
         Relationships: []
