@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import { type SignupData } from '../interfaces/User';
 import { AuthAPI } from '../services/api/AuthAPI';
+import { JunctionTableAPI } from '../services/api/JunctionTablesAPI';
 import { UsersAPI } from '../services/api/UsersAPI';
 import { AuthContext } from '../services/context/AuthContext';
 
@@ -31,7 +32,24 @@ export function useAuth(): useAuthReturnType {
         setIsLoading(true);
         try {
             const newUser = await AuthAPI.signup(signupData);
-            console.log(newUser);
+            if (newUser?.user) {
+                await JunctionTableAPI.insertIntoUserFitnessGoals(
+                    signupData.fitnessGoals,
+                    newUser.user.id
+                );
+                await JunctionTableAPI.insertIntoUserWorkoutTypes(
+                    signupData.workoutTypes,
+                    newUser.user.id
+                );
+                await JunctionTableAPI.insertIntoUserWorkoutDays(
+                    signupData.workoutDays,
+                    newUser.user.id
+                );
+                await JunctionTableAPI.insertIntoUserWorkoutTimes(
+                    signupData.workoutTimes,
+                    newUser.user.id
+                );
+            }
         } catch (error) {
             throw new Error(error.message);
         } finally {

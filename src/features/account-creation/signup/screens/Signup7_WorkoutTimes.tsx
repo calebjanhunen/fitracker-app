@@ -43,7 +43,7 @@ export default function WorkoutTimes({ navigation }: Props): React.ReactElement 
     async function signupUser(): Promise<void> {
         setErrorMessage('');
         try {
-            await signup(signupData);
+            await signup(SignupDataMock);
         } catch (error) {
             console.log(error);
         }

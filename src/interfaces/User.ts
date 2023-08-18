@@ -20,6 +20,6 @@ export interface SignupData {
     workoutTypes: Array<Tables<'workout_types'>['id']>;
     skillLevel: string;
     location: UserLocation;
-    workoutDays: string[];
-    workoutTimes: string[];
+    workoutDays: Array<Tables<'workout_days'>['id']>;
+    workoutTimes: Array<Tables<'workout_times'>['id']>;
 }

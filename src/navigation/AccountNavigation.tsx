@@ -37,7 +37,7 @@ export default function AccountNavigation(): React.ReactElement {
     return (
         <SignupDataProvider>
             <Stack.Navigator
-                // initialRouteName='FitnessGoals'
+                initialRouteName='WorkoutTimes'
                 screenOptions={({ navigation }) => ({
                     headerShown: true,
                     headerBackTitleVisible: false,
