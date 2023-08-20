@@ -1,49 +1,56 @@
-import React, { type Dispatch, type SetStateAction } from 'react';
+import React, { memo, type Dispatch, type SetStateAction } from 'react';
 
 import { Spacer, Text } from '../../../../components';
+import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { ExerciseContainer } from './AddExerciseModalStyles';
 
 interface Props {
-    selectedExercises: number[];
-    setSelectedExercises: Dispatch<SetStateAction<number[]>>;
+    setSelectedExercises: Dispatch<SetStateAction<ExerciseInterface[]>>;
     id: number;
+    name: string;
+    bodyPart: string[];
+    isExerciseSelected: boolean;
+    workoutExercises: ExerciseInterface[];
 }
 
 function toggleExercise(
-    selectedExercises: number[],
-    setSelectedExercises: Dispatch<SetStateAction<number[]>>,
-    id: number
+    setSelectedExercises: Dispatch<SetStateAction<ExerciseInterface[]>>,
+    id: number,
+    name: string
 ): void {
-    let newSelectedExercises = [...selectedExercises];
-
-    if (selectedExercises.includes(id)) {
-        newSelectedExercises = newSelectedExercises.filter((exerciseId) => exerciseId !== id);
-    } else {
-        newSelectedExercises.push(id);
-    }
-
-    setSelectedExercises(newSelectedExercises);
+    setSelectedExercises((prevExercises) => {
+        if (prevExercises.find((prevExercise) => prevExercise.id === id)) {
+            return prevExercises.filter((prevExercise) => prevExercise.id !== id);
+        } else {
+            return [...prevExercises, { id, name, numSets: 0, sets: [] }];
+        }
+    });
 }
 
-export default function Exercise({
-    selectedExercises,
+const Exercise = memo(function Exercise({
     setSelectedExercises,
     id,
+    name,
+    bodyPart,
+    isExerciseSelected,
+    workoutExercises,
 }: Props): React.ReactElement {
-    const isExerciseSelected = selectedExercises.includes(id);
     return (
         <ExerciseContainer
             onPress={() => {
-                toggleExercise(selectedExercises, setSelectedExercises, id);
+                toggleExercise(setSelectedExercises, id, name);
             }}
             activeOpacity={1}
             backgroundColor={isExerciseSelected ? 'primaryTranslucent' : 'white'}
+            disabled={Boolean(workoutExercises.find((exercise) => exercise.id === id))}
         >
-            <Text variant='headline'>Exercise Name</Text>
+            <Text variant='headline'>{name}</Text>
             <Spacer size='xxxs' />
             <Text variant='body' color='light'>
-                Body Part
+                {bodyPart}
             </Text>
         </ExerciseContainer>
     );
-}
+});
+
+export default Exercise;

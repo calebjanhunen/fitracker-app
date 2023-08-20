@@ -1,3 +1,5 @@
+import { type Tables } from './Tables';
+
 export interface ExerciseSet {
     id: string | number[];
     reps: number | null;
@@ -11,8 +13,8 @@ export interface ExerciseSet {
 }
 
 export interface Exercise {
-    id: string | number[];
-    name: string;
+    id: Tables<'exercises'>['id'];
+    name: Tables<'exercises'>['name'];
     numSets: number;
     sets: ExerciseSet[];
 }
