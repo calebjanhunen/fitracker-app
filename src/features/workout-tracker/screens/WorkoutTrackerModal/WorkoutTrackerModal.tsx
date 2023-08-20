@@ -1,15 +1,11 @@
-import React, { useRef, useState, type Dispatch } from 'react';
+import React, { useRef, useState } from 'react';
 import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
-import { type Exercise } from '../../../../interfaces/Exercise';
-import {
-    ExercisesActionsTypes,
-    type ExercisesActions,
-} from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
+import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import { type AlertModalVars, type alertModalCTAFunctionParams } from './Interfaces';
@@ -28,8 +24,6 @@ interface Props {
     isBottomSheetHidden: boolean;
     setIsBottomSheetHidden: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
-    exercises: Exercise[];
-    dispatchExercises: Dispatch<ExercisesActions>;
 }
 
 function openAlertWindow(
@@ -71,7 +65,7 @@ function cancelWorkout(params: alertModalCTAFunctionParams): void {
     params.setWorkoutName('');
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
-    params.dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
+    params.deleteAllExercises();
     params.sheetRef.current?.close();
 }
 
@@ -82,7 +76,7 @@ function finishWorkout(params: alertModalCTAFunctionParams): void {
     params.setWorkoutName('');
     params.setAlertModalVisible(false);
     params.setWorkoutTrackerActive(false);
-    params.dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
+    params.deleteAllExercises();
     params.sheetRef.current?.close();
 }
 
@@ -91,12 +85,11 @@ export default function WorkoutTrackerModal({
     isBottomSheetHidden,
     setIsBottomSheetHidden,
     setWorkoutTrackerActive,
-    exercises,
-    dispatchExercises,
 }: Props): React.ReactElement {
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
     const [workoutName, setWorkoutName] = useState<string>('');
+    const { workoutExercises, deleteAllExercises } = useWorkoutExercises();
     const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
     const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
@@ -139,8 +132,6 @@ export default function WorkoutTrackerModal({
             <AddExerciseModal
                 modalVisible={addExerciseModalVisible}
                 setModalVisible={setAddExerciseModalVisible}
-                dispatchExercises={dispatchExercises}
-                workoutExercises={exercises}
             />
             <CustomBottomSheetModal
                 index={1}
@@ -165,7 +156,7 @@ export default function WorkoutTrackerModal({
                                             setAlertModalVisible,
                                             setWorkoutTrackerActive,
                                             sheetRef,
-                                            dispatchExercises,
+                                            deleteAllExercises,
                                         }
                                     );
                                 }}
@@ -186,7 +177,7 @@ export default function WorkoutTrackerModal({
                                             setAlertModalVisible,
                                             setWorkoutTrackerActive,
                                             sheetRef,
-                                            dispatchExercises,
+                                            deleteAllExercises,
                                         }
                                     );
                                 }}
@@ -209,19 +200,13 @@ export default function WorkoutTrackerModal({
                     <FlatList
                         onScroll={onExerciseListScroll}
                         style={{ flex: 1 }}
-                        data={exercises}
-                        extraData={exercises}
-                        renderItem={({ item, index }) => (
-                            <WorkoutTrackerExercise
-                                exercise={item}
-                                dispatchExercises={dispatchExercises}
-                            />
-                        )}
+                        data={workoutExercises}
+                        extraData={workoutExercises}
+                        renderItem={({ item }) => <WorkoutTrackerExercise exercise={item} />}
                         ItemSeparatorComponent={() => <Spacer size='xl' />}
                         ListFooterComponent={
                             <WorkoutModalFooter
                                 setAddExerciseModalVisible={setAddExerciseModalVisible}
-                                dispatchExercises={dispatchExercises}
                             />
                         }
                         contentContainerStyle={{ padding: 16 }}
@@ -234,12 +219,10 @@ export default function WorkoutTrackerModal({
 
 interface WOrkoutModalFooterProps {
     setAddExerciseModalVisible: (val: boolean) => void;
-    dispatchExercises: (action: ExercisesActions) => void;
 }
 
 function WorkoutModalFooter({
     setAddExerciseModalVisible,
-    dispatchExercises,
 }: WOrkoutModalFooterProps): React.ReactElement {
     return (
         <View>
@@ -250,7 +233,6 @@ function WorkoutModalFooter({
                 textColor='white'
                 onPress={() => {
                     setAddExerciseModalVisible(true);
-                    // dispatchExercises({ type: ExercisesActionsTypes.ADD_EXERCISE });
                 }}
             >
                 Add Exercise

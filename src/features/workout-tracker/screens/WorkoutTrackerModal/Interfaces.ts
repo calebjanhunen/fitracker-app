@@ -1,7 +1,4 @@
-import { type Dispatch } from 'react';
-
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
-import { type ExercisesActions } from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import { type theme } from '../../../../theme/theme';
 
 export interface AlertModalVars {
@@ -21,5 +18,5 @@ export interface alertModalCTAFunctionParams {
     setAlertModalVisible: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
     sheetRef: React.RefObject<BottomSheetModal>;
-    dispatchExercises: Dispatch<ExercisesActions>;
+    deleteAllExercises: () => void;
 }

@@ -2,13 +2,10 @@ import React, { useEffect, useState, type Dispatch, type SetStateAction } from '
 import { FlatList, Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
+import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { type Tables } from '../../../../interfaces/Tables';
 import { ExercisesAPI } from '../../../../services/api/ExercisesAPI';
-import {
-    ExercisesActionsTypes,
-    type ExercisesActions,
-} from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import {
     Blur,
     Icon,
@@ -24,8 +21,6 @@ const PAGE_SIZE = 20;
 interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
-    dispatchExercises: Dispatch<ExercisesActions>;
-    workoutExercises: ExerciseInterface[];
 }
 
 function closeModal(
@@ -40,15 +35,9 @@ function closeModal(
     setPage(1);
 }
 
-function addExercisesToWorkout(
-    selectedExercises: ExerciseInterface[],
-    dispatchExercises: Dispatch<ExercisesActions>
-): void {
-    dispatchExercises({ type: ExercisesActionsTypes.ADD_EXERCISES, payload: selectedExercises });
-}
-
 export default function AddExerciseModal(props: Props): React.ReactElement {
     const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
+    const { addExercisesToWorkout } = useWorkoutExercises();
     const [exercises, setExercises] = useState<Array<Tables<'exercises'>>>([]);
     const [page, setPage] = useState<number>(1);
 
@@ -85,7 +74,7 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
     }
 
     function submitAndCloseModal(): void {
-        addExercisesToWorkout(selectedExercises, props.dispatchExercises);
+        addExercisesToWorkout(selectedExercises);
         closeModal(setSelectedExercises, setExercises, props.setModalVisible, setPage);
     }
 
@@ -138,7 +127,6 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                                 (exercise) => exercise.id === item.id
                                             )
                                         )}
-                                        workoutExercises={props.workoutExercises}
                                     />
                                 )}
                                 ItemSeparatorComponent={() => (

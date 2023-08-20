@@ -2,11 +2,8 @@ import React, { memo, useEffect, useReducer, type Dispatch } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
 import { Button, Spacer, Text } from '../../../../components';
+import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import { type Exercise } from '../../../../interfaces/Exercise';
-import {
-    ExercisesActionsTypes,
-    type ExercisesActions,
-} from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import {
     ExerciseSetsActionsTypes,
     exerciseSetsReducer,
@@ -17,14 +14,6 @@ import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExercise
 
 interface ExerciseProps {
     exercise: Exercise;
-    dispatchExercises: Dispatch<ExercisesActions>;
-}
-
-function deleteExercise(
-    dispatchExercises: Dispatch<ExercisesActions>,
-    exerciseId: string | number[]
-): void {
-    dispatchExercises({ type: ExercisesActionsTypes.DELETE_EXERCISE, payload: { id: exerciseId } });
 }
 
 function initializeSets(exercise: Exercise, dispatchSets: Dispatch<ExerciseSetsActions>): void {
@@ -35,8 +24,8 @@ function initializeSets(exercise: Exercise, dispatchSets: Dispatch<ExerciseSetsA
 
 const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
     exercise,
-    dispatchExercises,
 }: ExerciseProps): React.ReactElement {
+    const { deleteExercise } = useWorkoutExercises();
     const [exerciseSets, dispatchSets] = useReducer(exerciseSetsReducer, []);
     useEffect(() => {
         initializeSets(exercise, dispatchSets);
@@ -51,7 +40,7 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        deleteExercise(dispatchExercises, exercise.id);
+                        deleteExercise(exercise.id);
                     }}
                 >
                     <Icon name='trash-outline' size={24} />
