@@ -1,10 +1,11 @@
 import React, { memo, type Dispatch, type SetStateAction } from 'react';
 
 import { Spacer, Text } from '../../../../components';
+import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { ExerciseContainer } from './AddExerciseModalStyles';
 
 interface Props {
-    setSelectedExercises: Dispatch<SetStateAction<number[]>>;
+    setSelectedExercises: Dispatch<SetStateAction<ExerciseInterface[]>>;
     id: number;
     name: string;
     bodyPart: string[];
@@ -12,14 +13,15 @@ interface Props {
 }
 
 function toggleExercise(
-    setSelectedExercises: Dispatch<SetStateAction<number[]>>,
-    id: number
+    setSelectedExercises: Dispatch<SetStateAction<ExerciseInterface[]>>,
+    id: number,
+    name: string
 ): void {
-    setSelectedExercises((prevExerciseIds) => {
-        if (prevExerciseIds.includes(id)) {
-            return prevExerciseIds.filter((exerciseId) => exerciseId !== id);
+    setSelectedExercises((prevExercises) => {
+        if (prevExercises.find((prevExercise) => prevExercise.id === id)) {
+            return prevExercises.filter((prevExercise) => prevExercise.id !== id);
         } else {
-            return [...prevExerciseIds, id];
+            return [...prevExercises, { id, name, numSets: 0, sets: [] }];
         }
     });
 }
@@ -31,11 +33,10 @@ const Exercise = memo(function Exercise({
     bodyPart,
     isExerciseSelected,
 }: Props): React.ReactElement {
-    console.log(id, name, ' rendered');
     return (
         <ExerciseContainer
             onPress={() => {
-                toggleExercise(setSelectedExercises, id);
+                toggleExercise(setSelectedExercises, id, name);
             }}
             activeOpacity={1}
             backgroundColor={isExerciseSelected ? 'primaryTranslucent' : 'white'}

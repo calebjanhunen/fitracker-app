@@ -11,6 +11,7 @@ import { type Exercise } from '../../../../interfaces/Exercise';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
+import { type AlertModalVars, type alertModalCTAFunctionParams } from './Interfaces';
 import {
     CustomBottomSheetModal,
     Header,
@@ -27,26 +28,6 @@ interface Props {
     setIsBottomSheetHidden: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
     exercises: Exercise[];
-    dispatchExercises: Dispatch<ExercisesActions>;
-}
-
-interface AlertModalVars {
-    title: string;
-    desc: string;
-    ctaBtn: {
-        text: string;
-        backgroundColor: keyof typeof theme.colors;
-        textColor: keyof typeof theme.fontColors;
-    };
-    ctaFunction: (params: alertModalCTAFunctionParams) => void;
-    ctaFunctionArgs: alertModalCTAFunctionParams;
-}
-
-interface alertModalCTAFunctionParams {
-    setWorkoutName: (val: string) => void;
-    setAlertModalVisible: (val: boolean) => void;
-    setWorkoutTrackerActive: (val: boolean) => void;
-    sheetRef: React.RefObject<BottomSheetModal>;
     dispatchExercises: Dispatch<ExercisesActions>;
 }
 
@@ -154,10 +135,10 @@ export default function WorkoutTrackerModal({
                     ctaFunctionArgs={alertModalVars.ctaFunctionArgs}
                 />
             )}
-            {/* TODO: Implement add exercise modal when api to get exercises is implemented */}
             <AddExerciseModal
                 modalVisible={addExerciseModalVisible}
                 setModalVisible={setAddExerciseModalVisible}
+                dispatchExercises={dispatchExercises}
             />
             <CustomBottomSheetModal
                 index={1}
