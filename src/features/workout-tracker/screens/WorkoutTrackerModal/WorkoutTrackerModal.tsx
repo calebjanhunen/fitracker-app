@@ -6,9 +6,12 @@ import { FlatList } from 'react-native-gesture-handler';
 
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
+import {
+    ExercisesActionsTypes,
+    type ExercisesActions,
+} from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
-import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import { type AlertModalVars, type alertModalCTAFunctionParams } from './Interfaces';
 import {
     CustomBottomSheetModal,

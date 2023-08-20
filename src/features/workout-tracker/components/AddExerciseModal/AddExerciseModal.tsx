@@ -5,7 +5,10 @@ import { Button, Spacer, Text, TextInput } from '../../../../components';
 import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { type Tables } from '../../../../interfaces/Tables';
 import { ExercisesAPI } from '../../../../services/api/ExercisesAPI';
-import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
+import {
+    ExercisesActionsTypes,
+    type ExercisesActions,
+} from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import {
     Blur,
     Icon,

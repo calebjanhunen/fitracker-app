@@ -1,8 +1,8 @@
 import { type Dispatch } from 'react';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
+import { type ExercisesActions } from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import { type theme } from '../../../../theme/theme';
-import { type ExercisesActions } from '../../reducers/ExercisesReducer';
 
 export interface AlertModalVars {
     title: string;

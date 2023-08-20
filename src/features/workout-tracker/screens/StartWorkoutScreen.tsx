@@ -7,10 +7,10 @@ import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Button, PageView, Spacer, Text } from '../../../components';
 import { type WorkoutTemplate } from '../../../interfaces/WorkoutTemplate';
 import { mockWorkoutTemplate } from '../../../mock-data/WorkoutTemplatesMock';
+import { exercisesReducer } from '../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import ResumeWorkoutButton from '../components/ResumeWorkoutButton';
 import WorkoutTemplateCard from '../components/WorkoutTemplateCard';
 import WorkoutTemplateModal from '../components/WorkoutTemplateModal/WorkoutTemplateModal';
-import { exercisesReducer } from '../reducers/ExercisesReducer';
 import WorkoutTrackerModal from './WorkoutTrackerModal/WorkoutTrackerModal';
 
 const HeaderView = styled(View)`

@@ -4,11 +4,14 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Spacer, Text } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import {
+    ExercisesActionsTypes,
+    type ExercisesActions,
+} from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
+import {
     ExerciseSetsActionsTypes,
     exerciseSetsReducer,
     type ExerciseSetsActions,
 } from '../../reducers/ExerciseSetsReducer';
-import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
 

@@ -13,7 +13,10 @@ import {
     type WorkoutTemplate,
     type WorkoutTemplateExercise,
 } from '../../../../interfaces/WorkoutTemplate';
-import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
+import {
+    ExercisesActionsTypes,
+    type ExercisesActions,
+} from '../../../../services/context/WorkoutExercisesContext/ExercisesReducer';
 import {
     Icon,
     ModalContainer,
