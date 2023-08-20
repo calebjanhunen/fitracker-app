@@ -22,6 +22,7 @@ interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
     dispatchExercises: Dispatch<ExercisesActions>;
+    workoutExercises: ExerciseInterface[];
 }
 
 function closeModal(
@@ -134,6 +135,7 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                                 (exercise) => exercise.id === item.id
                                             )
                                         )}
+                                        workoutExercises={props.workoutExercises}
                                     />
                                 )}
                                 ItemSeparatorComponent={() => (

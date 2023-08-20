@@ -10,6 +10,7 @@ interface Props {
     name: string;
     bodyPart: string[];
     isExerciseSelected: boolean;
+    workoutExercises: ExerciseInterface[];
 }
 
 function toggleExercise(
@@ -32,6 +33,7 @@ const Exercise = memo(function Exercise({
     name,
     bodyPart,
     isExerciseSelected,
+    workoutExercises,
 }: Props): React.ReactElement {
     return (
         <ExerciseContainer
@@ -40,6 +42,7 @@ const Exercise = memo(function Exercise({
             }}
             activeOpacity={1}
             backgroundColor={isExerciseSelected ? 'primaryTranslucent' : 'white'}
+            disabled={Boolean(workoutExercises.find((exercise) => exercise.id === id))}
         >
             <Text variant='headline'>{name}</Text>
             <Spacer size='xxxs' />

@@ -47,6 +47,7 @@ export const ExerciseContainer = styled(TouchableOpacity)<{
     backgroundColor: keyof typeof theme.colors;
 }>`
     width: 100%;
-    background-color: ${({ theme, backgroundColor }) => theme.colors[backgroundColor]};
+    background-color: ${({ theme, backgroundColor, disabled }) =>
+        disabled ? theme.colors.grey : theme.colors[backgroundColor]};
     padding: ${(props) => props.theme.spacing.sm} ${(props) => props.theme.spacing.xs};
 `;

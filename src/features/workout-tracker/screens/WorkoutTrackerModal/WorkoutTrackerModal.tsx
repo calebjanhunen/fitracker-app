@@ -5,8 +5,6 @@ import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
-import { type theme } from '../../../../theme/theme';
-// import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
@@ -139,6 +137,7 @@ export default function WorkoutTrackerModal({
                 modalVisible={addExerciseModalVisible}
                 setModalVisible={setAddExerciseModalVisible}
                 dispatchExercises={dispatchExercises}
+                workoutExercises={exercises}
             />
             <CustomBottomSheetModal
                 index={1}

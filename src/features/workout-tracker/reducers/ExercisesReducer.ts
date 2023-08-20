@@ -1,5 +1,4 @@
 import 'react-native-get-random-values';
-import uuid from 'react-native-uuid';
 
 import { type Exercise } from '../../../interfaces/Exercise';
 
