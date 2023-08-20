@@ -1,6 +1,7 @@
 import React, { memo, type Dispatch, type SetStateAction } from 'react';
 
 import { Spacer, Text } from '../../../../components';
+import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { ExerciseContainer } from './AddExerciseModalStyles';
 
@@ -10,7 +11,6 @@ interface Props {
     name: string;
     bodyPart: string[];
     isExerciseSelected: boolean;
-    workoutExercises: ExerciseInterface[];
 }
 
 function toggleExercise(
@@ -33,8 +33,9 @@ const Exercise = memo(function Exercise({
     name,
     bodyPart,
     isExerciseSelected,
-    workoutExercises,
 }: Props): React.ReactElement {
+    const { workoutExercises } = useWorkoutExercises();
+
     return (
         <ExerciseContainer
             onPress={() => {

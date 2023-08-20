@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { styled } from 'styled-components';
@@ -10,7 +10,6 @@ import { mockWorkoutTemplate } from '../../../mock-data/WorkoutTemplatesMock';
 import ResumeWorkoutButton from '../components/ResumeWorkoutButton';
 import WorkoutTemplateCard from '../components/WorkoutTemplateCard';
 import WorkoutTemplateModal from '../components/WorkoutTemplateModal/WorkoutTemplateModal';
-import { exercisesReducer } from '../reducers/ExercisesReducer';
 import WorkoutTrackerModal from './WorkoutTrackerModal/WorkoutTrackerModal';
 
 const HeaderView = styled(View)`
@@ -29,7 +28,6 @@ export default function StartWorkoutScreen(): React.ReactElement {
     const [workoutTrackerActive, setWorkoutTrackerActive] = useState<boolean>(false);
     const [isBottomSheetHidden, setIsBottomSheetHidden] = useState<boolean>(false);
     const workoutTrackerModalRef = useRef<BottomSheetModal>(null);
-    const [exercises, dispatchExercises] = useReducer(exercisesReducer, []);
 
     function onResumePress(): void {
         setIsBottomSheetHidden(!isBottomSheetHidden);
@@ -44,7 +42,6 @@ export default function StartWorkoutScreen(): React.ReactElement {
                     workoutTemplate={modalData}
                     isWorkoutTrackerActive={workoutTrackerActive}
                     setIsWorkoutTrackerActive={setWorkoutTrackerActive}
-                    dispatchExercises={dispatchExercises}
                     workoutTrackerModalRef={workoutTrackerModalRef}
                 />
                 <HeaderView>
@@ -102,8 +99,6 @@ export default function StartWorkoutScreen(): React.ReactElement {
                 isBottomSheetHidden={isBottomSheetHidden}
                 setIsBottomSheetHidden={setIsBottomSheetHidden}
                 setWorkoutTrackerActive={setWorkoutTrackerActive}
-                exercises={exercises}
-                dispatchExercises={dispatchExercises}
             />
         </>
     );
