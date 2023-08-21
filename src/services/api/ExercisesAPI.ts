@@ -1,12 +1,9 @@
 import { apiClient } from './utils/config';
 
 export const ExercisesAPI = {
-    getExercises: async (params: { from: number; to: number }) => {
+    getExercises: async () => {
         try {
-            const { data, error } = await apiClient
-                .from('exercises')
-                .select('*')
-                .range(params.from, params.to);
+            const { data, error } = await apiClient.from('exercises').select('*');
             if (error) {
                 throw new Error(error.message);
             }
