@@ -1,5 +1,12 @@
 import React, { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
-import { FlatList, Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    ActivityIndicator,
+    FlatList,
+    Modal,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
+} from 'react-native';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
 import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
@@ -16,8 +23,6 @@ import {
 } from './AddExerciseModalStyles';
 import Exercise from './Exercise';
 
-const PAGE_SIZE = 20;
-
 interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
@@ -26,26 +31,25 @@ interface Props {
 function closeModal(
     setSelectedExercises: Dispatch<SetStateAction<ExerciseInterface[]>>,
     setExercises: Dispatch<SetStateAction<Array<Tables<'exercises'>>>>,
-    setModalVisible: (val: boolean) => void,
-    setPage: Dispatch<SetStateAction<number>>
+    setModalVisible: (val: boolean) => void
 ): void {
     setModalVisible(false);
     setSelectedExercises([]);
     setExercises([]);
-    setPage(1);
 }
 
 export default function AddExerciseModal(props: Props): React.ReactElement {
     const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
     const { addExercisesToWorkout } = useWorkoutExercises();
     const [exercises, setExercises] = useState<Array<Tables<'exercises'>>>([]);
-    const [page, setPage] = useState<number>(1);
+    const [exercisesDisplay, setExercisesDisplay] = useState<Array<Tables<'exercises'>>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (props.modalVisible) {
             void getExercises();
         }
-    }, [page, props.modalVisible]);
+    }, [props.modalVisible]);
 
     const buttonText = (): string => {
         if (selectedExercises.length === 0) {
@@ -58,31 +62,39 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
     };
 
     async function getExercises(): Promise<void> {
-        const offset = (page - 1) * PAGE_SIZE;
+        setIsLoading(true);
         try {
-            const fetchedExercises = await ExercisesAPI.getExercises({
-                from: offset,
-                to: offset + PAGE_SIZE - 1,
-            });
+            const fetchedExercises = await ExercisesAPI.getExercises();
             if (fetchedExercises) {
-                setExercises((prevExercises) => [...prevExercises, ...fetchedExercises]);
+                setExercises(fetchedExercises);
+                setExercisesDisplay(fetchedExercises);
             }
         } catch (error) {
             const errorMessage: string = error.message;
             alert(`Error: ${errorMessage}`);
+        } finally {
+            setIsLoading(false);
         }
+    }
+
+    function searchForExercise(query: string): void {
+        setExercisesDisplay(
+            exercises.filter((exercise) =>
+                exercise.name.toLowerCase().includes(query.toLowerCase())
+            )
+        );
     }
 
     function submitAndCloseModal(): void {
         addExercisesToWorkout(selectedExercises);
-        closeModal(setSelectedExercises, setExercises, props.setModalVisible, setPage);
+        closeModal(setSelectedExercises, setExercises, props.setModalVisible);
     }
 
     return (
         <Modal transparent={true} visible={props.modalVisible}>
             <ModalOverlay
                 onPress={() => {
-                    closeModal(setSelectedExercises, setExercises, props.setModalVisible, setPage);
+                    closeModal(setSelectedExercises, setExercises, props.setModalVisible);
                 }}
                 activeOpacity={1}
             >
@@ -97,8 +109,7 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                             closeModal(
                                                 setSelectedExercises,
                                                 setExercises,
-                                                props.setModalVisible,
-                                                setPage
+                                                props.setModalVisible
                                             );
                                         }}
                                     >
@@ -110,38 +121,41 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                     variant='body'
                                     paddingTopAndBot='xxs'
                                     placeholder='Search for Exercise...'
+                                    onChangeText={searchForExercise}
                                 />
                                 <Spacer size='xs' />
                             </PaddedContainer>
-                            <FlatList
-                                style={{ flex: 1, width: '100%' }}
-                                data={exercises}
-                                renderItem={({ item }) => (
-                                    <Exercise
-                                        setSelectedExercises={setSelectedExercises}
-                                        id={item.id}
-                                        name={item.name}
-                                        bodyPart={item.primary_muscle}
-                                        isExerciseSelected={Boolean(
-                                            selectedExercises.find(
-                                                (exercise) => exercise.id === item.id
-                                            )
-                                        )}
-                                    />
-                                )}
-                                ItemSeparatorComponent={() => (
-                                    <View
-                                        style={{
-                                            height: 1,
-                                            backgroundColor: 'grey',
-                                            width: '100%',
-                                        }}
-                                    />
-                                )}
-                                onEndReached={() => {
-                                    setPage((prevPage) => prevPage + 1);
-                                }}
-                            />
+                            {isLoading ? (
+                                <ActivityIndicator style={{ flex: 1 }} />
+                            ) : (
+                                <FlatList
+                                    style={{ flex: 1, width: '100%' }}
+                                    data={exercisesDisplay}
+                                    renderItem={({ item }) => (
+                                        <Exercise
+                                            setSelectedExercises={setSelectedExercises}
+                                            id={item.id}
+                                            name={item.name}
+                                            bodyPart={item.primary_muscle}
+                                            isExerciseSelected={Boolean(
+                                                selectedExercises.find(
+                                                    (exercise) => exercise.id === item.id
+                                                )
+                                            )}
+                                        />
+                                    )}
+                                    ItemSeparatorComponent={() => (
+                                        <View
+                                            style={{
+                                                height: 1,
+                                                backgroundColor: 'grey',
+                                                width: '100%',
+                                            }}
+                                        />
+                                    )}
+                                />
+                            )}
+
                             <PaddedContainer>
                                 <Button
                                     variant='full'
