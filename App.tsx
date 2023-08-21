@@ -15,6 +15,7 @@ import {
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BaseNavigation from './src/navigation';
 import { AuthProvider } from './src/services/context/AuthContext';
+import WorkoutExercisesProvider from './src/services/context/WorkoutExercisesContext/WorkoutExercisesContext';
 import { theme } from './src/theme/theme';
 
 export default function App(): React.ReactElement | null {
@@ -31,16 +32,18 @@ export default function App(): React.ReactElement | null {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <AuthProvider>
-                <PortalProvider>
-                    <ThemeProvider theme={theme}>
-                        <BottomSheetModalProvider>
-                            <View style={{ flex: 1 }}>
-                                <BaseNavigation />
-                                <StatusBar style='auto' />
-                            </View>
-                        </BottomSheetModalProvider>
-                    </ThemeProvider>
-                </PortalProvider>
+                <WorkoutExercisesProvider>
+                    <PortalProvider>
+                        <ThemeProvider theme={theme}>
+                            <BottomSheetModalProvider>
+                                <View style={{ flex: 1 }}>
+                                    <BaseNavigation />
+                                    <StatusBar style='auto' />
+                                </View>
+                            </BottomSheetModalProvider>
+                        </ThemeProvider>
+                    </PortalProvider>
+                </WorkoutExercisesProvider>
             </AuthProvider>
         </GestureHandlerRootView>
     );
