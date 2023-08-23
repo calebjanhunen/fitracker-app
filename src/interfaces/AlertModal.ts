@@ -1,5 +1,5 @@
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
-import { type theme } from '../../../../theme/theme';
+import { type theme } from '../theme/theme';
 
 export interface AlertModalVars {
     title: string;
