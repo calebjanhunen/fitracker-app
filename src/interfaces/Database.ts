@@ -9,6 +9,40 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      exercise_sets: {
+        Row: {
+          exercise_id: number
+          id: number
+          reps: number
+          rpe: number
+          set_num: number
+          weight: number
+        }
+        Insert: {
+          exercise_id: number
+          id?: number
+          reps: number
+          rpe: number
+          set_num: number
+          weight: number
+        }
+        Update: {
+          exercise_id?: number
+          id?: number
+          reps?: number
+          rpe?: number
+          set_num?: number
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exercise_sets_exercise_id_fkey"
+            columns: ["exercise_id"]
+            referencedRelation: "workout_exercises"
+            referencedColumns: ["exercise_id"]
+          }
+        ]
+      }
       exercises: {
         Row: {
           equipment: string | null
@@ -245,6 +279,37 @@ export interface Database {
         }
         Relationships: []
       }
+      workout_exercises: {
+        Row: {
+          exercise_id: number
+          num_sets: number
+          workout_id: number
+        }
+        Insert: {
+          exercise_id?: number
+          num_sets: number
+          workout_id: number
+        }
+        Update: {
+          exercise_id?: number
+          num_sets?: number
+          workout_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workout_exercises_exercise_id_fkey"
+            columns: ["exercise_id"]
+            referencedRelation: "exercises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workout_exercises_workout_id_fkey"
+            columns: ["workout_id"]
+            referencedRelation: "workouts"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       workout_times: {
         Row: {
           id: number
@@ -277,6 +342,37 @@ export interface Database {
           name?: string
         }
         Relationships: []
+      }
+      workouts: {
+        Row: {
+          created_at: string
+          id: number
+          name: string | null
+          num_exercises: number
+          user_Id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          num_exercises: number
+          user_Id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          num_exercises?: number
+          user_Id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workouts_user_Id_fkey"
+            columns: ["user_Id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
