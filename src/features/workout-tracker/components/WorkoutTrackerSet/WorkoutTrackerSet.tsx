@@ -1,20 +1,18 @@
-import React, { memo, useRef, useState, type Dispatch } from 'react';
+import React, { memo, useRef, type Dispatch } from 'react';
 import { Dimensions, type Animated } from 'react-native';
 
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { AnimatedText, Text as CustomText, TextInput } from '../../../../components';
 import { type ExerciseSet } from '../../../../interfaces/Exercise';
-import {
-    ExerciseSetsActionsTypes,
-    type ExerciseSetsActions,
-} from '../../reducers/ExerciseSetsReducer';
+import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import { DeleteSetContainer, ExerciseSetContainer, FlexView, Row } from './WorkoutTrackerSetStyles';
 
 interface Props {
     set: ExerciseSet;
     setIndex: number;
-    dispatchSets: Dispatch<ExerciseSetsActions>;
+    exerciseId: number;
+    dispatchExercises: Dispatch<ExercisesActions>;
 }
 
 function rightActions(
@@ -42,33 +40,41 @@ function rightActions(
     );
 }
 
-function deleteSet(
-    set: ExerciseSet,
-    dispatchSets: Dispatch<ExerciseSetsActions>,
-    swipeableRef: React.RefObject<Swipeable>
-): void {
-    dispatchSets({ type: ExerciseSetsActionsTypes.DELETE_SET, payload: { id: set.id } });
-    swipeableRef?.current?.close();
-}
-
 const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
     set,
     setIndex,
-    dispatchSets,
+    exerciseId,
+    dispatchExercises,
 }: Props): React.ReactElement {
     const deleteTextWidth = useRef<number>(0);
     const swipeableRef = useRef<Swipeable>(null);
-    const [weight, setWeight] = useState<number>();
-    const [reps, setReps] = useState<number>();
 
-    console.log('set rendered: ', set.id);
+    function updateWeight(weightText: string): void {
+        dispatchExercises({
+            type: ExercisesActionsTypes.UPDATE_SET_WEIGHT,
+            payload: { exerciseId, setId: set.id, weight: Number(weightText) },
+        });
+    }
+
+    function updateReps(repText: string): void {
+        dispatchExercises({
+            type: ExercisesActionsTypes.UPDATE_SET_REPS,
+            payload: { exerciseId, setId: set.id, reps: Number(repText) },
+        });
+    }
+
+    function deleteSet(): void {
+        dispatchExercises({
+            type: ExercisesActionsTypes.DELETE_SET,
+            payload: { exerciseId, setId: set.id },
+        });
+        swipeableRef?.current?.close();
+    }
 
     return (
         <Swipeable
             renderRightActions={(process, dragX) => rightActions(process, dragX, deleteTextWidth)}
-            onSwipeableOpen={() => {
-                deleteSet(set, dispatchSets, swipeableRef);
-            }}
+            onSwipeableOpen={deleteSet}
             ref={swipeableRef}
         >
             <ExerciseSetContainer>
@@ -82,7 +88,7 @@ const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
                         <CustomText variant='body' color='light'>
                             {set.previous
                                 ? `${set.previous?.reps} x ${set.previous?.weight} @ ${set.previous?.rpe}`
-                                : `${set.id.toString().slice(0, 8)}`}
+                                : ''}
                         </CustomText>
                     </FlexView>
                     <FlexView flex={1}>
@@ -91,10 +97,7 @@ const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
                             inputMode='numeric'
                             textAlign='center'
                             maxLength={4}
-                            value={weight?.toString() ?? ''}
-                            onChangeText={(text) => {
-                                setWeight(Number(text));
-                            }}
+                            onChangeText={updateWeight}
                         />
                     </FlexView>
                     <FlexView flex={1}>
@@ -103,10 +106,7 @@ const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
                             inputMode='numeric'
                             textAlign='center'
                             maxLength={4}
-                            value={reps?.toString() ?? ''}
-                            onChangeText={(text) => {
-                                setReps(Number(text));
-                            }}
+                            onChangeText={updateReps}
                         />
                     </FlexView>
                 </Row>

@@ -1,11 +1,12 @@
 import { type Tables } from './Tables';
 
 export interface ExerciseSet {
-    id: string | number[];
+    id: string | number[] | number;
+    exerciseId: number;
     reps: number | null;
     weight: number | null;
     rpe: number | null;
-    previous: {
+    previous?: {
         reps: number;
         weight: number;
         rpe: number;

@@ -1,17 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useReducer, useRef, useState } from 'react';
 import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
-import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import {
     type AlertModalVars,
     type alertModalCTAFunctionParams,
 } from '../../../../interfaces/AlertModal';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
+import { ExercisesActionsTypes, exercisesReducer } from '../../reducers/ExercisesReducer';
 import {
     CustomBottomSheetModal,
     Header,
@@ -92,14 +92,11 @@ export default function WorkoutTrackerModal({
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
     const [workoutName, setWorkoutName] = useState<string>('');
-    const { workoutExercises, deleteAllExercises } = useWorkoutExercises();
+    // const { workoutExercises, dispatchExercises } = useContext(WorkoutExercisesContext);
     const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
     const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
-
-    const changeWorkoutName = (text: string): void => {
-        setWorkoutName(text);
-    };
+    const [workoutExercises, dispatchExercises] = useReducer(exercisesReducer, []);
 
     function onSheetChangePosition(index: number): void {
         index === 0 ? setIsBottomSheetHidden(true) : setIsBottomSheetHidden(false);
@@ -119,6 +116,10 @@ export default function WorkoutTrackerModal({
               }).start();
     }
 
+    function deleteAllExercises(): void {
+        dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
+    }
+
     return (
         <>
             {alertModalVars && (
@@ -135,6 +136,8 @@ export default function WorkoutTrackerModal({
             <AddExerciseModal
                 modalVisible={addExerciseModalVisible}
                 setModalVisible={setAddExerciseModalVisible}
+                workoutExercises={workoutExercises}
+                dispatchExercises={dispatchExercises}
             />
             <CustomBottomSheetModal
                 index={1}
@@ -195,7 +198,7 @@ export default function WorkoutTrackerModal({
                             variant='smallTitle'
                             placeholder='Enter Workout Name...'
                             value={workoutName}
-                            onChangeText={changeWorkoutName}
+                            onChangeText={setWorkoutName}
                         />
                         <Spacer size='xs' />
                     </PaddedContainer>
@@ -204,8 +207,13 @@ export default function WorkoutTrackerModal({
                         onScroll={onExerciseListScroll}
                         style={{ flex: 1 }}
                         data={workoutExercises}
-                        extraData={workoutExercises}
-                        renderItem={({ item }) => <WorkoutTrackerExercise exercise={item} />}
+                        // extraData={workoutExercises}
+                        renderItem={({ item }) => (
+                            <WorkoutTrackerExercise
+                                exercise={item}
+                                dispatchExercises={dispatchExercises}
+                            />
+                        )}
                         ItemSeparatorComponent={() => <Spacer size='xl' />}
                         ListFooterComponent={
                             <WorkoutModalFooter

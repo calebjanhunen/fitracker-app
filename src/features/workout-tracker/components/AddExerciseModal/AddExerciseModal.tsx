@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
-import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { type Tables } from '../../../../interfaces/Tables';
 import { ExercisesAPI } from '../../../../services/api/ExercisesAPI';
+import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import {
     Blur,
     Icon,
@@ -26,6 +26,8 @@ import Exercise from './Exercise';
 interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
+    workoutExercises: ExerciseInterface[];
+    dispatchExercises: Dispatch<ExercisesActions>;
 }
 
 function closeModal(
@@ -40,7 +42,6 @@ function closeModal(
 
 export default function AddExerciseModal(props: Props): React.ReactElement {
     const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
-    const { addExercisesToWorkout } = useWorkoutExercises();
     const [exercises, setExercises] = useState<Array<Tables<'exercises'>>>([]);
     const [exercisesDisplay, setExercisesDisplay] = useState<Array<Tables<'exercises'>>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -85,8 +86,15 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
         );
     }
 
+    function addExercisesToWorkout(): void {
+        props.dispatchExercises({
+            type: ExercisesActionsTypes.ADD_EXERCISES,
+            payload: selectedExercises,
+        });
+    }
+
     function submitAndCloseModal(): void {
-        addExercisesToWorkout(selectedExercises);
+        addExercisesToWorkout();
         closeModal(setSelectedExercises, setExercises, props.setModalVisible);
     }
 
@@ -142,6 +150,7 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
                                                     (exercise) => exercise.id === item.id
                                                 )
                                             )}
+                                            workoutExercises={props.workoutExercises}
                                         />
                                     )}
                                     ItemSeparatorComponent={() => (
