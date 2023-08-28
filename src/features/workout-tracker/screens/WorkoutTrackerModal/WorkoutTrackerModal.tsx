@@ -131,11 +131,8 @@ export default function WorkoutTrackerModal({
     }
 
     function finishWorkout(params: alertModalCTAFunctionParams): void {
-        // TODO: Send api request to save workout
         // Go to a screen displaying to user that they ended workout?
-
         void initSaveWorkout({ workoutName, workoutExercises });
-
         params.setWorkoutName('');
         params.setAlertModalVisible(false);
         params.setWorkoutTrackerActive(false);

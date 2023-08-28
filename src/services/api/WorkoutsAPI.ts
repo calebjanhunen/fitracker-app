@@ -11,12 +11,16 @@ import {
 
 export async function saveWorkout(
     payload: { workoutName: string; workoutExercises: Exercise[] },
-    user: User
+    user: User | undefined
 ): Promise<void> {
     const { workoutName, workoutExercises: exercises } = payload;
     try {
         // TODO: Need db transaction to rollback if an error occurs (cause inserting in multiple tables)
         // idk how to do that using supabase
+
+        if (!user) {
+            throw new Error('Not authenticated.');
+        }
 
         // Insert workout
         const workoutRequestObj = prepareWorkoutRequestObject(
