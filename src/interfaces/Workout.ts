@@ -7,9 +7,9 @@ export interface Workout {
     exercises: Exercise[];
 }
 
-type WorkoutInsertType = Database['public']['Tables']['workouts']['Insert'];
-type ExerciseInsertType = Database['public']['Tables']['workout_exercises']['Insert'];
-type ExerciseSetsInsertType = Database['public']['Tables']['exercise_sets']['Insert'];
+export type WorkoutInsertType = Database['public']['Tables']['workouts']['Insert'];
+export type ExerciseInsertType = Database['public']['Tables']['workout_exercises']['Insert'];
+export type ExerciseSetsInsertType = Database['public']['Tables']['exercise_sets']['Insert'];
 export interface InsertWorkoutRequest {
     workout: WorkoutInsertType;
     exercises: ExerciseInsertType[];

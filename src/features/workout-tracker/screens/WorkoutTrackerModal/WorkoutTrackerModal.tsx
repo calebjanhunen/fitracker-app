@@ -5,10 +5,15 @@ import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
+import useApi from '../../../../hooks/useApi';
 import {
     type AlertModalVars,
     type alertModalCTAFunctionParams,
 } from '../../../../interfaces/AlertModal';
+import { type Exercise } from '../../../../interfaces/Exercise';
+import { ExerciseInsertType, type InsertWorkoutRequest } from '../../../../interfaces/Workout';
+import { saveWorkout } from '../../../../services/api/WorkoutsAPI';
+import { AuthContext } from '../../../../services/context/AuthContext';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import { ExercisesActionsTypes, exercisesReducer } from '../../reducers/ExercisesReducer';
@@ -29,59 +34,21 @@ interface Props {
     setWorkoutTrackerActive: (val: boolean) => void;
 }
 
-function openAlertWindow(
-    alertType: 'cancel' | 'finish',
-    setAlertModalVisible: (val: boolean) => void,
-    setAlertModalVars: (val: AlertModalVars) => void,
-    alertModalCTAFunctionVars: alertModalCTAFunctionParams
-): void {
-    if (alertType === 'finish') {
-        setAlertModalVars({
-            title: 'Finish Workout',
-            desc: 'Are you sure you want to finish this workout?',
-            ctaBtn: {
-                text: 'Finish',
-                backgroundColor: 'success',
-                textColor: 'white',
-            },
-            ctaFunction: finishWorkout,
-            ctaFunctionArgs: alertModalCTAFunctionVars,
-        });
-    } else {
-        setAlertModalVars({
-            title: 'Cancel Workout',
-            desc: 'Are you sure you want to cancel this workout?',
-            ctaBtn: {
-                text: 'Cancel',
-                backgroundColor: 'error',
-                textColor: 'white',
-            },
-            ctaFunction: cancelWorkout,
-            ctaFunctionArgs: alertModalCTAFunctionVars,
-        });
-    }
+// function prepareObjectToSaveWorkout(
+//     workoutName: string,
+//     exercises: Exercise[],
+// ): InsertWorkoutRequest {
+//     const exercisesRequestArr: ExerciseInsertType = exercises.map(exercise => {exercise_id: exercise.id, workout_id: }})
+//     // const workoutRequestObj: InsertWorkoutRequest = {
+//     //     workout: {
+//     //         name: workoutName,
+//     //         user_id: session.user.id,
+//     //         num_exercises: exercises.length
+//     //     }
+//     // };
 
-    setAlertModalVisible(true);
-}
-
-function cancelWorkout(params: alertModalCTAFunctionParams): void {
-    params.setWorkoutName('');
-    params.setAlertModalVisible(false);
-    params.setWorkoutTrackerActive(false);
-    params.deleteAllExercises();
-    params.sheetRef.current?.close();
-}
-
-function finishWorkout(params: alertModalCTAFunctionParams): void {
-    // TODO: Send api request to save workout
-    // Go to a screen displaying to user that they ended workout?
-
-    params.setWorkoutName('');
-    params.setAlertModalVisible(false);
-    params.setWorkoutTrackerActive(false);
-    params.deleteAllExercises();
-    params.sheetRef.current?.close();
-}
+//     return workoutRequestObj;
+// }
 
 export default function WorkoutTrackerModal({
     sheetRef,
@@ -92,11 +59,11 @@ export default function WorkoutTrackerModal({
     const snapPoints = ['1%', '92%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
     const [workoutName, setWorkoutName] = useState<string>('');
-    // const { workoutExercises, dispatchExercises } = useContext(WorkoutExercisesContext);
     const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
     const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const [workoutExercises, dispatchExercises] = useReducer(exercisesReducer, []);
+    const { execute: initSaveWorkout } = useApi(saveWorkout);
 
     function onSheetChangePosition(index: number): void {
         index === 0 ? setIsBottomSheetHidden(true) : setIsBottomSheetHidden(false);
@@ -118,6 +85,62 @@ export default function WorkoutTrackerModal({
 
     function deleteAllExercises(): void {
         dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
+    }
+
+    function openAlertWindow(
+        alertType: 'cancel' | 'finish',
+        setAlertModalVisible: (val: boolean) => void,
+        setAlertModalVars: (val: AlertModalVars) => void,
+        alertModalCTAFunctionVars: alertModalCTAFunctionParams
+    ): void {
+        if (alertType === 'finish') {
+            setAlertModalVars({
+                title: 'Finish Workout',
+                desc: 'Are you sure you want to finish this workout?',
+                ctaBtn: {
+                    text: 'Finish',
+                    backgroundColor: 'success',
+                    textColor: 'white',
+                },
+                ctaFunction: finishWorkout,
+                ctaFunctionArgs: alertModalCTAFunctionVars,
+            });
+        } else {
+            setAlertModalVars({
+                title: 'Cancel Workout',
+                desc: 'Are you sure you want to cancel this workout?',
+                ctaBtn: {
+                    text: 'Cancel',
+                    backgroundColor: 'error',
+                    textColor: 'white',
+                },
+                ctaFunction: cancelWorkout,
+                ctaFunctionArgs: alertModalCTAFunctionVars,
+            });
+        }
+
+        setAlertModalVisible(true);
+    }
+
+    function cancelWorkout(params: alertModalCTAFunctionParams): void {
+        params.setWorkoutName('');
+        params.setAlertModalVisible(false);
+        params.setWorkoutTrackerActive(false);
+        params.deleteAllExercises();
+        params.sheetRef.current?.close();
+    }
+
+    function finishWorkout(params: alertModalCTAFunctionParams): void {
+        // TODO: Send api request to save workout
+        // Go to a screen displaying to user that they ended workout?
+
+        void initSaveWorkout({ workoutName, workoutExercises });
+
+        params.setWorkoutName('');
+        params.setAlertModalVisible(false);
+        params.setWorkoutTrackerActive(false);
+        params.deleteAllExercises();
+        params.sheetRef.current?.close();
     }
 
     return (
