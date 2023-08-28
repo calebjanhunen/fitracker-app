@@ -1,57 +1,56 @@
-import React, { memo, useEffect, useReducer, type Dispatch } from 'react';
+import React, { memo, type Dispatch } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
 import { Button, Spacer, Text } from '../../../../components';
-import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import { type Exercise } from '../../../../interfaces/Exercise';
-import {
-    ExerciseSetsActionsTypes,
-    exerciseSetsReducer,
-    type ExerciseSetsActions,
-} from '../../reducers/ExerciseSetsReducer';
+import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
 import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
 
 interface ExerciseProps {
     exercise: Exercise;
-}
-
-function initializeSets(exercise: Exercise, dispatchSets: Dispatch<ExerciseSetsActions>): void {
-    for (let i = 0; i < exercise.numSets; i++) {
-        dispatchSets({ type: ExerciseSetsActionsTypes.ADD_SET });
-    }
+    dispatchExercises: Dispatch<ExercisesActions>;
 }
 
 const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
     exercise,
+    dispatchExercises,
 }: ExerciseProps): React.ReactElement {
-    const { deleteExercise } = useWorkoutExercises();
-    const [exerciseSets, dispatchSets] = useReducer(exerciseSetsReducer, []);
-    useEffect(() => {
-        initializeSets(exercise, dispatchSets);
-    }, []);
+    function addSet(): void {
+        dispatchExercises({
+            type: ExercisesActionsTypes.ADD_SET,
+            payload: { exerciseId: exercise.id },
+        });
+    }
+
+    function deleteExercise(): void {
+        dispatchExercises({
+            type: ExercisesActionsTypes.DELETE_EXERCISE,
+            payload: { id: exercise.id },
+        });
+    }
 
     return (
         <ExerciseContainer>
-            {/* Exercise */}
             <Row>
                 <Text variant='headline' color='onWhite'>
                     {exercise.name}
                 </Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        deleteExercise(exercise.id);
-                    }}
-                >
+                <TouchableOpacity onPress={deleteExercise}>
                     <Icon name='trash-outline' size={24} />
                 </TouchableOpacity>
             </Row>
             <Spacer size='xs' />
             <FlatList
-                data={exerciseSets}
+                data={exercise.sets}
                 ListHeaderComponent={ExerciseSetHeader}
                 renderItem={({ item, index }) => (
-                    <WorkoutTrackerSet set={item} setIndex={index} dispatchSets={dispatchSets} />
+                    <WorkoutTrackerSet
+                        set={item}
+                        setIndex={index}
+                        exerciseId={exercise.id}
+                        dispatchExercises={dispatchExercises}
+                    />
                 )}
                 ItemSeparatorComponent={() => <Spacer size='xxs' />}
             />
@@ -62,9 +61,7 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
                 textColor='light'
                 borderColor='primary'
                 thin
-                onPress={() => {
-                    dispatchSets({ type: ExerciseSetsActionsTypes.ADD_SET });
-                }}
+                onPress={addSet}
             >
                 Add Set
             </Button>

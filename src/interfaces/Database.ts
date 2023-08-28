@@ -11,35 +11,35 @@ export interface Database {
     Tables: {
       exercise_sets: {
         Row: {
-          exercise_id: number
           id: number
           reps: number
-          rpe: number
+          rpe: number | null
           set_num: number
           weight: number
+          workout_exercises_id: number
         }
         Insert: {
-          exercise_id: number
           id?: number
           reps: number
-          rpe: number
+          rpe?: number | null
           set_num: number
           weight: number
+          workout_exercises_id: number
         }
         Update: {
-          exercise_id?: number
           id?: number
           reps?: number
-          rpe?: number
+          rpe?: number | null
           set_num?: number
           weight?: number
+          workout_exercises_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "exercise_sets_exercise_id_fkey"
-            columns: ["exercise_id"]
+            foreignKeyName: "exercise_sets_workout_exercises_id_fkey"
+            columns: ["workout_exercises_id"]
             referencedRelation: "workout_exercises"
-            referencedColumns: ["exercise_id"]
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -281,24 +281,27 @@ export interface Database {
       }
       workout_exercises: {
         Row: {
-          exercise_id: number
+          exercises_id: number
+          id: number
           num_sets: number
           workout_id: number
         }
         Insert: {
-          exercise_id?: number
+          exercises_id?: number
+          id?: number
           num_sets: number
           workout_id: number
         }
         Update: {
-          exercise_id?: number
+          exercises_id?: number
+          id?: number
           num_sets?: number
           workout_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "workout_exercises_exercise_id_fkey"
-            columns: ["exercise_id"]
+            foreignKeyName: "workout_exercises_exercises_id_fkey"
+            columns: ["exercises_id"]
             referencedRelation: "exercises"
             referencedColumns: ["id"]
           },
@@ -349,26 +352,26 @@ export interface Database {
           id: number
           name: string | null
           num_exercises: number
-          user_Id: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           name?: string | null
           num_exercises: number
-          user_Id: string
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: number
           name?: string | null
           num_exercises?: number
-          user_Id?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "workouts_user_Id_fkey"
-            columns: ["user_Id"]
+            foreignKeyName: "workouts_user_id_fkey"
+            columns: ["user_id"]
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           }

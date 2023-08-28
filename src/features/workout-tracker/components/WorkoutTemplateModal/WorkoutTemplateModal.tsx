@@ -10,7 +10,6 @@ import {
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { BottomMenu, Button, Spacer, Text } from '../../../../components';
-import { useWorkoutExercises } from '../../../../hooks/useWorkoutExercises';
 import {
     type WorkoutTemplate,
     type WorkoutTemplateExercise,
@@ -40,13 +39,10 @@ const renderExercise: ListRenderItem<WorkoutTemplateExercise> = ({ item }) => (
 
 function openWorkoutTrackerModalWithTemplate(
     workoutTemplate: WorkoutTemplate,
-    deleteAllExercises: () => void,
     setIsWorkoutTrackerActive: Dispatch<SetStateAction<boolean>>,
     setModalVisible: Dispatch<SetStateAction<boolean>>,
     workoutTrackerModalRef: React.RefObject<BottomSheetModal>
 ): void {
-    deleteAllExercises();
-
     // TODO: Fix adding exercises
     // workoutTemplate.exercises.forEach((exercise) => {
     //     dispatchExercises({ type: ExercisesActionsTypes.ADD_EXERCISE, payload: exercise });
@@ -57,7 +53,6 @@ function openWorkoutTrackerModalWithTemplate(
 }
 
 export default function WorkoutTemplateModal(props: Props): React.ReactElement {
-    const { deleteAllExercises } = useWorkoutExercises();
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
 
     const closeModal = (): void => {
@@ -103,7 +98,6 @@ export default function WorkoutTemplateModal(props: Props): React.ReactElement {
                                     onPress={() => {
                                         openWorkoutTrackerModalWithTemplate(
                                             props.workoutTemplate,
-                                            deleteAllExercises,
                                             props.setIsWorkoutTrackerActive,
                                             props.setModalVisible,
                                             props.workoutTrackerModalRef
