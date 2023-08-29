@@ -5,16 +5,22 @@ import { Button, Spacer, Text } from '../../../../components';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
-import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
+import { ExerciseContainer, FlexView, Header, Icon, Row } from './WorkoutTrackerExerciseStyles';
 
 interface ExerciseProps {
     exercise: Exercise;
     dispatchExercises: Dispatch<ExercisesActions>;
+    drag: () => void;
+    reorderExercises: boolean;
+    isActive: boolean;
 }
 
 const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
     exercise,
     dispatchExercises,
+    drag,
+    reorderExercises,
+    isActive,
 }: ExerciseProps): React.ReactElement {
     function addSet(): void {
         dispatchExercises({
@@ -30,41 +36,50 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
         });
     }
 
+    function onLongPress(): void {
+        if (reorderExercises) {
+            drag();
+        }
+    }
     return (
         <ExerciseContainer>
-            <Row>
+            <Header isActive={isActive} onLongPress={onLongPress} delayLongPress={100}>
                 <Text variant='headline' color='onWhite'>
                     {exercise.name}
                 </Text>
                 <TouchableOpacity onPress={deleteExercise}>
                     <Icon name='trash-outline' size={24} />
                 </TouchableOpacity>
-            </Row>
-            <Spacer size='xs' />
-            <FlatList
-                data={exercise.sets}
-                ListHeaderComponent={ExerciseSetHeader}
-                renderItem={({ item, index }) => (
-                    <WorkoutTrackerSet
-                        set={item}
-                        setIndex={index}
-                        exerciseId={exercise.id}
-                        dispatchExercises={dispatchExercises}
+            </Header>
+            {!reorderExercises && (
+                <>
+                    <Spacer size='xs' />
+                    <FlatList
+                        data={exercise.sets}
+                        ListHeaderComponent={ExerciseSetHeader}
+                        renderItem={({ item, index }) => (
+                            <WorkoutTrackerSet
+                                set={item}
+                                setIndex={index}
+                                exerciseId={exercise.id}
+                                dispatchExercises={dispatchExercises}
+                            />
+                        )}
+                        ItemSeparatorComponent={() => <Spacer size='xxs' />}
                     />
-                )}
-                ItemSeparatorComponent={() => <Spacer size='xxs' />}
-            />
-            <Spacer size='xs' />
-            <Button
-                variant='full'
-                backgroundColor='white'
-                textColor='light'
-                borderColor='primary'
-                thin
-                onPress={addSet}
-            >
-                Add Set
-            </Button>
+                    <Spacer size='xs' />
+                    <Button
+                        variant='full'
+                        backgroundColor='white'
+                        textColor='light'
+                        borderColor='primary'
+                        thin
+                        onPress={addSet}
+                    >
+                        Add Set
+                    </Button>
+                </>
+            )}
         </ExerciseContainer>
     );
 });

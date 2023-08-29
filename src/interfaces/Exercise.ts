@@ -3,8 +3,8 @@ import { type Tables } from './Tables';
 export interface ExerciseSet {
     id: string | number[] | number;
     exerciseId: number;
-    reps: number;
-    weight: number;
+    reps: number | null;
+    weight: number | null;
     rpe: number | null;
     previous?: {
         reps: number;

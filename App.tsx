@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { PortalProvider } from '@gorhom/portal';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { MenuProvider } from 'react-native-popup-menu';
 import { ThemeProvider } from 'styled-components';
 
 import {
@@ -30,18 +31,20 @@ export default function App(): React.ReactElement | null {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <AuthProvider>
-                <PortalProvider>
-                    <ThemeProvider theme={theme}>
-                        <BottomSheetModalProvider>
-                            <View style={{ flex: 1 }}>
-                                <BaseNavigation />
-                                <StatusBar style='auto' />
-                            </View>
-                        </BottomSheetModalProvider>
-                    </ThemeProvider>
-                </PortalProvider>
-            </AuthProvider>
+            <ThemeProvider theme={theme}>
+                <AuthProvider>
+                    <MenuProvider>
+                        <PortalProvider>
+                            <BottomSheetModalProvider>
+                                <View style={{ flex: 1 }}>
+                                    <BaseNavigation />
+                                    <StatusBar style='auto' />
+                                </View>
+                            </BottomSheetModalProvider>
+                        </PortalProvider>
+                    </MenuProvider>
+                </AuthProvider>
+            </ThemeProvider>
         </GestureHandlerRootView>
     );
 }

@@ -11,6 +11,7 @@ export enum ExercisesActionsTypes {
     DELETE_SET = 'delete-set',
     UPDATE_SET_WEIGHT = 'update-set-weight',
     UPDATE_SET_REPS = 'update-set-reps',
+    REORDER_EXERCISES = 'reorder-exercises',
 }
 
 export type ExercisesActions =
@@ -52,6 +53,12 @@ export type ExercisesActions =
               exerciseId: number;
               setId: string | number[] | number;
               reps: number;
+          };
+      }
+    | {
+          type: ExercisesActionsTypes.REORDER_EXERCISES;
+          payload: {
+              exercises: Exercise[];
           };
       };
 
@@ -99,6 +106,8 @@ export function exercisesReducer(exercises: Exercise[], action: ExercisesActions
                 'reps',
                 action.payload.reps
             );
+        case ExercisesActionsTypes.REORDER_EXERCISES:
+            return action.payload.exercises;
         default:
             return exercises;
     }
