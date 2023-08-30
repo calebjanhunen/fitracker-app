@@ -2,7 +2,6 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 
 import { PortalProvider } from '@gorhom/portal';
-import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MenuProvider } from 'react-native-popup-menu';
 import { ThemeProvider } from 'styled-components';
@@ -36,7 +35,6 @@ export default function App(): React.ReactElement | null {
                         <PortalProvider>
                             <SafeAreaView style={{ flex: 1 }}>
                                 <BaseNavigation />
-                                <StatusBar style='auto' />
                             </SafeAreaView>
                         </PortalProvider>
                     </MenuProvider>
