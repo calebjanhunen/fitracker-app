@@ -6,7 +6,7 @@ import Spacer from '../Spacer/Spacer';
 import Text from '../Text/Text';
 import { AlertButton, AlertModalContainer, AlertModalOverlay, Blur } from './AlertStyles';
 
-interface Props<T> {
+interface Props {
     modalVisible: boolean;
     setModalVisible: (val: boolean) => void;
     title: string;
@@ -16,11 +16,10 @@ interface Props<T> {
         backgroundColor: keyof typeof theme.colors;
         textColor: keyof typeof theme.fontColors;
     };
-    ctaFunction: (params: T) => void;
-    ctaFunctionArgs: T;
+    ctaFunction: () => void;
 }
 
-export default function Alert<T>(props: Props<T>): React.ReactElement {
+export default function Alert(props: Props): React.ReactElement {
     return (
         <Modal transparent={true} visible={props.modalVisible}>
             {/* Modal Overlay */}
@@ -44,9 +43,7 @@ export default function Alert<T>(props: Props<T>): React.ReactElement {
                             {/* CTA Button */}
                             <AlertButton
                                 backgroundColor={props.ctaBtn.backgroundColor}
-                                onPress={() => {
-                                    props.ctaFunction(props.ctaFunctionArgs);
-                                }}
+                                onPress={props.ctaFunction}
                             >
                                 <Text variant='button' color={props.ctaBtn.textColor}>
                                     {props.ctaBtn.text}
