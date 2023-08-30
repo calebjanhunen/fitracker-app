@@ -13,10 +13,7 @@ import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable
 import { Alert, Button, PopupMenu, Spacer, Text } from '../../../../components';
 import { type MenuOptionProps } from '../../../../components/PopupMenu/PopupMenu';
 import useApi from '../../../../hooks/useApi';
-import {
-    type AlertModalVars,
-    type alertModalCTAFunctionParams,
-} from '../../../../interfaces/AlertModal';
+import { type AlertModalVars } from '../../../../interfaces/AlertModal';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { saveWorkout } from '../../../../services/api/WorkoutsAPI';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
@@ -105,12 +102,7 @@ export default function WorkoutTrackerModal({
         );
     }
 
-    function openAlertWindow(
-        alertType: 'cancel' | 'finish',
-        setAlertModalVisible: (val: boolean) => void,
-        setAlertModalVars: (val: AlertModalVars) => void,
-        alertModalCTAFunctionVars: alertModalCTAFunctionParams
-    ): void {
+    function openAlertWindow(alertType: 'cancel' | 'finish'): void {
         if (alertType === 'finish') {
             setAlertModalVars({
                 title: 'Finish Workout',
@@ -121,7 +113,6 @@ export default function WorkoutTrackerModal({
                     textColor: 'white',
                 },
                 ctaFunction: finishWorkout,
-                ctaFunctionArgs: alertModalCTAFunctionVars,
             });
         } else {
             setAlertModalVars({
@@ -132,30 +123,25 @@ export default function WorkoutTrackerModal({
                     backgroundColor: 'error',
                     textColor: 'white',
                 },
-                ctaFunction: cancelWorkout,
-                ctaFunctionArgs: alertModalCTAFunctionVars,
+                ctaFunction: closeWorkoutTrackerModal,
             });
         }
 
         setAlertModalVisible(true);
     }
 
-    function cancelWorkout(params: alertModalCTAFunctionParams): void {
-        params.setWorkoutName('');
-        params.setAlertModalVisible(false);
-        params.setWorkoutTrackerActive(false);
-        params.deleteAllExercises();
-        params.sheetRef.current?.close();
+    function closeWorkoutTrackerModal(): void {
+        setWorkoutName('');
+        setAlertModalVisible(false);
+        setWorkoutTrackerActive(false);
+        deleteAllExercises();
+        sheetRef.current?.close();
     }
 
-    function finishWorkout(params: alertModalCTAFunctionParams): void {
+    function finishWorkout(): void {
         // Go to a screen displaying to user that they ended workout?
         void initSaveWorkout({ workoutName, workoutExercises });
-        params.setWorkoutName('');
-        params.setAlertModalVisible(false);
-        params.setWorkoutTrackerActive(false);
-        params.deleteAllExercises();
-        params.sheetRef.current?.close();
+        closeWorkoutTrackerModal();
     }
 
     return (
@@ -168,7 +154,6 @@ export default function WorkoutTrackerModal({
                     desc={alertModalVars.desc}
                     ctaBtn={alertModalVars.ctaBtn}
                     ctaFunction={alertModalVars.ctaFunction}
-                    ctaFunctionArgs={alertModalVars.ctaFunctionArgs}
                 />
             )}
             <AddExerciseModal
@@ -192,18 +177,7 @@ export default function WorkoutTrackerModal({
                             <HeaderButton
                                 backgroundColor='error'
                                 onPress={() => {
-                                    openAlertWindow(
-                                        'cancel',
-                                        setAlertModalVisible,
-                                        setAlertModalVars,
-                                        {
-                                            setWorkoutName,
-                                            setAlertModalVisible,
-                                            setWorkoutTrackerActive,
-                                            sheetRef,
-                                            deleteAllExercises,
-                                        }
-                                    );
+                                    openAlertWindow('cancel');
                                 }}
                             >
                                 <Text variant='button' color='white'>
@@ -213,18 +187,7 @@ export default function WorkoutTrackerModal({
                             <HeaderButton
                                 backgroundColor='success'
                                 onPress={() => {
-                                    openAlertWindow(
-                                        'finish',
-                                        setAlertModalVisible,
-                                        setAlertModalVars,
-                                        {
-                                            setWorkoutName,
-                                            setAlertModalVisible,
-                                            setWorkoutTrackerActive,
-                                            sheetRef,
-                                            deleteAllExercises,
-                                        }
-                                    );
+                                    openAlertWindow('finish');
                                 }}
                             >
                                 <Text variant='button' color='white'>
