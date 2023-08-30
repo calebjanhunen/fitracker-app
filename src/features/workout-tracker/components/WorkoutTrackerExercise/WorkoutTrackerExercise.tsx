@@ -1,21 +1,39 @@
 import React, { memo, type Dispatch } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native';
 
-import { Button, Spacer, Text } from '../../../../components';
+import { Button, PopupMenu, Spacer, Text } from '../../../../components';
+import { type MenuOptionProps } from '../../../../components/PopupMenu/PopupMenu';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
-import { ExerciseContainer, FlexView, Icon, Row } from './WorkoutTrackerExerciseStyles';
+import {
+    ExerciseContainer,
+    FlexView,
+    Header,
+    ReorderPressable,
+    Row,
+} from './WorkoutTrackerExerciseStyles';
 
 interface ExerciseProps {
     exercise: Exercise;
     dispatchExercises: Dispatch<ExercisesActions>;
+    drag: () => void;
+    reorderExercises: boolean;
+    isActive: boolean;
 }
 
 const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
     exercise,
     dispatchExercises,
+    drag,
+    reorderExercises,
+    isActive,
 }: ExerciseProps): React.ReactElement {
+    const menuOptions: MenuOptionProps[] = [
+        { text: 'Replace Exercise', icon: 'repeat', onSelect: () => {} },
+        { text: 'Delete', icon: 'trash', iconColor: 'error', onSelect: deleteExercise },
+    ];
+
     function addSet(): void {
         dispatchExercises({
             type: ExercisesActionsTypes.ADD_SET,
@@ -30,41 +48,50 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
         });
     }
 
+    function reorderExercise(): void {
+        if (reorderExercises) {
+            drag();
+        }
+    }
     return (
         <ExerciseContainer>
-            <Row>
-                <Text variant='headline' color='onWhite'>
-                    {exercise.name}
-                </Text>
-                <TouchableOpacity onPress={deleteExercise}>
-                    <Icon name='trash-outline' size={24} />
-                </TouchableOpacity>
-            </Row>
-            <Spacer size='xs' />
-            <FlatList
-                data={exercise.sets}
-                ListHeaderComponent={ExerciseSetHeader}
-                renderItem={({ item, index }) => (
-                    <WorkoutTrackerSet
-                        set={item}
-                        setIndex={index}
-                        exerciseId={exercise.id}
-                        dispatchExercises={dispatchExercises}
+            <Header isActive={isActive}>
+                <ReorderPressable onLongPress={reorderExercise} delayLongPress={100}>
+                    <Text variant='headline' color='onWhite'>
+                        {exercise.name}
+                    </Text>
+                </ReorderPressable>
+                <PopupMenu triggerIcon='ellipsis-vertical' menuOptions={menuOptions} />
+            </Header>
+            {!reorderExercises && (
+                <>
+                    <Spacer size='xs' />
+                    <FlatList
+                        data={exercise.sets}
+                        ListHeaderComponent={ExerciseSetHeader}
+                        renderItem={({ item, index }) => (
+                            <WorkoutTrackerSet
+                                set={item}
+                                setIndex={index}
+                                exerciseId={exercise.id}
+                                dispatchExercises={dispatchExercises}
+                            />
+                        )}
+                        ItemSeparatorComponent={() => <Spacer size='xxs' />}
                     />
-                )}
-                ItemSeparatorComponent={() => <Spacer size='xxs' />}
-            />
-            <Spacer size='xs' />
-            <Button
-                variant='full'
-                backgroundColor='white'
-                textColor='light'
-                borderColor='primary'
-                thin
-                onPress={addSet}
-            >
-                Add Set
-            </Button>
+                    <Spacer size='xs' />
+                    <Button
+                        variant='full'
+                        backgroundColor='white'
+                        textColor='light'
+                        borderColor='primary'
+                        thin
+                        onPress={addSet}
+                    >
+                        Add Set
+                    </Button>
+                </>
+            )}
         </ExerciseContainer>
     );
 });

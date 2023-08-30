@@ -41,6 +41,7 @@ const TextInputComponent = styled(RNTextInput)<{
 export default function TextInput(props: Props): React.ReactElement {
     return (
         <TextInputComponent
+            style={props.style}
             placeholder={props.placeholder}
             variant={props.variant}
             onChangeText={props.onChangeText}

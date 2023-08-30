@@ -1,19 +1,24 @@
 import React, { useReducer, useRef, useState } from 'react';
-import { Animated, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
+import {
+    Animated,
+    TouchableOpacity,
+    View,
+    type NativeScrollEvent,
+    type NativeSyntheticEvent,
+} from 'react-native';
 
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
-import { FlatList } from 'react-native-gesture-handler';
+import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
 
-import { Alert, Button, Spacer, Text, TextInput } from '../../../../components';
+import { Alert, Button, PopupMenu, Spacer, Text } from '../../../../components';
+import { type MenuOptionProps } from '../../../../components/PopupMenu/PopupMenu';
 import useApi from '../../../../hooks/useApi';
 import {
     type AlertModalVars,
     type alertModalCTAFunctionParams,
 } from '../../../../interfaces/AlertModal';
 import { type Exercise } from '../../../../interfaces/Exercise';
-import { ExerciseInsertType, type InsertWorkoutRequest } from '../../../../interfaces/Workout';
 import { saveWorkout } from '../../../../services/api/WorkoutsAPI';
-import { AuthContext } from '../../../../services/context/AuthContext';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import { ExercisesActionsTypes, exercisesReducer } from '../../reducers/ExercisesReducer';
@@ -21,9 +26,12 @@ import {
     CustomBottomSheetModal,
     Header,
     HeaderButton,
+    Icon,
     Line,
     PaddedContainer,
+    Row,
     WorkoutModalView,
+    WorkoutNameInput,
     shadowStyle,
 } from './WorkoutTrackerModalStyles';
 
@@ -33,22 +41,6 @@ interface Props {
     setIsBottomSheetHidden: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
 }
-
-// function prepareObjectToSaveWorkout(
-//     workoutName: string,
-//     exercises: Exercise[],
-// ): InsertWorkoutRequest {
-//     const exercisesRequestArr: ExerciseInsertType = exercises.map(exercise => {exercise_id: exercise.id, workout_id: }})
-//     // const workoutRequestObj: InsertWorkoutRequest = {
-//     //     workout: {
-//     //         name: workoutName,
-//     //         user_id: session.user.id,
-//     //         num_exercises: exercises.length
-//     //     }
-//     // };
-
-//     return workoutRequestObj;
-// }
 
 export default function WorkoutTrackerModal({
     sheetRef,
@@ -63,7 +55,17 @@ export default function WorkoutTrackerModal({
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
     const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const [workoutExercises, dispatchExercises] = useReducer(exercisesReducer, []);
+    const [reorderExercises, setReorderExercises] = useState<boolean>(false);
     const { execute: initSaveWorkout } = useApi(saveWorkout);
+    const menuOptions: MenuOptionProps[] = [
+        {
+            text: 'Reorder Exercises',
+            icon: 'reorder-four',
+            onSelect: () => {
+                setReorderExercises(true);
+            },
+        },
+    ];
 
     function onSheetChangePosition(index: number): void {
         index === 0 ? setIsBottomSheetHidden(true) : setIsBottomSheetHidden(false);
@@ -85,6 +87,22 @@ export default function WorkoutTrackerModal({
 
     function deleteAllExercises(): void {
         dispatchExercises({ type: ExercisesActionsTypes.DELETE_ALL_EXERCISES });
+    }
+
+    function renderExercise({
+        item,
+        drag,
+        isActive,
+    }: RenderItemParams<Exercise>): React.ReactElement {
+        return (
+            <WorkoutTrackerExercise
+                exercise={item}
+                dispatchExercises={dispatchExercises}
+                drag={drag}
+                reorderExercises={reorderExercises}
+                isActive={isActive}
+            />
+        );
     }
 
     function openAlertWindow(
@@ -131,11 +149,8 @@ export default function WorkoutTrackerModal({
     }
 
     function finishWorkout(params: alertModalCTAFunctionParams): void {
-        // TODO: Send api request to save workout
         // Go to a screen displaying to user that they ended workout?
-
         void initSaveWorkout({ workoutName, workoutExercises });
-
         params.setWorkoutName('');
         params.setAlertModalVisible(false);
         params.setWorkoutTrackerActive(false);
@@ -217,33 +232,51 @@ export default function WorkoutTrackerModal({
                             </HeaderButton>
                         </Header>
                         <Spacer size='xs' />
-                        <TextInput
-                            variant='smallTitle'
-                            placeholder='Enter Workout Name...'
-                            value={workoutName}
-                            onChangeText={setWorkoutName}
-                        />
+                        <Row>
+                            <WorkoutNameInput
+                                variant='smallTitle'
+                                placeholder='Enter Workout Name...'
+                                value={workoutName}
+                                onChangeText={setWorkoutName}
+                            />
+                            {reorderExercises ? (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setReorderExercises(false);
+                                    }}
+                                >
+                                    <Icon name='checkmark' size={24} />
+                                </TouchableOpacity>
+                            ) : (
+                                <PopupMenu
+                                    triggerIcon='ellipsis-vertical'
+                                    menuOptions={menuOptions}
+                                />
+                            )}
+                        </Row>
                         <Spacer size='xs' />
                     </PaddedContainer>
                     <Line style={{ opacity: opacityAnimation }} />
-                    <FlatList
+                    <DraggableFlatList
                         onScroll={onExerciseListScroll}
                         style={{ flex: 1 }}
                         data={workoutExercises}
-                        // extraData={workoutExercises}
-                        renderItem={({ item }) => (
-                            <WorkoutTrackerExercise
-                                exercise={item}
-                                dispatchExercises={dispatchExercises}
-                            />
-                        )}
-                        ItemSeparatorComponent={() => <Spacer size='xl' />}
+                        renderItem={renderExercise}
+                        keyExtractor={(item) => item.id.toString()}
+                        ItemSeparatorComponent={() => <Spacer size='xs' />}
                         ListFooterComponent={
                             <WorkoutModalFooter
                                 setAddExerciseModalVisible={setAddExerciseModalVisible}
                             />
                         }
                         contentContainerStyle={{ padding: 16 }}
+                        containerStyle={{ flex: 1 }}
+                        onDragEnd={({ data }) => {
+                            dispatchExercises({
+                                type: ExercisesActionsTypes.REORDER_EXERCISES,
+                                payload: { exercises: data },
+                            });
+                        }}
                     />
                 </WorkoutModalView>
             </CustomBottomSheetModal>

@@ -1,7 +1,10 @@
 import { Animated, TouchableOpacity, View } from 'react-native';
 
+import IonIcons from '@expo/vector-icons/Ionicons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import styled from 'styled-components';
+
+import { TextInput } from '../../../../components';
 
 export const shadowStyle = {
     // backgroundColor: '#fff',
@@ -35,6 +38,16 @@ export const Header = styled(View)`
     justify-content: space-between;
 `;
 
+export const Row = styled(View)`
+    flex-direction: row;
+    /* justify-content: space-between; */
+    align-items: center;
+`;
+
+export const WorkoutNameInput = styled(TextInput)`
+    flex: 1;
+`;
+
 export const HeaderButton = styled(TouchableOpacity)<{ backgroundColor: 'error' | 'success' }>`
     background-color: ${(props) => props.theme.colors[props.backgroundColor]};
 
@@ -49,4 +62,8 @@ export const Line = styled(Animated.View)`
     height: 1px;
     width: 100%;
     background-color: ${(props) => props.theme.colors.grey};
+`;
+
+export const Icon = styled(IonIcons)`
+    color: ${(props) => props.theme.colors.primary};
 `;
