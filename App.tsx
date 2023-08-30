@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import { PortalProvider } from '@gorhom/portal';
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +13,6 @@ import {
     Inter_700Bold,
     useFonts,
 } from '@expo-google-fonts/inter';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BaseNavigation from './src/navigation';
 import { AuthProvider } from './src/services/context/AuthContext';
 import { theme } from './src/theme/theme';
@@ -35,12 +34,10 @@ export default function App(): React.ReactElement | null {
                 <AuthProvider>
                     <MenuProvider>
                         <PortalProvider>
-                            <BottomSheetModalProvider>
-                                <View style={{ flex: 1 }}>
-                                    <BaseNavigation />
-                                    <StatusBar style='auto' />
-                                </View>
-                            </BottomSheetModalProvider>
+                            <SafeAreaView style={{ flex: 1 }}>
+                                <BaseNavigation />
+                                <StatusBar style='auto' />
+                            </SafeAreaView>
                         </PortalProvider>
                     </MenuProvider>
                 </AuthProvider>
