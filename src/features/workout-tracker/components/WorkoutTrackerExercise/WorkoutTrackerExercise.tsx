@@ -1,11 +1,18 @@
 import React, { memo, type Dispatch } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native';
 
-import { Button, Spacer, Text } from '../../../../components';
+import { Button, PopupMenu, Spacer, Text } from '../../../../components';
+import { type MenuOptionProps } from '../../../../components/PopupMenu/PopupMenu';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
-import { ExerciseContainer, FlexView, Header, Icon, Row } from './WorkoutTrackerExerciseStyles';
+import {
+    ExerciseContainer,
+    FlexView,
+    Header,
+    ReorderPressable,
+    Row,
+} from './WorkoutTrackerExerciseStyles';
 
 interface ExerciseProps {
     exercise: Exercise;
@@ -22,6 +29,13 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
     reorderExercises,
     isActive,
 }: ExerciseProps): React.ReactElement {
+    const menuOptions: MenuOptionProps[] = [
+        { text: 'Replace Exercise', icon: 'repeat', onSelect: () => {} },
+        { text: 'Delete', icon: 'trash', iconColor: 'error', onSelect: deleteExercise },
+    ];
+
+    console.log(exercise.name, ' updated');
+
     function addSet(): void {
         dispatchExercises({
             type: ExercisesActionsTypes.ADD_SET,
@@ -36,20 +50,20 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
         });
     }
 
-    function onLongPress(): void {
+    function reorderExercise(): void {
         if (reorderExercises) {
             drag();
         }
     }
     return (
         <ExerciseContainer>
-            <Header isActive={isActive} onLongPress={onLongPress} delayLongPress={100}>
-                <Text variant='headline' color='onWhite'>
-                    {exercise.name}
-                </Text>
-                <TouchableOpacity onPress={deleteExercise}>
-                    <Icon name='trash-outline' size={24} />
-                </TouchableOpacity>
+            <Header isActive={isActive}>
+                <ReorderPressable onLongPress={reorderExercise} delayLongPress={100}>
+                    <Text variant='headline' color='onWhite'>
+                        {exercise.name}
+                    </Text>
+                </ReorderPressable>
+                <PopupMenu triggerIcon='ellipsis-vertical' menuOptions={menuOptions} />
             </Header>
             {!reorderExercises && (
                 <>

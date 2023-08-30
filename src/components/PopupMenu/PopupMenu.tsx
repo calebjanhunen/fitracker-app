@@ -12,6 +12,7 @@ export interface MenuOptionProps {
     onSelect: () => void;
     text: string;
     icon: keyof typeof IonIcons.glyphMap;
+    iconColor?: keyof typeof theme.colors;
 }
 
 interface Props {
@@ -25,8 +26,9 @@ const CustomMenuOption = styled(MenuOption)`
     gap: ${(props) => props.theme.spacing.sm};
 `;
 
-const Icon = styled(IonIcons)`
-    color: ${(props) => props.theme.colors.primary};
+const Icon = styled(IonIcons)<{ iconColor?: MenuOptionProps['iconColor'] }>`
+    color: ${({ theme, iconColor }) =>
+        iconColor ? theme.colors[iconColor] : theme.colors.primary};
 `;
 
 export default function PopupMenu({ menuOptions, triggerIcon }: Props): React.ReactElement {
@@ -38,7 +40,7 @@ export default function PopupMenu({ menuOptions, triggerIcon }: Props): React.Re
             <MenuOptions optionsContainerStyle={styles.menuOptionsStyles}>
                 {menuOptions.map((option, index) => (
                     <CustomMenuOption key={index} onSelect={option.onSelect}>
-                        <Icon name={option.icon} size={24} />
+                        <Icon name={option.icon} size={24} iconColor={option.iconColor} />
                         <Text variant='subhead' color='white'>
                             {option.text}
                         </Text>
