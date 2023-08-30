@@ -3,7 +3,7 @@ import { TouchableOpacity, View } from 'react-native';
 import styled from 'styled-components';
 
 export const ExerciseContainer = styled(View)`
-    flex: 1;
+    /* flex: 1 <-- causing last item in flatlist to disappear occasionally */
 `;
 
 export const Row = styled(View)`

@@ -34,8 +34,6 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
         { text: 'Delete', icon: 'trash', iconColor: 'error', onSelect: deleteExercise },
     ];
 
-    console.log(exercise.name, ' updated');
-
     function addSet(): void {
         dispatchExercises({
             type: ExercisesActionsTypes.ADD_SET,
