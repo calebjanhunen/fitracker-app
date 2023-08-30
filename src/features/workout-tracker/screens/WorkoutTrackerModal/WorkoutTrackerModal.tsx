@@ -48,7 +48,7 @@ export default function WorkoutTrackerModal({
     setIsBottomSheetHidden,
     setWorkoutTrackerActive,
 }: Props): React.ReactElement {
-    const snapPoints = ['1%', '92%'];
+    const snapPoints = ['1%', '99%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
     const [workoutName, setWorkoutName] = useState<string>('');
     const [alertModalVars, setAlertModalVars] = useState<AlertModalVars>();
@@ -184,6 +184,7 @@ export default function WorkoutTrackerModal({
                 style={shadowStyle}
                 sheetHidden={isBottomSheetHidden}
                 onChange={onSheetChangePosition}
+                enablePanDownToClose={false}
             >
                 <WorkoutModalView>
                     <PaddedContainer>

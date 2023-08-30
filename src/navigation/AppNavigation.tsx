@@ -5,6 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { type ParamListBase, type RouteProp } from '@react-navigation/native';
 import { styled } from 'styled-components';
 
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { View } from 'react-native';
 import FindFriendsMainScreen from '../features/find-friends/screens/FindFriendsMainScreen';
 import MessagingMainScreen from '../features/messaging/screens/MessagingMainScreen';
 import ProfileMainScreen from '../features/profile/screens/ProfileMainScreen';
@@ -38,29 +40,33 @@ function tabBarIcon(route: RouteProp<ParamListBase>, focused: boolean): React.Re
 export default function AppNavigation(): React.ReactElement {
     // TODO: Reset initialRouteName -> for dev purposes
     return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                headerShown: false,
-                tabBarIcon: ({ focused }) => tabBarIcon(route, focused),
-                tabBarShowLabel: false,
-            })}
-            initialRouteName='Start Workout'
-        >
-            <Tab.Screen name='Home'>
-                {() => <ScreenDisplay screenComponent={<SocialFeedMainScreen />} />}
-            </Tab.Screen>
-            <Tab.Screen name='Friends'>
-                {() => <ScreenDisplay screenComponent={<FindFriendsMainScreen />} />}
-            </Tab.Screen>
-            <Tab.Screen name='Start Workout'>
-                {() => <ScreenDisplay screenComponent={<WorkoutTrackerNavigation />} />}
-            </Tab.Screen>
-            <Tab.Screen name='Messaging'>
-                {() => <ScreenDisplay screenComponent={<MessagingMainScreen />} />}
-            </Tab.Screen>
-            <Tab.Screen name='Profile'>
-                {() => <ScreenDisplay screenComponent={<ProfileMainScreen />} />}
-            </Tab.Screen>
-        </Tab.Navigator>
+        <View style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+                <Tab.Navigator
+                    screenOptions={({ route }) => ({
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) => tabBarIcon(route, focused),
+                        tabBarShowLabel: false,
+                    })}
+                    initialRouteName='Start Workout'
+                >
+                    <Tab.Screen name='Home'>
+                        {() => <ScreenDisplay screenComponent={<SocialFeedMainScreen />} />}
+                    </Tab.Screen>
+                    <Tab.Screen name='Friends'>
+                        {() => <ScreenDisplay screenComponent={<FindFriendsMainScreen />} />}
+                    </Tab.Screen>
+                    <Tab.Screen name='Start Workout'>
+                        {() => <ScreenDisplay screenComponent={<WorkoutTrackerNavigation />} />}
+                    </Tab.Screen>
+                    <Tab.Screen name='Messaging'>
+                        {() => <ScreenDisplay screenComponent={<MessagingMainScreen />} />}
+                    </Tab.Screen>
+                    <Tab.Screen name='Profile'>
+                        {() => <ScreenDisplay screenComponent={<ProfileMainScreen />} />}
+                    </Tab.Screen>
+                </Tab.Navigator>
+            </BottomSheetModalProvider>
+        </View>
     );
 }
