@@ -104,9 +104,12 @@ export default function WorkoutTrackerModal({
 
     function openAlertWindow(alertType: 'cancel' | 'finish'): void {
         if (alertType === 'finish') {
+            const descriptionText = !validateExercises()
+                ? 'All invalid or empty sets and exercises will be removed.'
+                : 'Are you sure you want to finish this workout?';
             setAlertModalVars({
                 title: 'Finish Workout',
-                desc: 'Are you sure you want to finish this workout?',
+                desc: descriptionText,
                 ctaBtn: {
                     text: 'Finish',
                     backgroundColor: 'success',
@@ -128,6 +131,32 @@ export default function WorkoutTrackerModal({
         }
 
         setAlertModalVisible(true);
+    }
+
+    // Loops through exercise sets and if all sets are invalid (both reps and sets are empty) or if exercise has no sets -> sets exercise to invalid
+    function validateExercises(): boolean {
+        let isAnySetInvalid = false;
+        workoutExercises.forEach((exercise) => {
+            let allSetsInvalid = true;
+            // Loop through all sets of exercise
+            exercise.sets.forEach((set) => {
+                if (set.valid) {
+                    allSetsInvalid = false;
+                } else {
+                    isAnySetInvalid = true;
+                }
+            });
+
+            // If every set is invalid -> set exercise to invalid
+            if (allSetsInvalid || exercise.sets.length === 0) {
+                dispatchExercises({
+                    type: ExercisesActionsTypes.VALIDATE_EXERCISE,
+                    payload: { exerciseId: exercise.id, valid: false },
+                });
+            }
+        });
+        // return false if any set in the workout is invalid
+        return !isAnySetInvalid;
     }
 
     function closeWorkoutTrackerModal(): void {
