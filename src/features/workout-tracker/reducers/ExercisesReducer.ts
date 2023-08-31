@@ -83,6 +83,7 @@ export function exercisesReducer(exercises: Exercise[], action: ExercisesActions
                                   weight: null,
                                   reps: null,
                                   rpe: null,
+                                  valid: false,
                               },
                           ],
                       }
