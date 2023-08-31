@@ -1,9 +1,9 @@
-import React, { memo, useRef, type Dispatch } from 'react';
+import React, { memo, useEffect, useRef, useState, type Dispatch } from 'react';
 import { Dimensions, type Animated } from 'react-native';
 
 import { Swipeable } from 'react-native-gesture-handler';
 
-import { AnimatedText, Text as CustomText, TextInput } from '../../../../components';
+import { AnimatedText, Text, TextInput } from '../../../../components';
 import { type ExerciseSet } from '../../../../interfaces/Exercise';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import { DeleteSetContainer, ExerciseSetContainer, FlexView, Row } from './WorkoutTrackerSetStyles';
@@ -48,18 +48,38 @@ const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
 }: Props): React.ReactElement {
     const deleteTextWidth = useRef<number>(0);
     const swipeableRef = useRef<Swipeable>(null);
+    const [weight, setWeight] = useState<number>();
+    const [reps, setReps] = useState<number>();
+
+    useEffect(() => {
+        if (weight && reps) {
+            dispatchExercises({
+                type: ExercisesActionsTypes.VALIDATE_SET,
+                payload: { exerciseId, setId: set.id, valid: true },
+            });
+        } else {
+            dispatchExercises({
+                type: ExercisesActionsTypes.VALIDATE_SET,
+                payload: { exerciseId, setId: set.id, valid: false },
+            });
+        }
+    }, [weight, reps]);
 
     function updateWeight(weightText: string): void {
+        const weightVal = Number(weightText);
+        setWeight(weightVal);
         dispatchExercises({
             type: ExercisesActionsTypes.UPDATE_SET_WEIGHT,
-            payload: { exerciseId, setId: set.id, weight: Number(weightText) },
+            payload: { exerciseId, setId: set.id, weight: weightVal },
         });
     }
 
     function updateReps(repText: string): void {
+        const repVal = Number(repText);
+        setReps(repVal);
         dispatchExercises({
             type: ExercisesActionsTypes.UPDATE_SET_REPS,
-            payload: { exerciseId, setId: set.id, reps: Number(repText) },
+            payload: { exerciseId, setId: set.id, reps: repVal },
         });
     }
 
@@ -80,16 +100,14 @@ const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
             <ExerciseSetContainer>
                 <Row>
                     <FlexView flex={0.5}>
-                        <CustomText variant='body' color='primary'>
+                        <Text variant='body' color='primary'>
                             {setIndex + 1}
-                        </CustomText>
+                        </Text>
                     </FlexView>
                     <FlexView flex={2}>
-                        <CustomText variant='body' color='light'>
-                            {set.previous
-                                ? `${set.previous?.reps} x ${set.previous?.weight} @ ${set.previous?.rpe}`
-                                : ''}
-                        </CustomText>
+                        <Text variant='body' color='light'>
+                            {' '}
+                        </Text>
                     </FlexView>
                     <FlexView flex={1}>
                         <TextInput
