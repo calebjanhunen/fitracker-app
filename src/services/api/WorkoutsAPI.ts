@@ -14,6 +14,7 @@ export async function saveWorkout(
     user: User | undefined
 ): Promise<void> {
     const { workoutName, workoutExercises: exercises } = payload;
+    const validatedExercises = validateExercises(exercises);
     try {
         // TODO: Need db transaction to rollback if an error occurs (cause inserting in multiple tables)
         // idk how to do that using supabase
@@ -23,35 +24,31 @@ export async function saveWorkout(
         }
 
         // Insert workout
-        const workoutRequestObj = prepareWorkoutRequestObject(
-            workoutName,
-            user.id,
-            exercises.length
-        );
+        const workoutRequestObj = prepareWorkoutRequestObject(workoutName, user.id);
         const { data: workoutResponse, error: workoutError } = await apiClient
             .from('workouts')
             .insert(workoutRequestObj)
             .select();
         if (workoutError) {
-            console.log('workout error: ', workoutError);
             throw new Error(workoutError.message);
         }
 
         // Insert exercises
-        const exerciseRequestObj = prepareExercisesRequestObject(exercises, workoutResponse[0].id);
-        console.log(exerciseRequestObj);
+        const exerciseRequestObj = prepareExercisesRequestObject(
+            validatedExercises,
+            workoutResponse[0].id
+        );
         const { data: exercisesResponse, error: exercisesError } = await apiClient
             .from('workout_exercises')
             .insert(exerciseRequestObj)
             .select();
         if (exercisesError) {
-            console.log('exercise error: ', exercisesError);
             throw new Error(exercisesError.message);
         }
 
-        // // Insert sets
+        // Insert sets
         const exerciseSetsRequestObj = prepareExerciseSetsRequestObject(
-            exercises,
+            validatedExercises,
             exercisesResponse
         );
         console.log(exerciseSetsRequestObj);
@@ -76,15 +73,10 @@ export async function saveWorkout(
     }
 }
 
-function prepareWorkoutRequestObject(
-    workoutName: string,
-    userId: string,
-    numExercises: number
-): WorkoutInsertType {
+function prepareWorkoutRequestObject(workoutName: string, userId: string): WorkoutInsertType {
     return {
         name: workoutName,
         user_id: userId,
-        num_exercises: numExercises,
     };
 }
 
@@ -92,11 +84,12 @@ function prepareExercisesRequestObject(
     exercises: Exercise[],
     workoutId: number
 ): ExerciseInsertType[] {
-    return exercises.map((exercise) => {
+    const validExercises = exercises.filter((exercise) => exercise.valid);
+    return validExercises.map((exercise) => {
+        console.log('exercise: ', exercise);
         return {
             exercises_id: exercise.id,
             workout_id: workoutId,
-            num_sets: exercise.sets.length,
         };
     });
 }
@@ -107,13 +100,18 @@ function prepareExerciseSetsRequestObject(
 ): ExerciseSetsInsertType[] {
     let exerciseSetsRequestObj: ExerciseSetsInsertType[] = [];
     exercises.forEach((exercise) => {
-        exercise.sets.forEach((set, index) => {
-            const workoutExercise = exercisesResponse.find((e) => e.exercises_id === exercise.id);
-            if (workoutExercise) {
+        const validSets = exercise.sets.filter((set) => set.valid);
+        validSets.forEach((set, index) => {
+            // Get id from exercise in database
+            const exerciseResponse = exercisesResponse.filter(
+                (e) => e.exercises_id === exercise.id
+            )[0];
+
+            if (set.weight && set.reps) {
                 exerciseSetsRequestObj = [
                     ...exerciseSetsRequestObj,
                     {
-                        workout_exercises_id: workoutExercise.id,
+                        workout_exercises_id: exerciseResponse.id,
                         set_num: index + 1,
                         weight: set.weight,
                         reps: set.reps,
@@ -124,4 +122,27 @@ function prepareExerciseSetsRequestObject(
         });
     });
     return exerciseSetsRequestObj;
+}
+
+// Loops through exercise sets and if all sets are invalid (both reps and sets are empty) or if exercise has no sets -> sets exercise to invalid
+function validateExercises(workoutExercises: Exercise[]): Exercise[] {
+    const validatedExercises = workoutExercises.map((exercise) => {
+        let allSetsInvalid = true;
+        // Loop through all sets of exercise
+        exercise.sets.forEach((set) => {
+            if (set.valid) {
+                allSetsInvalid = false;
+            }
+        });
+
+        // If every set is invalid -> set exercise to invalid
+        if (allSetsInvalid || exercise.sets.length === 0) {
+            return { ...exercise, valid: false };
+        } else {
+            return exercise;
+        }
+    });
+
+    // return false if any set in the workout is invalid
+    return validatedExercises;
 }
