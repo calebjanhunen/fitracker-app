@@ -7,6 +7,7 @@ import { type Exercise } from '../../../../interfaces/Exercise';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import WorkoutTrackerSet from '../WorkoutTrackerSet/WorkoutTrackerSet';
 import {
+    Body,
     ExerciseContainer,
     FlexView,
     Header,
@@ -63,23 +64,23 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
                 </ReorderPressable>
                 <PopupMenu triggerIcon='ellipsis-vertical' menuOptions={menuOptions} />
             </Header>
-            {!reorderExercises && (
-                <>
-                    <Spacer size='xs' />
-                    <FlatList
-                        data={exercise.sets}
-                        ListHeaderComponent={ExerciseSetHeader}
-                        renderItem={({ item, index }) => (
-                            <WorkoutTrackerSet
-                                set={item}
-                                setIndex={index}
-                                exerciseId={exercise.id}
-                                dispatchExercises={dispatchExercises}
-                            />
-                        )}
-                        ItemSeparatorComponent={() => <Spacer size='xxs' />}
-                    />
-                    <Spacer size='xs' />
+            <Body reorderExercise={reorderExercises}>
+                <Spacer size='xs' />
+                <FlatList
+                    data={exercise.sets}
+                    ListHeaderComponent={ExerciseSetHeader}
+                    renderItem={({ item, index }) => (
+                        <WorkoutTrackerSet
+                            set={item}
+                            setIndex={index}
+                            exerciseId={exercise.id}
+                            dispatchExercises={dispatchExercises}
+                        />
+                    )}
+                    ItemSeparatorComponent={() => <Spacer size='xxs' />}
+                />
+                <Spacer size='xs' />
+                {!reorderExercises && (
                     <Button
                         variant='full'
                         backgroundColor='white'
@@ -90,8 +91,8 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
                     >
                         Add Set
                     </Button>
-                </>
-            )}
+                )}
+            </Body>
         </ExerciseContainer>
     );
 });

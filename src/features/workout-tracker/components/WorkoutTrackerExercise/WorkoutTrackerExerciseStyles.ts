@@ -31,3 +31,7 @@ export const FlexView = styled(View)<{ flex: number }>`
     flex: ${(props) => props.flex};
     align-items: center;
 `;
+
+export const Body = styled(View)<{ reorderExercise: boolean }>`
+    ${(props) => (props.reorderExercise ? 'height: 0;' : '')};
+`;
