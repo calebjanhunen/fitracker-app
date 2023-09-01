@@ -106,7 +106,7 @@ export default function WorkoutTrackerModal({
         if (alertType === 'finish') {
             setAlertModalVars({
                 title: 'Finish Workout',
-                desc: 'Are you sure you want to finish this workout?',
+                desc: 'All invalid or empty sets and exercises will be removed.',
                 ctaBtn: {
                     text: 'Finish',
                     backgroundColor: 'success',
@@ -140,8 +140,9 @@ export default function WorkoutTrackerModal({
 
     function finishWorkout(): void {
         // Go to a screen displaying to user that they ended workout?
+        console.log('finish: ', workoutExercises);
         void initSaveWorkout({ workoutName, workoutExercises });
-        closeWorkoutTrackerModal();
+        // closeWorkoutTrackerModal();
     }
 
     return (

@@ -11,6 +11,8 @@ export enum ExercisesActionsTypes {
     DELETE_SET = 'delete-set',
     UPDATE_SET_WEIGHT = 'update-set-weight',
     UPDATE_SET_REPS = 'update-set-reps',
+    VALIDATE_EXERCISE = 'validate-exercise',
+    VALIDATE_SET = 'validate-set',
     REORDER_EXERCISES = 'reorder-exercises',
 }
 
@@ -56,6 +58,21 @@ export type ExercisesActions =
           };
       }
     | {
+          type: ExercisesActionsTypes.VALIDATE_EXERCISE;
+          payload: {
+              valid: boolean;
+              exerciseId: number;
+          };
+      }
+    | {
+          type: ExercisesActionsTypes.VALIDATE_SET;
+          payload: {
+              valid: boolean;
+              exerciseId: number;
+              setId: string | number[] | number;
+          };
+      }
+    | {
           type: ExercisesActionsTypes.REORDER_EXERCISES;
           payload: {
               exercises: Exercise[];
@@ -83,6 +100,7 @@ export function exercisesReducer(exercises: Exercise[], action: ExercisesActions
                                   weight: null,
                                   reps: null,
                                   rpe: null,
+                                  valid: false,
                               },
                           ],
                       }
@@ -106,11 +124,28 @@ export function exercisesReducer(exercises: Exercise[], action: ExercisesActions
                 'reps',
                 action.payload.reps
             );
+        case ExercisesActionsTypes.VALIDATE_EXERCISE:
+            return validateExercise(exercises, action.payload.exerciseId, action.payload.valid);
+        case ExercisesActionsTypes.VALIDATE_SET:
+            return validateSet(
+                exercises,
+                action.payload.exerciseId,
+                action.payload.setId,
+                action.payload.valid
+            );
         case ExercisesActionsTypes.REORDER_EXERCISES:
             return action.payload.exercises;
         default:
             return exercises;
     }
+}
+
+function getExercise(exercises: Exercise[], exerciseId: number): Exercise {
+    return exercises.filter((exercise) => exercise.id === exerciseId)[0];
+}
+
+function getSet(exercise: Exercise, setId: string | number[] | number): ExerciseSet {
+    return exercise.sets.filter((set) => set.id === setId)[0];
 }
 
 function updateSetVal(
@@ -153,4 +188,27 @@ function deleteSet(
     const newSets = exerciseToEdit.sets.filter((set) => set.id !== setId);
     const newExercise = { ...exerciseToEdit, sets: newSets };
     return exercises.map((exercise) => (exercise.id === exerciseId ? newExercise : exercise));
+}
+
+function validateExercise(exercises: Exercise[], exerciseId: number, isValid: boolean): Exercise[] {
+    const exerciseToUpdate = getExercise(exercises, exerciseId);
+
+    const updatedExercise = { ...exerciseToUpdate, valid: isValid };
+
+    return exercises.map((exercise) => (exercise.id === exerciseId ? updatedExercise : exercise));
+}
+
+function validateSet(
+    exercises: Exercise[],
+    exerciseId: number,
+    setId: string | number[] | number,
+    isValid: boolean
+): Exercise[] {
+    const exerciseToUpdate = getExercise(exercises, exerciseId);
+    const setToUpdate = getSet(exerciseToUpdate, setId);
+
+    const updatedSet = { ...setToUpdate, valid: isValid };
+    const updatedSets = exerciseToUpdate.sets.map((set) => (set.id === setId ? updatedSet : set));
+    const updatedExercise = { ...exerciseToUpdate, sets: updatedSets };
+    return exercises.map((exercise) => (exercise.id === exerciseId ? updatedExercise : exercise));
 }

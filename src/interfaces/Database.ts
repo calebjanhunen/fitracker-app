@@ -283,19 +283,16 @@ export interface Database {
         Row: {
           exercises_id: number
           id: number
-          num_sets: number
           workout_id: number
         }
         Insert: {
           exercises_id?: number
           id?: number
-          num_sets: number
           workout_id: number
         }
         Update: {
           exercises_id?: number
           id?: number
-          num_sets?: number
           workout_id?: number
         }
         Relationships: [
@@ -351,21 +348,18 @@ export interface Database {
           created_at: string
           id: number
           name: string | null
-          num_exercises: number
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           name?: string | null
-          num_exercises: number
           user_id: string
         }
         Update: {
           created_at?: string
           id?: number
           name?: string | null
-          num_exercises?: number
           user_id?: string
         }
         Relationships: [

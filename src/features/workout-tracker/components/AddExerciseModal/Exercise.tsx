@@ -22,7 +22,7 @@ function toggleExercise(
         if (prevExercises.find((prevExercise) => prevExercise.id === id)) {
             return prevExercises.filter((prevExercise) => prevExercise.id !== id);
         } else {
-            return [...prevExercises, { id, name, numSets: 0, sets: [] }];
+            return [...prevExercises, { id, name, sets: [], valid: true }];
         }
     });
 }
