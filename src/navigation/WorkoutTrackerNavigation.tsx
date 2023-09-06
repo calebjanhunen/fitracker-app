@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import StartWorkoutScreen from '../features/workout-tracker/screens/StartWorkoutScreen';
-import WorkoutTrackerMainScreen from '../features/workout-tracker/screens/WorkoutTrackerMainScreen';
+import WorkoutTrackerMainScreen from '../features/workout-tracker/screens/WorkoutTrackerHome/WorkoutTrackerMainScreen';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {
