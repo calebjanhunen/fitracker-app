@@ -1,6 +1,7 @@
 import { type User } from '@supabase/supabase-js';
 
 import { type Exercise } from '../../interfaces/Exercise';
+import { type Workout } from '../../interfaces/Workout';
 import {
     toExerciseSetsApiObject,
     toExercisesApiObject,
@@ -65,7 +66,34 @@ export async function saveWorkout(
         // });
         // return workoutResponse;
     } catch (error) {
-        console.log('basic error: ', error);
+        throw new Error(error.message);
+    }
+}
+
+export async function getWorkouts(): Promise<Workout[]> {
+    try {
+        const { data: workouts, error } = await apiClient.from('workouts').select(`
+                    name,
+                    dateCreated: created_at,
+                    exercises:workout_exercises(
+                        id,
+                        name: exercises(name),
+                        sets: exercise_sets(
+                            id,
+                            weight,
+                            reps,
+                            rpe
+                        )
+                    )
+                    `);
+        console.log(workouts);
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        return workouts;
+    } catch (error) {
         throw new Error(error.message);
     }
 }

@@ -6,12 +6,12 @@ export interface ExerciseSet {
     reps: number | null;
     weight: number | null;
     rpe: number | null;
-    valid: boolean;
+    valid?: boolean;
 }
 
 export interface Exercise {
     id: Tables<'exercises'>['id'];
     name: Tables<'exercises'>['name'];
     sets: ExerciseSet[];
-    valid: boolean;
+    valid?: boolean;
 }
