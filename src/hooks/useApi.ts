@@ -1,12 +1,6 @@
 import { type User } from '@supabase/supabase-js';
 import { useContext, useState } from 'react';
-import { type Database } from '../interfaces/Database';
-import { type Tables } from '../interfaces/Tables';
 import { AuthContext } from '../services/context/AuthContext';
-
-// types for supabase
-type TableNames = keyof Database['public']['Tables'];
-type TableFieldTypes = Tables<TableNames>;
 
 interface UseApiReturn<T, P> {
     execute: (payload?: P) => Promise<void>;
