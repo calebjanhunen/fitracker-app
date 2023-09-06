@@ -1,5 +1,4 @@
 import { type Database } from './Database';
-import { ExerciseSet, type Exercise } from './Exercise';
 
 export interface Workout {
     name: string | null;

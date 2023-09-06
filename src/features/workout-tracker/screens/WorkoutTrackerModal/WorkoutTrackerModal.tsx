@@ -10,11 +10,13 @@ import {
 import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
 
+import { type StackNavigationProp } from '@react-navigation/stack';
 import { Alert, Button, PopupMenu, Spacer, Text } from '../../../../components';
 import { type MenuOptionProps } from '../../../../components/PopupMenu/PopupMenu';
 import useApi from '../../../../hooks/useApi';
 import { type AlertModalVars } from '../../../../interfaces/AlertModal';
 import { type Exercise } from '../../../../interfaces/Exercise';
+import { type RootStackParamList } from '../../../../navigation/WorkoutTrackerNavigation';
 import { saveWorkout } from '../../../../services/api/WorkoutsAPI';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
@@ -37,6 +39,7 @@ interface Props {
     isBottomSheetHidden: boolean;
     setIsBottomSheetHidden: (val: boolean) => void;
     setWorkoutTrackerActive: (val: boolean) => void;
+    navigation: StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
 }
 
 export default function WorkoutTrackerModal({
@@ -44,6 +47,7 @@ export default function WorkoutTrackerModal({
     isBottomSheetHidden,
     setIsBottomSheetHidden,
     setWorkoutTrackerActive,
+    navigation,
 }: Props): React.ReactElement {
     const snapPoints = ['1%', '99%'];
     const opacityAnimation = useRef<Animated.Value>(new Animated.Value(0)).current;
@@ -136,13 +140,14 @@ export default function WorkoutTrackerModal({
         setWorkoutTrackerActive(false);
         deleteAllExercises();
         sheetRef.current?.close();
+        navigation.navigate('WorkoutTrackerHome');
     }
 
     function finishWorkout(): void {
         // Go to a screen displaying to user that they ended workout?
-        console.log('finish: ', workoutExercises);
+        // console.log('finish: ', workoutExercises);
         void initSaveWorkout({ workoutName, workoutExercises });
-        // closeWorkoutTrackerModal();
+        closeWorkoutTrackerModal();
     }
 
     return (

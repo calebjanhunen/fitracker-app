@@ -9,12 +9,13 @@ import useApi from '../../../../hooks/useApi';
 import { type RootStackParamList } from '../../../../navigation/WorkoutTrackerNavigation';
 import { getWorkouts } from '../../../../services/api/WorkoutsAPI';
 import WorkoutHistoryCard from '../../components/WorkoutHistoryCard';
+import { PreviousWorkoutContainer } from './Styles';
 
 type StackNavigationType = StackNavigationProp<RootStackParamList>;
 
 export default function WorkoutTrackerMainScreen(): React.ReactElement {
     const navigation = useNavigation<StackNavigationType>();
-    const { execute: initGetWorkouts, data: workouts, isLoading, error } = useApi(getWorkouts);
+    const { execute: initGetWorkouts, data: workouts, isLoading } = useApi(getWorkouts);
 
     useEffect(() => {
         void initGetWorkouts();
@@ -24,18 +25,19 @@ export default function WorkoutTrackerMainScreen(): React.ReactElement {
         <PageView>
             <Text variant='headline'>WORKOUT HISTORY</Text>
             <Spacer size='xs' />
-            {isLoading ? (
-                <ActivityIndicator />
-            ) : (
-                <FlatList
-                    style={{ flex: 1 }}
-                    data={workouts}
-                    renderItem={({ item }) => <WorkoutHistoryCard workout={item} />}
-                    keyExtractor={(item, index) => index.toString()}
-                    ItemSeparatorComponent={() => <Spacer size='xl' />}
-                />
-            )}
-
+            <PreviousWorkoutContainer>
+                {isLoading ? (
+                    <ActivityIndicator />
+                ) : (
+                    <FlatList
+                        style={{ flex: 1 }}
+                        data={workouts}
+                        renderItem={({ item }) => <WorkoutHistoryCard workout={item} />}
+                        keyExtractor={(item, index) => index.toString()}
+                        ItemSeparatorComponent={() => <Spacer size='xl' />}
+                    />
+                )}
+            </PreviousWorkoutContainer>
             <Spacer size='xxs' />
             <Button
                 variant='full'

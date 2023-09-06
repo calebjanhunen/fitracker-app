@@ -3,12 +3,14 @@ import { FlatList } from 'react-native';
 
 import { Container, Spacer, Text } from '../../../components';
 import { type Workout } from '../../../interfaces/Workout';
+import { pluralizeWord } from '../../../utils/PluarlizeWord';
 
 interface Props {
     workout: Workout;
 }
 
 export default function WorkoutHistoryCard({ workout }: Props): React.ReactElement {
+    const date = new Date(workout.dateCreated);
     return (
         <Container
             onPress={() => {
@@ -17,7 +19,7 @@ export default function WorkoutHistoryCard({ workout }: Props): React.ReactEleme
         >
             <Text variant='headline'>{workout.name}</Text>
             <Text variant='subhead' color='light'>
-                {workout.dateCreated}
+                {date.toDateString()}
             </Text>
             <Spacer size='xxs' />
             <Text variant='headline'>Exercises</Text>
@@ -25,7 +27,8 @@ export default function WorkoutHistoryCard({ workout }: Props): React.ReactEleme
                 data={workout.exercises}
                 renderItem={({ item }) => (
                     <Text variant='body'>
-                        {item.name}: {item.sets} sets
+                        {item.name?.name}: {item.sets.length}{' '}
+                        {pluralizeWord(item.sets.length, 'set')}
                     </Text>
                 )}
                 keyExtractor={(item, index) => index.toString()}
