@@ -11,9 +11,10 @@ import {
 import { apiClient } from './utils/config';
 
 export async function saveWorkout(
-    payload: { workoutName: string; workoutExercises: Exercise[] },
-    user: User | undefined
+    user: User | undefined,
+    payload: { workoutName: string; workoutExercises: Exercise[] }
 ): Promise<void> {
+    console.log(payload);
     const { workoutName, workoutExercises: exercises } = payload;
     const validatedExercises = validateExercises(exercises);
     try {
@@ -86,7 +87,6 @@ export async function getWorkouts(): Promise<Workout[]> {
                         )
                     )
                     `);
-        console.log(workouts);
 
         if (error) {
             throw new Error(error.message);

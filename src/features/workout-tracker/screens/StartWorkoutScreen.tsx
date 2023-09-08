@@ -1,16 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
+import { type BottomSheetModal } from '@gorhom/bottom-sheet';
+import { type StackScreenProps } from '@react-navigation/stack';
 import { styled } from 'styled-components';
 
-import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Button, PageView, Spacer, Text } from '../../../components';
 import { type WorkoutTemplate } from '../../../interfaces/WorkoutTemplate';
 import { mockWorkoutTemplate } from '../../../mock-data/WorkoutTemplatesMock';
+import { type RootStackParamList } from '../../../navigation/WorkoutTrackerNavigation';
 import ResumeWorkoutButton from '../components/ResumeWorkoutButton';
 import WorkoutTemplateCard from '../components/WorkoutTemplateCard';
 import WorkoutTemplateModal from '../components/WorkoutTemplateModal/WorkoutTemplateModal';
 import WorkoutTrackerModal from './WorkoutTrackerModal/WorkoutTrackerModal';
+
+type Props = StackScreenProps<RootStackParamList, 'StartWorkout'>;
 
 const HeaderView = styled(View)`
     padding-top: ${(props) => props.theme.spacing.xs};
@@ -19,7 +23,7 @@ const HeaderView = styled(View)`
     align-items: center;
 `;
 
-export default function StartWorkoutScreen(): React.ReactElement {
+export default function StartWorkoutScreen({ navigation }: Props): React.ReactElement {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [modalData, setModalData] = useState<WorkoutTemplate>({
         name: '',
@@ -99,6 +103,7 @@ export default function StartWorkoutScreen(): React.ReactElement {
                 isBottomSheetHidden={isBottomSheetHidden}
                 setIsBottomSheetHidden={setIsBottomSheetHidden}
                 setWorkoutTrackerActive={setWorkoutTrackerActive}
+                navigation={navigation}
             />
         </>
     );
