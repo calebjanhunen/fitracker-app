@@ -72,7 +72,10 @@ export async function saveWorkout(
 
 export async function getWorkouts(): Promise<Workout[]> {
     try {
-        const { data: workouts, error } = await apiClient.from('workouts').select(`
+        const { data: workouts, error } = await apiClient
+            .from('workouts')
+            .select(
+                `
                     name,
                     dateCreated: created_at,
                     exercises:workout_exercises(
@@ -85,7 +88,9 @@ export async function getWorkouts(): Promise<Workout[]> {
                             rpe
                         )
                     )
-                    `);
+                    `
+            )
+            .order('created_at', { ascending: false });
 
         if (error) {
             throw new Error(error.message);
