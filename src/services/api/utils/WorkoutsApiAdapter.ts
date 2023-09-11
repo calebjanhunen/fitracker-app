@@ -8,7 +8,6 @@ import {
 
 // Loops through exercise sets and if all sets are invalid (both reps and sets are empty) or if exercise has no sets -> sets exercise to invalid
 export function validateExercises(workoutExercises: Exercise[]): Exercise[] {
-    console.log('exercises: ', workoutExercises);
     const validatedExercises = workoutExercises.map((exercise) => {
         let allSetsInvalid = true;
         // Loop through all sets of exercise
@@ -43,7 +42,6 @@ export function toExercisesApiObject(
 ): ExerciseInsertType[] {
     const validExercises = exercises.filter((exercise) => exercise.valid);
     return validExercises.map((exercise) => {
-        console.log('exercise: ', exercise);
         return {
             exercises_id: exercise.id,
             workout_id: workoutId,
