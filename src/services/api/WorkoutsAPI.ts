@@ -101,3 +101,15 @@ export async function getWorkouts(): Promise<Workout[]> {
         throw new Error(error.message);
     }
 }
+
+export async function deleteWorkout(workoutId: number): Promise<void> {
+    try {
+        const { error } = await apiClient.from('workouts').delete().eq('id', workoutId);
+
+        if (error) {
+            throw new Error(error.message);
+        }
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
