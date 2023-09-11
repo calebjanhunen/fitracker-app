@@ -9,7 +9,7 @@ import { theme } from '../../theme/theme';
 import Text from '../Text/Text';
 
 export interface MenuOptionProps {
-    onSelect: () => void;
+    onSelect: (() => void) | (() => Promise<void>);
     text: string;
     icon: keyof typeof IonIcons.glyphMap;
     iconColor?: keyof typeof theme.colors;

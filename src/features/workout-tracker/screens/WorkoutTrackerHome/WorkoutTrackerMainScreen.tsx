@@ -7,7 +7,7 @@ import { type StackNavigationProp } from '@react-navigation/stack';
 import { Button, PageView, Spacer, Text } from '../../../../components';
 import useGetWorkouts from '../../../../hooks/workouts/useGetWorkouts';
 import { type RootStackParamList } from '../../../../navigation/WorkoutTrackerNavigation';
-import WorkoutHistoryCard from '../../components/WorkoutHistoryCard';
+import WorkoutHistoryCard from '../../components/WorkoutHistoryCard/WorkoutHistoryCard';
 import { PreviousWorkoutContainer } from './Styles';
 
 type StackNavigationType = StackNavigationProp<RootStackParamList>;

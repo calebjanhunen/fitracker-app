@@ -2,6 +2,7 @@ import { type Database } from './Database';
 
 export interface Workout {
     name: string | null;
+    id: number;
     dateCreated: string;
     exercises: ExerciseReturnType[];
 }

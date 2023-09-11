@@ -77,6 +77,7 @@ export async function getWorkouts(): Promise<Workout[]> {
             .select(
                 `
                     name,
+                    id,
                     dateCreated: created_at,
                     exercises:workout_exercises(
                         id,
@@ -97,6 +98,22 @@ export async function getWorkouts(): Promise<Workout[]> {
         }
 
         return workouts;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+export async function deleteWorkout(user: User | undefined, workoutId: number): Promise<void> {
+    try {
+        if (!user) {
+            throw new Error('Not authenticated.');
+        }
+
+        const { error } = await apiClient.from('workouts').delete().eq('id', workoutId);
+
+        if (error) {
+            throw new Error(error.message);
+        }
     } catch (error) {
         throw new Error(error.message);
     }
