@@ -13,11 +13,10 @@ import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { Alert, Button, PopupMenu, Spacer, Text } from '../../../../components';
 import { type MenuOptionProps } from '../../../../components/PopupMenu/PopupMenu';
-import useApi from '../../../../hooks/useApi';
+import useSaveWorkout from '../../../../hooks/workouts/useSaveWorkout';
 import { type AlertModalVars } from '../../../../interfaces/AlertModal';
 import { type Exercise } from '../../../../interfaces/Exercise';
 import { type RootStackParamList } from '../../../../navigation/WorkoutTrackerNavigation';
-import { saveWorkout } from '../../../../services/api/WorkoutsAPI';
 import AddExerciseModal from '../../components/AddExerciseModal/AddExerciseModal';
 import WorkoutTrackerExercise from '../../components/WorkoutTrackerExercise/WorkoutTrackerExercise';
 import { ExercisesActionsTypes, exercisesReducer } from '../../reducers/ExercisesReducer';
@@ -57,7 +56,7 @@ export default function WorkoutTrackerModal({
     const [addExerciseModalVisible, setAddExerciseModalVisible] = useState<boolean>(false);
     const [workoutExercises, dispatchExercises] = useReducer(exercisesReducer, []);
     const [reorderExercises, setReorderExercises] = useState<boolean>(false);
-    const { execute: initSaveWorkout } = useApi(saveWorkout);
+    const { initSaveWorkout, isError } = useSaveWorkout();
     const menuOptions: MenuOptionProps[] = [
         {
             text: 'Reorder Exercises',
@@ -144,10 +143,14 @@ export default function WorkoutTrackerModal({
     }
 
     function finishWorkout(): void {
-        // Go to a screen displaying to user that they ended workout?
-        // console.log('finish: ', workoutExercises);
-        void initSaveWorkout({ workoutName, workoutExercises });
-        closeWorkoutTrackerModal();
+        void saveWorkout();
+    }
+
+    async function saveWorkout(): Promise<void> {
+        await initSaveWorkout({ workoutName, workoutExercises });
+        if (!isError) {
+            closeWorkoutTrackerModal();
+        }
     }
 
     return (

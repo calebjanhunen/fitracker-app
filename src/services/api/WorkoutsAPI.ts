@@ -12,10 +12,9 @@ import { apiClient } from './utils/config';
 
 export async function saveWorkout(
     user: User | undefined,
-    payload: { workoutName: string; workoutExercises: Exercise[] }
+    workoutName: string,
+    exercises: Exercise[]
 ): Promise<void> {
-    console.log(payload);
-    const { workoutName, workoutExercises: exercises } = payload;
     const validatedExercises = validateExercises(exercises);
     try {
         // TODO: Need db transaction to rollback if an error occurs (cause inserting in multiple tables)
@@ -50,7 +49,7 @@ export async function saveWorkout(
             validatedExercises,
             exercisesResponse
         );
-        console.log(exerciseSetsRequestObj);
+
         const { error: exerciseSetsError } = await apiClient
             .from('exercise_sets')
             .insert(exerciseSetsRequestObj)
