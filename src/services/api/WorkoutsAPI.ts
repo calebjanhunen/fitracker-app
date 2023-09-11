@@ -102,8 +102,12 @@ export async function getWorkouts(): Promise<Workout[]> {
     }
 }
 
-export async function deleteWorkout(workoutId: number): Promise<void> {
+export async function deleteWorkout(user: User | undefined, workoutId: number): Promise<void> {
     try {
+        if (!user) {
+            throw new Error('Not authenticated.');
+        }
+
         const { error } = await apiClient.from('workouts').delete().eq('id', workoutId);
 
         if (error) {
