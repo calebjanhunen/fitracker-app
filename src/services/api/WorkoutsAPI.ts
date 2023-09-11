@@ -77,6 +77,7 @@ export async function getWorkouts(): Promise<Workout[]> {
             .select(
                 `
                     name,
+                    id,
                     dateCreated: created_at,
                     exercises:workout_exercises(
                         id,
