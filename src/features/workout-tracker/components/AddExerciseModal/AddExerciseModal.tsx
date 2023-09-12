@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import React, { useEffect, useState, type Dispatch } from 'react';
 import {
     ActivityIndicator,
     FlatList,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
+import useCustomQuery from '../../../../hooks/useCustomQuery';
 import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { type Tables } from '../../../../interfaces/Tables';
 import { ExercisesAPI } from '../../../../services/api/ExercisesAPI';
@@ -30,27 +31,23 @@ interface Props {
     dispatchExercises: Dispatch<ExercisesActions>;
 }
 
-function closeModal(
-    setSelectedExercises: Dispatch<SetStateAction<ExerciseInterface[]>>,
-    setExercises: Dispatch<SetStateAction<Array<Tables<'exercises'>>>>,
-    setModalVisible: (val: boolean) => void
-): void {
-    setModalVisible(false);
-    setSelectedExercises([]);
-    setExercises([]);
-}
-
 export default function AddExerciseModal(props: Props): React.ReactElement {
     const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
     const [exercises, setExercises] = useState<Array<Tables<'exercises'>>>([]);
     const [exercisesDisplay, setExercisesDisplay] = useState<Array<Tables<'exercises'>>>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { getExercises } = ExercisesAPI;
+    const { data: fetchedExercises, isLoading } = useCustomQuery<Array<Tables<'exercises'>>>(
+        ['exercises'],
+        getExercises,
+        true
+    );
 
     useEffect(() => {
-        if (props.modalVisible) {
-            void getExercises();
+        if (fetchedExercises) {
+            setExercises(fetchedExercises);
+            setExercisesDisplay(fetchedExercises);
         }
-    }, [props.modalVisible]);
+    }, []);
 
     const buttonText = (): string => {
         if (selectedExercises.length === 0) {
@@ -61,22 +58,6 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
             return `Add ${selectedExercises.length} Exercises`;
         }
     };
-
-    async function getExercises(): Promise<void> {
-        setIsLoading(true);
-        try {
-            const fetchedExercises = await ExercisesAPI.getExercises();
-            if (fetchedExercises) {
-                setExercises(fetchedExercises);
-                setExercisesDisplay(fetchedExercises);
-            }
-        } catch (error) {
-            const errorMessage: string = error.message;
-            alert(`Error: ${errorMessage}`);
-        } finally {
-            setIsLoading(false);
-        }
-    }
 
     function searchForExercise(query: string): void {
         setExercisesDisplay(
@@ -95,32 +76,26 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
 
     function submitAndCloseModal(): void {
         addExercisesToWorkout();
-        closeModal(setSelectedExercises, setExercises, props.setModalVisible);
+        closeModal();
+    }
+
+    function closeModal(): void {
+        props.setModalVisible(false);
+        setSelectedExercises([]);
+        setExercises([]);
+        if (fetchedExercises) setExercisesDisplay(fetchedExercises);
     }
 
     return (
         <Modal transparent={true} visible={props.modalVisible}>
-            <ModalOverlay
-                onPress={() => {
-                    closeModal(setSelectedExercises, setExercises, props.setModalVisible);
-                }}
-                activeOpacity={1}
-            >
+            <ModalOverlay onPress={closeModal} activeOpacity={1}>
                 <Blur intensity={40}>
                     <TouchableWithoutFeedback>
                         <ModalContainer>
                             <PaddedContainer>
                                 <ModalHeader>
                                     <Text variant='headline'>Add Exercise</Text>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            closeModal(
-                                                setSelectedExercises,
-                                                setExercises,
-                                                props.setModalVisible
-                                            );
-                                        }}
-                                    >
+                                    <TouchableOpacity onPress={closeModal}>
                                         <Icon name='close-circle-outline' size={24} />
                                     </TouchableOpacity>
                                 </ModalHeader>
