@@ -11,6 +11,7 @@ export interface Database {
     Tables: {
       exercise_sets: {
         Row: {
+          created_at: string
           id: number
           reps: number
           rpe: number | null
@@ -19,6 +20,7 @@ export interface Database {
           workout_exercises_id: number
         }
         Insert: {
+          created_at?: string
           id?: number
           reps: number
           rpe?: number | null
@@ -27,6 +29,7 @@ export interface Database {
           workout_exercises_id: number
         }
         Update: {
+          created_at?: string
           id?: number
           reps?: number
           rpe?: number | null
@@ -281,16 +284,19 @@ export interface Database {
       }
       workout_exercises: {
         Row: {
+          created_at: string
           exercises_id: number
           id: number
           workout_id: number
         }
         Insert: {
+          created_at?: string
           exercises_id?: number
           id?: number
           workout_id: number
         }
         Update: {
+          created_at?: string
           exercises_id?: number
           id?: number
           workout_id?: number

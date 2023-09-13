@@ -1,25 +1,11 @@
 import { type Database } from './Database';
+import { type ExerciseReturnType } from './Exercise';
 
 export interface Workout {
     name: string | null;
     id: number;
     dateCreated: string;
     exercises: ExerciseReturnType[];
-}
-
-interface ExerciseReturnType {
-    id: number;
-    name: {
-        name: string;
-    } | null;
-    sets: ExerciseSetReturnType[];
-}
-
-interface ExerciseSetReturnType {
-    id: number;
-    weight: number;
-    reps: number;
-    rpe: number | null;
 }
 
 export type WorkoutInsertType = Database['public']['Tables']['workouts']['Insert'];

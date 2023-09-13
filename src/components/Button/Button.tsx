@@ -13,7 +13,7 @@ interface Props extends TouchableOpacityProps {
     textColor: keyof typeof theme.fontColors;
     borderColor?: keyof typeof theme.colors;
     thin?: boolean;
-    onPress: () => void;
+    onPress: (() => void) | (() => Promise<void>);
     loading?: boolean;
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import React, { useEffect, useState, type Dispatch } from 'react';
 import {
     ActivityIndicator,
     FlatList,
@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
+import useGetExercisesList from '../../../../hooks/useGetExercisesList';
 import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { type Tables } from '../../../../interfaces/Tables';
-import { ExercisesAPI } from '../../../../services/api/ExercisesAPI';
+import { getMostRecentExercise } from '../../../../services/api/WorkoutExercisesApi';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import {
     Blur,
@@ -30,26 +31,13 @@ interface Props {
     dispatchExercises: Dispatch<ExercisesActions>;
 }
 
-function closeModal(
-    setSelectedExercises: Dispatch<SetStateAction<ExerciseInterface[]>>,
-    setExercises: Dispatch<SetStateAction<Array<Tables<'exercises'>>>>,
-    setModalVisible: (val: boolean) => void
-): void {
-    setModalVisible(false);
-    setSelectedExercises([]);
-    setExercises([]);
-}
-
 export default function AddExerciseModal(props: Props): React.ReactElement {
     const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
-    const [exercises, setExercises] = useState<Array<Tables<'exercises'>>>([]);
     const [exercisesDisplay, setExercisesDisplay] = useState<Array<Tables<'exercises'>>>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { exercises, isLoading } = useGetExercisesList();
 
     useEffect(() => {
-        if (props.modalVisible) {
-            void getExercises();
-        }
+        setExercisesDisplay(exercises);
     }, [props.modalVisible]);
 
     const buttonText = (): string => {
@@ -62,22 +50,6 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
         }
     };
 
-    async function getExercises(): Promise<void> {
-        setIsLoading(true);
-        try {
-            const fetchedExercises = await ExercisesAPI.getExercises();
-            if (fetchedExercises) {
-                setExercises(fetchedExercises);
-                setExercisesDisplay(fetchedExercises);
-            }
-        } catch (error) {
-            const errorMessage: string = error.message;
-            alert(`Error: ${errorMessage}`);
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
     function searchForExercise(query: string): void {
         setExercisesDisplay(
             exercises.filter((exercise) =>
@@ -86,41 +58,56 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
         );
     }
 
-    function addExercisesToWorkout(): void {
+    async function submitAndCloseModal(): Promise<void> {
+        const selectedExercisesWithPreviousSets = await addPreviousSetsToExercises();
+        addExercisesToWorkout(selectedExercisesWithPreviousSets);
+        closeModal();
+    }
+
+    async function addPreviousSetsToExercises(): Promise<ExerciseInterface[]> {
+        const selectedExercisesWithPreviousSets: ExerciseInterface[] = [];
+        for (const [index, selectedExercise] of selectedExercises.entries()) {
+            const fetchedExercise = await getMostRecentExercise(selectedExercise.id);
+            console.log(fetchedExercise);
+
+            const exerciseToEdit = { ...selectedExercises[index] };
+            if (fetchedExercise) {
+                const previousSets = fetchedExercise.sets.map((set) => {
+                    return { reps: set.reps, weight: set.weight, rpe: set.rpe };
+                });
+
+                const newExercise: ExerciseInterface = { ...exerciseToEdit, previousSets };
+                selectedExercisesWithPreviousSets.push(newExercise);
+            } else {
+                selectedExercisesWithPreviousSets.push(exerciseToEdit);
+            }
+        }
+        return selectedExercisesWithPreviousSets;
+    }
+
+    function addExercisesToWorkout(selectedExercisesWithPreviousSets: ExerciseInterface[]): void {
         props.dispatchExercises({
             type: ExercisesActionsTypes.ADD_EXERCISES,
-            payload: selectedExercises,
+            payload: selectedExercisesWithPreviousSets,
         });
     }
 
-    function submitAndCloseModal(): void {
-        addExercisesToWorkout();
-        closeModal(setSelectedExercises, setExercises, props.setModalVisible);
+    function closeModal(): void {
+        props.setModalVisible(false);
+        setSelectedExercises([]);
+        setExercisesDisplay(exercises);
     }
 
     return (
         <Modal transparent={true} visible={props.modalVisible}>
-            <ModalOverlay
-                onPress={() => {
-                    closeModal(setSelectedExercises, setExercises, props.setModalVisible);
-                }}
-                activeOpacity={1}
-            >
+            <ModalOverlay onPress={closeModal} activeOpacity={1}>
                 <Blur intensity={40}>
                     <TouchableWithoutFeedback>
                         <ModalContainer>
                             <PaddedContainer>
                                 <ModalHeader>
                                     <Text variant='headline'>Add Exercise</Text>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            closeModal(
-                                                setSelectedExercises,
-                                                setExercises,
-                                                props.setModalVisible
-                                            );
-                                        }}
-                                    >
+                                    <TouchableOpacity onPress={closeModal}>
                                         <Icon name='close-circle-outline' size={24} />
                                     </TouchableOpacity>
                                 </ModalHeader>
