@@ -4,12 +4,13 @@ import { Dimensions, type Animated } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { AnimatedText, Text, TextInput } from '../../../../components';
-import { type ExerciseSet } from '../../../../interfaces/Exercise';
+import { type ExerciseSet, type PreviousSet } from '../../../../interfaces/Exercise';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import { DeleteSetContainer, ExerciseSetContainer, FlexView, Row } from './WorkoutTrackerSetStyles';
 
 interface Props {
     set: ExerciseSet;
+    previousSet: PreviousSet | undefined;
     setIndex: number;
     exerciseId: number;
     dispatchExercises: Dispatch<ExercisesActions>;
@@ -45,6 +46,7 @@ const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
     setIndex,
     exerciseId,
     dispatchExercises,
+    previousSet,
 }: Props): React.ReactElement {
     const deleteTextWidth = useRef<number>(0);
     const swipeableRef = useRef<Swipeable>(null);
@@ -106,7 +108,7 @@ const WorkoutTrackerSet = memo(function WorkoutTrackerSet({
                     </FlexView>
                     <FlexView flex={2}>
                         <Text variant='body' color='light'>
-                            {' '}
+                            {previousSet ? `${previousSet.weight} x ${previousSet.reps} ` : ' '}
                         </Text>
                     </FlexView>
                     <FlexView flex={1}>

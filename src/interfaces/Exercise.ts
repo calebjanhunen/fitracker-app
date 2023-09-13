@@ -1,9 +1,9 @@
 import { type Tables } from './Tables';
 
-interface PreviousSet {
+export interface PreviousSet {
     weight: number;
     reps: number;
-    rpe: number;
+    rpe: number | null;
 }
 
 export interface ExerciseSet {
@@ -12,7 +12,6 @@ export interface ExerciseSet {
     reps: number | null;
     weight: number | null;
     rpe: number | null;
-    previousSets?: PreviousSet[];
     valid?: boolean;
 }
 
@@ -21,6 +20,7 @@ export interface Exercise {
     name: Tables<'exercises'>['name'];
     sets: ExerciseSet[];
     valid?: boolean;
+    previousSets?: PreviousSet[];
 }
 
 // Return type from supabase

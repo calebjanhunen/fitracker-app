@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 
 import { Button, Spacer, Text, TextInput } from '../../../../components';
-import useCustomQuery from '../../../../hooks/useCustomQuery';
+import useGetExercisesList from '../../../../hooks/useGetExercisesList';
 import { type Exercise as ExerciseInterface } from '../../../../interfaces/Exercise';
 import { type Tables } from '../../../../interfaces/Tables';
-import { ExercisesAPI } from '../../../../services/api/ExercisesAPI';
+import { getMostRecentExercise } from '../../../../services/api/WorkoutExercisesApi';
 import { ExercisesActionsTypes, type ExercisesActions } from '../../reducers/ExercisesReducer';
 import {
     Blur,
@@ -33,21 +33,12 @@ interface Props {
 
 export default function AddExerciseModal(props: Props): React.ReactElement {
     const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
-    const [exercises, setExercises] = useState<Array<Tables<'exercises'>>>([]);
     const [exercisesDisplay, setExercisesDisplay] = useState<Array<Tables<'exercises'>>>([]);
-    const { getExercises } = ExercisesAPI;
-    const { data: fetchedExercises, isLoading } = useCustomQuery<Array<Tables<'exercises'>>>(
-        ['exercises'],
-        getExercises,
-        true
-    );
+    const { exercises, isLoading } = useGetExercisesList();
 
     useEffect(() => {
-        if (fetchedExercises) {
-            setExercises(fetchedExercises);
-            setExercisesDisplay(fetchedExercises);
-        }
-    }, []);
+        setExercisesDisplay(exercises);
+    }, [props.modalVisible]);
 
     const buttonText = (): string => {
         if (selectedExercises.length === 0) {
@@ -67,23 +58,44 @@ export default function AddExerciseModal(props: Props): React.ReactElement {
         );
     }
 
-    function addExercisesToWorkout(): void {
-        props.dispatchExercises({
-            type: ExercisesActionsTypes.ADD_EXERCISES,
-            payload: selectedExercises,
-        });
+    async function submitAndCloseModal(): Promise<void> {
+        const selectedExercisesWithPreviousSets = await addPreviousSetsToExercises();
+        addExercisesToWorkout(selectedExercisesWithPreviousSets);
+        closeModal();
     }
 
-    function submitAndCloseModal(): void {
-        addExercisesToWorkout();
-        closeModal();
+    async function addPreviousSetsToExercises(): Promise<ExerciseInterface[]> {
+        const selectedExercisesWithPreviousSets: ExerciseInterface[] = [];
+        for (const [index, selectedExercise] of selectedExercises.entries()) {
+            const fetchedExercise = await getMostRecentExercise(selectedExercise.id);
+            console.log(fetchedExercise);
+
+            const exerciseToEdit = { ...selectedExercises[index] };
+            if (fetchedExercise) {
+                const previousSets = fetchedExercise.sets.map((set) => {
+                    return { reps: set.reps, weight: set.weight, rpe: set.rpe };
+                });
+
+                const newExercise: ExerciseInterface = { ...exerciseToEdit, previousSets };
+                selectedExercisesWithPreviousSets.push(newExercise);
+            } else {
+                selectedExercisesWithPreviousSets.push(exerciseToEdit);
+            }
+        }
+        return selectedExercisesWithPreviousSets;
+    }
+
+    function addExercisesToWorkout(selectedExercisesWithPreviousSets: ExerciseInterface[]): void {
+        props.dispatchExercises({
+            type: ExercisesActionsTypes.ADD_EXERCISES,
+            payload: selectedExercisesWithPreviousSets,
+        });
     }
 
     function closeModal(): void {
         props.setModalVisible(false);
         setSelectedExercises([]);
-        setExercises([]);
-        if (fetchedExercises) setExercisesDisplay(fetchedExercises);
+        setExercisesDisplay(exercises);
     }
 
     return (

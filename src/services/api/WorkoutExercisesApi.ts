@@ -2,7 +2,9 @@ import { type ExerciseReturnType } from '../../interfaces/Exercise';
 import { apiClient } from './utils/config';
 
 // Gets the most recent exercise from workout_exercises table using id from exercises table
-export async function getMostRecentExercise(exercisesId: number): Promise<ExerciseReturnType> {
+export async function getMostRecentExercise(
+    exercisesId: number
+): Promise<ExerciseReturnType | undefined> {
     try {
         const { data, error } = await apiClient
             .from('workout_exercises')
@@ -24,10 +26,11 @@ export async function getMostRecentExercise(exercisesId: number): Promise<Exerci
             .single();
 
         if (error) {
+            if (error.message === 'JSON object requested, multiple (or no) rows returned') {
+                return undefined;
+            }
             throw new Error(error.message);
         }
-
-        // console.log(data);
 
         return data;
     } catch (error) {

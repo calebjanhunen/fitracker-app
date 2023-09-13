@@ -34,6 +34,7 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
         { text: 'Replace Exercise', icon: 'repeat', onSelect: () => {} },
         { text: 'Delete', icon: 'trash', iconColor: 'error', onSelect: deleteExercise },
     ];
+    // console.log(exercise);
 
     function addSet(): void {
         dispatchExercises({
@@ -75,6 +76,7 @@ const WorkoutTrackerExercise = memo(function WorkoutTrackerExercise({
                             setIndex={index}
                             exerciseId={exercise.id}
                             dispatchExercises={dispatchExercises}
+                            previousSet={exercise.previousSets?.filter((_, i) => i === index)[0]}
                         />
                     )}
                     ItemSeparatorComponent={() => <Spacer size='xxs' />}

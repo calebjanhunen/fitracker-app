@@ -105,6 +105,8 @@ export default function WorkoutTrackerModal({
         );
     }
 
+    // console.log(workoutExercises);
+
     function openAlertWindow(alertType: 'cancel' | 'finish'): void {
         if (alertType === 'finish') {
             setAlertModalVars({
