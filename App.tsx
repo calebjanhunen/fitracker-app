@@ -1,8 +1,9 @@
 import { PortalProvider } from '@gorhom/portal';
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MenuProvider } from 'react-native-popup-menu';
+import AppNavigation from 'src/navigation/app-navigation';
 
 export default function App(): React.ReactElement | null {
     return (
@@ -10,7 +11,7 @@ export default function App(): React.ReactElement | null {
             <MenuProvider>
                 <PortalProvider>
                     <SafeAreaView style={{ flex: 1 }}>
-                        <Text>HELLO</Text>
+                        <AppNavigation />
                     </SafeAreaView>
                 </PortalProvider>
             </MenuProvider>
