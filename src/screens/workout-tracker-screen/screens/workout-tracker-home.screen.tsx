@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, Layout, List, Text } from '@ui-kitten/components';
 
-import { SafeAreaLayout, Spacer } from 'src/components';
+import { Spacer } from 'src/components';
 import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-history-card';
 
 export default function WorkoutTrackerHomeScreen(): React.ReactElement {
