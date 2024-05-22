@@ -9,7 +9,7 @@ export default function BaseNavigation(): React.ReactElement {
 
     return (
         <NavigationContainer>
-            <SafeAreaLayout>{!accessToken ? <AppNavigation /> : <LoginScreen />}</SafeAreaLayout>
+            <SafeAreaLayout>{accessToken ? <AppNavigation /> : <LoginScreen />}</SafeAreaLayout>
         </NavigationContainer>
     );
 }

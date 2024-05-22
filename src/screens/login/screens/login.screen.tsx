@@ -3,15 +3,12 @@ import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
 import React, { useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { Spacer } from 'src/components';
+import { useAuth } from 'src/hooks/useAuth';
 
 export default function LoginScreen(): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-
-    function onLogin(): void {
-        //  TODO: login user
-        console.log(username, password);
-    }
+    const { login } = useAuth();
 
     return (
         <TouchableWithoutFeedback style={{ flex: 1 }} onPress={Keyboard.dismiss} accessible={false}>
@@ -34,7 +31,13 @@ export default function LoginScreen(): React.ReactElement {
                         onChangeText={setPassword}
                         secureTextEntry={true}
                     />
-                    <Button onPress={onLogin}>Login</Button>
+                    <Button
+                        onPress={() => {
+                            void login(username, password);
+                        }}
+                    >
+                        Login
+                    </Button>
                 </View>
             </Layout>
         </TouchableWithoutFeedback>
