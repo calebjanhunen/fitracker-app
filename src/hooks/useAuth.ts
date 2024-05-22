@@ -13,6 +13,7 @@ export function useAuth(): IUseAuth {
     const [error, setError] = useState<string>('');
 
     async function login(username: string, password: string): Promise<User> {
+        setError('');
         setIsLoading(true);
         try {
             const response = await authAPI.login(username, password);
@@ -20,10 +21,12 @@ export function useAuth(): IUseAuth {
         } catch (e) {
             console.error(e);
             if (e instanceof Error) {
-                setError(e.message);
+                setError('Username or password is incorrect');
             } else {
                 setError('Could not log in');
             }
+        } finally {
+            setIsLoading(false);
         }
         return {
             username: '123',
