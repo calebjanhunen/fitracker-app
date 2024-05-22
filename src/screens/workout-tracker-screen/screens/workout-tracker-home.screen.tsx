@@ -18,6 +18,7 @@ export default function WorkoutTrackerHomeScreen(): React.ReactElement {
                 data={[1, 1, 2, 5, 6]}
                 renderItem={renderWorkoutHistoryCard}
                 ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
+                style={{ backgroundColor: 'transparent' }}
             />
         </SafeAreaLayout>
     );

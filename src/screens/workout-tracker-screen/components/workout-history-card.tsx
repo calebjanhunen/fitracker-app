@@ -21,7 +21,11 @@ export default function WorkoutHistoryCard(): React.ReactElement {
             <Spacer size='spacing-2' />
             <Text category='h6'>Exercises</Text>
             <Spacer size='spacing-1' />
-            <List data={[0, 1, 2]} renderItem={renderItem} />
+            <List
+                data={[0, 1, 2]}
+                renderItem={renderItem}
+                style={{ backgroundColor: 'transparent' }}
+            />
         </Card>
     );
 }
