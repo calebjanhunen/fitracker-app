@@ -11,7 +11,7 @@ export default function App(): React.ReactElement | null {
     return (
         <ApplicationProvider {...eva} theme={eva.light}>
             <BaseNavigation />
-            <StatusBar barStyle='default' />
+            <StatusBar barStyle='dark-content' backgroundColor='transparent' />
         </ApplicationProvider>
     );
 }
