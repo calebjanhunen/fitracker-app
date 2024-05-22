@@ -11,9 +11,11 @@ export default function AppNavigation(): React.ReactElement {
     return (
         <NavigationContainer>
             <Tab.Navigator initialRouteName='Start Workout'>
-                <Tab.Screen name='Start Workout' options={{ headerShown: false }}>
-                    {WorkoutTrackerHomeScreen}
-                </Tab.Screen>
+                <Tab.Screen
+                    name='Start Workout'
+                    options={{ headerShown: false }}
+                    component={WorkoutTrackerHomeScreen}
+                />
             </Tab.Navigator>
         </NavigationContainer>
     );

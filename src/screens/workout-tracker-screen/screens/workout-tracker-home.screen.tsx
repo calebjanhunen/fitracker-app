@@ -1,10 +1,18 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+
+import { Button, Text } from '@ui-kitten/components';
+
+import { SafeAreaLayout, Spacer } from 'src/components';
+import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-history-card';
 
 export default function WorkoutTrackerHomeScreen(): React.ReactElement {
     return (
-        <View>
-            <Text>WorkoutTrackerHomeScreen</Text>
-        </View>
+        <SafeAreaLayout>
+            <Spacer size='spacing-4' />
+            <Button>Start Empty Workout</Button>
+            <Spacer size='spacing-5' />
+            <Text category='h4'>Workout History:</Text>
+            <WorkoutHistoryCard />
+        </SafeAreaLayout>
     );
 }

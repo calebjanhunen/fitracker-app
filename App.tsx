@@ -1,20 +1,16 @@
-import { PortalProvider } from '@gorhom/portal';
 import React from 'react';
-import { SafeAreaView } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { MenuProvider } from 'react-native-popup-menu';
+
+import * as eva from '@eva-design/eva';
+import '@expo/metro-runtime';
+import { ApplicationProvider } from '@ui-kitten/components';
+
 import AppNavigation from 'src/navigation/app-navigation';
 
 export default function App(): React.ReactElement | null {
+    // console.log(eva.light);
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <MenuProvider>
-                <PortalProvider>
-                    <SafeAreaView style={{ flex: 1 }}>
-                        <AppNavigation />
-                    </SafeAreaView>
-                </PortalProvider>
-            </MenuProvider>
-        </GestureHandlerRootView>
+        <ApplicationProvider {...eva} theme={eva.light}>
+            <AppNavigation />
+        </ApplicationProvider>
     );
 }
