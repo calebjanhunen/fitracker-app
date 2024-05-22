@@ -10,6 +10,7 @@ export default function WorkoutHistoryCard(): React.ReactElement {
             <Text>3 sets</Text>
         </View>
     );
+
     return (
         <Card>
             <Text category='h5'>Workout Name</Text>
