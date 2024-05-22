@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, List, Text } from '@ui-kitten/components';
+import { Button, Layout, List, Text } from '@ui-kitten/components';
 
 import { SafeAreaLayout, Spacer } from 'src/components';
 import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-history-card';
@@ -9,7 +9,7 @@ export default function WorkoutTrackerHomeScreen(): React.ReactElement {
     const renderWorkoutHistoryCard = ({ item }): React.ReactElement => <WorkoutHistoryCard />;
 
     return (
-        <SafeAreaLayout>
+        <Layout>
             <Spacer size='spacing-4' />
             <Button>Start Empty Workout</Button>
             <Spacer size='spacing-5' />
@@ -20,6 +20,6 @@ export default function WorkoutTrackerHomeScreen(): React.ReactElement {
                 ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
                 style={{ backgroundColor: 'transparent' }}
             />
-        </SafeAreaLayout>
+        </Layout>
     );
 }
