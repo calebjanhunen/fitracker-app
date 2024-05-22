@@ -1,10 +1,18 @@
 import { Button, Input, Layout, Text } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
-import React from 'react';
+import React, { useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { Spacer } from 'src/components';
 
 export default function LoginScreen(): React.ReactElement {
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+
+    function onLogin(): void {
+        //  TODO: login user
+        console.log(username, password);
+    }
+
     return (
         <TouchableWithoutFeedback style={{ flex: 1 }} onPress={Keyboard.dismiss} accessible={false}>
             <Layout style={loginStyles.layout}>
@@ -20,9 +28,13 @@ export default function LoginScreen(): React.ReactElement {
                 </Text>
                 <Spacer size='spacing-8' />
                 <View style={loginStyles.loginForm}>
-                    <Input placeholder='Username' />
-                    <Input placeholder='Password' />
-                    <Button>Login</Button>
+                    <Input placeholder='Username' onChangeText={setUsername} />
+                    <Input
+                        placeholder='Password'
+                        onChangeText={setPassword}
+                        secureTextEntry={true}
+                    />
+                    <Button onPress={onLogin}>Login</Button>
                 </View>
             </Layout>
         </TouchableWithoutFeedback>
