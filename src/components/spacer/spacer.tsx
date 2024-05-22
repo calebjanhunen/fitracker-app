@@ -15,4 +15,7 @@ const spacingOptions = {
     'spacing-3': 12,
     'spacing-4': 16,
     'spacing-5': 20,
+    'spacing-6': 24,
+    'spacing-7': 28,
+    'spacing-8': 32,
 };
