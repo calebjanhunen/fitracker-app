@@ -1,4 +1,7 @@
 import { useState } from 'react';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { authAPI } from 'src/api/auth/auth-api';
 import { type User } from 'src/interfaces/user';
 
@@ -17,6 +20,7 @@ export function useAuth(): IUseAuth {
         setIsLoading(true);
         try {
             const response = await authAPI.login(username, password);
+            await saveAccessTokenToAsyncStorage(response.accessToken);
             console.log(response);
         } catch (e) {
             console.error(e);
@@ -33,6 +37,10 @@ export function useAuth(): IUseAuth {
             firstName: '123',
             lastName: '123',
         };
+    }
+
+    async function saveAccessTokenToAsyncStorage(accessToken: string): Promise<void> {
+        await AsyncStorage.setItem('access-token', accessToken);
     }
 
     return {
