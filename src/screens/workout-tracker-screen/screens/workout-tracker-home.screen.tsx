@@ -15,7 +15,7 @@ export default function WorkoutTrackerHomeScreen(): React.ReactElement {
     );
 
     return (
-        <Layout>
+        <Layout style={{ flex: 1 }}>
             <Spacer size='spacing-4' />
             <Button>Start Empty Workout</Button>
             <Spacer size='spacing-5' />

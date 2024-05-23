@@ -14,14 +14,18 @@ interface Props {
 export default function WorkoutHistoryCard({ workout }: Props): React.ReactElement {
     const renderExercises = ({ item }: { item: ExerciseInWorkout }): React.ReactElement => (
         <View style={cardStyles.exercise}>
-            <Text>{item.name}</Text>
-            <Text>{item.sets.length} sets</Text>
+            <Text style={cardStyles.exerciseName} numberOfLines={1}>
+                {item.name}
+            </Text>
+            <Text style={cardStyles.numSets}>{item.sets.length} sets</Text>
         </View>
     );
 
     return (
         <Card>
-            <Text category='h5'>{workout.name}</Text>
+            <Text category='h5' numberOfLines={1}>
+                {workout.name}
+            </Text>
             <Spacer size='spacing-1' />
             <Text category='s1' appearance='hint'>
                 {formatDate(workout.createdAt)}
@@ -41,6 +45,7 @@ export default function WorkoutHistoryCard({ workout }: Props): React.ReactEleme
 const cardStyles = StyleSheet.create({
     exercise: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
     },
+    exerciseName: { flex: 4 },
+    numSets: { flex: 1, textAlign: 'right' },
 });
