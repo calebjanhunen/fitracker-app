@@ -6,7 +6,8 @@ export const API = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    // withCredentials: true,
+    timeout: 5000,
+    withCredentials: true,
 });
 
 API.interceptors.request.use(
@@ -18,6 +19,17 @@ API.interceptors.request.use(
         return config;
     },
     async function (error) {
+        return await Promise.reject(error);
+    }
+);
+
+API.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async (error) => {
+        // TODO: Log error
+        console.debug(error);
         return await Promise.reject(error);
     }
 );
