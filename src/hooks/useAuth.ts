@@ -6,6 +6,7 @@ import { type User } from 'src/interfaces/user';
 
 interface IUseAuth {
     login: (username: string, password: string) => Promise<User>;
+    logout: () => Promise<void>;
     accessToken: string | null;
     isLoading: boolean;
     error: string;
@@ -14,7 +15,7 @@ interface IUseAuth {
 export function useAuth(): IUseAuth {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const { setAccessTokenOnLogin, accessToken } = useContext(AuthContext);
+    const { setAccessTokenOnLogin, accessToken, removeAccessToken } = useContext(AuthContext);
 
     async function login(username: string, password: string): Promise<User> {
         setError('');
@@ -39,10 +40,19 @@ export function useAuth(): IUseAuth {
         };
     }
 
+    async function logout(): Promise<void> {
+        try {
+            await removeAccessToken();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     return {
-        isLoading,
-        accessToken,
-        error,
         login,
+        logout,
+        isLoading,
+        error,
+        accessToken,
     };
 }
