@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { logger } from 'src/services/logger';
 
 export const API = axios.create({
     baseURL: 'http://10.0.2.2:3000/api',
@@ -27,9 +28,8 @@ API.interceptors.response.use(
     (response) => {
         return response;
     },
-    async (error) => {
-        // TODO: Log error
-        console.debug(error);
+    async (error: AxiosError) => {
+        logger.error(error);
         return await Promise.reject(error);
     }
 );
