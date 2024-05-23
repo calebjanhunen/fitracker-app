@@ -1,13 +1,12 @@
 import { useContext, useState } from 'react';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { authAPI } from 'src/api/auth/auth-api';
 import { AuthContext } from 'src/context/auth-context';
 import { type User } from 'src/interfaces/user';
 
 interface IUseAuth {
     login: (username: string, password: string) => Promise<User>;
+    accessToken: string | null;
     isLoading: boolean;
     error: string;
 }
@@ -15,7 +14,7 @@ interface IUseAuth {
 export function useAuth(): IUseAuth {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const { setAccessTokenOnLogin } = useContext(AuthContext);
+    const { setAccessTokenOnLogin, accessToken } = useContext(AuthContext);
 
     async function login(username: string, password: string): Promise<User> {
         setError('');
@@ -23,7 +22,6 @@ export function useAuth(): IUseAuth {
         try {
             const response = await authAPI.login(username, password);
             await setAccessTokenOnLogin(response.accessToken);
-            console.log(response);
         } catch (e) {
             console.error(e);
             if (e instanceof Error) {
@@ -43,6 +41,7 @@ export function useAuth(): IUseAuth {
 
     return {
         isLoading,
+        accessToken,
         error,
         login,
     };

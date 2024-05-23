@@ -1,11 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaLayout } from 'src/components';
+import { useAuth } from 'src/hooks/useAuth';
 import LoginScreen from 'src/screens/login/screens/login.screen';
 import AppNavigation from './app-navigation';
 
 export default function BaseNavigation(): React.ReactElement {
-    const accessToken = undefined;
+    const { accessToken } = useAuth();
 
     return (
         <NavigationContainer>
