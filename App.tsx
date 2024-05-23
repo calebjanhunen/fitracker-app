@@ -1,4 +1,5 @@
 import React from 'react';
+import 'react-native-gesture-handler';
 
 import * as eva from '@eva-design/eva';
 import '@expo/metro-runtime';
