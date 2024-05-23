@@ -24,6 +24,7 @@
         "@types/react": "~18.2.79",
         "@types/styled-components": "^5.1.26",
         "@ui-kitten/components": "^5.3.1",
+        "axios": "^1.7.2",
         "babel-plugin-module-resolver": "^5.0.2",
         "expo": "^51.0.8",
         "expo-blur": "~13.0.2",
