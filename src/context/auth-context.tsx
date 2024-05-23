@@ -9,6 +9,7 @@ interface Props {
 interface IAuthContext {
     accessToken: string | null;
     setAccessTokenOnLogin: (accessToken: string) => Promise<void>;
+    removeAccessToken: () => Promise<void>;
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -38,8 +39,13 @@ export function AuthProvider({ children }: Props): React.ReactElement {
         }
     }
 
+    async function removeAccessToken(): Promise<void> {
+        await AsyncStorage.removeItem('access-token');
+        setAccessToken(null);
+    }
+
     return (
-        <AuthContext.Provider value={{ accessToken, setAccessTokenOnLogin }}>
+        <AuthContext.Provider value={{ accessToken, setAccessTokenOnLogin, removeAccessToken }}>
             {children}
         </AuthContext.Provider>
     );
