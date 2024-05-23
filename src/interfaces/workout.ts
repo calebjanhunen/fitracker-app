@@ -6,13 +6,13 @@ export interface Workout {
     exercises: ExerciseInWorkout[];
 }
 
-interface ExerciseInWorkout {
+export interface ExerciseInWorkout {
     name: string;
     id: string;
     sets: SetInWorkout[];
 }
 
-interface SetInWorkout {
+export interface SetInWorkout {
     id: string;
     weight: number;
     reps: number;
