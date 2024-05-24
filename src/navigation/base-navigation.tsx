@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaLayout } from 'src/components';
+import { SafeAreaView } from 'react-native';
 import { useAuth } from 'src/hooks/useAuth';
 import LoginScreen from 'src/screens/login/screens/login.screen';
 import AppNavigation from './app-navigation';
@@ -10,7 +10,9 @@ export default function BaseNavigation(): React.ReactElement {
 
     return (
         <NavigationContainer>
-            <SafeAreaLayout>{accessToken ? <AppNavigation /> : <LoginScreen />}</SafeAreaLayout>
+            <SafeAreaView style={{ flex: 1 }}>
+                {accessToken ? <AppNavigation /> : <LoginScreen />}
+            </SafeAreaView>
         </NavigationContainer>
     );
 }

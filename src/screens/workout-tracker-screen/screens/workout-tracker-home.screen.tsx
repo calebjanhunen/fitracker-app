@@ -4,7 +4,7 @@ import { type StackScreenProps } from '@react-navigation/stack';
 import { Button, Layout, List, Spinner, Text } from '@ui-kitten/components';
 
 import { StyleSheet, View } from 'react-native';
-import { Spacer } from 'src/components';
+import { PageView, Spacer } from 'src/components';
 import { useWorkouts } from 'src/hooks/useWorkouts';
 import { type Workout } from 'src/interfaces/workout';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
@@ -23,7 +23,7 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
     }
 
     return (
-        <Layout style={{ flex: 1 }}>
+        <PageView>
             <Spacer size='spacing-4' />
             <Button onPress={onBtnPress}>Start Empty Workout</Button>
             <Spacer size='spacing-5' />
@@ -44,7 +44,7 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
                     <Text>No Workouts to display</Text>
                 )}
             </View>
-        </Layout>
+        </PageView>
     );
 }
 
