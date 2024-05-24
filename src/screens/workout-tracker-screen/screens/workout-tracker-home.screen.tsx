@@ -8,7 +8,7 @@ import { PageView, Spacer } from 'src/components';
 import { useWorkouts } from 'src/hooks/useWorkouts';
 import { type Workout } from 'src/interfaces/workout';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
-import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-history-card';
+import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-tracker-home/workout-history-card';
 
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'Home'>;
 
