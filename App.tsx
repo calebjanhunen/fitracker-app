@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import * as eva from '@eva-design/eva';
 import '@expo/metro-runtime';
 import { ApplicationProvider } from '@ui-kitten/components';
+import { MenuProvider } from 'react-native-popup-menu';
 
 import { StatusBar } from 'react-native';
 import { AuthProvider } from 'src/context/auth-context';
@@ -13,8 +14,10 @@ export default function App(): React.ReactElement | null {
     return (
         <ApplicationProvider {...eva} theme={eva.light}>
             <AuthProvider>
-                <BaseNavigation />
-                <StatusBar barStyle='dark-content' backgroundColor='transparent' />
+                <MenuProvider>
+                    <BaseNavigation />
+                    <StatusBar barStyle='dark-content' backgroundColor='transparent' />
+                </MenuProvider>
             </AuthProvider>
         </ApplicationProvider>
     );

@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { useState, type Dispatch } from 'react';
 
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { Button, List, MenuItem, OverflowMenu, Text } from '@ui-kitten/components';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { Button, List, Text } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 
 import { Spacer } from 'src/components';
 import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
@@ -23,20 +24,12 @@ export default function ExerciseComponent({
     dispatchExercises,
 }: Props): React.ReactElement {
     console.log('render: ', exercise.id);
-    const [menuVisible, setMenuVisible] = useState<boolean>(false);
-
-    const menuButton = (): React.ReactElement => (
-        <TouchableOpacity onPress={() => setMenuVisible(true)}>
-            <Ionicons size={24} name='ellipsis-vertical' />
-        </TouchableOpacity>
-    );
     const renderSet = ({ item }: { item: SetInWorkout }): React.ReactElement => (
         <SetComponent set={item} exerciseId={exercise.id} dispatchExercises={dispatchExercises} />
     );
 
     function deleteExercise(): void {
         dispatchExercises({ type: WorkoutFormActionTypes.DELETE_EXERCISE, payload: exercise.id });
-        setMenuVisible(false);
     }
 
     function addSet(): void {
@@ -49,17 +42,24 @@ export default function ExerciseComponent({
                 <Text style={styles.exerciseName} category='h6' numberOfLines={1}>
                     {exercise.name}
                 </Text>
-                {/* <OverflowMenu
-                    anchor={menuButton}
-                    visible={menuVisible}
-                    // onBackdropPress={() => setMenuVisible(false)}
-                >
-                    <MenuItem
-                        title='Delete'
-                        // accessoryRight={() => <Ionicons name='trash' />}
-                        onPress={deleteExercise}
-                    />
-                </OverflowMenu> */}
+                <Menu>
+                    <MenuTrigger>
+                        <FontAwesome size={24} name='ellipsis-v' />
+                    </MenuTrigger>
+                    <MenuOptions>
+                        <MenuOption
+                            onSelect={deleteExercise}
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 8,
+                            }}
+                        >
+                            <Text>Delete</Text>
+                            <FontAwesome size={16} name='trash' />
+                        </MenuOption>
+                    </MenuOptions>
+                </Menu>
             </View>
             <Spacer size='spacing-2' />
             <View style={styles.setHeader}>
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        gap: 8,
     },
     exerciseName: {
         flex: 1,
