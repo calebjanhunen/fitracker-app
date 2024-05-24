@@ -1,4 +1,4 @@
-import { type Exercise } from 'src/interfaces/exercise';
+import { type ExerciseInWorkout } from 'src/interfaces/workout';
 
 export enum WorkoutFormActionTypes {
     ADD_EXERCISES = 'add-exercises',
@@ -7,10 +7,13 @@ export enum WorkoutFormActionTypes {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type WorkoutFormActions =
-    | { type: WorkoutFormActionTypes.ADD_EXERCISES; payload: Exercise[] }
+    | { type: WorkoutFormActionTypes.ADD_EXERCISES; payload: ExerciseInWorkout[] }
     | { type: WorkoutFormActionTypes.DELETE_EXERCISE; payload: string };
 
-export function reducer(exercises: Exercise[], action: WorkoutFormActions): Exercise[] {
+export function reducer(
+    exercises: ExerciseInWorkout[],
+    action: WorkoutFormActions
+): ExerciseInWorkout[] {
     switch (action.type) {
         case WorkoutFormActionTypes.ADD_EXERCISES:
             return [...exercises, ...action.payload];

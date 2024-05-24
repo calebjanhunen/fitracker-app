@@ -4,13 +4,13 @@ import { Button, Input, List } from '@ui-kitten/components';
 import uuid from 'react-native-uuid';
 
 import { PageView, Spacer } from 'src/components';
-import { type Exercise } from 'src/interfaces/exercise';
+import { type ExerciseInWorkout } from 'src/interfaces/workout';
 import { WorkoutFormActionTypes, reducer } from 'src/state/reducers/workout-form-reducer';
 import ExerciseComponent from '../components/workout-tracker-form/exercise-component';
 
 export default function WorkoutTrackerFormScreen(): React.ReactElement {
     const [exercises, dispatchExercises] = useReducer(reducer, []);
-    const renderExercise = ({ item }: { item: Exercise }): React.ReactElement => (
+    const renderExercise = ({ item }: { item: ExerciseInWorkout }): React.ReactElement => (
         <ExerciseComponent exercise={item} dispatchExercises={dispatchExercises} />
     );
 
@@ -18,7 +18,7 @@ export default function WorkoutTrackerFormScreen(): React.ReactElement {
         const exerciseId = uuid.v4().toString();
         dispatchExercises({
             type: WorkoutFormActionTypes.ADD_EXERCISES,
-            payload: [{ id: exerciseId, name: `EXERCISE: ${exerciseId}` }],
+            payload: [{ id: exerciseId, name: `EXERCISE: ${exerciseId}`, sets: [] }],
         });
     }
 

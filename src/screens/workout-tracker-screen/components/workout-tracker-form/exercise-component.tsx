@@ -6,7 +6,7 @@ import { Button, MenuItem, OverflowMenu, Text } from '@ui-kitten/components';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Spacer } from 'src/components';
-import { type Exercise } from 'src/interfaces/exercise';
+import { type ExerciseInWorkout } from 'src/interfaces/workout';
 import {
     WorkoutFormActionTypes,
     type WorkoutFormActions,
@@ -14,7 +14,7 @@ import {
 import Set from './set';
 
 interface Props {
-    exercise: Exercise;
+    exercise: ExerciseInWorkout;
     dispatchExercises: Dispatch<WorkoutFormActions>;
 }
 
