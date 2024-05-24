@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { useState, type Dispatch } from 'react';
+import React, { memo, useState, type Dispatch } from 'react';
 
 import { FontAwesome } from '@expo/vector-icons';
 import { Button, List, Text } from '@ui-kitten/components';
@@ -19,7 +19,7 @@ interface Props {
     dispatchExercises: Dispatch<WorkoutFormActions>;
 }
 
-export default function ExerciseComponent({
+const ExerciseComponent = memo(function ExerciseComponent({
     exercise,
     dispatchExercises,
 }: Props): React.ReactElement {
@@ -87,7 +87,8 @@ export default function ExerciseComponent({
             </Button>
         </View>
     );
-}
+});
+export default ExerciseComponent;
 
 const styles = StyleSheet.create({
     exerciseHeader: {
