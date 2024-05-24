@@ -2,13 +2,14 @@ import { Button, Input, Text } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Spacer } from 'src/components';
+import Set from './set';
 
 export default function Exercise(): React.ReactElement {
     return (
         <View>
             <Text category='h6'>Exercise Name</Text>
             <Spacer size='spacing-2' />
-            <View style={styles.set}>
+            <View style={styles.setHeader}>
                 <Text category='label' style={styles.setNum}>
                     Set
                 </Text>
@@ -26,13 +27,7 @@ export default function Exercise(): React.ReactElement {
                 </Text>
             </View>
             <Spacer size='spacing-1' />
-            <View style={styles.set}>
-                <Text style={styles.setNum}>1</Text>
-                <Text style={styles.previous}>140x10 @ 9</Text>
-                <Input keyboardType='number-pad' size='small' style={styles.weight} />
-                <Input keyboardType='number-pad' size='small' style={styles.reps} />
-                <Input keyboardType='number-pad' size='small' style={styles.rpe} />
-            </View>
+            <Set />
             <Spacer size='spacing-3' />
             <Button size='tiny' appearance='outline'>
                 Add Set
@@ -42,7 +37,7 @@ export default function Exercise(): React.ReactElement {
 }
 
 const styles = StyleSheet.create({
-    set: {
+    setHeader: {
         flexDirection: 'row',
         gap: 16,
         alignItems: 'center',
