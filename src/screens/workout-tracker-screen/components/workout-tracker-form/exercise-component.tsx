@@ -2,16 +2,16 @@
 import React, { useState, type Dispatch } from 'react';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Button, MenuItem, OverflowMenu, Text } from '@ui-kitten/components';
+import { Button, List, MenuItem, OverflowMenu, Text } from '@ui-kitten/components';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Spacer } from 'src/components';
-import { type ExerciseInWorkout } from 'src/interfaces/workout';
+import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
 import {
     WorkoutFormActionTypes,
     type WorkoutFormActions,
 } from 'src/state/reducers/workout-form-reducer';
-import Set from './set';
+import SetComponent from './set-component';
 
 interface Props {
     exercise: ExerciseInWorkout;
@@ -22,6 +22,7 @@ export default function ExerciseComponent({
     exercise,
     dispatchExercises,
 }: Props): React.ReactElement {
+    console.log('render: ', exercise.id);
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
 
     const menuButton = (): React.ReactElement => (
@@ -29,10 +30,17 @@ export default function ExerciseComponent({
             <Ionicons size={24} name='ellipsis-vertical' />
         </TouchableOpacity>
     );
+    const renderSet = ({ item }: { item: SetInWorkout }): React.ReactElement => (
+        <SetComponent set={item} exerciseId={exercise.id} dispatchExercises={dispatchExercises} />
+    );
 
     function deleteExercise(): void {
         dispatchExercises({ type: WorkoutFormActionTypes.DELETE_EXERCISE, payload: exercise.id });
         setMenuVisible(false);
+    }
+
+    function addSet(): void {
+        dispatchExercises({ type: WorkoutFormActionTypes.ADD_SET, payload: exercise.id });
     }
 
     return (
@@ -41,17 +49,17 @@ export default function ExerciseComponent({
                 <Text style={styles.exerciseName} category='h6' numberOfLines={1}>
                     {exercise.name}
                 </Text>
-                <OverflowMenu
+                {/* <OverflowMenu
                     anchor={menuButton}
                     visible={menuVisible}
-                    onBackdropPress={() => setMenuVisible(false)}
+                    // onBackdropPress={() => setMenuVisible(false)}
                 >
                     <MenuItem
                         title='Delete'
-                        accessoryRight={() => <Ionicons name='trash' />}
+                        // accessoryRight={() => <Ionicons name='trash' />}
                         onPress={deleteExercise}
                     />
-                </OverflowMenu>
+                </OverflowMenu> */}
             </View>
             <Spacer size='spacing-2' />
             <View style={styles.setHeader}>
@@ -72,9 +80,9 @@ export default function ExerciseComponent({
                 </Text>
             </View>
             <Spacer size='spacing-1' />
-            <Set />
+            <List data={exercise.sets} renderItem={renderSet} />
             <Spacer size='spacing-3' />
-            <Button size='tiny' appearance='outline'>
+            <Button size='tiny' appearance='outline' onPress={addSet}>
                 Add Set
             </Button>
         </View>

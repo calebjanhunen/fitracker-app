@@ -13,6 +13,7 @@ export default function WorkoutTrackerFormScreen(): React.ReactElement {
     const renderExercise = ({ item }: { item: ExerciseInWorkout }): React.ReactElement => (
         <ExerciseComponent exercise={item} dispatchExercises={dispatchExercises} />
     );
+    // console.log(JSON.stringify(exercises, null, 2));
 
     function onAddExercise(): void {
         const exerciseId = uuid.v4().toString();
