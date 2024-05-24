@@ -11,7 +11,7 @@ import ExerciseComponent from '../components/workout-tracker-form/exercise-compo
 export default function WorkoutTrackerFormScreen(): React.ReactElement {
     const [exercises, dispatchExercises] = useReducer(reducer, []);
     const renderExercise = ({ item }: { item: Exercise }): React.ReactElement => (
-        <ExerciseComponent exercise={item} />
+        <ExerciseComponent exercise={item} dispatchExercises={dispatchExercises} />
     );
 
     function onAddExercise(): void {

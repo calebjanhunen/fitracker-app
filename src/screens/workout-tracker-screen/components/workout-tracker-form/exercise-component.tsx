@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { useState } from 'react';
+import React, { useState, type Dispatch } from 'react';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Button, MenuItem, OverflowMenu, Text } from '@ui-kitten/components';
@@ -7,13 +7,21 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Spacer } from 'src/components';
 import { type Exercise } from 'src/interfaces/exercise';
+import {
+    WorkoutFormActionTypes,
+    type WorkoutFormActions,
+} from 'src/state/reducers/workout-form-reducer';
 import Set from './set';
 
 interface Props {
     exercise: Exercise;
+    dispatchExercises: Dispatch<WorkoutFormActions>;
 }
 
-export default function ExerciseComponent({ exercise }: Props): React.ReactElement {
+export default function ExerciseComponent({
+    exercise,
+    dispatchExercises,
+}: Props): React.ReactElement {
     const [menuVisible, setMenuVisible] = useState<boolean>(false);
 
     const menuButton = (): React.ReactElement => (
@@ -22,7 +30,10 @@ export default function ExerciseComponent({ exercise }: Props): React.ReactEleme
         </TouchableOpacity>
     );
 
-    function deleteExercise(): void {}
+    function deleteExercise(): void {
+        dispatchExercises({ type: WorkoutFormActionTypes.DELETE_EXERCISE, payload: exercise.id });
+        setMenuVisible(false);
+    }
 
     return (
         <View>
