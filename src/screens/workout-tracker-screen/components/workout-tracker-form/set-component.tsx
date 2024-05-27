@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { type Dispatch } from 'react';
+import React, { memo, type Dispatch } from 'react';
 
 import { Input, Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
@@ -12,12 +12,14 @@ import {
 
 interface Props {
     set: SetInWorkout;
+    index: number;
     exerciseId: string;
     dispatchExercises: Dispatch<WorkoutFormActions>;
 }
 
-export default function SetComponent({
+const SetComponent = memo(function SetComponent({
     set,
+    index,
     exerciseId,
     dispatchExercises,
 }: Props): React.ReactElement {
@@ -31,9 +33,11 @@ export default function SetComponent({
     }
 
     return (
-        <View style={styles.set}>
-            <Text style={styles.setNum}>1</Text>
-            <Text style={styles.previous}>140x10 @ 9</Text>
+        <View style={styles.visibleSetStyles}>
+            <Text style={styles.setNum}>{index + 1}</Text>
+            <Text style={styles.previous} numberOfLines={1}>
+                {set.id}
+            </Text>
             <Input
                 onChangeText={(text) => handleUpdateSet('weight', text)}
                 keyboardType='number-pad'
@@ -54,13 +58,19 @@ export default function SetComponent({
             />
         </View>
     );
-}
+});
+
+export default SetComponent;
 
 const styles = StyleSheet.create({
-    set: {
+    hiddenSetStyles: {},
+    visibleSetStyles: {
         flexDirection: 'row',
         gap: 16,
         alignItems: 'center',
+        backgroundColor: 'white',
+        paddingLeft: 8,
+        paddingRight: 8,
     },
     setNum: {
         flex: 0.5,

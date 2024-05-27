@@ -6,6 +6,7 @@ export enum WorkoutFormActionTypes {
     DELETE_EXERCISE = 'delete-exercise',
     ADD_SET = 'add-set',
     UPDATE_SET = 'update-set',
+    DELETE_SET = 'delete-set',
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -18,6 +19,11 @@ export type WorkoutFormActions =
           exerciseId: string;
           setId: string;
           updates: Record<string, number>;
+      }
+    | {
+          type: WorkoutFormActionTypes.DELETE_SET;
+          exerciseId: string;
+          setId: string;
       };
 
 export function reducer(
@@ -48,6 +54,16 @@ export function reducer(
                             }
                             return set;
                         }),
+                    };
+                }
+                return exercise;
+            });
+        case WorkoutFormActionTypes.DELETE_SET:
+            return exercises.map((exercise) => {
+                if (exercise.id === action.exerciseId) {
+                    return {
+                        ...exercise,
+                        sets: exercise.sets.filter((set) => set.id !== action.setId),
                     };
                 }
                 return exercise;

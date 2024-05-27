@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { memo, useState, type Dispatch } from 'react';
+import React, { memo, type Dispatch } from 'react';
 
 import { FontAwesome } from '@expo/vector-icons';
-import { Button, List, Text } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Button, Text } from '@ui-kitten/components';
+import { Dimensions, StyleSheet, View, type ListRenderItemInfo } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
+import { SwipeListView, type RowMap } from 'react-native-swipe-list-view';
 
 import { Spacer } from 'src/components';
 import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
@@ -19,13 +20,43 @@ interface Props {
     dispatchExercises: Dispatch<WorkoutFormActions>;
 }
 
+interface IOnSwipeValueChange {
+    key: string;
+    value: number;
+    direction: 'left' | 'right';
+    isOpen: boolean;
+}
+
 const ExerciseComponent = memo(function ExerciseComponent({
     exercise,
     dispatchExercises,
 }: Props): React.ReactElement {
-    console.log('render: ', exercise.id);
-    const renderSet = ({ item }: { item: SetInWorkout }): React.ReactElement => (
-        <SetComponent set={item} exerciseId={exercise.id} dispatchExercises={dispatchExercises} />
+    const renderSet = (
+        { item, index }: ListRenderItemInfo<SetInWorkout>,
+        rowMap: RowMap<SetInWorkout>
+    ): React.ReactElement | null => (
+        <SetComponent
+            set={item}
+            index={index}
+            exerciseId={exercise.id}
+            dispatchExercises={dispatchExercises}
+        />
+    );
+
+    // Renders the component behind the set component (delete button)
+    const renderHiddenItem = (data: ListRenderItemInfo<SetInWorkout>): React.ReactElement => (
+        <View
+            style={{
+                backgroundColor: 'red',
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingRight: 16,
+                justifyContent: 'flex-end',
+            }}
+        >
+            <Text>Delete</Text>
+        </View>
     );
 
     function deleteExercise(): void {
@@ -34,6 +65,20 @@ const ExerciseComponent = memo(function ExerciseComponent({
 
     function addSet(): void {
         dispatchExercises({ type: WorkoutFormActionTypes.ADD_SET, payload: exercise.id });
+    }
+
+    function deleteSet(setId: string): void {
+        dispatchExercises({
+            type: WorkoutFormActionTypes.DELETE_SET,
+            exerciseId: exercise.id,
+            setId,
+        });
+    }
+
+    function onSwipeValueChange(swipeData: IOnSwipeValueChange): void {
+        if (swipeData.value < -Dimensions.get('window').width) {
+            deleteSet(swipeData.key);
+        }
     }
 
     return (
@@ -80,7 +125,16 @@ const ExerciseComponent = memo(function ExerciseComponent({
                 </Text>
             </View>
             <Spacer size='spacing-1' />
-            <List data={exercise.sets} renderItem={renderSet} />
+            <SwipeListView
+                disableRightSwipe
+                data={exercise.sets}
+                renderItem={renderSet}
+                renderHiddenItem={renderHiddenItem}
+                ItemSeparatorComponent={() => <Spacer size='spacing-2' />}
+                keyExtractor={(item) => item.id}
+                onSwipeValueChange={onSwipeValueChange}
+                rightOpenValue={-Dimensions.get('window').width}
+            />
             <Spacer size='spacing-3' />
             <Button size='tiny' appearance='outline' onPress={addSet}>
                 Add Set
@@ -104,6 +158,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 16,
         alignItems: 'center',
+        paddingLeft: 8,
+        paddingRight: 8,
     },
     setNum: {
         flex: 0.5,
