@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid';
-import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
+import { type ExerciseInWorkout, type SetInWorkout, type Workout } from 'src/interfaces/workout';
 
 export enum WorkoutFormActionTypes {
     ADD_EXERCISES = 'add-exercises',
@@ -26,25 +26,28 @@ export type WorkoutFormActions =
           setId: string;
       };
 
-export function reducer(
-    exercises: ExerciseInWorkout[],
-    action: WorkoutFormActions
-): ExerciseInWorkout[] {
+export function reducer(workout: Workout, action: WorkoutFormActions): Workout {
     switch (action.type) {
         case WorkoutFormActionTypes.ADD_EXERCISES:
-            return [...exercises, ...action.payload];
+            return { ...workout, exercises: [...workout.exercises, ...action.payload] };
         case WorkoutFormActionTypes.DELETE_EXERCISE:
-            return exercises.filter((exercise) => exercise.id !== action.payload);
+            return {
+                ...workout,
+                exercises: workout.exercises.filter((exercise) => exercise.id !== action.payload),
+            };
         case WorkoutFormActionTypes.ADD_SET: {
             const newSet: SetInWorkout = { id: uuid.v4().toString(), weight: 0, reps: 0, rpe: 0 };
-            return exercises.map((exercise) =>
-                exercise.id === action.payload
-                    ? { ...exercise, sets: [...exercise.sets, newSet] }
-                    : exercise
-            );
+            return {
+                ...workout,
+                exercises: workout.exercises.map((exercise) =>
+                    exercise.id === action.payload
+                        ? { ...exercise, sets: [...exercise.sets, newSet] }
+                        : exercise
+                ),
+            };
         }
-        case WorkoutFormActionTypes.UPDATE_SET:
-            return exercises.map((exercise) => {
+        case WorkoutFormActionTypes.UPDATE_SET: {
+            const newExercises = workout.exercises.map((exercise) => {
                 if (exercise.id === action.exerciseId) {
                     return {
                         ...exercise,
@@ -58,17 +61,33 @@ export function reducer(
                 }
                 return exercise;
             });
+            return {
+                ...workout,
+                exercises: newExercises,
+            };
+        }
         case WorkoutFormActionTypes.DELETE_SET:
-            return exercises.map((exercise) => {
-                if (exercise.id === action.exerciseId) {
-                    return {
-                        ...exercise,
-                        sets: exercise.sets.filter((set) => set.id !== action.setId),
-                    };
-                }
-                return exercise;
-            });
+            return {
+                ...workout,
+                exercises: workout.exercises.map((exercise) => {
+                    if (exercise.id === action.exerciseId) {
+                        return {
+                            ...exercise,
+                            sets: exercise.sets.filter((set) => set.id !== action.setId),
+                        };
+                    }
+                    return exercise;
+                }),
+            };
         default:
-            return exercises;
+            return workout;
     }
 }
+
+export const initialWorkoutState: Workout = {
+    id: uuid.v4().toString(),
+    createdAt: Date.now().toString(),
+    updatedAt: Date.now().toString(),
+    name: '',
+    exercises: [],
+};
