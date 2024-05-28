@@ -7,8 +7,8 @@ import { ApplicationProvider } from '@ui-kitten/components';
 import { MenuProvider } from 'react-native-popup-menu';
 
 import { StatusBar } from 'react-native';
-import { AuthProvider } from 'src/context/auth-context';
 import BaseNavigation from 'src/navigation/base-navigation';
+import { AuthProvider } from 'src/state/context/auth-context';
 
 export default function App(): React.ReactElement | null {
     return (
