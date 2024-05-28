@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import React, { createContext, useReducer, type Dispatch } from 'react';
+
 import { type WorkoutForm } from 'src/interfaces/workout-form';
 import { reducer, type WorkoutFormActions } from '../reducers/workout-form-reducer';
 
@@ -22,7 +23,12 @@ export function WorkoutFormProvider({ children }: Props): React.ReactElement {
     });
 
     return (
-        <WorkoutFormContext.Provider value={{ workout, dispatch: dispatchWorkout }}>
+        <WorkoutFormContext.Provider
+            value={{
+                workout,
+                dispatch: dispatchWorkout,
+            }}
+        >
             {children}
         </WorkoutFormContext.Provider>
     );

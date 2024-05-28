@@ -22,6 +22,8 @@ interface IUseWorkoutForm {
 export function useWorkoutForm(): IUseWorkoutForm {
     const { workout, dispatch } = useContext(WorkoutFormContext);
 
+    console.log('use workout rendered');
+
     const updateWorkoutName = useCallback((text: string) => {
         dispatch({ type: WorkoutFormActionTypes.UPDATE_NAME, name: text });
     }, []);

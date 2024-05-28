@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
-import { Button, Layout, List, Spinner, Text } from '@ui-kitten/components';
+import { Button, List, Spinner, Text } from '@ui-kitten/components';
 
 import { StyleSheet, View } from 'react-native';
 import { PageView, Spacer } from 'src/components';
+import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
 import { useWorkouts } from 'src/hooks/useWorkouts';
 import { type Workout } from 'src/interfaces/workout';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
@@ -14,18 +15,22 @@ type Props = StackScreenProps<WorkoutTrackerStackParamList, 'Home'>;
 
 export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.ReactElement {
     const { workouts, isLoading, error } = useWorkouts();
+    const { workoutInProgress, setWorkoutInProgress } = useWorkoutInProgress();
     const renderWorkoutHistoryCard = ({ item }: { item: Workout }): React.ReactElement => (
         <WorkoutHistoryCard workout={item} />
     );
 
-    function onBtnPress(): void {
+    function handleGoToWorkoutFormPage(): void {
         navigation.navigate('WorkoutTrackerForm');
+        if (!workoutInProgress) setWorkoutInProgress(true);
     }
 
     return (
         <PageView>
             <Spacer size='spacing-4' />
-            <Button onPress={onBtnPress}>Start Empty Workout</Button>
+            <Button onPress={handleGoToWorkoutFormPage}>
+                {!workoutInProgress ? 'Start Empty Workout' : 'Continue Workout'}
+            </Button>
             <Spacer size='spacing-5' />
             <Text category='h4'>Workout History:</Text>
             <View style={styles.workoutHistoryContainer}>
