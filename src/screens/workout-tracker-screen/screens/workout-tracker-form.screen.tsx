@@ -50,7 +50,11 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
 
     return (
         <PageView>
-            <Input placeholder='Enter Workout Name' onChangeText={updateWorkoutName} />
+            <Input
+                placeholder='Enter Workout Name'
+                onChangeText={updateWorkoutName}
+                value={workout.name}
+            />
             <Spacer size='spacing-8' />
             <List
                 data={workout.exercises}
