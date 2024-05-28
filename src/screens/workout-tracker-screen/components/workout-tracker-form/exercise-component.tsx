@@ -99,7 +99,7 @@ const ExerciseComponent = memo(function ExerciseComponent({
                 <Text category='label' style={styles.setInfo}>
                     Reps
                 </Text>
-                <Text category='label' style={styles.setInfo}>
+                <Text category='label' style={styles.rpeHeading}>
                     RPE
                 </Text>
             </View>
@@ -151,6 +151,10 @@ const styles = StyleSheet.create({
     },
     setInfo: {
         flex: 1,
+        textAlign: 'center',
+    },
+    rpeHeading: {
+        flex: 0.7,
         textAlign: 'center',
     },
     hiddenItem: {

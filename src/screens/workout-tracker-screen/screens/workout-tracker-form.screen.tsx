@@ -2,6 +2,7 @@ import React from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 import { Button, Input, List } from '@ui-kitten/components';
+import { View } from 'react-native';
 import uuid from 'react-native-uuid';
 
 import { PageView, Spacer } from 'src/components';
@@ -55,15 +56,19 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
                 data={workout.exercises}
                 renderItem={renderExercise}
                 ItemSeparatorComponent={() => <Spacer size='spacing-5' />}
+                ListFooterComponent={() => (
+                    <View>
+                        <Spacer size='spacing-8' />
+                        <Button size='small' onPress={onAddExercise}>
+                            Add Exercise
+                        </Button>
+                        <Spacer size='spacing-3' />
+                        <Button status='danger' size='small' onPress={handleCancelWorkout}>
+                            Cancel Workout
+                        </Button>
+                    </View>
+                )}
             />
-            <Spacer size='spacing-8' />
-            <Button size='small' onPress={onAddExercise}>
-                Add Exercise
-            </Button>
-            <Spacer size='spacing-3' />
-            <Button status='danger' size='small' onPress={handleCancelWorkout}>
-                Cancel Workout
-            </Button>
         </PageView>
     );
 }

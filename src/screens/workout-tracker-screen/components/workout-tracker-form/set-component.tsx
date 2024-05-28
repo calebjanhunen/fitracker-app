@@ -31,22 +31,31 @@ const SetComponent = memo(function SetComponent({
                 {set.id}
             </Text>
             <Input
-                onChangeText={(text) => updateSet(set.id, exerciseId, 'weight', text)}
+                onChangeText={(text) => updateSet(exerciseId, set.id, 'weight', text)}
                 keyboardType='number-pad'
                 size='small'
                 style={styles.inputBox}
+                value={set.weight > 0 ? set.weight.toString() : ''}
+                maxLength={4}
+                textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
             />
             <Input
-                onChangeText={(text) => updateSet(set.id, exerciseId, 'reps', text)}
+                onChangeText={(text) => updateSet(exerciseId, set.id, 'reps', text)}
                 keyboardType='number-pad'
                 size='small'
                 style={styles.inputBox}
+                value={set.reps > 0 ? set.reps.toString() : ''}
+                maxLength={4}
+                textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
             />
             <Input
-                onChangeText={(text) => updateSet(set.id, exerciseId, 'rpe', text)}
+                onChangeText={(text) => updateSet(exerciseId, set.id, 'rpe', text)}
                 keyboardType='number-pad'
                 size='small'
-                style={styles.inputBox}
+                style={styles.rpeInput}
+                value={set.rpe > 0 ? set.rpe.toString() : ''}
+                maxLength={2}
+                textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
             />
         </View>
     );
@@ -73,6 +82,10 @@ const styles = StyleSheet.create({
     },
     inputBox: {
         flex: 1,
+        textAlign: 'center',
+    },
+    rpeInput: {
+        flex: 0.7,
         textAlign: 'center',
     },
 });

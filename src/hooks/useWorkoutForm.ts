@@ -50,6 +50,9 @@ export function useWorkoutForm(): IUseWorkoutForm {
             key: 'weight' | 'reps' | 'rpe',
             value: string
         ): void => {
+            if (value === '') {
+                value = '0';
+            }
             dispatch({
                 type: WorkoutFormActionTypes.UPDATE_SET,
                 exerciseId,
