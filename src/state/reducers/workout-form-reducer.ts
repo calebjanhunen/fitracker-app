@@ -2,6 +2,7 @@ import uuid from 'react-native-uuid';
 import { type ExerciseInWorkout, type SetInWorkout, type Workout } from 'src/interfaces/workout';
 
 export enum WorkoutFormActionTypes {
+    UPDATE_NAME = 'update-name',
     ADD_EXERCISES = 'add-exercises',
     DELETE_EXERCISE = 'delete-exercise',
     ADD_SET = 'add-set',
@@ -11,6 +12,7 @@ export enum WorkoutFormActionTypes {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type WorkoutFormActions =
+    | { type: WorkoutFormActionTypes.UPDATE_NAME; name: string }
     | { type: WorkoutFormActionTypes.ADD_EXERCISES; payload: ExerciseInWorkout[] }
     | { type: WorkoutFormActionTypes.DELETE_EXERCISE; payload: string }
     | { type: WorkoutFormActionTypes.ADD_SET; payload: string }
@@ -28,6 +30,8 @@ export type WorkoutFormActions =
 
 export function reducer(workout: Workout, action: WorkoutFormActions): Workout {
     switch (action.type) {
+        case WorkoutFormActionTypes.UPDATE_NAME:
+            return { ...workout, name: action.name };
         case WorkoutFormActionTypes.ADD_EXERCISES:
             return { ...workout, exercises: [...workout.exercises, ...action.payload] };
         case WorkoutFormActionTypes.DELETE_EXERCISE:

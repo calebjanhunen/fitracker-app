@@ -19,6 +19,10 @@ export default function WorkoutTrackerFormScreen(): React.ReactElement {
     );
     console.log(JSON.stringify(workout, null, 2));
 
+    function updateWorkoutName(text: string): void {
+        dispatchWorkout({ type: WorkoutFormActionTypes.UPDATE_NAME, name: text });
+    }
+
     function onAddExercise(): void {
         const exerciseId = uuid.v4().toString();
         dispatchWorkout({
@@ -29,7 +33,7 @@ export default function WorkoutTrackerFormScreen(): React.ReactElement {
 
     return (
         <PageView>
-            <Input placeholder='Enter Workout Name' />
+            <Input placeholder='Enter Workout Name' onChangeText={updateWorkoutName} />
             <Spacer size='spacing-8' />
             <List
                 data={workout.exercises}
