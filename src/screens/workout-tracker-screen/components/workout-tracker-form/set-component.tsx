@@ -2,9 +2,8 @@
 import React, { memo, useEffect, useRef, type Dispatch } from 'react';
 
 import { Input, Text } from '@ui-kitten/components';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
 
-import { SwipeRow } from 'react-native-swipe-list-view';
 import { type SetInWorkout } from 'src/interfaces/workout';
 import {
     WorkoutFormActionTypes,

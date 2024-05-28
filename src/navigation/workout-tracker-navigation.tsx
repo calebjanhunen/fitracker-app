@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
+import { Button } from '@ui-kitten/components';
 
+import { View } from 'react-native';
 import WorkoutTrackerFormScreen from 'src/screens/workout-tracker-screen/screens/workout-tracker-form.screen';
 import WorkoutTrackerHomeScreen from 'src/screens/workout-tracker-screen/screens/workout-tracker-home.screen';
 
@@ -21,7 +23,25 @@ export default function WorkoutTrackerNavigation(): React.ReactElement {
                 options={{ headerShown: false }}
                 component={WorkoutTrackerHomeScreen}
             />
-            <Stack.Screen name='WorkoutTrackerForm' component={WorkoutTrackerFormScreen} />
+            <Stack.Screen
+                name='WorkoutTrackerForm'
+                component={WorkoutTrackerFormScreen}
+                options={() => ({
+                    headerRight: () => (
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                                paddingRight: 16,
+                            }}
+                        >
+                            <Button size='small' status='success'>
+                                Finish Workout
+                            </Button>
+                        </View>
+                    ),
+                })}
+            />
         </Stack.Navigator>
     );
 }

@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Button, Text } from '@ui-kitten/components';
 import { Dimensions, StyleSheet, View, type ListRenderItemInfo } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
-import { SwipeListView, SwipeRow, type RowMap } from 'react-native-swipe-list-view';
+import { SwipeListView, type RowMap } from 'react-native-swipe-list-view';
 
 import { Spacer } from 'src/components';
 import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
