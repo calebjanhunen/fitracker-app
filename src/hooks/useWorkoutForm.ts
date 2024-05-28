@@ -17,12 +17,11 @@ interface IUseWorkoutForm {
         value: string
     ) => void;
     deleteSet: (exerciseId: string, setId: string) => void;
+    clearWorkout: () => void;
 }
 
 export function useWorkoutForm(): IUseWorkoutForm {
     const { workout, dispatch } = useContext(WorkoutFormContext);
-
-    console.log('use workout rendered');
 
     const updateWorkoutName = useCallback((text: string) => {
         dispatch({ type: WorkoutFormActionTypes.UPDATE_NAME, name: text });
@@ -61,6 +60,10 @@ export function useWorkoutForm(): IUseWorkoutForm {
         []
     );
 
+    const clearWorkout = useCallback(() => {
+        dispatch({ type: WorkoutFormActionTypes.CLEAR_WORKOUT });
+    }, []);
+
     return {
         workout,
         updateWorkoutName,
@@ -69,5 +72,6 @@ export function useWorkoutForm(): IUseWorkoutForm {
         addSet,
         deleteSet,
         updateSet,
+        clearWorkout,
     };
 }

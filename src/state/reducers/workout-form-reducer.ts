@@ -9,6 +9,7 @@ export enum WorkoutFormActionTypes {
     ADD_SET = 'add-set',
     UPDATE_SET = 'update-set',
     DELETE_SET = 'delete-set',
+    CLEAR_WORKOUT = 'clear-workout',
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -27,7 +28,8 @@ export type WorkoutFormActions =
           type: WorkoutFormActionTypes.DELETE_SET;
           exerciseId: string;
           setId: string;
-      };
+      }
+    | { type: WorkoutFormActionTypes.CLEAR_WORKOUT };
 
 export function reducer(workout: WorkoutForm, action: WorkoutFormActions): WorkoutForm {
     switch (action.type) {
@@ -83,6 +85,12 @@ export function reducer(workout: WorkoutForm, action: WorkoutFormActions): Worko
                     }
                     return exercise;
                 }),
+            };
+        case WorkoutFormActionTypes.CLEAR_WORKOUT:
+            return {
+                name: '',
+                createdAt: '',
+                exercises: [],
             };
         default:
             return workout;
