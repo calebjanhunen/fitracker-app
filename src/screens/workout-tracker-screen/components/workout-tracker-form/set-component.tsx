@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { memo, type Dispatch } from 'react';
+import React, { memo, useEffect, useRef, type Dispatch } from 'react';
 
 import { Input, Text } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 
+import { SwipeRow } from 'react-native-swipe-list-view';
 import { type SetInWorkout } from 'src/interfaces/workout';
 import {
     WorkoutFormActionTypes,
@@ -15,6 +16,9 @@ interface Props {
     index: number;
     exerciseId: string;
     dispatchExercises: Dispatch<WorkoutFormActions>;
+    isDeleting: boolean;
+    setToDelete: string | null;
+    deleteSet: (setId: string) => void;
 }
 
 const SetComponent = memo(function SetComponent({
@@ -22,7 +26,11 @@ const SetComponent = memo(function SetComponent({
     index,
     exerciseId,
     dispatchExercises,
+    isDeleting,
+    setToDelete,
+    deleteSet,
 }: Props): React.ReactElement {
+    const heightAnim = useRef(new Animated.Value(1)).current;
     function handleUpdateSet(key: 'weight' | 'reps' | 'rpe', value: string): void {
         dispatchExercises({
             type: WorkoutFormActionTypes.UPDATE_SET,
@@ -32,8 +40,28 @@ const SetComponent = memo(function SetComponent({
         });
     }
 
+    useEffect(() => {
+        isDeleting && setToDelete === set.id && onDeleteSet();
+    }, [isDeleting]);
+
+    function onDeleteSet(): void {
+        Animated.timing(heightAnim, {
+            toValue: 0,
+            duration: 150,
+            useNativeDriver: false,
+        }).start(() => deleteSet(set.id));
+    }
+
     return (
-        <View style={styles.visibleSetStyles}>
+        <Animated.View
+            style={{
+                ...styles.visibleSetStyles,
+                height: heightAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 35],
+                }),
+            }}
+        >
             <Text style={styles.setNum}>{index + 1}</Text>
             <Text style={styles.previous} numberOfLines={1}>
                 {set.id}
@@ -56,14 +84,13 @@ const SetComponent = memo(function SetComponent({
                 size='small'
                 style={styles.rpe}
             />
-        </View>
+        </Animated.View>
     );
 });
 
 export default SetComponent;
 
 const styles = StyleSheet.create({
-    hiddenSetStyles: {},
     visibleSetStyles: {
         flexDirection: 'row',
         gap: 16,

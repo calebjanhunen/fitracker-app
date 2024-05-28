@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { memo, type Dispatch } from 'react';
+import React, { memo, useState, type Dispatch } from 'react';
 
 import { FontAwesome } from '@expo/vector-icons';
 import { Button, Text } from '@ui-kitten/components';
 import { Dimensions, StyleSheet, View, type ListRenderItemInfo } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
-import { SwipeListView, type RowMap } from 'react-native-swipe-list-view';
+import { SwipeListView, SwipeRow, type RowMap } from 'react-native-swipe-list-view';
 
 import { Spacer } from 'src/components';
 import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
@@ -31,6 +31,8 @@ const ExerciseComponent = memo(function ExerciseComponent({
     exercise,
     dispatchExercises,
 }: Props): React.ReactElement {
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [setToDelete, setSetToDelete] = useState<string | null>(null);
     const renderSet = (
         { item, index }: ListRenderItemInfo<SetInWorkout>,
         rowMap: RowMap<SetInWorkout>
@@ -40,6 +42,9 @@ const ExerciseComponent = memo(function ExerciseComponent({
             index={index}
             exerciseId={exercise.id}
             dispatchExercises={dispatchExercises}
+            isDeleting={isDeleting}
+            setToDelete={setToDelete}
+            deleteSet={deleteSet}
         />
     );
 
@@ -53,9 +58,12 @@ const ExerciseComponent = memo(function ExerciseComponent({
                 alignItems: 'center',
                 paddingRight: 16,
                 justifyContent: 'flex-end',
+                height: 35,
             }}
         >
-            <Text>Delete</Text>
+            <Text category='label' style={{ color: 'white' }}>
+                Delete
+            </Text>
         </View>
     );
 
@@ -73,11 +81,14 @@ const ExerciseComponent = memo(function ExerciseComponent({
             exerciseId: exercise.id,
             setId,
         });
+        setIsDeleting(false);
+        setSetToDelete(null);
     }
 
     function onSwipeValueChange(swipeData: IOnSwipeValueChange): void {
         if (swipeData.value < -Dimensions.get('window').width) {
-            deleteSet(swipeData.key);
+            setSetToDelete(swipeData.key);
+            setIsDeleting(true);
         }
     }
 
@@ -130,10 +141,10 @@ const ExerciseComponent = memo(function ExerciseComponent({
                 data={exercise.sets}
                 renderItem={renderSet}
                 renderHiddenItem={renderHiddenItem}
-                ItemSeparatorComponent={() => <Spacer size='spacing-2' />}
                 keyExtractor={(item) => item.id}
                 onSwipeValueChange={onSwipeValueChange}
                 rightOpenValue={-Dimensions.get('window').width}
+                useNativeDriver={false}
             />
             <Spacer size='spacing-3' />
             <Button size='tiny' appearance='outline' onPress={addSet}>
