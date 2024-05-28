@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 
 import { authAPI } from 'src/api/auth/auth-api';
-import { AuthContext } from 'src/context/auth-context';
 import { type User } from 'src/interfaces/user';
+import { AuthContext } from 'src/state/context/auth-context';
 
 interface IUseAuth {
     login: (username: string, password: string) => Promise<User>;

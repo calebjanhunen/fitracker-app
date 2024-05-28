@@ -1,24 +1,36 @@
 import React from 'react';
 
-import { Button, Layout, List, Spinner, Text } from '@ui-kitten/components';
+import { type StackScreenProps } from '@react-navigation/stack';
+import { Button, List, Spinner, Text } from '@ui-kitten/components';
 
 import { StyleSheet, View } from 'react-native';
-import { Spacer } from 'src/components';
+import { PageView, Spacer } from 'src/components';
+import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
 import { useWorkouts } from 'src/hooks/useWorkouts';
 import { type Workout } from 'src/interfaces/workout';
-import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-history-card';
+import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
+import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-tracker-home/workout-history-card';
 
-export default function WorkoutTrackerHomeScreen(): React.ReactElement {
+type Props = StackScreenProps<WorkoutTrackerStackParamList, 'Home'>;
+
+export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.ReactElement {
     const { workouts, isLoading, error } = useWorkouts();
-
+    const { workoutInProgress, setWorkoutInProgress } = useWorkoutInProgress();
     const renderWorkoutHistoryCard = ({ item }: { item: Workout }): React.ReactElement => (
         <WorkoutHistoryCard workout={item} />
     );
 
+    function handleGoToWorkoutFormPage(): void {
+        navigation.navigate('WorkoutTrackerForm');
+        if (!workoutInProgress) setWorkoutInProgress(true);
+    }
+
     return (
-        <Layout style={{ flex: 1 }}>
+        <PageView>
             <Spacer size='spacing-4' />
-            <Button>Start Empty Workout</Button>
+            <Button onPress={handleGoToWorkoutFormPage}>
+                {!workoutInProgress ? 'Start Empty Workout' : 'Continue Workout'}
+            </Button>
             <Spacer size='spacing-5' />
             <Text category='h4'>Workout History:</Text>
             <View style={styles.workoutHistoryContainer}>
@@ -37,7 +49,7 @@ export default function WorkoutTrackerHomeScreen(): React.ReactElement {
                     <Text>No Workouts to display</Text>
                 )}
             </View>
-        </Layout>
+        </PageView>
     );
 }
 
