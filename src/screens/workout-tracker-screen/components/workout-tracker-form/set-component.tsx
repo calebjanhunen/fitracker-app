@@ -1,89 +1,54 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { memo, useEffect, useRef, type Dispatch } from 'react';
+import React, { memo } from 'react';
 
 import { Input, Text } from '@ui-kitten/components';
-import { Animated, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { type SetInWorkout } from 'src/interfaces/workout';
-import {
-    WorkoutFormActionTypes,
-    type WorkoutFormActions,
-} from 'src/state/reducers/workout-form-reducer';
 
 interface Props {
     set: SetInWorkout;
     index: number;
     exerciseId: string;
-    dispatchExercises: Dispatch<WorkoutFormActions>;
-    isDeleting: boolean;
-    setToDelete: string | null;
-    deleteSet: (setId: string) => void;
+    updateSet: (
+        setId: string,
+        exerciseId: string,
+        key: 'weight' | 'reps' | 'rpe',
+        value: string
+    ) => void;
 }
 
 const SetComponent = memo(function SetComponent({
     set,
     index,
     exerciseId,
-    dispatchExercises,
-    isDeleting,
-    setToDelete,
-    deleteSet,
+    updateSet,
 }: Props): React.ReactElement {
-    const heightAnim = useRef(new Animated.Value(1)).current;
-    function handleUpdateSet(key: 'weight' | 'reps' | 'rpe', value: string): void {
-        dispatchExercises({
-            type: WorkoutFormActionTypes.UPDATE_SET,
-            exerciseId,
-            setId: set.id,
-            updates: { [key]: parseInt(value) },
-        });
-    }
-
-    useEffect(() => {
-        isDeleting && setToDelete === set.id && onDeleteSet();
-    }, [isDeleting]);
-
-    function onDeleteSet(): void {
-        Animated.timing(heightAnim, {
-            toValue: 0,
-            duration: 150,
-            useNativeDriver: false,
-        }).start(() => deleteSet(set.id));
-    }
-
     return (
-        <Animated.View
-            style={{
-                ...styles.visibleSetStyles,
-                height: heightAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, 35],
-                }),
-            }}
-        >
+        <View style={styles.visibleSetStyles}>
             <Text style={styles.setNum}>{index + 1}</Text>
             <Text style={styles.previous} numberOfLines={1}>
                 {set.id}
             </Text>
             <Input
-                onChangeText={(text) => handleUpdateSet('weight', text)}
+                onChangeText={(text) => updateSet(set.id, exerciseId, 'weight', text)}
                 keyboardType='number-pad'
                 size='small'
-                style={styles.weight}
+                style={styles.inputBox}
             />
             <Input
-                onChangeText={(text) => handleUpdateSet('reps', text)}
+                onChangeText={(text) => updateSet(set.id, exerciseId, 'reps', text)}
                 keyboardType='number-pad'
                 size='small'
-                style={styles.reps}
+                style={styles.inputBox}
             />
             <Input
-                onChangeText={(text) => handleUpdateSet('rpe', text)}
+                onChangeText={(text) => updateSet(set.id, exerciseId, 'rpe', text)}
                 keyboardType='number-pad'
                 size='small'
-                style={styles.rpe}
+                style={styles.inputBox}
             />
-        </Animated.View>
+        </View>
     );
 });
 
@@ -106,16 +71,8 @@ const styles = StyleSheet.create({
         flex: 2,
         textAlign: 'center',
     },
-    weight: {
-        flex: 1.5,
-        textAlign: 'center',
-    },
-    reps: {
-        flex: 1.5,
-        textAlign: 'center',
-    },
-    rpe: {
-        flex: 0.8,
+    inputBox: {
+        flex: 1,
         textAlign: 'center',
     },
 });

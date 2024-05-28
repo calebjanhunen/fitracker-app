@@ -1,5 +1,6 @@
 import uuid from 'react-native-uuid';
-import { type ExerciseInWorkout, type SetInWorkout, type Workout } from 'src/interfaces/workout';
+import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
+import { type WorkoutForm } from 'src/interfaces/workout-form';
 
 export enum WorkoutFormActionTypes {
     UPDATE_NAME = 'update-name',
@@ -28,7 +29,7 @@ export type WorkoutFormActions =
           setId: string;
       };
 
-export function reducer(workout: Workout, action: WorkoutFormActions): Workout {
+export function reducer(workout: WorkoutForm, action: WorkoutFormActions): WorkoutForm {
     switch (action.type) {
         case WorkoutFormActionTypes.UPDATE_NAME:
             return { ...workout, name: action.name };
@@ -87,11 +88,3 @@ export function reducer(workout: Workout, action: WorkoutFormActions): Workout {
             return workout;
     }
 }
-
-export const initialWorkoutState: Workout = {
-    id: uuid.v4().toString(),
-    createdAt: Date.now().toString(),
-    updatedAt: Date.now().toString(),
-    name: '',
-    exercises: [],
-};

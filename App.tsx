@@ -9,15 +9,18 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { StatusBar } from 'react-native';
 import BaseNavigation from 'src/navigation/base-navigation';
 import { AuthProvider } from 'src/state/context/auth-context';
+import { WorkoutFormProvider } from 'src/state/context/workout-form-context';
 
 export default function App(): React.ReactElement | null {
     return (
         <ApplicationProvider {...eva} theme={eva.light}>
             <AuthProvider>
-                <MenuProvider>
-                    <BaseNavigation />
-                    <StatusBar barStyle='dark-content' backgroundColor='transparent' />
-                </MenuProvider>
+                <WorkoutFormProvider>
+                    <MenuProvider>
+                        <BaseNavigation />
+                        <StatusBar barStyle='dark-content' backgroundColor='transparent' />
+                    </MenuProvider>
+                </WorkoutFormProvider>
             </AuthProvider>
         </ApplicationProvider>
     );
