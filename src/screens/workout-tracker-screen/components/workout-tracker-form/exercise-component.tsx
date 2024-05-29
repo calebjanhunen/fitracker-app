@@ -103,7 +103,7 @@ const ExerciseComponent = memo(function ExerciseComponent({
                     RPE
                 </Text>
             </View>
-            <Spacer size='spacing-1' />
+            <Spacer size='spacing-4' />
             <SwipeListView
                 disableRightSwipe
                 data={exercise.sets}
@@ -113,7 +113,7 @@ const ExerciseComponent = memo(function ExerciseComponent({
                 onSwipeValueChange={onSwipeValueChange}
                 rightOpenValue={-Dimensions.get('window').width}
                 useNativeDriver={false}
-                ItemSeparatorComponent={() => <Spacer size='spacing-1' />}
+                ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
             />
             <Spacer size='spacing-3' />
             <Button size='tiny' appearance='outline' onPress={() => addSet(exercise.id)}>

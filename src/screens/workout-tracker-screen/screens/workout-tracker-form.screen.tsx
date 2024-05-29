@@ -35,6 +35,18 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
             updateSet={updateSet}
         />
     );
+    const renderListFooter = (): React.ReactElement => (
+        <View>
+            <Spacer size='spacing-8' />
+            <Button size='small' onPress={onAddExercise}>
+                Add Exercise
+            </Button>
+            <Spacer size='spacing-3' />
+            <Button status='danger' size='small' onPress={handleCancelWorkout}>
+                Cancel Workout
+            </Button>
+        </View>
+    );
     // console.log(JSON.stringify(workout, null, 2));
 
     function onAddExercise(): void {
@@ -57,21 +69,11 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
             />
             <Spacer size='spacing-8' />
             <List
+                style={{ backgroundColor: 'transparent' }}
                 data={workout.exercises}
                 renderItem={renderExercise}
                 ItemSeparatorComponent={() => <Spacer size='spacing-5' />}
-                ListFooterComponent={() => (
-                    <View>
-                        <Spacer size='spacing-8' />
-                        <Button size='small' onPress={onAddExercise}>
-                            Add Exercise
-                        </Button>
-                        <Spacer size='spacing-3' />
-                        <Button status='danger' size='small' onPress={handleCancelWorkout}>
-                            Cancel Workout
-                        </Button>
-                    </View>
-                )}
+                ListFooterComponent={renderListFooter}
             />
         </PageView>
     );
