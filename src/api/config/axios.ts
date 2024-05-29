@@ -1,9 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, { AxiosError } from 'axios';
+import axios, { type AxiosError } from 'axios';
+import Constants from 'expo-constants';
 import { logger } from 'src/services/logger';
+import { getApiUrl } from './get-api-url';
+
+const baseUrl = getApiUrl();
+const port: string = Constants.expoConfig?.extra?.apiPort;
 
 export const API = axios.create({
-    baseURL: 'http://10.0.2.2:3000/api',
+    baseURL: `${baseUrl}:${port}/api`,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -35,8 +40,19 @@ API.interceptors.response.use(
 );
 
 export const AUTH = axios.create({
-    baseURL: 'http://10.0.2.2:3000/auth',
+    baseURL: `${baseUrl}:${port}/auth`,
     headers: {
         'Content-Type': 'application/json',
     },
+    timeout: 5000,
 });
+
+AUTH.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async (error: AxiosError) => {
+        logger.error(error);
+        return await Promise.reject(error);
+    }
+);
