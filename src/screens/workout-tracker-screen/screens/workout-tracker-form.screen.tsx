@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import uuid from 'react-native-uuid';
 
 import { PageView, Spacer } from 'src/components';
+import { useKeyboard } from 'src/hooks/useKeyboard';
 import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
 import { type ExerciseInWorkout } from 'src/interfaces/workout';
@@ -35,6 +36,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
             updateSet={updateSet}
         />
     );
+    const { keyboardHeight } = useKeyboard();
     const renderListFooter = (): React.ReactElement => (
         <View>
             <Spacer size='spacing-8' />
@@ -45,6 +47,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
             <Button status='danger' size='small' onPress={handleCancelWorkout}>
                 Cancel Workout
             </Button>
+            <View style={{ height: keyboardHeight }} />
         </View>
     );
     // console.log(JSON.stringify(workout, null, 2));
