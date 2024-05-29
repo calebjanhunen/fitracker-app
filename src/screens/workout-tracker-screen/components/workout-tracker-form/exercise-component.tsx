@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { memo } from 'react';
 
-import { FontAwesome } from '@expo/vector-icons';
 import { Button, Text } from '@ui-kitten/components';
 import { Dimensions, StyleSheet, View, type ListRenderItemInfo } from 'react-native';
-import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 import { SwipeListView, type RowMap } from 'react-native-swipe-list-view';
 
 import { Spacer } from 'src/components';
 import type { ExerciseInWorkout, SetInWorkout } from 'src/interfaces';
+import MoreOptionsMenu, { type MoreOptionsMenuItem } from './more-options-menu';
 import SetComponent from './set-component';
 
 interface Props {
@@ -38,6 +37,20 @@ const ExerciseComponent = memo(function ExerciseComponent({
     deleteExercise,
     deleteSet,
 }: Props): React.ReactElement {
+    const menuItems: MoreOptionsMenuItem[] = [
+        {
+            onSelect: handleDeleteExercise,
+            text: 'Delete',
+            icon: 'trash',
+            iconColor: 'color-danger-500',
+        },
+        {
+            onSelect: () => {},
+            text: 'Replace Exercise',
+            icon: 'repeat',
+            iconColor: 'color-primary-500',
+        },
+    ];
     const renderSet = (
         { item, index }: ListRenderItemInfo<SetInWorkout>,
         rowMap: RowMap<SetInWorkout>
@@ -60,30 +73,17 @@ const ExerciseComponent = memo(function ExerciseComponent({
         }
     }
 
+    function handleDeleteExercise(): void {
+        deleteExercise(exercise.id);
+    }
+
     return (
         <View>
             <View style={styles.exerciseHeader}>
-                <Text style={styles.exerciseName} category='h6' numberOfLines={1}>
+                <Text style={styles.exerciseName} status='info' category='h6' numberOfLines={1}>
                     {exercise.name}
                 </Text>
-                <Menu>
-                    <MenuTrigger>
-                        <FontAwesome size={24} name='ellipsis-v' />
-                    </MenuTrigger>
-                    <MenuOptions>
-                        <MenuOption
-                            onSelect={() => deleteExercise(exercise.id)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                gap: 8,
-                            }}
-                        >
-                            <Text>Delete</Text>
-                            <FontAwesome size={16} name='trash' />
-                        </MenuOption>
-                    </MenuOptions>
-                </Menu>
+                <MoreOptionsMenu menuItems={menuItems} />
             </View>
             <Spacer size='spacing-2' />
             <View style={styles.setHeader}>
