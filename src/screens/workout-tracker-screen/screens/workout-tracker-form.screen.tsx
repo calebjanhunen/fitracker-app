@@ -5,7 +5,7 @@ import { Button, Input, List } from '@ui-kitten/components';
 import { View } from 'react-native';
 import uuid from 'react-native-uuid';
 
-import { PageView, Spacer } from 'src/components';
+import { Spacer } from 'src/components';
 import { useKeyboard } from 'src/hooks/useKeyboard';
 import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
@@ -47,6 +47,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
             <Button status='danger' size='small' onPress={handleCancelWorkout}>
                 Cancel Workout
             </Button>
+            <Spacer size='spacing-3' />
             <View style={{ height: keyboardHeight }} />
         </View>
     );
@@ -64,20 +65,22 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
     }
 
     return (
-        <PageView>
-            <Input
-                placeholder='Enter Workout Name'
-                onChangeText={updateWorkoutName}
-                value={workout.name}
-            />
-            <Spacer size='spacing-8' />
+        <View style={{ backgroundColor: 'white', flex: 1 }}>
+            <View style={{ paddingHorizontal: 16 }}>
+                <Input
+                    placeholder='Enter Workout Name'
+                    onChangeText={updateWorkoutName}
+                    value={workout.name}
+                />
+            </View>
+            <Spacer size='spacing-4' />
             <List
-                style={{ backgroundColor: 'transparent' }}
+                style={{ backgroundColor: 'transparent', paddingHorizontal: 16 }}
                 data={workout.exercises}
                 renderItem={renderExercise}
                 ItemSeparatorComponent={() => <Spacer size='spacing-5' />}
                 ListFooterComponent={renderListFooter}
             />
-        </PageView>
+        </View>
     );
 }
