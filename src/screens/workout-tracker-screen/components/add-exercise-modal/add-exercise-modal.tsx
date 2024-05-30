@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { type Dispatch, type SetStateAction } from 'react';
 
-import { Card, Input, List, Modal, useTheme } from '@ui-kitten/components';
+import { Input, Layout, List, Modal, useTheme } from '@ui-kitten/components';
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 
 import { Spacer } from 'src/components';
 import { useExercisesApi } from 'src/hooks/useExercisesApi';
+import { useSelectedExercisesFromModal } from 'src/hooks/useSelectedExercisesFromModal';
 import type { Exercise, ExerciseInWorkout } from 'src/interfaces';
 import ModalExerciseItem from './modal-exercise-item';
 
@@ -22,9 +23,14 @@ export default function AddExerciseModal({
 }: Props): React.ReactElement {
     const theme = useTheme();
     const { exercises, getMore, isLoading, hasMore } = useExercisesApi(10);
+    const { selectedExercises, toggleExercise } = useSelectedExercisesFromModal();
     const renderFooter = (): React.ReactElement => <>{!isLoading ? null : <ActivityIndicator />}</>;
     const renderExercise = ({ item }: { item: Exercise }): React.ReactElement => (
-        <ModalExerciseItem exercise={item} />
+        <ModalExerciseItem
+            exercise={item}
+            toggleExercise={toggleExercise}
+            isExerciseSelected={selectedExercises.has(item)}
+        />
     );
 
     function handleLoadMore(): void {
@@ -37,12 +43,14 @@ export default function AddExerciseModal({
             backdropStyle={styles.backdrop}
             onBackdropPress={() => setVisible(false)}
         >
-            <Card
+            <Layout
                 style={{
                     width: Dimensions.get('window').width - 32,
                     height: Dimensions.get('window').height - 200,
+                    borderRadius: 12,
+                    paddingTop: 8,
+                    // marginHorizontal: 0,
                 }}
-                disabled={true}
             >
                 <Input size='large' placeholder='Search for exercise...' />
                 <Spacer size='spacing-8' />
@@ -63,7 +71,7 @@ export default function AddExerciseModal({
                         />
                     )}
                 />
-            </Card>
+            </Layout>
         </Modal>
     );
 }

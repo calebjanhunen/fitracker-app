@@ -1,30 +1,40 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { memo } from 'react';
 
-import { Text } from '@ui-kitten/components';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, useTheme } from '@ui-kitten/components';
+import { TouchableWithoutFeedback, View } from 'react-native';
 import { Spacer } from 'src/components';
-
-import type { Exercise } from 'src/interfaces';
+import { type Exercise } from 'src/interfaces';
 
 interface Props {
     exercise: Exercise;
+    isExerciseSelected: boolean;
+    toggleExercise: (exercise: Exercise) => void;
 }
 
-const ModalExerciseItem = memo(function ModalExerciseItem({ exercise }: Props): React.ReactElement {
+const ModalExerciseItem = memo(function ModalExerciseItem({
+    exercise,
+    isExerciseSelected,
+    toggleExercise,
+}: Props): React.ReactElement {
+    const theme = useTheme();
     return (
-        <TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => toggleExercise(exercise)}>
             <View
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     paddingVertical: 8,
+                    backgroundColor: isExerciseSelected
+                        ? theme['color-primary-transparent-200']
+                        : 'transparent',
                 }}
             >
                 <View>
                     <Text category='h6'>{exercise.name}</Text>
                     <Spacer size='spacing-2' />
                     <Text category='label' appearance='hint'>
-                        Body Part
+                        {exercise.primaryMuscle}
                     </Text>
                 </View>
                 <View style={{ alignSelf: 'flex-end' }}>
@@ -33,7 +43,7 @@ const ModalExerciseItem = memo(function ModalExerciseItem({ exercise }: Props): 
                     </Text>
                 </View>
             </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
     );
 });
 
