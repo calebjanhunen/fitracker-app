@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { exercisesAPI } from 'src/api/exercises/exercises-api';
 import { type Exercise, type PaginationResponse } from 'src/interfaces';
 
@@ -7,17 +7,23 @@ interface IUseExercisesApi {
     isLoading: boolean;
     error: string;
     hasMore: boolean;
-    getExercises: (limit: number) => Promise<void>;
+    getMore: () => Promise<void>;
 }
 
-export function useExercisesApi(): IUseExercisesApi {
+export function useExercisesApi(limit: number): IUseExercisesApi {
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [hasMore, setHasMore] = useState<boolean>(false);
+    const [hasMore, setHasMore] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     const [page, setPage] = useState<number>(1);
 
-    async function getExercises(limit: number): Promise<void> {
+    useEffect(() => {
+        void getExercises();
+    }, []);
+
+    const getExercises = useCallback(async (): Promise<void> => {
+        if (isLoading || !hasMore) return;
+
         setIsLoading(true);
         setError('');
         try {
@@ -25,22 +31,22 @@ export function useExercisesApi(): IUseExercisesApi {
                 page,
                 limit
             );
-            // console.log('response: ', response.resources);
             setHasMore(response.hasMore);
             setPage((prev) => prev + 1);
             setExercises((prev) => [...prev, ...response.resources]);
         } catch (e) {
+            console.log('error: ', e);
             setError(`Could not get exercises: ${e.message as string}`);
         } finally {
             setIsLoading(false);
         }
-    }
+    }, [hasMore, isLoading, page]);
 
     return {
         exercises,
         isLoading,
         error,
-        getExercises,
+        getMore: getExercises,
         hasMore,
     };
 }
