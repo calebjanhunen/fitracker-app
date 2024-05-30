@@ -11,7 +11,7 @@ import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
 import { type ExerciseInWorkout } from 'src/interfaces/workout';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
-import AddExerciseModal from '../components/workout-tracker-form/add-exercise-modal';
+import AddExerciseModal from '../components/add-exercise-modal/add-exercise-modal';
 import ExerciseComponent from '../components/workout-tracker-form/exercise-component';
 
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'WorkoutTrackerForm'>;

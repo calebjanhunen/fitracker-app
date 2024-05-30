@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { type Dispatch, type SetStateAction } from 'react';
 
-import { Card, Input, List, Modal, Text, useTheme } from '@ui-kitten/components';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Card, Input, List, Modal, useTheme } from '@ui-kitten/components';
+import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
+
 import { Spacer } from 'src/components';
-import { type ExerciseInWorkout } from 'src/interfaces';
+import { useExercisesApi } from 'src/hooks/useExercisesApi';
+import type { Exercise, ExerciseInWorkout } from 'src/interfaces';
+import ModalExerciseItem from './modal-exercise-item';
 
 interface Props {
     visible: boolean;
@@ -18,30 +21,15 @@ export default function AddExerciseModal({
     addExercises,
 }: Props): React.ReactElement {
     const theme = useTheme();
-    const renderExercise = (): React.ReactElement => (
-        <TouchableOpacity>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingVertical: 8,
-                }}
-            >
-                <View>
-                    <Text category='h6'>Exercise Name</Text>
-                    <Spacer size='spacing-2' />
-                    <Text category='label' appearance='hint'>
-                        Body Part
-                    </Text>
-                </View>
-                <View style={{ alignSelf: 'flex-end' }}>
-                    <Text appearance='hint' category='s1'>
-                        20
-                    </Text>
-                </View>
-            </View>
-        </TouchableOpacity>
+    const { exercises, getMore, isLoading, hasMore } = useExercisesApi(10);
+    const renderFooter = (): React.ReactElement => <>{!isLoading ? null : <ActivityIndicator />}</>;
+    const renderExercise = ({ item }: { item: Exercise }): React.ReactElement => (
+        <ModalExerciseItem exercise={item} />
     );
+
+    function handleLoadMore(): void {
+        if (!isLoading && hasMore) void getMore();
+    }
 
     return (
         <Modal
@@ -59,9 +47,13 @@ export default function AddExerciseModal({
                 <Input size='large' placeholder='Search for exercise...' />
                 <Spacer size='spacing-8' />
                 <List
-                    data={[0, 0, 0]}
+                    data={exercises}
                     renderItem={renderExercise}
                     style={{ backgroundColor: 'transparent' }}
+                    keyExtractor={(item) => item.id}
+                    ListFooterComponent={renderFooter}
+                    onEndReached={handleLoadMore}
+                    // onEndReachedThreshold={0.1}
                     ItemSeparatorComponent={() => (
                         <View
                             style={{
