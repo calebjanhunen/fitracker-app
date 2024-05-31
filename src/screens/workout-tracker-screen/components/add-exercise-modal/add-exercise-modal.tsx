@@ -5,6 +5,7 @@ import { Input, Layout, List, Modal, useTheme } from '@ui-kitten/components';
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 
 import { Spacer } from 'src/components';
+import { useExercisesForWorkoutApi } from 'src/hooks/api/useExercisesForWorkoutApi';
 import { useExercisesApi } from 'src/hooks/useExercisesApi';
 import { useSelectedExercisesFromModal } from 'src/hooks/useSelectedExercisesFromModal';
 import type { Exercise, ExerciseInWorkout } from 'src/interfaces';
@@ -22,7 +23,7 @@ export default function AddExerciseModal({
     addExercises,
 }: Props): React.ReactElement {
     const theme = useTheme();
-    const { exercises, getMore, isLoading, hasMore } = useExercisesApi(10);
+    const { exercises, isLoading } = useExercisesForWorkoutApi();
     const { selectedExercises, toggleExercise } = useSelectedExercisesFromModal();
     const renderFooter = (): React.ReactElement => <>{!isLoading ? null : <ActivityIndicator />}</>;
     const renderExercise = ({ item }: { item: Exercise }): React.ReactElement => (
@@ -32,10 +33,6 @@ export default function AddExerciseModal({
             isExerciseSelected={selectedExercises.has(item)}
         />
     );
-
-    function handleLoadMore(): void {
-        if (!isLoading && hasMore) void getMore();
-    }
 
     return (
         <Modal
@@ -60,8 +57,6 @@ export default function AddExerciseModal({
                     style={{ backgroundColor: 'transparent' }}
                     keyExtractor={(item) => item.id}
                     ListFooterComponent={renderFooter}
-                    onEndReached={handleLoadMore}
-                    // onEndReachedThreshold={0.1}
                     ItemSeparatorComponent={() => (
                         <View
                             style={{
