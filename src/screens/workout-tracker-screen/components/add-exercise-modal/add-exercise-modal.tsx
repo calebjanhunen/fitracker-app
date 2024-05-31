@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { type Dispatch, type SetStateAction } from 'react';
+import React, { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Button, Input, Layout, List, Modal, useStyleSheet, useTheme } from '@ui-kitten/components';
@@ -30,6 +30,24 @@ export default function AddExerciseModal({
     const { exercises, isLoading } = useExercisesForWorkoutApi();
     const { selectedExercises, toggleExercise, clearSelectedExercises } =
         useSelectedExercisesFromModal();
+    const [exercisesDisplay, setExercisesDisplay] = useState<ExerciseForWorkout[]>([]);
+
+    useEffect(() => {
+        setExercisesDisplay(exercises);
+    }, []);
+
+    function handleAddExercises(): void {
+        addExercises(selectedExercises);
+        setVisible(false);
+        clearSelectedExercises();
+    }
+
+    function handleSearch(text: string): void {
+        setExercisesDisplay(
+            exercises.filter((exercise) => exercise.name.toLowerCase().includes(text.toLowerCase()))
+        );
+    }
+
     const renderFooter = (): React.ReactElement => <>{!isLoading ? null : <ActivityIndicator />}</>;
     const renderExercise = ({ item }: { item: ExerciseForWorkout }): React.ReactElement => (
         <ModalExerciseItem
@@ -39,13 +57,6 @@ export default function AddExerciseModal({
             disabled={Boolean(exercisesInWorkout.find((exercise) => exercise.id === item.id))}
         />
     );
-
-    function handleAddExercises(): void {
-        addExercises(selectedExercises);
-        setVisible(false);
-        clearSelectedExercises();
-    }
-
     return (
         <Modal
             visible={visible}
@@ -67,7 +78,11 @@ export default function AddExerciseModal({
                 </View>
                 <Spacer size='spacing-1' />
                 <View style={styles.inputContainer}>
-                    <Input size='large' placeholder='Search for exercise...' />
+                    <Input
+                        size='large'
+                        placeholder='Search for exercise...'
+                        onChangeText={handleSearch}
+                    />
                 </View>
                 <Spacer size='spacing-8' />
                 <View
@@ -77,7 +92,7 @@ export default function AddExerciseModal({
                     }}
                 />
                 <List
-                    data={exercises}
+                    data={exercisesDisplay}
                     renderItem={renderExercise}
                     style={{ backgroundColor: 'transparent' }}
                     keyExtractor={(item) => item.id}
