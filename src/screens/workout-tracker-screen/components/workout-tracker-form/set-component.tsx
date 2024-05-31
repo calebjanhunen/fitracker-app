@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { memo } from 'react';
+import React, { memo, useRef } from 'react';
 
 import { Input, Text } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Animated, Dimensions, StyleSheet } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler';
 
 import { type SetInWorkout } from 'src/interfaces/workout';
 
@@ -16,48 +17,84 @@ interface Props {
         key: 'weight' | 'reps' | 'rpe',
         value: string
     ) => void;
+    deleteSet: (exerciseId: string, setId: string) => void;
 }
+
+const screenWidth = Dimensions.get('window').width;
 
 const SetComponent = memo(function SetComponent({
     set,
     index,
     exerciseId,
     updateSet,
+    deleteSet,
 }: Props): React.ReactElement {
+    const heightAnim = useRef(new Animated.Value(41)).current;
+
+    function renderRightActions(
+        progress: ReturnType<Animated.Value['interpolate']>,
+        dragX: ReturnType<Animated.Value['interpolate']>
+    ): React.ReactElement {
+        const scale = dragX.interpolate({
+            inputRange: [-screenWidth / 2, 0],
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+        });
+        return (
+            <Animated.View style={[styles.rightAction]}>
+                <Animated.Text style={[styles.actionText, { transform: [{ scale }] }]}>
+                    Delete
+                </Animated.Text>
+            </Animated.View>
+        );
+    }
+
+    function onDeleteSet(): void {
+        Animated.timing(heightAnim, {
+            toValue: 0,
+            duration: 200,
+            useNativeDriver: false,
+        }).start(() => {
+            deleteSet(exerciseId, set.id);
+        });
+    }
+
     return (
-        <View style={styles.visibleSetStyles}>
-            <Text style={styles.setNum}>{index + 1}</Text>
-            <Text style={styles.previous} numberOfLines={1}>
-                {set.id}
-            </Text>
-            <Input
-                onChangeText={(text) => updateSet(exerciseId, set.id, 'weight', text)}
-                keyboardType='number-pad'
-                size='small'
-                style={styles.inputBox}
-                value={set.weight > 0 ? set.weight.toString() : ''}
-                maxLength={4}
-                textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
-            />
-            <Input
-                onChangeText={(text) => updateSet(exerciseId, set.id, 'reps', text)}
-                keyboardType='number-pad'
-                size='small'
-                style={styles.inputBox}
-                value={set.reps > 0 ? set.reps.toString() : ''}
-                maxLength={4}
-                textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
-            />
-            <Input
-                onChangeText={(text) => updateSet(exerciseId, set.id, 'rpe', text)}
-                keyboardType='number-pad'
-                size='small'
-                style={styles.rpeInput}
-                value={set.rpe > 0 ? set.rpe.toString() : ''}
-                maxLength={2}
-                textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
-            />
-        </View>
+        <Swipeable renderRightActions={renderRightActions} onSwipeableOpen={onDeleteSet}>
+            <Animated.View style={[styles.visibleSetStyles, { height: heightAnim }]}>
+                <Text style={styles.setNum}>{index + 1}</Text>
+                <Text style={styles.previous} numberOfLines={1}>
+                    {set.id}
+                </Text>
+                <Input
+                    onChangeText={(text) => updateSet(exerciseId, set.id, 'weight', text)}
+                    keyboardType='number-pad'
+                    size='small'
+                    style={styles.inputBox}
+                    value={set.weight > 0 ? set.weight.toString() : ''}
+                    maxLength={4}
+                    textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
+                />
+                <Input
+                    onChangeText={(text) => updateSet(exerciseId, set.id, 'reps', text)}
+                    keyboardType='number-pad'
+                    size='small'
+                    style={styles.inputBox}
+                    value={set.reps > 0 ? set.reps.toString() : ''}
+                    maxLength={4}
+                    textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
+                />
+                <Input
+                    onChangeText={(text) => updateSet(exerciseId, set.id, 'rpe', text)}
+                    keyboardType='number-pad'
+                    size='small'
+                    style={styles.rpeInput}
+                    value={set.rpe > 0 ? set.rpe.toString() : ''}
+                    maxLength={2}
+                    textStyle={{ marginHorizontal: 0, textAlign: 'center' }}
+                />
+            </Animated.View>
+        </Swipeable>
     );
 });
 
@@ -69,8 +106,8 @@ const styles = StyleSheet.create({
         gap: 16,
         alignItems: 'center',
         backgroundColor: 'white',
-        paddingLeft: 8,
-        paddingRight: 8,
+        paddingHorizontal: 8,
+        paddingVertical: 5,
     },
     setNum: {
         flex: 0.5,
@@ -87,5 +124,18 @@ const styles = StyleSheet.create({
     rpeInput: {
         flex: 0.7,
         textAlign: 'center',
+    },
+    rightAction: {
+        backgroundColor: 'red',
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: 8,
+    },
+    actionText: {
+        color: 'white',
+        fontWeight: 600,
+        // transform: [{ translateX: -screenWidth / 2 }],
     },
 });

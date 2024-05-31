@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { memo } from 'react';
 
-import { Button, Text } from '@ui-kitten/components';
-import { Dimensions, StyleSheet, View, type ListRenderItemInfo } from 'react-native';
-import { SwipeListView, type RowMap } from 'react-native-swipe-list-view';
+import { Button, List, Text } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 
 import { Spacer } from 'src/components';
 import type { ExerciseInWorkout, SetInWorkout } from 'src/interfaces';
@@ -21,13 +20,6 @@ interface Props {
         key: 'weight' | 'reps' | 'rpe',
         value: string
     ) => void;
-}
-
-interface IOnSwipeValueChange {
-    key: string;
-    value: number;
-    direction: 'left' | 'right';
-    isOpen: boolean;
 }
 
 const ExerciseComponent = memo(function ExerciseComponent({
@@ -51,27 +43,21 @@ const ExerciseComponent = memo(function ExerciseComponent({
             iconColor: 'color-primary-500',
         },
     ];
-    const renderSet = (
-        { item, index }: ListRenderItemInfo<SetInWorkout>,
-        rowMap: RowMap<SetInWorkout>
-    ): React.ReactElement | null => (
-        <SetComponent set={item} index={index} exerciseId={exercise.id} updateSet={updateSet} />
+    const renderSet = ({
+        item,
+        index,
+    }: {
+        item: SetInWorkout;
+        index: number;
+    }): React.ReactElement | null => (
+        <SetComponent
+            set={item}
+            index={index}
+            exerciseId={exercise.id}
+            updateSet={updateSet}
+            deleteSet={deleteSet}
+        />
     );
-
-    // Renders the component behind the set component (delete button)
-    const renderHiddenItem = (data: ListRenderItemInfo<SetInWorkout>): React.ReactElement => (
-        <View style={styles.hiddenItem}>
-            <Text category='label' style={{ color: 'white' }}>
-                Delete
-            </Text>
-        </View>
-    );
-
-    function onSwipeValueChange(swipeData: IOnSwipeValueChange): void {
-        if (swipeData.value < -Dimensions.get('window').width) {
-            deleteSet(exercise.id, swipeData.key);
-        }
-    }
 
     function handleDeleteExercise(): void {
         deleteExercise(exercise.id);
@@ -104,17 +90,7 @@ const ExerciseComponent = memo(function ExerciseComponent({
                 </Text>
             </View>
             <Spacer size='spacing-4' />
-            <SwipeListView
-                disableRightSwipe
-                data={exercise.sets}
-                renderItem={renderSet}
-                renderHiddenItem={renderHiddenItem}
-                keyExtractor={(item) => item.id}
-                onSwipeValueChange={onSwipeValueChange}
-                rightOpenValue={-Dimensions.get('window').width}
-                useNativeDriver={false}
-                ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
-            />
+            <List data={exercise.sets} renderItem={renderSet} keyExtractor={(item) => item.id} />
             <Spacer size='spacing-3' />
             <Button size='tiny' appearance='outline' onPress={() => addSet(exercise.id)}>
                 Add Set
