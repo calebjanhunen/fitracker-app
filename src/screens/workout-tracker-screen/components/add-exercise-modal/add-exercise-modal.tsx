@@ -34,7 +34,7 @@ export default function AddExerciseModal({
 
     useEffect(() => {
         setExercisesDisplay(exercises);
-    }, []);
+    }, [visible]);
 
     function handleAddExercises(): void {
         addExercises(selectedExercises);
