@@ -1,9 +1,9 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+import React, { useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 import { Button, Input, List } from '@ui-kitten/components';
 import { View } from 'react-native';
-import uuid from 'react-native-uuid';
 
 import { Spacer } from 'src/components';
 import { useKeyboard } from 'src/hooks/useKeyboard';
@@ -11,11 +11,13 @@ import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
 import { type ExerciseInWorkout } from 'src/interfaces/workout';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
+import AddExerciseModal from '../components/add-exercise-modal/add-exercise-modal';
 import ExerciseComponent from '../components/workout-tracker-form/exercise-component';
 
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'WorkoutTrackerForm'>;
 
 export default function WorkoutTrackerFormScreen({ navigation }: Props): React.ReactElement {
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     const {
         workout,
         updateWorkoutName,
@@ -40,7 +42,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
     const renderListFooter = (): React.ReactElement => (
         <View>
             <Spacer size='spacing-8' />
-            <Button size='small' onPress={onAddExercise}>
+            <Button size='small' onPress={() => setModalVisible(true)}>
                 Add Exercise
             </Button>
             <Spacer size='spacing-3' />
@@ -53,11 +55,6 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
     );
     // console.log(JSON.stringify(workout, null, 2));
 
-    function onAddExercise(): void {
-        const exerciseId = uuid.v4().toString();
-        addExercises([{ id: exerciseId, name: `EXERCISE: ${exerciseId}`, sets: [] }]);
-    }
-
     function handleCancelWorkout(): void {
         clearWorkout();
         setWorkoutInProgress(false);
@@ -66,6 +63,12 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
 
     return (
         <View style={{ backgroundColor: 'white', flex: 1 }}>
+            <AddExerciseModal
+                visible={modalVisible}
+                setVisible={setModalVisible}
+                addExercises={addExercises}
+                exercisesInWorkout={workout.exercises}
+            />
             <View style={{ paddingHorizontal: 16 }}>
                 <Input
                     placeholder='Enter Workout Name'
