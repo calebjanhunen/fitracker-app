@@ -1,33 +1,34 @@
 import { useCallback, useState } from 'react';
-import type { ExercisesForWorkout } from 'src/interfaces';
+import type { ExerciseForWorkout } from 'src/interfaces';
 
 interface IUseSelectedExercisesFromModal {
-    selectedExercises: Set<ExercisesForWorkout>;
-    toggleExercise: (exercise: ExercisesForWorkout) => void;
+    selectedExercises: Set<ExerciseForWorkout>;
+    toggleExercise: (exercise: ExerciseForWorkout) => void;
+    clearSelectedExercises: () => void;
 }
 
 export function useSelectedExercisesFromModal(): IUseSelectedExercisesFromModal {
-    const [selectedExercises, setSelectedExercises] = useState<Set<ExercisesForWorkout>>(new Set());
+    const [selectedExercises, setSelectedExercises] = useState<Set<ExerciseForWorkout>>(new Set());
 
     function addExercise(
-        exercises: Set<ExercisesForWorkout>,
-        exercise: ExercisesForWorkout
-    ): Set<ExercisesForWorkout> {
+        exercises: Set<ExerciseForWorkout>,
+        exercise: ExerciseForWorkout
+    ): Set<ExerciseForWorkout> {
         const newSet = new Set(exercises);
         newSet.add(exercise);
         return newSet;
     }
 
     function removeExercise(
-        exercises: Set<ExercisesForWorkout>,
-        exercise: ExercisesForWorkout
-    ): Set<ExercisesForWorkout> {
+        exercises: Set<ExerciseForWorkout>,
+        exercise: ExerciseForWorkout
+    ): Set<ExerciseForWorkout> {
         const newSet = new Set(exercises);
         newSet.delete(exercise);
         return newSet;
     }
 
-    const toggleExercise = useCallback((exercise: ExercisesForWorkout): void => {
+    const toggleExercise = useCallback((exercise: ExerciseForWorkout): void => {
         setSelectedExercises((prev) => {
             return prev.has(exercise)
                 ? removeExercise(prev, exercise)
@@ -35,8 +36,13 @@ export function useSelectedExercisesFromModal(): IUseSelectedExercisesFromModal 
         });
     }, []);
 
+    const clearSelectedExercises = useCallback(() => {
+        setSelectedExercises(new Set());
+    }, []);
+
     return {
         selectedExercises,
         toggleExercise,
+        clearSelectedExercises,
     };
 }

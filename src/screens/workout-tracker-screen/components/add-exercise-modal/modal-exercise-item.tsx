@@ -25,6 +25,7 @@ const ModalExerciseItem = memo(function ModalExerciseItem({
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     paddingVertical: 8,
+                    paddingHorizontal: 16,
                     backgroundColor: isExerciseSelected
                         ? theme['color-primary-transparent-200']
                         : 'transparent',

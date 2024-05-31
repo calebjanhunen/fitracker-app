@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { workoutsAPI } from 'src/api/workouts/workouts-api';
-import type { ExercisesForWorkout } from 'src/interfaces';
+import type { ExerciseForWorkout } from 'src/interfaces';
 
 interface IUseExercisesForWorkoutApi {
-    exercises: ExercisesForWorkout[];
+    exercises: ExerciseForWorkout[];
     isLoading: boolean;
     error: string;
 }
 
 export function useExercisesForWorkoutApi(): IUseExercisesForWorkoutApi {
-    const [exercises, setExercises] = useState<ExercisesForWorkout[]>([]);
+    const [exercises, setExercises] = useState<ExerciseForWorkout[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
