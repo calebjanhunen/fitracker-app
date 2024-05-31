@@ -10,16 +10,18 @@ interface Props {
     exercise: Exercise;
     isExerciseSelected: boolean;
     toggleExercise: (exercise: Exercise) => void;
+    disabled: boolean;
 }
 
 const ModalExerciseItem = memo(function ModalExerciseItem({
     exercise,
     isExerciseSelected,
     toggleExercise,
+    disabled,
 }: Props): React.ReactElement {
     const theme = useTheme();
     return (
-        <TouchableWithoutFeedback onPress={() => toggleExercise(exercise)}>
+        <TouchableWithoutFeedback onPress={() => toggleExercise(exercise)} disabled={disabled}>
             <View
                 style={{
                     flexDirection: 'row',
@@ -28,6 +30,8 @@ const ModalExerciseItem = memo(function ModalExerciseItem({
                     paddingHorizontal: 16,
                     backgroundColor: isExerciseSelected
                         ? theme['color-primary-transparent-200']
+                        : disabled
+                        ? theme['color-primary-disabled']
                         : 'transparent',
                 }}
             >

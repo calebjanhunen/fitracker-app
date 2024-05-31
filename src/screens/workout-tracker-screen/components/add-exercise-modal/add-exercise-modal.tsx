@@ -9,12 +9,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Spacer } from 'src/components';
 import { useExercisesForWorkoutApi } from 'src/hooks/api/useExercisesForWorkoutApi';
 import { useSelectedExercisesFromModal } from 'src/hooks/useSelectedExercisesFromModal';
-import type { ExerciseForWorkout } from 'src/interfaces';
+import type { ExerciseForWorkout, ExerciseInWorkout } from 'src/interfaces';
 import ModalExerciseItem from './modal-exercise-item';
 
 interface Props {
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
+    exercisesInWorkout: ExerciseInWorkout[];
     addExercises: (exercises: Set<ExerciseForWorkout>) => void;
 }
 
@@ -22,6 +23,7 @@ export default function AddExerciseModal({
     visible,
     setVisible,
     addExercises,
+    exercisesInWorkout,
 }: Props): React.ReactElement {
     const theme = useTheme();
     const styles = useStyleSheet(themedStyles);
@@ -34,6 +36,7 @@ export default function AddExerciseModal({
             exercise={item}
             toggleExercise={toggleExercise}
             isExerciseSelected={selectedExercises.has(item)}
+            disabled={Boolean(exercisesInWorkout.find((exercise) => exercise.id === item.id))}
         />
     );
 

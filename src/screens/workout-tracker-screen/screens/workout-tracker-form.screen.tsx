@@ -67,6 +67,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
                 visible={modalVisible}
                 setVisible={setModalVisible}
                 addExercises={addExercises}
+                exercisesInWorkout={workout.exercises}
             />
             <View style={{ paddingHorizontal: 16 }}>
                 <Input
