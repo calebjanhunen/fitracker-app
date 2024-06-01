@@ -26,7 +26,6 @@ export function useWorkoutsApi(): IUseWorkouts {
         setError('');
         try {
             const workouts = await workoutsAPI.getWorkouts();
-            console.log('GETTING WORKOUTS', workouts.length);
             setWorkouts([...workouts]);
         } catch (e) {
             setError(`Could not get workouts: ${e.message as string}`);
