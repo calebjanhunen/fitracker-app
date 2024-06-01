@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { memo } from 'react';
 
-import { Button, List, Text } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Button, Layout, List, Text } from '@ui-kitten/components';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { Spacer } from 'src/components';
 import type { ExerciseInWorkout, SetInWorkout } from 'src/interfaces';
@@ -20,6 +20,8 @@ interface Props {
         key: 'weight' | 'reps' | 'rpe',
         value: string
     ) => void;
+    drag: () => void;
+    isActive: boolean;
 }
 
 const ExerciseComponent = memo(function ExerciseComponent({
@@ -28,6 +30,8 @@ const ExerciseComponent = memo(function ExerciseComponent({
     updateSet,
     deleteExercise,
     deleteSet,
+    drag,
+    isActive,
 }: Props): React.ReactElement {
     const menuItems: MoreOptionsMenuItem[] = [
         {
@@ -63,10 +67,20 @@ const ExerciseComponent = memo(function ExerciseComponent({
         deleteExercise(exercise.id);
     }
 
+    function handleStartReorder(): void {
+        drag();
+    }
+
     return (
-        <View>
+        <Layout style={(isActive && styles.shadow, { paddingVertical: 10 })}>
             <View style={styles.exerciseHeader}>
-                <Text style={styles.exerciseName} status='info' category='h6' numberOfLines={1}>
+                <Text
+                    style={styles.exerciseName}
+                    status='info'
+                    category='h6'
+                    numberOfLines={1}
+                    onLongPress={handleStartReorder}
+                >
                     {exercise.name}
                 </Text>
                 <MoreOptionsMenu menuItems={menuItems} />
@@ -95,12 +109,25 @@ const ExerciseComponent = memo(function ExerciseComponent({
             <Button size='tiny' appearance='outline' onPress={() => addSet(exercise.id)}>
                 Add Set
             </Button>
-        </View>
+        </Layout>
     );
 });
 export default ExerciseComponent;
 
 const styles = StyleSheet.create({
+    shadow: {
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.3,
+                shadowRadius: 5,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
+    },
     exerciseHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',

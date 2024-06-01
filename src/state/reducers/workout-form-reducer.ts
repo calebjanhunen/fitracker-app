@@ -11,6 +11,7 @@ export enum WorkoutFormActionTypes {
     DELETE_SET = 'delete-set',
     CLEAR_WORKOUT = 'clear-workout',
     UPDATE_CREATED_AT = 'update-created-at',
+    REORDER_EXERCISES = 'reorder-exercises',
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -31,6 +32,11 @@ export type WorkoutFormActions =
           type: WorkoutFormActionTypes.DELETE_SET;
           exerciseId: string;
           setId: string;
+      }
+    | { type: WorkoutFormActionTypes.CLEAR_WORKOUT }
+    | {
+          type: WorkoutFormActionTypes.REORDER_EXERCISES;
+          exercises: ExerciseInWorkout[];
       };
 
 export function reducer(workout: WorkoutForm, action: WorkoutFormActions): WorkoutForm {
@@ -43,6 +49,11 @@ export function reducer(workout: WorkoutForm, action: WorkoutFormActions): Worko
             return {
                 ...workout,
                 exercises: workout.exercises.filter((exercise) => exercise.id !== action.payload),
+            };
+        case WorkoutFormActionTypes.REORDER_EXERCISES:
+            return {
+                ...workout,
+                exercises: action.exercises,
             };
         case WorkoutFormActionTypes.ADD_SET: {
             const newSet: SetInWorkout = { id: uuid.v4().toString(), weight: 0, reps: 0, rpe: 0 };
