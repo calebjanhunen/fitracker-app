@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+
 import { workoutsAPI } from 'src/api/workouts/workouts-api';
-import { type Workout } from 'src/interfaces/workout';
+import type { Workout, WorkoutForm } from 'src/interfaces';
+import { sanitizeWorkout } from 'src/utils/workout-form-utils';
 
 interface IUseWorkouts {
+    saveWorkout: (workout: WorkoutForm) => Promise<boolean>;
     workouts: Workout[];
     isLoading: boolean;
     error: string;
@@ -17,18 +21,35 @@ export function useWorkoutsApi(): IUseWorkouts {
         void getWorkouts();
     }, []);
 
-    async function getWorkouts(): Promise<void> {
+    const getWorkouts = useCallback(async (): Promise<void> => {
         setIsLoading(true);
         setError('');
         try {
             const workouts = await workoutsAPI.getWorkouts();
-            setWorkouts(workouts);
+            console.log('GETTING WORKOUTS', workouts.length);
+            setWorkouts([...workouts]);
         } catch (e) {
             setError(`Could not get workouts: ${e.message as string}`);
         } finally {
             setIsLoading(false);
         }
-    }
+    }, []);
 
-    return { workouts, isLoading, error };
+    const saveWorkout = useCallback(async (workout: WorkoutForm): Promise<boolean> => {
+        setIsLoading(true);
+        const sanitizedWorkout = sanitizeWorkout(workout);
+        try {
+            await workoutsAPI.saveWorkout(sanitizedWorkout);
+            await getWorkouts();
+
+            return true;
+        } catch (e) {
+            Alert.alert('Error saving workout', e.message);
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    return { workouts, isLoading, error, saveWorkout };
 }

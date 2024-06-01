@@ -42,6 +42,7 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
                     <List
                         data={workouts}
                         renderItem={renderWorkoutHistoryCard}
+                        keyExtractor={(item) => item.id}
                         ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
                         style={{ backgroundColor: 'transparent' }}
                     />

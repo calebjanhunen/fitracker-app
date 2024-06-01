@@ -10,6 +10,7 @@ export enum WorkoutFormActionTypes {
     UPDATE_SET = 'update-set',
     DELETE_SET = 'delete-set',
     CLEAR_WORKOUT = 'clear-workout',
+    UPDATE_CREATED_AT = 'update-created-at',
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -18,6 +19,8 @@ export type WorkoutFormActions =
     | { type: WorkoutFormActionTypes.ADD_EXERCISES; payload: ExerciseInWorkout[] }
     | { type: WorkoutFormActionTypes.DELETE_EXERCISE; payload: string }
     | { type: WorkoutFormActionTypes.ADD_SET; payload: string }
+    | { type: WorkoutFormActionTypes.CLEAR_WORKOUT }
+    | { type: WorkoutFormActionTypes.UPDATE_CREATED_AT }
     | {
           type: WorkoutFormActionTypes.UPDATE_SET;
           exerciseId: string;
@@ -28,8 +31,7 @@ export type WorkoutFormActions =
           type: WorkoutFormActionTypes.DELETE_SET;
           exerciseId: string;
           setId: string;
-      }
-    | { type: WorkoutFormActionTypes.CLEAR_WORKOUT };
+      };
 
 export function reducer(workout: WorkoutForm, action: WorkoutFormActions): WorkoutForm {
     switch (action.type) {
@@ -91,6 +93,11 @@ export function reducer(workout: WorkoutForm, action: WorkoutFormActions): Worko
                 name: '',
                 createdAt: '',
                 exercises: [],
+            };
+        case WorkoutFormActionTypes.UPDATE_CREATED_AT:
+            return {
+                ...workout,
+                createdAt: new Date().toISOString(),
             };
         default:
             return workout;
