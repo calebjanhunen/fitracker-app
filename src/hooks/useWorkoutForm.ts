@@ -18,6 +18,7 @@ interface IUseWorkoutForm {
     ) => void;
     deleteSet: (exerciseId: string, setId: string) => void;
     clearWorkout: () => void;
+    reorderExercises: (exercises: ExerciseInWorkout[]) => void;
 }
 
 export function useWorkoutForm(): IUseWorkoutForm {
@@ -44,6 +45,10 @@ export function useWorkoutForm(): IUseWorkoutForm {
 
     const deleteSet = useCallback((exerciseId: string, setId: string) => {
         dispatch({ type: WorkoutFormActionTypes.DELETE_SET, exerciseId, setId });
+    }, []);
+
+    const reorderExercises = useCallback((exercises: ExerciseInWorkout[]) => {
+        dispatch({ type: WorkoutFormActionTypes.REORDER_EXERCISES, exercises });
     }, []);
 
     const updateSet = useCallback(
@@ -87,5 +92,6 @@ export function useWorkoutForm(): IUseWorkoutForm {
         deleteSet,
         updateSet,
         clearWorkout,
+        reorderExercises,
     };
 }
