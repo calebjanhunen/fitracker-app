@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 import { Button, Input } from '@ui-kitten/components';
@@ -13,7 +14,8 @@ import { Spacer } from 'src/components';
 import { useKeyboard } from 'src/hooks/useKeyboard';
 import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
-import { type ExerciseInWorkout } from 'src/interfaces/workout';
+import { useWorkoutsApi } from 'src/hooks/useWorkoutsApi';
+import type { ExerciseInWorkout } from 'src/interfaces';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import AddExerciseModal from '../components/add-exercise-modal/add-exercise-modal';
 import ExerciseComponent from '../components/workout-tracker-form/exercise-component';
@@ -33,7 +35,31 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         clearWorkout,
         reorderExercises,
     } = useWorkoutForm();
+    const { saveWorkout } = useWorkoutsApi();
     const { setWorkoutInProgress } = useWorkoutInProgress();
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        paddingRight: 16,
+                    }}
+                >
+                    <Button
+                        size='small'
+                        status='success'
+                        onPress={async () => await handleFinishWorkout()}
+                    >
+                        Finish Workout
+                    </Button>
+                </View>
+            ),
+        });
+    }, [navigation, workout]);
+
     const { keyboardHeight } = useKeyboard();
 
     const renderExercise = ({
@@ -72,6 +98,15 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         clearWorkout();
         setWorkoutInProgress(false);
         navigation.goBack();
+    }
+
+    async function handleFinishWorkout(): Promise<void> {
+        const success = await saveWorkout(workout);
+        if (success) {
+            setWorkoutInProgress(false);
+            clearWorkout();
+            navigation.goBack();
+        }
     }
 
     function handleDragEnd({ data }: DragEndParams<ExerciseInWorkout>): void {

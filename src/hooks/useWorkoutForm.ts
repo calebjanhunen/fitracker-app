@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 
 import type { ExerciseForWorkout, ExerciseInWorkout, WorkoutForm } from 'src/interfaces';
 import { WorkoutFormContext } from 'src/state/context/workout-form-context';
@@ -18,11 +18,20 @@ interface IUseWorkoutForm {
     ) => void;
     deleteSet: (exerciseId: string, setId: string) => void;
     clearWorkout: () => void;
+    updateCreatedAt: () => void;
     reorderExercises: (exercises: ExerciseInWorkout[]) => void;
 }
 
 export function useWorkoutForm(): IUseWorkoutForm {
     const { workout, dispatch } = useContext(WorkoutFormContext);
+
+    useEffect(() => {
+        if (!workout.createdAt) updateCreatedAt();
+    }, []);
+
+    const updateCreatedAt = useCallback(() => {
+        dispatch({ type: WorkoutFormActionTypes.UPDATE_CREATED_AT });
+    }, []);
 
     const updateWorkoutName = useCallback((text: string) => {
         dispatch({ type: WorkoutFormActionTypes.UPDATE_NAME, name: text });
@@ -92,6 +101,7 @@ export function useWorkoutForm(): IUseWorkoutForm {
         deleteSet,
         updateSet,
         clearWorkout,
+        updateCreatedAt,
         reorderExercises,
     };
 }
