@@ -2,8 +2,12 @@
 import React, { useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
-import { Button, Input, List } from '@ui-kitten/components';
+import { Button, Input } from '@ui-kitten/components';
 import { View } from 'react-native';
+import DraggableFlatList, {
+    type DragEndParams,
+    type RenderItemParams,
+} from 'react-native-draggable-flatlist';
 
 import { Spacer } from 'src/components';
 import { useKeyboard } from 'src/hooks/useKeyboard';
@@ -27,18 +31,26 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         deleteSet,
         updateSet,
         clearWorkout,
+        reorderExercises,
     } = useWorkoutForm();
     const { setWorkoutInProgress } = useWorkoutInProgress();
-    const renderExercise = ({ item }: { item: ExerciseInWorkout }): React.ReactElement => (
+    const { keyboardHeight } = useKeyboard();
+
+    const renderExercise = ({
+        item,
+        drag,
+        isActive,
+    }: RenderItemParams<ExerciseInWorkout>): React.ReactElement => (
         <ExerciseComponent
             exercise={item}
             deleteExercise={deleteExercise}
             addSet={addSet}
             deleteSet={deleteSet}
             updateSet={updateSet}
+            drag={drag}
+            isActive={isActive}
         />
     );
-    const { keyboardHeight } = useKeyboard();
     const renderListFooter = (): React.ReactElement => (
         <View>
             <Spacer size='spacing-8' />
@@ -51,14 +63,19 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
             </Button>
             <Spacer size='spacing-3' />
             <View style={{ height: keyboardHeight }} />
+            <Spacer size='spacing-8' />
+            <Spacer size='spacing-8' />
         </View>
     );
-    // console.log(JSON.stringify(workout, null, 2));
 
     function handleCancelWorkout(): void {
         clearWorkout();
         setWorkoutInProgress(false);
         navigation.goBack();
+    }
+
+    function handleDragEnd({ data }: DragEndParams<ExerciseInWorkout>): void {
+        reorderExercises(data);
     }
 
     return (
@@ -77,12 +94,13 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
                 />
             </View>
             <Spacer size='spacing-4' />
-            <List
+            <DraggableFlatList
                 style={{ backgroundColor: 'transparent', paddingHorizontal: 16 }}
                 data={workout.exercises}
                 renderItem={renderExercise}
-                ItemSeparatorComponent={() => <Spacer size='spacing-5' />}
+                keyExtractor={(item) => item.id}
                 ListFooterComponent={renderListFooter}
+                onDragEnd={handleDragEnd}
             />
         </View>
     );
