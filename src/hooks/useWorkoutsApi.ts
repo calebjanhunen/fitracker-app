@@ -8,7 +8,7 @@ interface IUseWorkouts {
     error: string;
 }
 
-export function useWorkouts(): IUseWorkouts {
+export function useWorkoutsApi(): IUseWorkouts {
     const [workouts, setWorkouts] = useState<Workout[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
