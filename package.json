@@ -20,7 +20,7 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
-    "@tanstack/react-query": "^4.35.0",
+    "@tanstack/react-query": "^4.36.1",
     "@types/react": "~18.2.79",
     "@types/styled-components": "^5.1.26",
     "@ui-kitten/components": "^5.3.1",
