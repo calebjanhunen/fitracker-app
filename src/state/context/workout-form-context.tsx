@@ -17,7 +17,7 @@ export const WorkoutFormContext = createContext<IWorkoutFormContext>({} as IWork
 
 export function WorkoutFormProvider({ children }: Props): React.ReactElement {
     const [workout, dispatchWorkout] = useReducer(reducer, {
-        createdAt: Date.now().toString(),
+        createdAt: '',
         name: '',
         exercises: [],
     });

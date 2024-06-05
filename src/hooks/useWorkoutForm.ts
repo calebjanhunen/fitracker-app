@@ -28,6 +28,7 @@ export function useWorkoutForm(): IUseWorkoutForm {
     useEffect(() => {
         if (!workout.createdAt) updateCreatedAt();
     }, []);
+    console.log(Date.now(), workout);
 
     const updateCreatedAt = useCallback(() => {
         dispatch({ type: WorkoutFormActionTypes.UPDATE_CREATED_AT });
