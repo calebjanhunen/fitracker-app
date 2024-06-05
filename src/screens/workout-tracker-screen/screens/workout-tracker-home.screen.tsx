@@ -5,8 +5,8 @@ import { Button, List, Spinner, Text } from '@ui-kitten/components';
 
 import { StyleSheet, View } from 'react-native';
 import { PageView, Spacer } from 'src/components';
+import { useGetWorkouts } from 'src/hooks/api/workouts/useGetWorkouts';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
-import { useWorkoutsApi } from 'src/hooks/useWorkoutsApi';
 import { type Workout } from 'src/interfaces/workout';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-tracker-home/workout-history-card';
@@ -14,7 +14,7 @@ import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/wo
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'Home'>;
 
 export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.ReactElement {
-    const { workouts, isLoading, error } = useWorkoutsApi();
+    const { workouts, isLoading, error } = useGetWorkouts();
     const { workoutInProgress, setWorkoutInProgress } = useWorkoutInProgress();
     const renderWorkoutHistoryCard = ({ item }: { item: Workout }): React.ReactElement => (
         <WorkoutHistoryCard workout={item} />
@@ -24,7 +24,6 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
         navigation.navigate('WorkoutTrackerForm');
         if (!workoutInProgress) setWorkoutInProgress(true);
     }
-
     return (
         <PageView>
             <Spacer size='spacing-4' />
@@ -37,7 +36,7 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
                 {isLoading ? (
                     <Spinner size='giant' />
                 ) : error ? (
-                    <Text status='danger'>{error}</Text>
+                    <Text status='danger'>Error getting workouts: {error}</Text>
                 ) : workouts ? (
                     <List
                         data={workouts}
