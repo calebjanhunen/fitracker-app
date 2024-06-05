@@ -21,7 +21,6 @@ export function useCreateWorkout(): IUseCreateWorkout {
     const { mutate: createWorkout, isPending: isSaving } = useMutation({
         mutationFn: workoutsAPI.saveWorkout,
         onSuccess: async (data) => {
-            console.log('success: ', data);
             await queryClient.invalidateQueries({ queryKey: WORKOUTS_QUERY_KEY });
             setWorkoutInProgress(false);
             clearWorkout();
