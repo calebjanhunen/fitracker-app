@@ -4,12 +4,12 @@ import React, { memo } from 'react';
 import { Text, useTheme } from '@ui-kitten/components';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { Spacer } from 'src/components';
-import { type Exercise } from 'src/interfaces';
+import type { ExerciseForWorkout } from 'src/interfaces';
 
 interface Props {
-    exercise: Exercise;
+    exercise: ExerciseForWorkout;
     isExerciseSelected: boolean;
-    toggleExercise: (exercise: Exercise) => void;
+    toggleExercise: (exercise: ExerciseForWorkout) => void;
     disabled: boolean;
 }
 
@@ -44,7 +44,7 @@ const ModalExerciseItem = memo(function ModalExerciseItem({
                 </View>
                 <View style={{ alignSelf: 'flex-end' }}>
                     <Text appearance='hint' category='s1'>
-                        20
+                        {exercise.numTimesUsed}
                     </Text>
                 </View>
             </View>
