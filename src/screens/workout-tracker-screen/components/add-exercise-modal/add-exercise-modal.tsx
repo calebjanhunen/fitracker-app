@@ -7,7 +7,7 @@ import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Spacer } from 'src/components';
-import { useExercisesForWorkoutApi } from 'src/hooks/api/useExercisesForWorkoutApi';
+import { useGetExercisesForWorkout } from 'src/hooks/api/workouts/useGetExercisesForWorkout';
 import { useSelectedExercisesFromModal } from 'src/hooks/useSelectedExercisesFromModal';
 import type { ExerciseForWorkout, ExerciseInWorkout } from 'src/interfaces';
 import ModalExerciseItem from './modal-exercise-item';
@@ -27,13 +27,13 @@ export default function AddExerciseModal({
 }: Props): React.ReactElement {
     const theme = useTheme();
     const styles = useStyleSheet(themedStyles);
-    const { exercises, isLoading } = useExercisesForWorkoutApi();
+    const { exercisesForWorkout, isLoading } = useGetExercisesForWorkout();
     const { selectedExercises, toggleExercise, clearSelectedExercises } =
         useSelectedExercisesFromModal();
     const [exercisesDisplay, setExercisesDisplay] = useState<ExerciseForWorkout[]>([]);
 
     useEffect(() => {
-        setExercisesDisplay(exercises);
+        setExercisesDisplay(exercisesForWorkout);
     }, [visible]);
 
     function handleAddExercises(): void {
@@ -44,7 +44,9 @@ export default function AddExerciseModal({
 
     function handleSearch(text: string): void {
         setExercisesDisplay(
-            exercises.filter((exercise) => exercise.name.toLowerCase().includes(text.toLowerCase()))
+            exercisesForWorkout.filter((exercise) =>
+                exercise.name.toLowerCase().includes(text.toLowerCase())
+            )
         );
     }
 
