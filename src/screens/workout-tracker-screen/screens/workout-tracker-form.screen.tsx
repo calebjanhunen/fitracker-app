@@ -4,17 +4,17 @@ import React, { useEffect, useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 import { Button, Input } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import DraggableFlatList, {
     type DragEndParams,
     type RenderItemParams,
 } from 'react-native-draggable-flatlist';
 
 import { Spacer } from 'src/components';
+import { useCreateWorkout } from 'src/hooks/api/workouts/useCreateWorkout';
 import { useKeyboard } from 'src/hooks/useKeyboard';
 import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
-import { useWorkoutsApi } from 'src/hooks/useWorkoutsApi';
 import type { ExerciseInWorkout } from 'src/interfaces';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import AddExerciseModal from '../components/add-exercise-modal/add-exercise-modal';
@@ -35,7 +35,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         clearWorkout,
         reorderExercises,
     } = useWorkoutForm();
-    const { saveWorkout } = useWorkoutsApi();
+    const { createWorkout, isSaving } = useCreateWorkout();
     const { setWorkoutInProgress } = useWorkoutInProgress();
 
     useEffect(() => {
@@ -51,14 +51,15 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
                     <Button
                         size='small'
                         status='success'
-                        onPress={async () => await handleFinishWorkout()}
+                        onPress={() => handleFinishWorkout()}
+                        disabled={isSaving}
                     >
-                        Finish Workout
+                        {isSaving ? <ActivityIndicator /> : 'Finish Workout'}
                     </Button>
                 </View>
             ),
         });
-    }, [navigation, workout]);
+    }, [navigation, workout, isSaving]);
 
     const { keyboardHeight } = useKeyboard();
 
@@ -100,13 +101,8 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         navigation.goBack();
     }
 
-    async function handleFinishWorkout(): Promise<void> {
-        const success = await saveWorkout(workout);
-        if (success) {
-            setWorkoutInProgress(false);
-            clearWorkout();
-            navigation.goBack();
-        }
+    function handleFinishWorkout(): void {
+        createWorkout(workout);
     }
 
     function handleDragEnd({ data }: DragEndParams<ExerciseInWorkout>): void {
