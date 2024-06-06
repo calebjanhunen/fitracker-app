@@ -4,9 +4,8 @@ import React, { memo } from 'react';
 import { Button, Layout, List, Text } from '@ui-kitten/components';
 import { Platform, StyleSheet, View } from 'react-native';
 
-import { Spacer } from 'src/components';
+import { MoreOptionsMenu, Spacer, type MoreOptionsMenuItem } from 'src/components';
 import type { ExerciseInWorkout, SetInWorkout } from 'src/interfaces';
-import MoreOptionsMenu, { type MoreOptionsMenuItem } from './more-options-menu';
 import SetComponent from './set-component';
 
 interface Props {
