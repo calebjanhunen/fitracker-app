@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, List, Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 
+import { MoreOptionsMenu, type MoreOptionsMenuItem } from 'src/components';
 import Spacer from 'src/components/spacer/spacer';
 import { type ExerciseInWorkout, type Workout } from 'src/interfaces/workout';
 import { formatDate } from 'src/utils/format-date';
@@ -12,6 +13,23 @@ interface Props {
 }
 
 export default function WorkoutHistoryCard({ workout }: Props): React.ReactElement {
+    const menuItems: MoreOptionsMenuItem[] = [
+        {
+            onSelect: () => {},
+            text: 'Edit Workout',
+            icon: 'create-outline',
+            iconColor: 'color-primary-500',
+        },
+        {
+            onSelect: handleDeleteWorkout,
+            text: 'Delete',
+            icon: 'trash',
+            iconColor: 'color-danger-500',
+        },
+    ];
+
+    function handleDeleteWorkout(): void {}
+
     const renderExercises = ({ item }: { item: ExerciseInWorkout }): React.ReactElement => (
         <View style={cardStyles.exercise}>
             <Text style={cardStyles.exerciseName} numberOfLines={1}>
@@ -23,9 +41,12 @@ export default function WorkoutHistoryCard({ workout }: Props): React.ReactEleme
 
     return (
         <Card>
-            <Text category='h5' numberOfLines={1}>
-                {workout.name}
-            </Text>
+            <View style={cardStyles.workoutHeader}>
+                <Text category='h5' numberOfLines={1}>
+                    {workout.name}
+                </Text>
+                <MoreOptionsMenu menuItems={menuItems} />
+            </View>
             <Spacer size='spacing-1' />
             <Text category='s1' appearance='hint'>
                 {formatDate(workout.createdAt)}
@@ -43,6 +64,10 @@ export default function WorkoutHistoryCard({ workout }: Props): React.ReactEleme
 }
 
 const cardStyles = StyleSheet.create({
+    workoutHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     exercise: {
         flexDirection: 'row',
     },

@@ -55,8 +55,8 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
 
 const styles = StyleSheet.create({
     workoutHistoryContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        // flex: 1,
+        // alignItems: 'center',
+        // justifyContent: 'center',
     },
 });
