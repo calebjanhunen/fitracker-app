@@ -14,6 +14,7 @@ import BaseNavigation from 'src/navigation/base-navigation';
 import { AuthProvider } from 'src/state/context/auth-context';
 import { WorkoutFormProvider } from 'src/state/context/workout-form-context';
 import { WorkoutInProgressProvider } from 'src/state/context/workout-in-progress-context';
+import { UserProvider } from 'src/state/context/user-context';
 
 export default function App(): React.ReactElement | null {
     return (
@@ -21,17 +22,19 @@ export default function App(): React.ReactElement | null {
             <ApplicationProvider {...eva} theme={eva.light}>
                 <GestureHandlerRootView style={{ flex: 1 }}>
                     <AuthProvider>
-                        <WorkoutFormProvider>
-                            <WorkoutInProgressProvider>
-                                <MenuProvider>
-                                    <BaseNavigation />
-                                    <StatusBar
-                                        barStyle='dark-content'
-                                        backgroundColor='transparent'
-                                    />
-                                </MenuProvider>
-                            </WorkoutInProgressProvider>
-                        </WorkoutFormProvider>
+                        <UserProvider>
+                            <WorkoutFormProvider>
+                                <WorkoutInProgressProvider>
+                                    <MenuProvider>
+                                        <BaseNavigation />
+                                        <StatusBar
+                                            barStyle='dark-content'
+                                            backgroundColor='transparent'
+                                        />
+                                    </MenuProvider>
+                                </WorkoutInProgressProvider>
+                            </WorkoutFormProvider>
+                        </UserProvider>
                     </AuthProvider>
                 </GestureHandlerRootView>
             </ApplicationProvider>
