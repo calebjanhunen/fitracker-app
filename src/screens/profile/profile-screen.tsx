@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { Button, Layout } from '@ui-kitten/components';
-import { useAuth } from 'src/hooks/useAuth';
+import { useLogout } from 'src/hooks/api/auth/useLogout';
 
 export default function ProfileScreen(): React.ReactElement {
-    const { logout } = useAuth();
+    const { logout } = useLogout();
 
     function handleLogout(): void {
         void logout();

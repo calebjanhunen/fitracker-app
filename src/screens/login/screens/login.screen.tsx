@@ -1,18 +1,15 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { Button, Input, Layout, Text } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
 import React, { useState } from 'react';
 import { ActivityIndicator, Keyboard, StyleSheet, View } from 'react-native';
 import { Spacer } from 'src/components';
-import { useAuth } from 'src/hooks/useAuth';
+import { useLogin } from 'src/hooks/api/auth/useLogin';
 
 export default function LoginScreen(): React.ReactElement {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const { login, error, isLoading } = useAuth();
-
-    function onPress(): void {
-        void login(username, password);
-    }
+    const { login, isLoading, errorMsg } = useLogin();
 
     return (
         <TouchableWithoutFeedback style={{ flex: 1 }} onPress={Keyboard.dismiss} accessible={false}>
@@ -35,10 +32,12 @@ export default function LoginScreen(): React.ReactElement {
                         onChangeText={setPassword}
                         secureTextEntry={true}
                     />
-                    <Button onPress={onPress}>{isLoading ? <ActivityIndicator /> : 'Login'}</Button>
-                    {error && (
+                    <Button onPress={() => login({ username, password })}>
+                        {isLoading ? <ActivityIndicator /> : 'Login'}
+                    </Button>
+                    {errorMsg && (
                         <Text category='p2' status='danger'>
-                            {error}
+                            {errorMsg}
                         </Text>
                     )}
                 </View>
