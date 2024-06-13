@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { authAPI } from 'src/api/auth/auth-api';
+import { queryClient } from 'src/api/config/react-query.config';
 import { useAuth } from 'src/state/context/auth-context';
 import { useUser } from 'src/state/context/user-context';
 
@@ -20,6 +21,7 @@ export function useLogin(): IUseLogin {
         onSuccess: async (data) => {
             await storeAccessToken(data.accessToken);
             setUser(data.user);
+            await queryClient.invalidateQueries();
         },
         onError: (e) => {
             setErrorMsg('Invalid username or password');
