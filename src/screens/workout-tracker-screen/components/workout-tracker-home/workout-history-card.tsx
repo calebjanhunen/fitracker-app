@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React from 'react';
 
 import { Card, List, Text } from '@ui-kitten/components';
@@ -7,12 +8,14 @@ import { MoreOptionsMenu, type MoreOptionsMenuItem } from 'src/components';
 import Spacer from 'src/components/spacer/spacer';
 import { type ExerciseInWorkout, type Workout } from 'src/interfaces/workout';
 import { formatDate } from 'src/utils/format-date';
+import { useDeleteWorkout } from 'src/hooks/api/workouts/useDeleteWorkout';
 
 interface Props {
     workout: Workout;
 }
 
 export default function WorkoutHistoryCard({ workout }: Props): React.ReactElement {
+    const { deleteWorkout } = useDeleteWorkout();
     const menuItems: MoreOptionsMenuItem[] = [
         {
             onSelect: () => {},
@@ -21,14 +24,12 @@ export default function WorkoutHistoryCard({ workout }: Props): React.ReactEleme
             iconColor: 'color-primary-500',
         },
         {
-            onSelect: handleDeleteWorkout,
+            onSelect: () => deleteWorkout(workout.id),
             text: 'Delete',
             icon: 'trash',
             iconColor: 'color-danger-500',
         },
     ];
-
-    function handleDeleteWorkout(): void {}
 
     const renderExercises = ({ item }: { item: ExerciseInWorkout }): React.ReactElement => (
         <View style={cardStyles.exercise}>
@@ -42,7 +43,7 @@ export default function WorkoutHistoryCard({ workout }: Props): React.ReactEleme
     return (
         <Card>
             <View style={cardStyles.workoutHeader}>
-                <Text category='h5' numberOfLines={1}>
+                <Text category='h5' numberOfLines={1} style={{ flex: 1 }}>
                     {workout.name}
                 </Text>
                 <MoreOptionsMenu menuItems={menuItems} />
@@ -67,6 +68,7 @@ const cardStyles = StyleSheet.create({
     workoutHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        gap: 4,
     },
     exercise: {
         flexDirection: 'row',

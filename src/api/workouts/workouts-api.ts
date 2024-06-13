@@ -15,7 +15,7 @@ export const workoutsAPI = {
         return response.data;
     },
     deleteWorkout: async function (workoutId: string): Promise<void> {
-        await API.delete('/workouts', { params: { id: workoutId } });
+        await API.delete(`/workouts/${workoutId}`);
     },
     getExercisesForWorkouts: async function (): Promise<ExerciseForWorkout[]> {
         const response = await API.get<ExerciseForWorkout[]>('/workouts/exercises');
