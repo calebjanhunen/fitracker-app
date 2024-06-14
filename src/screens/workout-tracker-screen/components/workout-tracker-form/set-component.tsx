@@ -9,7 +9,7 @@ import { type SetInWorkout } from 'src/interfaces/workout';
 
 interface Props {
     set: SetInWorkout;
-    index: number;
+    setOrder: number;
     exerciseId: string;
     updateSet: (
         setId: string,
@@ -24,7 +24,7 @@ const screenWidth = Dimensions.get('window').width;
 
 const SetComponent = memo(function SetComponent({
     set,
-    index,
+    setOrder,
     exerciseId,
     updateSet,
     deleteSet,
@@ -62,7 +62,7 @@ const SetComponent = memo(function SetComponent({
     return (
         <Swipeable renderRightActions={renderRightActions} onSwipeableOpen={onDeleteSet}>
             <Animated.View style={[styles.visibleSetStyles, { height: heightAnim }]}>
-                <Text style={styles.setNum}>{index + 1}</Text>
+                <Text style={styles.setNum}>{setOrder}</Text>
                 <Text style={styles.previous} numberOfLines={1}>
                     {set.id}
                 </Text>
@@ -103,7 +103,7 @@ export default SetComponent;
 const styles = StyleSheet.create({
     visibleSetStyles: {
         flexDirection: 'row',
-        gap: 16,
+        gap: 8,
         alignItems: 'center',
         backgroundColor: 'white',
         paddingHorizontal: 8,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     },
     actionText: {
         color: 'white',
-        fontWeight: 600,
+        fontWeight: '600',
         // transform: [{ translateX: -screenWidth / 2 }],
     },
 });

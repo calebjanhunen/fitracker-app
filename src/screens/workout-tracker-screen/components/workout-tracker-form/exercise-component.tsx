@@ -11,7 +11,7 @@ import SetComponent from './set-component';
 interface Props {
     exercise: ExerciseInWorkout;
     deleteExercise: (exerciseId: string) => void;
-    addSet: (exerciseId: string) => void;
+    addSet: (exerciseId: string, setOrder: number) => void;
     deleteSet: (exerciseId: string, setId: string) => void;
     updateSet: (
         setId: string,
@@ -55,7 +55,7 @@ const ExerciseComponent = memo(function ExerciseComponent({
     }): React.ReactElement | null => (
         <SetComponent
             set={item}
-            index={index}
+            setOrder={item.setOrder}
             exerciseId={exercise.id}
             updateSet={updateSet}
             deleteSet={deleteSet}
@@ -105,7 +105,11 @@ const ExerciseComponent = memo(function ExerciseComponent({
             <Spacer size='spacing-4' />
             <List data={exercise.sets} renderItem={renderSet} keyExtractor={(item) => item.id} />
             <Spacer size='spacing-3' />
-            <Button size='tiny' appearance='outline' onPress={() => addSet(exercise.id)}>
+            <Button
+                size='tiny'
+                appearance='outline'
+                onPress={() => addSet(exercise.id, exercise.sets.length + 1)}
+            >
                 Add Set
             </Button>
         </Layout>

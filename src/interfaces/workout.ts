@@ -17,4 +17,5 @@ export interface SetInWorkout {
     weight: number;
     reps: number;
     rpe: number;
+    setOrder: number;
 }

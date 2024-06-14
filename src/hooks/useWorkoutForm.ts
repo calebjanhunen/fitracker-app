@@ -9,7 +9,7 @@ interface IUseWorkoutForm {
     updateWorkoutName: (text: string) => void;
     addExercises: (exercises: Set<ExerciseForWorkout>) => void;
     deleteExercise: (exerciseId: string) => void;
-    addSet: (exerciseId: string) => void;
+    addSet: (exerciseId: string, setOrder: number) => void;
     updateSet: (
         exerciseId: string,
         setId: string,
@@ -48,8 +48,12 @@ export function useWorkoutForm(): IUseWorkoutForm {
         dispatch({ type: WorkoutFormActionTypes.DELETE_EXERCISE, payload: exerciseId });
     }, []);
 
-    const addSet = useCallback((exerciseId: string) => {
-        dispatch({ type: WorkoutFormActionTypes.ADD_SET, payload: exerciseId });
+    const addSet = useCallback((exerciseId: string, setOrder: number) => {
+        dispatch({
+            type: WorkoutFormActionTypes.ADD_SET,
+            exerciseId,
+            setOrder,
+        });
     }, []);
 
     const deleteSet = useCallback((exerciseId: string, setId: string) => {

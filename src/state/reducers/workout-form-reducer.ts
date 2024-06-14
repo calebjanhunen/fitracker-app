@@ -19,7 +19,7 @@ export type WorkoutFormActions =
     | { type: WorkoutFormActionTypes.UPDATE_NAME; name: string }
     | { type: WorkoutFormActionTypes.ADD_EXERCISES; payload: ExerciseInWorkout[] }
     | { type: WorkoutFormActionTypes.DELETE_EXERCISE; payload: string }
-    | { type: WorkoutFormActionTypes.ADD_SET; payload: string }
+    | { type: WorkoutFormActionTypes.ADD_SET; exerciseId: string; setOrder: number }
     | { type: WorkoutFormActionTypes.CLEAR_WORKOUT }
     | { type: WorkoutFormActionTypes.UPDATE_CREATED_AT }
     | {
@@ -56,11 +56,17 @@ export function reducer(workout: WorkoutForm, action: WorkoutFormActions): Worko
                 exercises: action.exercises,
             };
         case WorkoutFormActionTypes.ADD_SET: {
-            const newSet: SetInWorkout = { id: uuid.v4().toString(), weight: 0, reps: 0, rpe: 0 };
+            const newSet: SetInWorkout = {
+                id: uuid.v4().toString(),
+                weight: 0,
+                reps: 0,
+                rpe: 0,
+                setOrder: action.setOrder,
+            };
             return {
                 ...workout,
                 exercises: workout.exercises.map((exercise) =>
-                    exercise.id === action.payload
+                    exercise.id === action.exerciseId
                         ? { ...exercise, sets: [...exercise.sets, newSet] }
                         : exercise
                 ),
