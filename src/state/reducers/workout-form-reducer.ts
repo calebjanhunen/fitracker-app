@@ -1,6 +1,5 @@
 import uuid from 'react-native-uuid';
-import { type ExerciseInWorkout, type SetInWorkout } from 'src/interfaces/workout';
-import { type WorkoutForm } from 'src/interfaces/workout-form';
+import type { WorkoutForm, WorkoutFormExercise, WorkoutFormSet } from 'src/interfaces/workout-form';
 
 export enum WorkoutFormActionTypes {
     UPDATE_NAME = 'update-name',
@@ -17,7 +16,7 @@ export enum WorkoutFormActionTypes {
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type WorkoutFormActions =
     | { type: WorkoutFormActionTypes.UPDATE_NAME; name: string }
-    | { type: WorkoutFormActionTypes.ADD_EXERCISES; payload: ExerciseInWorkout[] }
+    | { type: WorkoutFormActionTypes.ADD_EXERCISES; payload: WorkoutFormExercise[] }
     | { type: WorkoutFormActionTypes.DELETE_EXERCISE; payload: string }
     | { type: WorkoutFormActionTypes.ADD_SET; exerciseId: string; setOrder: number }
     | { type: WorkoutFormActionTypes.CLEAR_WORKOUT }
@@ -36,7 +35,7 @@ export type WorkoutFormActions =
     | { type: WorkoutFormActionTypes.CLEAR_WORKOUT }
     | {
           type: WorkoutFormActionTypes.REORDER_EXERCISES;
-          exercises: ExerciseInWorkout[];
+          exercises: WorkoutFormExercise[];
       };
 
 export function reducer(workout: WorkoutForm, action: WorkoutFormActions): WorkoutForm {
@@ -56,7 +55,7 @@ export function reducer(workout: WorkoutForm, action: WorkoutFormActions): Worko
                 exercises: action.exercises,
             };
         case WorkoutFormActionTypes.ADD_SET: {
-            const newSet: SetInWorkout = {
+            const newSet: WorkoutFormSet = {
                 id: uuid.v4().toString(),
                 weight: 0,
                 reps: 0,

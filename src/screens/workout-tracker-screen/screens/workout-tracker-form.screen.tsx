@@ -15,7 +15,7 @@ import { useCreateWorkout } from 'src/hooks/api/workouts/useCreateWorkout';
 import { useKeyboard } from 'src/hooks/useKeyboard';
 import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
-import type { ExerciseInWorkout } from 'src/interfaces';
+import type { WorkoutFormExercise } from 'src/interfaces/workout-form';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import AddExerciseModal from '../components/add-exercise-modal/add-exercise-modal';
 import ExerciseComponent from '../components/workout-tracker-form/exercise-component';
@@ -67,7 +67,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         item,
         drag,
         isActive,
-    }: RenderItemParams<ExerciseInWorkout>): React.ReactElement => (
+    }: RenderItemParams<WorkoutFormExercise>): React.ReactElement => (
         <ExerciseComponent
             exercise={item}
             deleteExercise={deleteExercise}
@@ -105,7 +105,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         createWorkout(workout);
     }
 
-    function handleDragEnd({ data }: DragEndParams<ExerciseInWorkout>): void {
+    function handleDragEnd({ data }: DragEndParams<WorkoutFormExercise>): void {
         reorderExercises(data);
     }
 

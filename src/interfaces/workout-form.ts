@@ -1,7 +1,20 @@
-import { type ExerciseInWorkout } from './workout';
-
 export interface WorkoutForm {
     name: string;
     createdAt: string;
-    exercises: ExerciseInWorkout[];
+    exercises: WorkoutFormExercise[];
+}
+
+export interface WorkoutFormExercise {
+    name: string;
+    id: string;
+    sets: WorkoutFormSet[];
+    previousSets: WorkoutFormSet[];
+}
+
+export interface WorkoutFormSet {
+    id: string;
+    weight: number;
+    reps: number;
+    rpe: number;
+    setOrder: number;
 }

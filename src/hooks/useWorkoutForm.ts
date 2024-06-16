@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect } from 'react';
 
-import type { ExerciseForWorkout, ExerciseInWorkout, WorkoutForm } from 'src/interfaces';
+import type { ExerciseForWorkout, WorkoutForm } from 'src/interfaces';
+import type { WorkoutFormExercise } from 'src/interfaces/workout-form';
 import { WorkoutFormContext } from 'src/state/context/workout-form-context';
 import { WorkoutFormActionTypes } from 'src/state/reducers/workout-form-reducer';
 
@@ -19,7 +20,7 @@ interface IUseWorkoutForm {
     deleteSet: (exerciseId: string, setId: string) => void;
     clearWorkout: () => void;
     updateCreatedAt: () => void;
-    reorderExercises: (exercises: ExerciseInWorkout[]) => void;
+    reorderExercises: (exercises: WorkoutFormExercise[]) => void;
 }
 
 export function useWorkoutForm(): IUseWorkoutForm {
@@ -60,7 +61,7 @@ export function useWorkoutForm(): IUseWorkoutForm {
         dispatch({ type: WorkoutFormActionTypes.DELETE_SET, exerciseId, setId });
     }, []);
 
-    const reorderExercises = useCallback((exercises: ExerciseInWorkout[]) => {
+    const reorderExercises = useCallback((exercises: WorkoutFormExercise[]) => {
         dispatch({ type: WorkoutFormActionTypes.REORDER_EXERCISES, exercises });
     }, []);
 
@@ -88,11 +89,12 @@ export function useWorkoutForm(): IUseWorkoutForm {
         dispatch({ type: WorkoutFormActionTypes.CLEAR_WORKOUT });
     }, []);
 
-    function transformExerciseForWorkout(exercise: ExerciseForWorkout): ExerciseInWorkout {
+    function transformExerciseForWorkout(exercise: ExerciseForWorkout): WorkoutFormExercise {
         return {
             name: exercise.name,
             id: exercise.id,
             sets: [],
+            previousSets: exercise.previousSets,
         };
     }
 

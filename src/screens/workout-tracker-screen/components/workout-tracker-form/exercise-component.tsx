@@ -5,11 +5,11 @@ import { Button, Layout, List, Text } from '@ui-kitten/components';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { MoreOptionsMenu, Spacer, type MoreOptionsMenuItem } from 'src/components';
-import type { ExerciseInWorkout, SetInWorkout } from 'src/interfaces';
+import type { WorkoutFormExercise, WorkoutFormSet } from 'src/interfaces/workout-form';
 import SetComponent from './set-component';
 
 interface Props {
-    exercise: ExerciseInWorkout;
+    exercise: WorkoutFormExercise;
     deleteExercise: (exerciseId: string) => void;
     addSet: (exerciseId: string, setOrder: number) => void;
     deleteSet: (exerciseId: string, setId: string) => void;
@@ -50,11 +50,12 @@ const ExerciseComponent = memo(function ExerciseComponent({
         item,
         index,
     }: {
-        item: SetInWorkout;
+        item: WorkoutFormSet;
         index: number;
     }): React.ReactElement | null => (
         <SetComponent
             set={item}
+            previousSet={exercise.previousSets[index] || null}
             setOrder={item.setOrder}
             exerciseId={exercise.id}
             updateSet={updateSet}
