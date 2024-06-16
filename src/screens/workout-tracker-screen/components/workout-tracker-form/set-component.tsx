@@ -5,10 +5,10 @@ import { Input, Text } from '@ui-kitten/components';
 import { Animated, Dimensions, StyleSheet } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 
-import { type SetInWorkout } from 'src/interfaces/workout';
+import type { WorkoutFormSet } from 'src/interfaces/workout-form';
 
 interface Props {
-    set: SetInWorkout;
+    set: WorkoutFormSet;
     setOrder: number;
     exerciseId: string;
     updateSet: (

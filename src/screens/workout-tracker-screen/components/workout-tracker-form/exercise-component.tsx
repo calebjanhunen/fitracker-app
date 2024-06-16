@@ -5,8 +5,7 @@ import { Button, Layout, List, Text } from '@ui-kitten/components';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { MoreOptionsMenu, Spacer, type MoreOptionsMenuItem } from 'src/components';
-import type { SetInWorkout } from 'src/interfaces';
-import type { WorkoutFormExercise } from 'src/interfaces/workout-form';
+import type { WorkoutFormExercise, WorkoutFormSet } from 'src/interfaces/workout-form';
 import SetComponent from './set-component';
 
 interface Props {
@@ -51,7 +50,7 @@ const ExerciseComponent = memo(function ExerciseComponent({
         item,
         index,
     }: {
-        item: SetInWorkout;
+        item: WorkoutFormSet;
         index: number;
     }): React.ReactElement | null => (
         <SetComponent
