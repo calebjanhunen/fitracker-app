@@ -55,6 +55,7 @@ const ExerciseComponent = memo(function ExerciseComponent({
     }): React.ReactElement | null => (
         <SetComponent
             set={item}
+            previousSet={exercise.previousSets[index] || null}
             setOrder={item.setOrder}
             exerciseId={exercise.id}
             updateSet={updateSet}

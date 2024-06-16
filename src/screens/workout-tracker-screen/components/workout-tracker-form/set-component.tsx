@@ -9,6 +9,7 @@ import type { WorkoutFormSet } from 'src/interfaces/workout-form';
 
 interface Props {
     set: WorkoutFormSet;
+    previousSet: WorkoutFormSet | null;
     setOrder: number;
     exerciseId: string;
     updateSet: (
@@ -24,6 +25,7 @@ const screenWidth = Dimensions.get('window').width;
 
 const SetComponent = memo(function SetComponent({
     set,
+    previousSet,
     setOrder,
     exerciseId,
     updateSet,
@@ -63,8 +65,10 @@ const SetComponent = memo(function SetComponent({
         <Swipeable renderRightActions={renderRightActions} onSwipeableOpen={onDeleteSet}>
             <Animated.View style={[styles.visibleSetStyles, { height: heightAnim }]}>
                 <Text style={styles.setNum}>{setOrder}</Text>
-                <Text style={styles.previous} numberOfLines={1}>
-                    {set.id}
+                <Text style={styles.previous} numberOfLines={1} category='label'>
+                    {previousSet
+                        ? `${previousSet.weight} lb x ${previousSet.reps} @ ${previousSet.rpe}`
+                        : ''}
                 </Text>
                 <Input
                     onChangeText={(text) => updateSet(exerciseId, set.id, 'weight', text)}
