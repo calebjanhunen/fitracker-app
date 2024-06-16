@@ -1,3 +1,4 @@
+import { type WorkoutPostRequest } from 'src/api/workouts/workout-post-request';
 import type { WorkoutForm } from 'src/interfaces';
 
 /**
@@ -11,12 +12,13 @@ import type { WorkoutForm } from 'src/interfaces';
  * sanitized version of the same object. The returned object includes the same properties as the input
  * `workout` object, but with the following modifications:
  */
-export function sanitizeWorkout(workout: WorkoutForm): WorkoutForm {
+export function sanitizeWorkout(workout: WorkoutForm): WorkoutPostRequest {
     return {
         ...workout,
         exercises: workout.exercises
             .map((exercise) => ({
-                ...exercise,
+                id: exercise.id,
+                name: exercise.name,
                 // remove sets that either have empty weight or reps input
                 sets: exercise.sets.filter((set) => set.reps > 0 && set.weight > 0 && set.rpe > 0),
             }))
