@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import React, { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -16,15 +17,28 @@ import {
 } from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Spacer } from 'src/components';
+import { useCreateExercise } from 'src/hooks/api/exercises/useCreateExercise';
+import type { ExerciseForWorkout } from 'src/interfaces';
 
 interface Props {
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
+    addExerciseToSelectedExercises: (exercise: ExerciseForWorkout) => void;
+    setExercisesDisplay: Dispatch<SetStateAction<ExerciseForWorkout[]>>;
 }
 
-export default function CreateExerciseModal({ visible, setVisible }: Props): React.ReactElement {
+export default function CreateExerciseModal({
+    visible,
+    setVisible,
+    addExerciseToSelectedExercises,
+    setExercisesDisplay,
+}: Props): React.ReactElement {
     const styles = useStyleSheet(themedStyles);
     const theme = useTheme();
+    const { createExercise } = useCreateExercise(
+        setExercisesDisplay,
+        addExerciseToSelectedExercises
+    );
     const [name, setName] = useState<string>('');
     const [selectedBodyPart, setSelectedBodyPart] = useState<IndexPath>(new IndexPath(-1));
     const [selectedEquipment, setSelectedEquipment] = useState<IndexPath>(new IndexPath(-1));
@@ -43,10 +57,13 @@ export default function CreateExerciseModal({ visible, setVisible }: Props): Rea
         setVisible(false);
     }
 
-    function onExerciseSave(): void {
-        console.log('name: ', name);
-        console.log('bodyPart: ', bodyParts[selectedBodyPart.row]);
-        console.log('eqipment: ', equipment[selectedEquipment.row]);
+    async function onExerciseSave(): Promise<void> {
+        createExercise({
+            name,
+            primaryMuscle: bodyParts[selectedBodyPart.row],
+            equipment: equipment[selectedEquipment.row],
+        });
+        onModalClose();
     }
 
     return (

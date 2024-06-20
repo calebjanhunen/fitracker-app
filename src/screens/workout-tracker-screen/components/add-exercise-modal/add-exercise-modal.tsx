@@ -29,10 +29,10 @@ export default function AddExerciseModal({
 }: Props): React.ReactElement {
     const theme = useTheme();
     const styles = useStyleSheet(themedStyles);
-    const { exercisesForWorkout, isLoading } = useGetExercisesForWorkout();
     const { selectedExercises, toggleExercise, clearSelectedExercises } =
         useSelectedExercisesFromModal();
     const [exercisesDisplay, setExercisesDisplay] = useState<ExerciseForWorkout[]>([]);
+    const { exercisesForWorkout, isLoading } = useGetExercisesForWorkout();
     const [createExerciseModalVisible, setCreateExerciseModalVisible] = useState<boolean>(false);
 
     useEffect(() => {
@@ -71,6 +71,8 @@ export default function AddExerciseModal({
             <CreateExerciseModal
                 visible={createExerciseModalVisible}
                 setVisible={setCreateExerciseModalVisible}
+                addExerciseToSelectedExercises={toggleExercise}
+                setExercisesDisplay={setExercisesDisplay}
             />
             <Layout style={styles.modalContainer}>
                 <View style={styles.header}>

@@ -12,4 +12,22 @@ export const exercisesAPI = {
         });
         return response.data;
     },
+    createExercise: async function ({
+        name,
+        primaryMuscle,
+        equipment,
+    }: {
+        name: string;
+        primaryMuscle: string;
+        equipment: string;
+    }): Promise<Exercise> {
+        const response = await API.post('/exercises', {
+            name,
+            primaryMuscle,
+            equipment,
+            difficultyLevel: 'beginner',
+            instructions: [],
+        });
+        return response.data;
+    },
 };
