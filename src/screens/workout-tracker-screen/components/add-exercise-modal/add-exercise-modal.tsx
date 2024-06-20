@@ -11,6 +11,7 @@ import { useGetExercisesForWorkout } from 'src/hooks/api/workouts/useGetExercise
 import { useSelectedExercisesFromModal } from 'src/hooks/useSelectedExercisesFromModal';
 import type { ExerciseForWorkout } from 'src/interfaces';
 import type { WorkoutFormExercise } from 'src/interfaces/workout-form';
+import CreateExerciseModal from '../create-exercise-modal/create-exercise-modal';
 import ModalExerciseItem from './modal-exercise-item';
 
 interface Props {
@@ -32,6 +33,7 @@ export default function AddExerciseModal({
     const { selectedExercises, toggleExercise, clearSelectedExercises } =
         useSelectedExercisesFromModal();
     const [exercisesDisplay, setExercisesDisplay] = useState<ExerciseForWorkout[]>([]);
+    const [createExerciseModalVisible, setCreateExerciseModalVisible] = useState<boolean>(false);
 
     useEffect(() => {
         setExercisesDisplay(exercisesForWorkout);
@@ -66,6 +68,10 @@ export default function AddExerciseModal({
             backdropStyle={styles.backdrop}
             onBackdropPress={() => setVisible(false)}
         >
+            <CreateExerciseModal
+                visible={createExerciseModalVisible}
+                setVisible={setCreateExerciseModalVisible}
+            />
             <Layout style={styles.modalContainer}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.closeBtn} onPress={() => setVisible(false)}>
@@ -86,6 +92,16 @@ export default function AddExerciseModal({
                         placeholder='Search for exercise...'
                         onChangeText={handleSearch}
                     />
+                </View>
+                <Spacer size='spacing-3' />
+                <View style={{ paddingHorizontal: 16 }}>
+                    <Button
+                        appearance='outline'
+                        size='tiny'
+                        onPress={() => setCreateExerciseModalVisible(true)}
+                    >
+                        Create new Exercise
+                    </Button>
                 </View>
                 <Spacer size='spacing-8' />
                 <View
