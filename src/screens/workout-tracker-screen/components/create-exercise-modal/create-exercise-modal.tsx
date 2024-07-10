@@ -43,7 +43,7 @@ export default function CreateExerciseModal({
     const [selectedBodyPart, setSelectedBodyPart] = useState<IndexPath>(new IndexPath(-1));
     const [selectedEquipment, setSelectedEquipment] = useState<IndexPath>(new IndexPath(-1));
     const [saveBtnDisabled, setSaveBtnDisabled] = useState<boolean>(true);
-    const bodyParts = ['Biceps', 'Triceps', 'Shoulders', 'Chest', 'Core', 'Legs', 'Others'];
+    const bodyParts = ['Biceps', 'Triceps', 'Shoulders', 'Chest', 'Back', 'Core', 'Legs', 'Others'];
     const equipment = ['Barbell', 'Dumbbell', 'Cable', 'Machine', 'Body'];
 
     useEffect(() => {
