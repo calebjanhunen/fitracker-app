@@ -13,6 +13,7 @@ import type { ExerciseForWorkout } from 'src/interfaces';
 import type { WorkoutFormExercise } from 'src/interfaces/workout-form';
 import CreateExerciseModal from '../create-exercise-modal/create-exercise-modal';
 import ModalExerciseItem from './modal-exercise-item';
+import NoExercisesDisplay from './no-exercises-display';
 
 interface Props {
     visible: boolean;
@@ -34,6 +35,7 @@ export default function AddExerciseModal({
     const [exercisesDisplay, setExercisesDisplay] = useState<ExerciseForWorkout[]>([]);
     const { exercisesForWorkout, isLoading } = useGetExercisesForWorkout();
     const [createExerciseModalVisible, setCreateExerciseModalVisible] = useState<boolean>(false);
+    const [exerciseSearchText, setExerciseSearchText] = useState<string>('');
 
     useEffect(() => {
         setExercisesDisplay(exercisesForWorkout);
@@ -46,6 +48,7 @@ export default function AddExerciseModal({
     }
 
     function handleSearch(text: string): void {
+        setExerciseSearchText(text);
         setExercisesDisplay(
             exercisesForWorkout.filter((exercise) =>
                 exercise.name.toLowerCase().includes(text.toLowerCase())
@@ -62,6 +65,7 @@ export default function AddExerciseModal({
             disabled={Boolean(exercisesInWorkout.find((exercise) => exercise.id === item.id))}
         />
     );
+
     return (
         <Modal
             visible={visible}
@@ -73,6 +77,7 @@ export default function AddExerciseModal({
                 setVisible={setCreateExerciseModalVisible}
                 addExerciseToSelectedExercises={toggleExercise}
                 setExercisesDisplay={setExercisesDisplay}
+                exerciseSearchText={exerciseSearchText}
             />
             <Layout style={styles.modalContainer}>
                 <View style={styles.header}>
@@ -112,21 +117,28 @@ export default function AddExerciseModal({
                         backgroundColor: theme['color-basic-500'],
                     }}
                 />
-                <List
-                    data={exercisesDisplay}
-                    renderItem={renderExercise}
-                    style={{ backgroundColor: 'transparent' }}
-                    keyExtractor={(item) => item.id}
-                    ListFooterComponent={renderFooter}
-                    ItemSeparatorComponent={() => (
-                        <View
-                            style={{
-                                height: 1,
-                                backgroundColor: theme['color-basic-500'],
-                            }}
-                        />
-                    )}
-                />
+                {exercisesDisplay.length > 0 ? (
+                    <List
+                        data={exercisesDisplay}
+                        renderItem={renderExercise}
+                        style={{ backgroundColor: 'transparent' }}
+                        keyExtractor={(item) => item.id}
+                        ListFooterComponent={renderFooter}
+                        ItemSeparatorComponent={() => (
+                            <View
+                                style={{
+                                    height: 1,
+                                    backgroundColor: theme['color-basic-500'],
+                                }}
+                            />
+                        )}
+                    />
+                ) : (
+                    <NoExercisesDisplay
+                        setCreateExerciseModalVisible={setCreateExerciseModalVisible}
+                        exerciseName={exerciseSearchText}
+                    />
+                )}
             </Layout>
         </Modal>
     );

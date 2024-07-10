@@ -25,6 +25,7 @@ interface Props {
     setVisible: Dispatch<SetStateAction<boolean>>;
     addExerciseToSelectedExercises: (exercise: ExerciseForWorkout) => void;
     setExercisesDisplay: Dispatch<SetStateAction<ExerciseForWorkout[]>>;
+    exerciseSearchText: string;
 }
 
 export default function CreateExerciseModal({
@@ -32,6 +33,7 @@ export default function CreateExerciseModal({
     setVisible,
     addExerciseToSelectedExercises,
     setExercisesDisplay,
+    exerciseSearchText,
 }: Props): React.ReactElement {
     const styles = useStyleSheet(themedStyles);
     const theme = useTheme();
@@ -49,6 +51,10 @@ export default function CreateExerciseModal({
     useEffect(() => {
         setSaveBtnDisabled(selectedBodyPart.row === -1 || selectedEquipment.row === -1 || !name);
     }, [name, selectedBodyPart, selectedEquipment]);
+
+    useEffect(() => {
+        setName(exerciseSearchText);
+    }, [exerciseSearchText]);
 
     function onModalClose(): void {
         setSelectedBodyPart(new IndexPath(-1));
@@ -91,7 +97,7 @@ export default function CreateExerciseModal({
                     </TouchableOpacity>
                 </View>
                 <Spacer size='spacing-3' />
-                <Input placeholder='Exercise Name' onChangeText={setName} />
+                <Input placeholder='Exercise Name' onChangeText={setName} value={name || ''} />
                 <Spacer size='spacing-8' />
                 <Select
                     placeholder='Body Part'
