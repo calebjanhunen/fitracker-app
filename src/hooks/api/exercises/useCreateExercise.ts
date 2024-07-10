@@ -28,23 +28,30 @@ export function useCreateExercise(
     const { mutate: createExercise, isPending: isSaving } = useMutation({
         mutationFn: exercisesAPI.createExercise,
         onSuccess: async (data) => {
-            const newExerciseForWorkout: ExerciseForWorkout = {
-                name: data.name,
-                id: data.id,
-                primaryMuscle: data.primaryMuscle,
-                previousSets: [],
-                numTimesUsed: 0,
-            };
-
-            // Add created exercise to exercise display in alphabetical order
-            setExercisesDisplay((prev) =>
-                [...prev, newExerciseForWorkout].sort((a, b) => (a.name > b.name ? 1 : -1))
+            // Refetch and get new exercises from cache
+            await queryClient.refetchQueries({ queryKey: EXERCISES_FOR_WORKOUT_QUERY_KEY });
+            const exercisesWithCreatedExercise = queryClient.getQueryData<ExerciseForWorkout[]>(
+                EXERCISES_FOR_WORKOUT_QUERY_KEY
             );
 
-            // Add created exercise to selected exercises
-            addExerciseToSelectedExercises(newExerciseForWorkout);
+            let newExercise: ExerciseForWorkout | undefined;
 
-            await queryClient.refetchQueries({ queryKey: EXERCISES_FOR_WORKOUT_QUERY_KEY });
+            // Set the exercises display to the new exercises list (with the new exercise)
+            if (exercisesWithCreatedExercise) {
+                setExercisesDisplay(exercisesWithCreatedExercise);
+
+                // Get new exercise that was created
+                newExercise = exercisesWithCreatedExercise.find((e) => e.id === data.id);
+            } else {
+                Alert.alert('Failed to fetch exercises from cache');
+            }
+
+            // Add new exercise to selected exercises
+            if (newExercise) {
+                addExerciseToSelectedExercises(newExercise);
+            } else {
+                Alert.alert('Created exercise does not exist in list of exercises');
+            }
         },
         onError: (e) => {
             Alert.alert('Could Not Save Exercise', e.message);
