@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { workoutsAPI } from 'src/api/workouts/workouts-api';
+import { exercisesAPI } from 'src/api/exercises/exercises-api';
 import type { ExerciseForWorkout } from 'src/interfaces';
 
 interface IUseGetExercisesForWorkout {
@@ -12,7 +12,7 @@ export const EXERCISES_FOR_WORKOUT_QUERY_KEY = ['exercisesForWorkout'];
 export function useGetExercisesForWorkout(): IUseGetExercisesForWorkout {
     const { isLoading, data: exercisesForWorkout = [] } = useQuery<ExerciseForWorkout[]>({
         queryKey: EXERCISES_FOR_WORKOUT_QUERY_KEY,
-        queryFn: workoutsAPI.getExercisesForWorkouts,
+        queryFn: exercisesAPI.getExercisesForWorkouts,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         /*

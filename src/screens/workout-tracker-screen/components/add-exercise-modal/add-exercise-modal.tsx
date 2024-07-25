@@ -7,7 +7,7 @@ import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Spacer } from 'src/components';
-import { useGetExercisesForWorkout } from 'src/hooks/api/workouts/useGetExercisesForWorkout';
+import { useGetExercisesForWorkout } from 'src/hooks/api/exercises/useGetExercisesForWorkout';
 import { useSelectedExercisesFromModal } from 'src/hooks/useSelectedExercisesFromModal';
 import type { ExerciseForWorkout } from 'src/interfaces';
 import type { WorkoutFormExercise } from 'src/interfaces/workout-form';

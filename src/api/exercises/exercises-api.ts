@@ -1,4 +1,4 @@
-import { type Exercise } from 'src/interfaces';
+import type { Exercise, ExerciseForWorkout } from 'src/interfaces';
 import { type PaginationResponse } from 'src/interfaces/api-responses/pagination-response';
 import { API } from '../config/axios';
 
@@ -28,6 +28,10 @@ export const exercisesAPI = {
             difficultyLevel: 'beginner',
             instructions: [],
         });
+        return response.data;
+    },
+    getExercisesForWorkouts: async function (): Promise<ExerciseForWorkout[]> {
+        const response = await API.get<ExerciseForWorkout[]>('/exercises/exercises-for-workout');
         return response.data;
     },
 };

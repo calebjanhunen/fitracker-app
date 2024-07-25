@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from 'src/api/config/react-query.config';
 import { workoutsAPI } from 'src/api/workouts/workouts-api';
-import { EXERCISES_FOR_WORKOUT_QUERY_KEY } from './useGetExercisesForWorkout';
+import { EXERCISES_FOR_WORKOUT_QUERY_KEY } from '../exercises/useGetExercisesForWorkout';
 import { WORKOUTS_QUERY_KEY } from './useGetWorkouts';
 
 interface IUseDeleteWorkout {

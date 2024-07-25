@@ -6,7 +6,7 @@ import { Alert } from 'react-native';
 import { queryClient } from 'src/api/config/react-query.config';
 import { exercisesAPI } from 'src/api/exercises/exercises-api';
 import type { ExerciseForWorkout } from 'src/interfaces';
-import { EXERCISES_FOR_WORKOUT_QUERY_KEY } from '../workouts/useGetExercisesForWorkout';
+import { EXERCISES_FOR_WORKOUT_QUERY_KEY } from './useGetExercisesForWorkout';
 
 interface IUseCreateExercise {
     createExercise: ({
