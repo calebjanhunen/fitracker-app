@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+import React, { useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 import { Button, List, Spinner, Text } from '@ui-kitten/components';
@@ -10,10 +11,12 @@ import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
 import { type Workout } from 'src/interfaces/workout';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-tracker-home/workout-history-card';
+import SelectWorkoutTemplateModal from '../components/select-workout-template-modal/select-workout-template-modal';
 
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'Home'>;
 
 export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.ReactElement {
+    const [workoutTemplateModalVisible, setWorkoutTemplateModalVisible] = useState<boolean>(false);
     const { workouts, isLoading, error } = useGetWorkouts();
     const { workoutInProgress, setWorkoutInProgress } = useWorkoutInProgress();
     const renderWorkoutHistoryCard = ({ item }: { item: Workout }): React.ReactElement => (
@@ -26,10 +29,25 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
     }
     return (
         <PageView>
+            <SelectWorkoutTemplateModal
+                visible={workoutTemplateModalVisible}
+                setVisible={setWorkoutTemplateModalVisible}
+            />
             <Spacer size='spacing-4' />
-            <Button onPress={handleGoToWorkoutFormPage}>
-                {!workoutInProgress ? 'Start Empty Workout' : 'Continue Workout'}
-            </Button>
+            {workoutInProgress ? (
+                <Button onPress={handleGoToWorkoutFormPage}>Continue Workout</Button>
+            ) : (
+                <View style={styles.header}>
+                    <Button onPress={() => setWorkoutTemplateModalVisible(true)}>
+                        Start From Template
+                    </Button>
+                    <Text style={{ textAlign: 'center' }}>OR</Text>
+                    <Button onPress={handleGoToWorkoutFormPage} size='small' appearance='outline'>
+                        Start Empty Workout
+                    </Button>
+                </View>
+            )}
+
             <Spacer size='spacing-5' />
             <Text category='h4'>Workout History:</Text>
             <View style={styles.workoutHistoryContainer}>
@@ -56,7 +74,8 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
 const styles = StyleSheet.create({
     workoutHistoryContainer: {
         flex: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center',
+    },
+    header: {
+        gap: 8,
     },
 });
