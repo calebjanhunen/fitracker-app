@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { Layout, List, Modal, Text } from '@ui-kitten/components';
 import React, { type Dispatch, type SetStateAction } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
 import { Spacer } from 'src/components';
+import { useGetWorkoutTemplates } from 'src/hooks/api/workout-templates/useGetworkoutTemplates';
+import type { WorkoutTemplate } from 'src/interfaces';
 import WorkoutTemplateItem from './workout-template-item';
 
 interface Props {
@@ -14,8 +16,16 @@ export default function SelectWorkoutTemplateModal({
     visible,
     setVisible,
 }: Props): React.ReactElement {
-    const renderItem = ({ item, index }: { item: number; index: number }): React.ReactElement => (
-        <WorkoutTemplateItem index={index} />
+    const { workoutTemplates, isLoading, error } = useGetWorkoutTemplates();
+    console.log(workoutTemplates);
+    const renderItem = ({
+        item,
+        index,
+    }: {
+        item: WorkoutTemplate;
+        index: number;
+    }): React.ReactElement => (
+        <WorkoutTemplateItem name={item.name} exercises={item.exercises} index={index} />
     );
     return (
         <Modal
@@ -26,15 +36,25 @@ export default function SelectWorkoutTemplateModal({
         >
             <Layout style={styles.modalContainer}>
                 <Text category='h3'>Templates</Text>
-                <List
-                    style={styles.templateList}
-                    data={[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12]}
-                    numColumns={2}
-                    key={'flatlist-2'} // change this when changing numColumns
-                    renderItem={renderItem}
-                    ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
-                    columnWrapperStyle={{ justifyContent: 'space-between' }}
-                />
+                <Spacer size='spacing-4' />
+                {isLoading ? (
+                    <ActivityIndicator />
+                ) : error ? (
+                    <Text>Error getting workout templates</Text>
+                ) : workoutTemplates ? (
+                    <List
+                        style={styles.templateList}
+                        data={workoutTemplates}
+                        numColumns={2}
+                        key={'flatlist-2'} // change this when changing numColumns
+                        renderItem={renderItem}
+                        ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
+                        columnWrapperStyle={{ justifyContent: 'space-between' }}
+                        keyExtractor={(item) => item.id}
+                    />
+                ) : (
+                    <Text>No Workout Templates</Text>
+                )}
             </Layout>
         </Modal>
     );
@@ -50,8 +70,10 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 16,
         height: Dimensions.get('window').height - 200,
+        width: Dimensions.get('window').width - 32,
     },
     templateList: {
         flex: 1,
+        backgroundColor: 'transparent',
     },
 });
