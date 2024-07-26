@@ -2,13 +2,16 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+import type { WorkoutTemplate } from 'src/interfaces';
 import WorkoutTrackerFormScreen from 'src/screens/workout-tracker-screen/screens/workout-tracker-form.screen';
 import WorkoutTrackerHomeScreen from 'src/screens/workout-tracker-screen/screens/workout-tracker-home.screen';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type WorkoutTrackerStackParamList = {
     Home: undefined;
-    WorkoutTrackerForm: undefined;
+    WorkoutTrackerForm: {
+        selectedWorkoutTemplate: WorkoutTemplate | null;
+    };
 };
 
 const Stack = createStackNavigator<WorkoutTrackerStackParamList>();

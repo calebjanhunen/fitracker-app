@@ -1,6 +1,13 @@
 import { useCallback, useContext, useEffect } from 'react';
 
-import type { ExerciseForWorkout, WorkoutForm } from 'src/interfaces';
+import uuid from 'react-native-uuid';
+
+import type {
+    ExerciseForWorkout,
+    WorkoutForm,
+    WorkoutTemplate,
+    WorkoutTemplateExercise,
+} from 'src/interfaces';
 import type { WorkoutFormExercise } from 'src/interfaces/workout-form';
 import { WorkoutFormContext } from 'src/state/context/workout-form-context';
 import { WorkoutFormActionTypes } from 'src/state/reducers/workout-form-reducer';
@@ -23,11 +30,31 @@ interface IUseWorkoutForm {
     reorderExercises: (exercises: WorkoutFormExercise[]) => void;
 }
 
-export function useWorkoutForm(): IUseWorkoutForm {
+export function useWorkoutForm(workoutTemplate: WorkoutTemplate | null): IUseWorkoutForm {
     const { workout, dispatch } = useContext(WorkoutFormContext);
 
     useEffect(() => {
-        if (!workout.createdAt) updateCreatedAt();
+        if (!workout.createdAt) {
+            // Add created at first time page is loaded
+            updateCreatedAt();
+
+            // Add workout template name, exercises and set on first load (when created at doesnt exist)
+            addWorkoutTemplateToWorkoutForm();
+        }
+    }, []);
+
+    const addWorkoutTemplateToWorkoutForm = useCallback(() => {
+        if (!workoutTemplate) return;
+
+        updateWorkoutName(workoutTemplate.name);
+
+        // Convert exercises from workout template to exercises of type WorkoutFormExercise
+        const exercises = workoutTemplate.exercises.map((e) => {
+            return transformWorkoutTemplateExerciseForWorkout(e);
+        });
+
+        // Add converted exercises to workout form
+        dispatch({ type: WorkoutFormActionTypes.ADD_EXERCISES, payload: exercises });
     }, []);
 
     const updateCreatedAt = useCallback(() => {
@@ -38,7 +65,9 @@ export function useWorkoutForm(): IUseWorkoutForm {
         dispatch({ type: WorkoutFormActionTypes.UPDATE_NAME, name: text });
     }, []);
 
+    // Add exercises from add exercises modal to workout form
     const addExercises = useCallback((exercises: Set<ExerciseForWorkout>) => {
+        // Convert exercises from add exercise modal (of type ExerciseForWorkout) to exercises for workout (of type WorkoutFormExercise)
         const exerciseArr = Array.from(exercises).map((exercise) =>
             transformExerciseForWorkout(exercise)
         );
@@ -95,6 +124,25 @@ export function useWorkoutForm(): IUseWorkoutForm {
             id: exercise.id,
             sets: [],
             previousSets: exercise.previousSets,
+        };
+    }
+
+    function transformWorkoutTemplateExerciseForWorkout(
+        exercise: WorkoutTemplateExercise
+    ): WorkoutFormExercise {
+        return {
+            name: exercise.name,
+            id: exercise.id,
+            sets: exercise.sets.map((set) => {
+                return {
+                    setOrder: set.order,
+                    id: uuid.v4().toString(),
+                    weight: 0,
+                    reps: 0,
+                    rpe: 0,
+                };
+            }),
+            previousSets: [],
         };
     }
 

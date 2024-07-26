@@ -22,7 +22,7 @@ import ExerciseComponent from '../components/workout-tracker-form/exercise-compo
 
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'WorkoutTrackerForm'>;
 
-export default function WorkoutTrackerFormScreen({ navigation }: Props): React.ReactElement {
+export default function WorkoutTrackerFormScreen({ navigation, route }: Props): React.ReactElement {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const {
         workout,
@@ -34,7 +34,7 @@ export default function WorkoutTrackerFormScreen({ navigation }: Props): React.R
         updateSet,
         clearWorkout,
         reorderExercises,
-    } = useWorkoutForm();
+    } = useWorkoutForm(route.params.selectedWorkoutTemplate);
     const { createWorkout, isSaving } = useCreateWorkout();
     const { setWorkoutInProgress } = useWorkoutInProgress();
 

@@ -1,15 +1,23 @@
-import { List, Text } from '@ui-kitten/components';
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+import { List, Text, useTheme } from '@ui-kitten/components';
+import React, { type Dispatch, type SetStateAction } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import type { WorkoutTemplateExercise } from 'src/interfaces';
+import type { WorkoutTemplate, WorkoutTemplateExercise } from 'src/interfaces';
 
 interface Props {
-    name: string;
-    exercises: WorkoutTemplateExercise[];
+    workoutTemplate: WorkoutTemplate;
     index: number;
+    isSelected: boolean;
+    setSelectedWT: Dispatch<SetStateAction<WorkoutTemplate | null>>;
 }
 
-export default function WorkoutTemplateItem({ name, exercises, index }: Props): React.ReactElement {
+export default function WorkoutTemplateItem({
+    workoutTemplate,
+    index,
+    isSelected,
+    setSelectedWT,
+}: Props): React.ReactElement {
+    const theme = useTheme();
     const renderItem = ({ item }: { item: WorkoutTemplateExercise }): React.ReactElement => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 4, flex: 1 }}>
             <Text category='p2' numberOfLines={1} style={{ flex: 1 }}>
@@ -21,19 +29,23 @@ export default function WorkoutTemplateItem({ name, exercises, index }: Props): 
         </View>
     );
 
-    function onTemplatePress(): void {
-        console.log('pressed');
-    }
-
     return (
         <TouchableOpacity
-            style={[styles.templateContainer, { marginRight: index % 2 === 0 ? 6 : 0 }]}
-            onPress={onTemplatePress}
+            style={[
+                styles.templateContainer,
+                {
+                    marginRight: index % 2 === 0 ? 6 : 0,
+                    backgroundColor: isSelected
+                        ? theme['color-primary-transparent-200']
+                        : 'transparent',
+                },
+            ]}
+            onPress={() => setSelectedWT(workoutTemplate)}
         >
-            <Text category='h6'>{name}</Text>
+            <Text category='h6'>{workoutTemplate.name}</Text>
             <List
                 style={styles.exerciseList}
-                data={exercises}
+                data={workoutTemplate.exercises}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />

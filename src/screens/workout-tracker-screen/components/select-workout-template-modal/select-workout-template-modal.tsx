@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import { Layout, List, Modal, Text } from '@ui-kitten/components';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Button, Layout, List, Modal, Text, useStyleSheet } from '@ui-kitten/components';
 import React, { type Dispatch, type SetStateAction } from 'react';
-import { ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
+import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Spacer } from 'src/components';
 import { useGetWorkoutTemplates } from 'src/hooks/api/workout-templates/useGetworkoutTemplates';
 import type { WorkoutTemplate } from 'src/interfaces';
@@ -10,14 +11,20 @@ import WorkoutTemplateItem from './workout-template-item';
 interface Props {
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
+    selectedWorkoutTemplate: WorkoutTemplate | null;
+    setSelectedWorkoutTemplate: Dispatch<SetStateAction<WorkoutTemplate | null>>;
+    goToWorkoutTrackerFormScreen: () => void;
 }
 
 export default function SelectWorkoutTemplateModal({
     visible,
     setVisible,
+    selectedWorkoutTemplate,
+    setSelectedWorkoutTemplate,
+    goToWorkoutTrackerFormScreen,
 }: Props): React.ReactElement {
+    const styles = useStyleSheet(themedStyles);
     const { workoutTemplates, isLoading, error } = useGetWorkoutTemplates();
-    console.log(workoutTemplates);
     const renderItem = ({
         item,
         index,
@@ -25,7 +32,12 @@ export default function SelectWorkoutTemplateModal({
         item: WorkoutTemplate;
         index: number;
     }): React.ReactElement => (
-        <WorkoutTemplateItem name={item.name} exercises={item.exercises} index={index} />
+        <WorkoutTemplateItem
+            workoutTemplate={item}
+            index={index}
+            setSelectedWT={setSelectedWorkoutTemplate}
+            isSelected={selectedWorkoutTemplate?.id === item.id}
+        />
     );
     return (
         <Modal
@@ -35,7 +47,19 @@ export default function SelectWorkoutTemplateModal({
             style={{ flex: 1 }}
         >
             <Layout style={styles.modalContainer}>
-                <Text category='h3'>Templates</Text>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.closeBtn} onPress={() => setVisible(false)}>
+                        <Ionicons size={24} name='close-outline' />
+                    </TouchableOpacity>
+                    <Text category='h3'>Templates</Text>
+                </View>
+                <Button
+                    size='small'
+                    disabled={!selectedWorkoutTemplate}
+                    onPress={goToWorkoutTrackerFormScreen}
+                >
+                    Start Workout
+                </Button>
                 <Spacer size='spacing-4' />
                 {isLoading ? (
                     <ActivityIndicator />
@@ -60,7 +84,7 @@ export default function SelectWorkoutTemplateModal({
     );
 }
 
-const styles = StyleSheet.create({
+const themedStyles = StyleSheet.create({
     backdrop: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
@@ -72,8 +96,21 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height - 200,
         width: Dimensions.get('window').width - 32,
     },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        // justifyContent: 'space-between',
+        // paddingHorizontal: 16,
+    },
     templateList: {
         flex: 1,
         backgroundColor: 'transparent',
+    },
+    closeBtn: {
+        backgroundColor: 'color-basic-500',
+        paddingVertical: 2,
+        paddingHorizontal: 4,
+        borderRadius: 5,
     },
 });

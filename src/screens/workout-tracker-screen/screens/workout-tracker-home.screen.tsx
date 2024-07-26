@@ -8,7 +8,7 @@ import { StyleSheet, View } from 'react-native';
 import { PageView, Spacer } from 'src/components';
 import { useGetWorkouts } from 'src/hooks/api/workouts/useGetWorkouts';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
-import { type Workout } from 'src/interfaces/workout';
+import type { Workout, WorkoutTemplate } from 'src/interfaces';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-tracker-home/workout-history-card';
 import SelectWorkoutTemplateModal from '../components/select-workout-template-modal/select-workout-template-modal';
@@ -19,19 +19,29 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
     const [workoutTemplateModalVisible, setWorkoutTemplateModalVisible] = useState<boolean>(false);
     const { workouts, isLoading, error } = useGetWorkouts();
     const { workoutInProgress, setWorkoutInProgress } = useWorkoutInProgress();
+    const [selectedWorkoutTemplate, setSelectedWorkoutTemplate] = useState<WorkoutTemplate | null>(
+        null
+    );
     const renderWorkoutHistoryCard = ({ item }: { item: Workout }): React.ReactElement => (
         <WorkoutHistoryCard workout={item} />
     );
 
     function handleGoToWorkoutFormPage(): void {
-        navigation.navigate('WorkoutTrackerForm');
+        navigation.navigate('WorkoutTrackerForm', {
+            selectedWorkoutTemplate,
+        });
         if (!workoutInProgress) setWorkoutInProgress(true);
+        setWorkoutTemplateModalVisible(false);
+        setSelectedWorkoutTemplate(null);
     }
     return (
         <PageView>
             <SelectWorkoutTemplateModal
                 visible={workoutTemplateModalVisible}
                 setVisible={setWorkoutTemplateModalVisible}
+                selectedWorkoutTemplate={selectedWorkoutTemplate}
+                setSelectedWorkoutTemplate={setSelectedWorkoutTemplate}
+                goToWorkoutTrackerFormScreen={handleGoToWorkoutFormPage}
             />
             <Spacer size='spacing-4' />
             {workoutInProgress ? (
