@@ -7,6 +7,7 @@ import { useWorkoutForm } from 'src/hooks/useWorkoutForm';
 import { useWorkoutInProgress } from 'src/hooks/useWorkoutInProgress';
 import type { WorkoutForm } from 'src/interfaces';
 import { EXERCISES_FOR_WORKOUT_QUERY_KEY } from '../exercises/useGetExercisesForWorkout';
+import { WORKOUT_TEMPLATES_QUERY_KEY } from '../workout-templates/useGetworkoutTemplates';
 import { WORKOUTS_QUERY_KEY } from './useGetWorkouts';
 
 interface IUseCreateWorkout {
@@ -24,6 +25,7 @@ export function useCreateWorkout(): IUseCreateWorkout {
         onSuccess: async (data) => {
             await queryClient.invalidateQueries({ queryKey: WORKOUTS_QUERY_KEY });
             await queryClient.invalidateQueries({ queryKey: EXERCISES_FOR_WORKOUT_QUERY_KEY });
+            await queryClient.invalidateQueries({ queryKey: WORKOUT_TEMPLATES_QUERY_KEY });
             setWorkoutInProgress(false);
             clearWorkout();
             navigation.goBack();

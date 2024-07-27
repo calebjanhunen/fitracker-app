@@ -30,7 +30,7 @@ interface IUseWorkoutForm {
     reorderExercises: (exercises: WorkoutFormExercise[]) => void;
 }
 
-export function useWorkoutForm(workoutTemplate: WorkoutTemplate | null): IUseWorkoutForm {
+export function useWorkoutForm(workoutTemplate?: WorkoutTemplate | null): IUseWorkoutForm {
     const { workout, dispatch } = useContext(WorkoutFormContext);
 
     useEffect(() => {
