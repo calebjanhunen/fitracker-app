@@ -13,9 +13,11 @@ import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracke
 import WorkoutHistoryCard from 'src/screens/workout-tracker-screen/components/workout-tracker-home/workout-history-card';
 import SelectWorkoutTemplateModal from '../components/select-workout-template-modal/select-workout-template-modal';
 
-type Props = StackScreenProps<WorkoutTrackerStackParamList, 'Home'>;
+type WorkoutTrackerHomeScreenProps = StackScreenProps<WorkoutTrackerStackParamList, 'Home'>;
 
-export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.ReactElement {
+export default function WorkoutTrackerHomeScreen({
+    navigation,
+}: WorkoutTrackerHomeScreenProps): React.ReactElement {
     const [workoutTemplateModalVisible, setWorkoutTemplateModalVisible] = useState<boolean>(false);
     const { workouts, isLoading, error } = useGetWorkouts();
     const { workoutInProgress, setWorkoutInProgress } = useWorkoutInProgress();
@@ -42,6 +44,7 @@ export default function WorkoutTrackerHomeScreen({ navigation }: Props): React.R
                 selectedWorkoutTemplate={selectedWorkoutTemplate}
                 setSelectedWorkoutTemplate={setSelectedWorkoutTemplate}
                 goToWorkoutTrackerFormScreen={handleGoToWorkoutFormPage}
+                navigation={navigation}
             />
             <Spacer size='spacing-4' />
             {workoutInProgress ? (

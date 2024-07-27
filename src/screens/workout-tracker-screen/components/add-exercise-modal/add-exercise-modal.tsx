@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Spacer } from 'src/components';
 import { useGetExercisesForWorkout } from 'src/hooks/api/exercises/useGetExercisesForWorkout';
 import { useSelectedExercisesFromModal } from 'src/hooks/useSelectedExercisesFromModal';
-import type { ExerciseForWorkout } from 'src/interfaces';
+import type { ExerciseForWorkout, ICreateWorkoutTemplateExercise } from 'src/interfaces';
 import type { WorkoutFormExercise } from 'src/interfaces/workout-form';
 import CreateExerciseModal from '../create-exercise-modal/create-exercise-modal';
 import ModalExerciseItem from './modal-exercise-item';
@@ -18,7 +18,7 @@ import NoExercisesDisplay from './no-exercises-display';
 interface Props {
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
-    exercisesInWorkout: WorkoutFormExercise[];
+    exercisesInWorkout: WorkoutFormExercise[] | ICreateWorkoutTemplateExercise[];
     addExercises: (exercises: Set<ExerciseForWorkout>) => void;
 }
 

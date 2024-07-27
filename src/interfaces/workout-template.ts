@@ -1,3 +1,4 @@
+import type { SetType } from './set-type';
 import type { WorkoutFormSet } from './workout-form';
 
 export interface WorkoutTemplate {
@@ -15,6 +16,7 @@ export interface WorkoutTemplateExercise {
 }
 
 export interface WorkoutTemplateSet {
-    setType: 'working' | 'warmup';
+    id: string;
+    setType: SetType;
     order: number;
 }

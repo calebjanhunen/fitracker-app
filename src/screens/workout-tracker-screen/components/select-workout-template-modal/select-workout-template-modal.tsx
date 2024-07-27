@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { type StackNavigationProp } from '@react-navigation/stack';
 import { Button, Layout, List, Modal, Text, useStyleSheet } from '@ui-kitten/components';
 import React, { type Dispatch, type SetStateAction } from 'react';
 import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Spacer } from 'src/components';
 import { useGetWorkoutTemplates } from 'src/hooks/api/workout-templates/useGetworkoutTemplates';
 import type { WorkoutTemplate } from 'src/interfaces';
+import type { WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import WorkoutTemplateItem from './workout-template-item';
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
     selectedWorkoutTemplate: WorkoutTemplate | null;
     setSelectedWorkoutTemplate: Dispatch<SetStateAction<WorkoutTemplate | null>>;
     goToWorkoutTrackerFormScreen: () => void;
+    navigation: StackNavigationProp<WorkoutTrackerStackParamList>;
 }
 
 export default function SelectWorkoutTemplateModal({
@@ -22,6 +25,7 @@ export default function SelectWorkoutTemplateModal({
     selectedWorkoutTemplate,
     setSelectedWorkoutTemplate,
     goToWorkoutTrackerFormScreen,
+    navigation,
 }: Props): React.ReactElement {
     const styles = useStyleSheet(themedStyles);
     const { workoutTemplates, isLoading, error } = useGetWorkoutTemplates();
@@ -40,6 +44,12 @@ export default function SelectWorkoutTemplateModal({
         />
     );
 
+    function handleGoToCreateWorkoutTemplateFormScreen(): void {
+        setVisible(false);
+        navigation.navigate('CreateWorkoutTemplate');
+        console.log('here');
+    }
+
     return (
         <Modal
             visible={visible}
@@ -53,6 +63,12 @@ export default function SelectWorkoutTemplateModal({
                         <Ionicons size={24} name='close-outline' />
                     </TouchableOpacity>
                     <Text category='h3'>Templates</Text>
+                    <TouchableOpacity
+                        style={styles.openBtn}
+                        onPress={handleGoToCreateWorkoutTemplateFormScreen}
+                    >
+                        <Ionicons size={24} name='add-outline' color={'white'} />
+                    </TouchableOpacity>
                 </View>
                 <Button
                     size='small'
@@ -101,7 +117,7 @@ const themedStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
-        // justifyContent: 'space-between',
+        justifyContent: 'space-between',
         // paddingHorizontal: 16,
     },
     templateList: {
@@ -110,6 +126,12 @@ const themedStyles = StyleSheet.create({
     },
     closeBtn: {
         backgroundColor: 'color-basic-500',
+        paddingVertical: 2,
+        paddingHorizontal: 4,
+        borderRadius: 5,
+    },
+    openBtn: {
+        backgroundColor: 'color-primary-500',
         paddingVertical: 2,
         paddingHorizontal: 4,
         borderRadius: 5,

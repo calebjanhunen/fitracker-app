@@ -3,6 +3,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import type { WorkoutTemplate } from 'src/interfaces';
+import CreateWorkoutTemplate from 'src/screens/workout-tracker-screen/screens/create-workout-template-form/create-workout-template.screen';
 import WorkoutTrackerFormScreen from 'src/screens/workout-tracker-screen/screens/workout-tracker-form.screen';
 import WorkoutTrackerHomeScreen from 'src/screens/workout-tracker-screen/screens/workout-tracker-home.screen';
 
@@ -12,6 +13,7 @@ export type WorkoutTrackerStackParamList = {
     WorkoutTrackerForm: {
         selectedWorkoutTemplate: WorkoutTemplate | null;
     };
+    CreateWorkoutTemplate: undefined;
 };
 
 const Stack = createStackNavigator<WorkoutTrackerStackParamList>();
@@ -29,6 +31,7 @@ export default function WorkoutTrackerNavigation(): React.ReactElement {
                 component={WorkoutTrackerFormScreen}
                 options={() => ({})}
             />
+            <Stack.Screen name='CreateWorkoutTemplate' component={CreateWorkoutTemplate} />
         </Stack.Navigator>
     );
 }
