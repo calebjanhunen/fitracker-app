@@ -1,3 +1,5 @@
+import type { WorkoutFormSet } from './workout-form';
+
 export interface WorkoutTemplate {
     id: string;
     name: string;
@@ -9,6 +11,7 @@ export interface WorkoutTemplateExercise {
     name: string;
     order: number;
     sets: WorkoutTemplateSet[];
+    previousSets: WorkoutFormSet[];
 }
 
 export interface WorkoutTemplateSet {

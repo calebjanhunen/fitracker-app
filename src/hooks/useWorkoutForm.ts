@@ -128,12 +128,12 @@ export function useWorkoutForm(workoutTemplate: WorkoutTemplate | null): IUseWor
     }
 
     function transformWorkoutTemplateExerciseForWorkout(
-        exercise: WorkoutTemplateExercise
+        workoutTemplateExercise: WorkoutTemplateExercise
     ): WorkoutFormExercise {
         return {
-            name: exercise.name,
-            id: exercise.id,
-            sets: exercise.sets.map((set) => {
+            name: workoutTemplateExercise.name,
+            id: workoutTemplateExercise.id,
+            sets: workoutTemplateExercise.sets.map((set) => {
                 return {
                     setOrder: set.order,
                     id: uuid.v4().toString(),
@@ -142,7 +142,7 @@ export function useWorkoutForm(workoutTemplate: WorkoutTemplate | null): IUseWor
                     rpe: 0,
                 };
             }),
-            previousSets: [],
+            previousSets: workoutTemplateExercise.previousSets ?? [],
         };
     }
 
