@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { type StackScreenProps } from '@react-navigation/stack';
 import { Button, Input } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { ActivityIndicator, Alert, View } from 'react-native';
 import DraggableFlatList, {
     type DragEndParams,
     type RenderItemParams,
@@ -17,6 +17,7 @@ import type { ICreateWorkoutTemplateExercise } from 'src/interfaces';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import AddExerciseModal from '../../components/add-exercise-modal/add-exercise-modal';
 import WorkoutTemplateExercise from './components/workout-template-exercise';
+import { useCreateWorkoutTemplate } from 'src/hooks/api/workout-templates/useCreateWorkoutTemplate';
 
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'CreateWorkoutTemplate'>;
 
@@ -32,7 +33,9 @@ export default function CreateWorkoutTemplate({ navigation }: Props): React.Reac
         clearWorkoutTemplate,
         reorderExercises,
     } = useCreateWorkoutTemplateForm();
+    const {isSaving, createWorkoutTemplate} = useCreateWorkoutTemplate();
 
+    // Add button for saving workout template to header
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -47,15 +50,35 @@ export default function CreateWorkoutTemplate({ navigation }: Props): React.Reac
                         size='small'
                         status='success'
                         onPress={() => handleFinishWorkout()}
-                        // disabled={isSaving}
+                        disabled={isSaving}
                     >
-                        {/* {isSaving ? <ActivityIndicator /> : 'Finish Workout'} */}
-                        Save Workout Template
+                        {isSaving ? <ActivityIndicator /> : 'Save Template'}
                     </Button>
                 </View>
             ),
         });
-    }, [navigation, workoutTemplate /* add isSaving from useCreateWOrkoutTEmplate */]);
+    }, [navigation, workoutTemplate, isSaving]);
+
+    // Add listener to back button in header
+    useEffect(() => {
+        const beforeRemoveListener = navigation.addListener('beforeRemove', e => {
+            if (isSaving) return;
+            e.preventDefault();
+
+            Alert.alert(
+                'Are you sure you want to go back?',
+                'This will clear the workout template and any progress will be lost.',
+                [
+                    {text: 'No', style: 'cancel', onPress: () => {}},
+                    {text: 'Yes', style: 'destructive', onPress: () => {
+                        clearWorkoutTemplate();
+                        navigation.dispatch(e.data.action)
+                    }},
+                ]
+            )
+        })
+        return beforeRemoveListener;
+    }, [navigation, isSaving])
 
     const { keyboardHeight } = useKeyboard();
 
@@ -80,9 +103,6 @@ export default function CreateWorkoutTemplate({ navigation }: Props): React.Reac
                 Add Exercise
             </Button>
             <Spacer size='spacing-3' />
-            <Button status='danger' size='small' onPress={handleCancelWorkout}>
-                Cancel Workout
-            </Button>
             <Spacer size='spacing-3' />
             <View style={{ height: keyboardHeight }} />
             <Spacer size='spacing-8' />
@@ -90,13 +110,8 @@ export default function CreateWorkoutTemplate({ navigation }: Props): React.Reac
         </View>
     );
 
-    function handleCancelWorkout(): void {
-        clearWorkoutTemplate();
-        navigation.goBack();
-    }
-
     function handleFinishWorkout(): void {
-        // createWorkout(workout);
+        createWorkoutTemplate(workoutTemplate);
     }
 
     function handleDragEnd({ data }: DragEndParams<ICreateWorkoutTemplateExercise>): void {

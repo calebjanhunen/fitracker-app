@@ -47,7 +47,6 @@ export default function SelectWorkoutTemplateModal({
     function handleGoToCreateWorkoutTemplateFormScreen(): void {
         setVisible(false);
         navigation.navigate('CreateWorkoutTemplate');
-        console.log('here');
     }
 
     return (
