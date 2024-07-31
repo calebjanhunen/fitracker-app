@@ -6,8 +6,13 @@ export const workoutTemplatesApi = {
         const response = await API.get<WorkoutTemplate[]>('/workout-templates');
         return response.data;
     },
-    saveWorkoutTemplate: async function(workoutTemplate: ICreateWorkoutTemplate): Promise<WorkoutTemplate> {
+    saveWorkoutTemplate: async function (
+        workoutTemplate: ICreateWorkoutTemplate
+    ): Promise<WorkoutTemplate> {
         const response = await API.post<WorkoutTemplate>('/workout-templates', workoutTemplate);
         return response.data;
-    }
+    },
+    deleteWorkoutTemplate: async function (id: string): Promise<void> {
+        await API.delete(`/workout-templates/${id}`);
+    },
 };

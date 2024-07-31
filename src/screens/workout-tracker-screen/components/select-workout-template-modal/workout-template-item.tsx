@@ -3,6 +3,7 @@ import { List, Text, useTheme } from '@ui-kitten/components';
 import React, { type Dispatch, type SetStateAction } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MoreOptionsMenu, type MoreOptionsMenuItem } from 'src/components';
+import { useDeleteWorkoutTemplate } from 'src/hooks/api/workout-templates/useDeleteWorkoutTemplate';
 import type { WorkoutTemplate, WorkoutTemplateExercise } from 'src/interfaces';
 
 interface Props {
@@ -19,6 +20,7 @@ export default function WorkoutTemplateItem({
     setSelectedWT,
 }: Props): React.ReactElement {
     const theme = useTheme();
+    const { deleteWorkoutTemplate } = useDeleteWorkoutTemplate();
     const menuItems: MoreOptionsMenuItem[] = [
         {
             onSelect: () => {},
@@ -27,7 +29,7 @@ export default function WorkoutTemplateItem({
             iconColor: 'color-primary-500',
         },
         {
-            onSelect: () => {},
+            onSelect: () => deleteWorkoutTemplate(workoutTemplate.id),
             text: 'Delete',
             icon: 'trash',
             iconColor: 'color-danger-500',
