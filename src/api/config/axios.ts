@@ -7,6 +7,12 @@ import { getApiUrl } from './get-api-url';
 const baseUrl = getApiUrl();
 const port: string = Constants.expoConfig?.extra?.apiPort;
 
+interface ErrorResponse {
+    message: string;
+    error: string;
+    statusCode: number;
+}
+
 export const API = axios.create({
     baseURL: `${baseUrl}:${port}/api`,
     headers: {
@@ -33,9 +39,10 @@ API.interceptors.response.use(
     (response) => {
         return response;
     },
-    async (error: AxiosError) => {
+    async (error: AxiosError<ErrorResponse>) => {
         logger.error(error);
-        return await Promise.reject(error);
+        const errResponse = new Error(error.response?.data?.message);
+        return await Promise.reject(errResponse);
     }
 );
 

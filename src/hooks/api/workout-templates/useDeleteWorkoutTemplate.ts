@@ -16,7 +16,7 @@ export function useDeleteWorkoutTemplate(): IUseDeleteWorkout {
             await queryClient.invalidateQueries({ queryKey: WORKOUT_TEMPLATES_QUERY_KEY });
         },
         onError: (e) => {
-            Alert.alert('Could not delete Workout.', e.message);
+            Alert.alert('Could not delete workout template.', e.message);
         },
     });
 
