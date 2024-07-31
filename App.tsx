@@ -12,9 +12,9 @@ import { StatusBar } from 'react-native';
 import { queryClient } from 'src/api/config/react-query.config';
 import BaseNavigation from 'src/navigation/base-navigation';
 import { AuthProvider } from 'src/state/context/auth-context';
+import { UserProvider } from 'src/state/context/user-context';
 import { WorkoutFormProvider } from 'src/state/context/workout-form-context';
 import { WorkoutInProgressProvider } from 'src/state/context/workout-in-progress-context';
-import { UserProvider } from 'src/state/context/user-context';
 
 export default function App(): React.ReactElement | null {
     return (

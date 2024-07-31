@@ -13,9 +13,10 @@ export interface MoreOptionsMenuItem {
 }
 interface Props {
     menuItems: MoreOptionsMenuItem[];
+    overModal?: boolean;
 }
 
-export default function MoreOptionsMenu({ menuItems }: Props): React.ReactElement {
+export default function MoreOptionsMenu({ menuItems, overModal }: Props): React.ReactElement {
     const theme = useTheme();
     const menuOptions = menuItems.map((menuItem, i) => (
         <MenuOption
@@ -60,6 +61,8 @@ export default function MoreOptionsMenu({ menuItems }: Props): React.ReactElemen
                         paddingHorizontal: 8,
                         flexDirection: 'column',
                         gap: 4,
+                        position: overModal ? 'absolute' : 'relative',
+                        top: overModal ? -100 : 0,
                     }}
                 >
                     {menuOptions}

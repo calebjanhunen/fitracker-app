@@ -4,6 +4,7 @@ import { type StackNavigationProp } from '@react-navigation/stack';
 import { Button, Layout, List, Modal, Text, useStyleSheet } from '@ui-kitten/components';
 import React, { type Dispatch, type SetStateAction } from 'react';
 import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { MenuProvider } from 'react-native-popup-menu';
 import { Spacer } from 'src/components';
 import { useGetWorkoutTemplates } from 'src/hooks/api/workout-templates/useGetworkoutTemplates';
 import type { WorkoutTemplate } from 'src/interfaces';
@@ -54,48 +55,56 @@ export default function SelectWorkoutTemplateModal({
             visible={visible}
             onBackdropPress={() => setVisible(false)}
             backdropStyle={styles.backdrop}
-            style={{ flex: 1 }}
+            // style={{ flex: 1 }}
         >
-            <Layout style={styles.modalContainer}>
-                <View style={styles.header}>
-                    <TouchableOpacity style={styles.closeBtn} onPress={() => setVisible(false)}>
-                        <Ionicons size={24} name='close-outline' />
-                    </TouchableOpacity>
-                    <Text category='h3'>Templates</Text>
-                    <TouchableOpacity
-                        style={styles.openBtn}
-                        onPress={handleGoToCreateWorkoutTemplateFormScreen}
+            <MenuProvider
+                skipInstanceCheck
+                style={{
+                    flex: 1,
+                    // justifyContent: 'flex-end',
+                }}
+            >
+                <Layout style={styles.modalContainer}>
+                    <View style={styles.header}>
+                        <TouchableOpacity style={styles.closeBtn} onPress={() => setVisible(false)}>
+                            <Ionicons size={24} name='close-outline' />
+                        </TouchableOpacity>
+                        <Text category='h3'>Templates</Text>
+                        <TouchableOpacity
+                            style={styles.openBtn}
+                            onPress={handleGoToCreateWorkoutTemplateFormScreen}
+                        >
+                            <Ionicons size={24} name='add-outline' color={'white'} />
+                        </TouchableOpacity>
+                    </View>
+                    <Button
+                        size='small'
+                        disabled={!selectedWorkoutTemplate}
+                        onPress={goToWorkoutTrackerFormScreen}
                     >
-                        <Ionicons size={24} name='add-outline' color={'white'} />
-                    </TouchableOpacity>
-                </View>
-                <Button
-                    size='small'
-                    disabled={!selectedWorkoutTemplate}
-                    onPress={goToWorkoutTrackerFormScreen}
-                >
-                    Start Workout
-                </Button>
-                <Spacer size='spacing-4' />
-                {isLoading ? (
-                    <ActivityIndicator />
-                ) : error ? (
-                    <Text>Error getting workout templates</Text>
-                ) : workoutTemplates ? (
-                    <List
-                        style={styles.templateList}
-                        data={workoutTemplates}
-                        numColumns={2}
-                        key={'flatlist-2'} // change this when changing numColumns
-                        renderItem={renderItem}
-                        ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
-                        columnWrapperStyle={{ justifyContent: 'space-between' }}
-                        keyExtractor={(item) => item.id}
-                    />
-                ) : (
-                    <Text>No Workout Templates</Text>
-                )}
-            </Layout>
+                        Start Workout
+                    </Button>
+                    <Spacer size='spacing-4' />
+                    {isLoading ? (
+                        <ActivityIndicator />
+                    ) : error ? (
+                        <Text>Error getting workout templates</Text>
+                    ) : workoutTemplates ? (
+                        <List
+                            style={styles.templateList}
+                            data={workoutTemplates}
+                            numColumns={2}
+                            key={'flatlist-2'} // change this when changing numColumns
+                            renderItem={renderItem}
+                            ItemSeparatorComponent={() => <Spacer size='spacing-4' />}
+                            columnWrapperStyle={{ justifyContent: 'space-between' }}
+                            keyExtractor={(item) => item.id}
+                        />
+                    ) : (
+                        <Text>No Workout Templates</Text>
+                    )}
+                </Layout>
+            </MenuProvider>
         </Modal>
     );
 }
