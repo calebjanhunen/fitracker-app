@@ -11,6 +11,7 @@ interface Props {
     index: number;
     isSelected: boolean;
     setSelectedWT: Dispatch<SetStateAction<WorkoutTemplate | null>>;
+    goToCreateWorkoutTemplateScreen: (workoutTemplateToEdit: WorkoutTemplate) => void;
 }
 
 export default function WorkoutTemplateItem({
@@ -18,12 +19,13 @@ export default function WorkoutTemplateItem({
     index,
     isSelected,
     setSelectedWT,
+    goToCreateWorkoutTemplateScreen,
 }: Props): React.ReactElement {
     const theme = useTheme();
     const { deleteWorkoutTemplate } = useDeleteWorkoutTemplate();
     const menuItems: MoreOptionsMenuItem[] = [
         {
-            onSelect: () => {},
+            onSelect: () => goToCreateWorkoutTemplateScreen(workoutTemplate),
             text: 'Edit Template',
             icon: 'create-outline',
             iconColor: 'color-primary-500',

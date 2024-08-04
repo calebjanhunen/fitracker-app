@@ -13,7 +13,9 @@ export type WorkoutTrackerStackParamList = {
     WorkoutTrackerForm: {
         selectedWorkoutTemplate: WorkoutTemplate | null;
     };
-    CreateWorkoutTemplate: undefined;
+    CreateWorkoutTemplate: {
+        workoutTemplateToEdit: WorkoutTemplate | null;
+    };
 };
 
 const Stack = createStackNavigator<WorkoutTrackerStackParamList>();

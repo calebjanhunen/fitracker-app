@@ -42,12 +42,17 @@ export default function SelectWorkoutTemplateModal({
             index={index}
             setSelectedWT={setSelectedWorkoutTemplate}
             isSelected={selectedWorkoutTemplate?.id === item.id}
+            goToCreateWorkoutTemplateScreen={handleGoToCreateWorkoutTemplateFormScreen}
         />
     );
 
-    function handleGoToCreateWorkoutTemplateFormScreen(): void {
+    function handleGoToCreateWorkoutTemplateFormScreen(
+        workoutTemplateToEdit?: WorkoutTemplate
+    ): void {
         setVisible(false);
-        navigation.navigate('CreateWorkoutTemplate');
+        navigation.navigate('CreateWorkoutTemplate', {
+            workoutTemplateToEdit: workoutTemplateToEdit ?? null,
+        });
     }
 
     return (
@@ -55,15 +60,8 @@ export default function SelectWorkoutTemplateModal({
             visible={visible}
             onBackdropPress={() => setVisible(false)}
             backdropStyle={styles.backdrop}
-            // style={{ flex: 1 }}
         >
-            <MenuProvider
-                skipInstanceCheck
-                style={{
-                    flex: 1,
-                    // justifyContent: 'flex-end',
-                }}
-            >
+            <MenuProvider skipInstanceCheck>
                 <Layout style={styles.modalContainer}>
                     <View style={styles.header}>
                         <TouchableOpacity style={styles.closeBtn} onPress={() => setVisible(false)}>
@@ -72,7 +70,7 @@ export default function SelectWorkoutTemplateModal({
                         <Text category='h3'>Templates</Text>
                         <TouchableOpacity
                             style={styles.openBtn}
-                            onPress={handleGoToCreateWorkoutTemplateFormScreen}
+                            onPress={() => handleGoToCreateWorkoutTemplateFormScreen()}
                         >
                             <Ionicons size={24} name='add-outline' color={'white'} />
                         </TouchableOpacity>

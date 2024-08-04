@@ -11,17 +11,18 @@ import DraggableFlatList, {
 } from 'react-native-draggable-flatlist';
 
 import { Spacer } from 'src/components';
+import { useCreateWorkoutTemplate } from 'src/hooks/api/workout-templates/useCreateWorkoutTemplate';
 import { useCreateWorkoutTemplateForm } from 'src/hooks/useCreateWorkoutTemplateForm';
 import { useKeyboard } from 'src/hooks/useKeyboard';
 import type { ICreateWorkoutTemplateExercise } from 'src/interfaces';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import AddExerciseModal from '../../components/add-exercise-modal/add-exercise-modal';
 import WorkoutTemplateExercise from './components/workout-template-exercise';
-import { useCreateWorkoutTemplate } from 'src/hooks/api/workout-templates/useCreateWorkoutTemplate';
 
 type Props = StackScreenProps<WorkoutTrackerStackParamList, 'CreateWorkoutTemplate'>;
 
-export default function CreateWorkoutTemplate({ navigation }: Props): React.ReactElement {
+export default function CreateWorkoutTemplate({ navigation, route }: Props): React.ReactElement {
+    console.log(route.params.workoutTemplateToEdit);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const {
         workoutTemplate,
@@ -33,7 +34,7 @@ export default function CreateWorkoutTemplate({ navigation }: Props): React.Reac
         clearWorkoutTemplate,
         reorderExercises,
     } = useCreateWorkoutTemplateForm();
-    const {isSaving, createWorkoutTemplate} = useCreateWorkoutTemplate();
+    const { isSaving, createWorkoutTemplate } = useCreateWorkoutTemplate();
 
     // Add button for saving workout template to header
     useEffect(() => {
@@ -61,7 +62,7 @@ export default function CreateWorkoutTemplate({ navigation }: Props): React.Reac
 
     // Add listener to back button in header
     useEffect(() => {
-        const beforeRemoveListener = navigation.addListener('beforeRemove', e => {
+        const beforeRemoveListener = navigation.addListener('beforeRemove', (e) => {
             if (isSaving) return;
             e.preventDefault();
 
@@ -69,16 +70,20 @@ export default function CreateWorkoutTemplate({ navigation }: Props): React.Reac
                 'Are you sure you want to go back?',
                 'This will clear the workout template and any progress will be lost.',
                 [
-                    {text: 'No', style: 'cancel', onPress: () => {}},
-                    {text: 'Yes', style: 'destructive', onPress: () => {
-                        clearWorkoutTemplate();
-                        navigation.dispatch(e.data.action)
-                    }},
+                    { text: 'No', style: 'cancel', onPress: () => {} },
+                    {
+                        text: 'Yes',
+                        style: 'destructive',
+                        onPress: () => {
+                            clearWorkoutTemplate();
+                            navigation.dispatch(e.data.action);
+                        },
+                    },
                 ]
-            )
-        })
+            );
+        });
         return beforeRemoveListener;
-    }, [navigation, isSaving])
+    }, [navigation, isSaving]);
 
     const { keyboardHeight } = useKeyboard();
 
