@@ -2,13 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useMutation } from '@tanstack/react-query';
 import { Alert } from 'react-native';
 import { queryClient } from 'src/api/config/react-query.config';
-import type { ICreateWorkoutTemplate } from 'src/interfaces';
-import { WORKOUT_TEMPLATES_QUERY_KEY } from './useGetworkoutTemplates';
 import { workoutTemplatesApi } from 'src/api/workout-templates/workout-templates-api';
+import type { IWorkoutTemplateForm } from 'src/interfaces';
+import { WORKOUT_TEMPLATES_QUERY_KEY } from './useGetworkoutTemplates';
 
 interface IUseCreateWorkout {
     isSaving: boolean;
-    createWorkoutTemplate: (workoutTemplate: ICreateWorkoutTemplate) => void;
+    createWorkoutTemplate: (workoutTemplate: IWorkoutTemplateForm) => void;
 }
 
 export function useCreateWorkoutTemplate(): IUseCreateWorkout {

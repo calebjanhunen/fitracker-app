@@ -14,7 +14,7 @@ import { Spacer } from 'src/components';
 import { useCreateWorkoutTemplate } from 'src/hooks/api/workout-templates/useCreateWorkoutTemplate';
 import { useCreateWorkoutTemplateForm } from 'src/hooks/useCreateWorkoutTemplateForm';
 import { useKeyboard } from 'src/hooks/useKeyboard';
-import type { ICreateWorkoutTemplateExercise } from 'src/interfaces';
+import type { IWorkoutTemplateFormExercise } from 'src/interfaces';
 import { type WorkoutTrackerStackParamList } from 'src/navigation/workout-tracker-navigation';
 import AddExerciseModal from '../../components/add-exercise-modal/add-exercise-modal';
 import WorkoutTemplateExercise from './components/workout-template-exercise';
@@ -91,7 +91,7 @@ export default function CreateWorkoutTemplate({ navigation, route }: Props): Rea
         item,
         drag,
         isActive,
-    }: RenderItemParams<ICreateWorkoutTemplateExercise>): React.ReactElement => (
+    }: RenderItemParams<IWorkoutTemplateFormExercise>): React.ReactElement => (
         <WorkoutTemplateExercise
             exercise={item}
             deleteExercise={deleteExercise}
@@ -119,7 +119,7 @@ export default function CreateWorkoutTemplate({ navigation, route }: Props): Rea
         createWorkoutTemplate(workoutTemplate);
     }
 
-    function handleDragEnd({ data }: DragEndParams<ICreateWorkoutTemplateExercise>): void {
+    function handleDragEnd({ data }: DragEndParams<IWorkoutTemplateFormExercise>): void {
         reorderExercises(data);
     }
 
@@ -143,7 +143,7 @@ export default function CreateWorkoutTemplate({ navigation, route }: Props): Rea
                 style={{ backgroundColor: 'transparent', paddingHorizontal: 16 }}
                 data={workoutTemplate.exercises}
                 renderItem={renderExercise}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.exerciseId}
                 ListFooterComponent={renderListFooter}
                 onDragEnd={handleDragEnd}
             />

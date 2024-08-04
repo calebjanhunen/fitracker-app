@@ -5,11 +5,11 @@ import { Button, Layout, List, Text } from '@ui-kitten/components';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { MoreOptionsMenu, Spacer, type MoreOptionsMenuItem } from 'src/components';
-import type { ICreateWorkoutTemplateExercise, SetType, WorkoutTemplateSet } from 'src/interfaces';
+import type { IWorkoutTemplateFormExercise, SetType, WorkoutTemplateSet } from 'src/interfaces';
 import WorkoutTemplateSetComponent from './workout-template-set';
 
 interface Props {
-    exercise: ICreateWorkoutTemplateExercise;
+    exercise: IWorkoutTemplateFormExercise;
     deleteExercise: (exerciseId: string) => void;
     addSet: (exerciseId: string, setOrder: number, setType: SetType) => void;
     deleteSet: (exerciseId: string, setId: string) => void;
@@ -49,13 +49,13 @@ const WorkoutTemplateExercise = memo(function WorkoutTemplateExercise({
         <WorkoutTemplateSetComponent
             set={item}
             order={item.order}
-            exerciseId={exercise.id}
+            exerciseId={exercise.exerciseId}
             deleteSet={deleteSet}
         />
     );
 
     function handleDeleteExercise(): void {
-        deleteExercise(exercise.id);
+        deleteExercise(exercise.exerciseId);
     }
 
     function handleStartReorder(): void {
@@ -100,7 +100,7 @@ const WorkoutTemplateExercise = memo(function WorkoutTemplateExercise({
             <Button
                 size='tiny'
                 appearance='outline'
-                onPress={() => addSet(exercise.id, exercise.sets.length + 1, 'working')}
+                onPress={() => addSet(exercise.exerciseId, exercise.sets.length + 1, 'working')}
             >
                 Add Set
             </Button>

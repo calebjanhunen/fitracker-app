@@ -2,9 +2,10 @@ import { useCallback, useReducer } from 'react';
 
 import type {
     ExerciseForWorkout,
-    ICreateWorkoutTemplate,
-    ICreateWorkoutTemplateExercise,
+    IWorkoutTemplateForm,
+    IWorkoutTemplateFormExercise,
     SetType,
+    WorkoutTemplate,
 } from 'src/interfaces';
 import {
     CreateWorkoutTemplateActionTypes,
@@ -12,14 +13,14 @@ import {
 } from 'src/state/reducers/create-workoute-template-reducer';
 
 interface IUseCreateWorkoutTemplate {
-    workoutTemplate: ICreateWorkoutTemplate;
+    workoutTemplate: IWorkoutTemplateForm;
     updateWorkoutTemplateName: (text: string) => void;
     addExercises: (exercises: Set<ExerciseForWorkout>) => void;
     deleteExercise: (exerciseId: string) => void;
     addSet: (exerciseId: string, setOrder: number, setType: SetType) => void;
     deleteSet: (exerciseId: string, setId: string) => void;
     clearWorkoutTemplate: () => void;
-    reorderExercises: (exercises: ICreateWorkoutTemplateExercise[]) => void;
+    reorderExercises: (exercises: IWorkoutTemplateFormExercise[]) => void;
 }
 
 export function useCreateWorkoutTemplateForm(): IUseCreateWorkoutTemplate {
@@ -58,7 +59,7 @@ export function useCreateWorkoutTemplateForm(): IUseCreateWorkoutTemplate {
         dispatch({ type: CreateWorkoutTemplateActionTypes.DELETE_SET, exerciseId, setId });
     }, []);
 
-    const reorderExercises = useCallback((exercises: ICreateWorkoutTemplateExercise[]) => {
+    const reorderExercises = useCallback((exercises: IWorkoutTemplateFormExercise[]) => {
         dispatch({ type: CreateWorkoutTemplateActionTypes.REORDER_EXERCISES, exercises });
     }, []);
 
@@ -69,11 +70,12 @@ export function useCreateWorkoutTemplateForm(): IUseCreateWorkoutTemplate {
     function transformExerciseForWorkoutToWorkoutTemplateExercise(
         exercise: ExerciseForWorkout,
         index: number
-    ): ICreateWorkoutTemplateExercise {
+    ): IWorkoutTemplateFormExercise {
+        const exerciseLen: number = workoutTemplate.exercises.length;
         return {
             name: exercise.name,
-            id: exercise.id,
-            order: workoutTemplate.exercises.length + index + 1,
+            exerciseId: exercise.id,
+            order: exerciseLen + index + 1,
             sets: [],
         };
     }

@@ -1,7 +1,7 @@
 import uuid from 'react-native-uuid';
 import type {
-    ICreateWorkoutTemplate,
-    ICreateWorkoutTemplateExercise,
+    IWorkoutTemplateForm,
+    IWorkoutTemplateFormExercise,
     SetType,
     WorkoutTemplateSet,
 } from 'src/interfaces';
@@ -21,7 +21,7 @@ export type CreateWorkoutTemplateActions =
     | { type: CreateWorkoutTemplateActionTypes.UPDATE_NAME; name: string }
     | {
           type: CreateWorkoutTemplateActionTypes.ADD_EXERCISES;
-          payload: ICreateWorkoutTemplateExercise[];
+          payload: IWorkoutTemplateFormExercise[];
       }
     | { type: CreateWorkoutTemplateActionTypes.DELETE_EXERCISE; payload: string }
     | {
@@ -39,13 +39,13 @@ export type CreateWorkoutTemplateActions =
     | { type: CreateWorkoutTemplateActionTypes.CLEAR_WORKOUT }
     | {
           type: CreateWorkoutTemplateActionTypes.REORDER_EXERCISES;
-          exercises: ICreateWorkoutTemplateExercise[];
+          exercises: IWorkoutTemplateFormExercise[];
       };
 
 export function reducer(
-    workoutTemplate: ICreateWorkoutTemplate,
+    workoutTemplate: IWorkoutTemplateForm,
     action: CreateWorkoutTemplateActions
-): ICreateWorkoutTemplate {
+): IWorkoutTemplateForm {
     switch (action.type) {
         case CreateWorkoutTemplateActionTypes.UPDATE_NAME:
             return { ...workoutTemplate, name: action.name };
@@ -58,7 +58,7 @@ export function reducer(
             return {
                 ...workoutTemplate,
                 exercises: workoutTemplate.exercises.filter(
-                    (exercise) => exercise.id !== action.payload
+                    (exercise) => exercise.exerciseId !== action.payload
                 ),
             };
         case CreateWorkoutTemplateActionTypes.REORDER_EXERCISES:
@@ -75,7 +75,7 @@ export function reducer(
             return {
                 ...workoutTemplate,
                 exercises: workoutTemplate.exercises.map((exercise) =>
-                    exercise.id === action.exerciseId
+                    exercise.exerciseId === action.exerciseId
                         ? { ...exercise, sets: [...exercise.sets, newSet] }
                         : exercise
                 ),
@@ -85,7 +85,7 @@ export function reducer(
             return {
                 ...workoutTemplate,
                 exercises: workoutTemplate.exercises.map((exercise) => {
-                    if (exercise.id === action.exerciseId) {
+                    if (exercise.exerciseId === action.exerciseId) {
                         return {
                             ...exercise,
                             sets: exercise.sets.filter((set) => set.id !== action.setId),

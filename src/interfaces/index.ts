@@ -1,5 +1,4 @@
 export * from './api-responses/pagination-response';
-export * from './create-workout-template';
 export * from './exercise';
 export * from './exercises-for-workout';
 export * from './set-type';
@@ -7,3 +6,4 @@ export * from './user';
 export * from './workout';
 export * from './workout-form';
 export * from './workout-template';
+export * from './workout-template-form';
