@@ -9,6 +9,7 @@ export interface WorkoutTemplate {
 
 export interface WorkoutTemplateExercise {
     id: string;
+    exerciseId: string;
     name: string;
     order: number;
     sets: WorkoutTemplateSet[];

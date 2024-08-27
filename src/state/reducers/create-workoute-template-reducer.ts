@@ -2,8 +2,8 @@ import uuid from 'react-native-uuid';
 import type {
     IWorkoutTemplateForm,
     IWorkoutTemplateFormExercise,
+    IWorkoutTemplateFormSet,
     SetType,
-    WorkoutTemplateSet,
 } from 'src/interfaces';
 
 export enum CreateWorkoutTemplateActionTypes {
@@ -67,8 +67,8 @@ export function reducer(
                 exercises: action.exercises.map((e, index) => ({ ...e, order: index + 1 })),
             };
         case CreateWorkoutTemplateActionTypes.ADD_SET: {
-            const newSet: WorkoutTemplateSet = {
-                id: uuid.v4().toString(),
+            const newSet: IWorkoutTemplateFormSet = {
+                frontendId: uuid.v4().toString(),
                 order: action.setOrder,
                 setType: action.setType,
             };
@@ -88,7 +88,7 @@ export function reducer(
                     if (exercise.exerciseId === action.exerciseId) {
                         return {
                             ...exercise,
-                            sets: exercise.sets.filter((set) => set.id !== action.setId),
+                            sets: exercise.sets.filter((set) => set.frontendId !== action.setId),
                         };
                     }
                     return exercise;

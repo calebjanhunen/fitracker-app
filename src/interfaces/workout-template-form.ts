@@ -14,7 +14,8 @@ export interface IWorkoutTemplateFormExercise {
 }
 
 export interface IWorkoutTemplateFormSet {
-    id: string;
+    id?: string;
+    frontendId: string;
     setType: SetType;
     order: number;
 }

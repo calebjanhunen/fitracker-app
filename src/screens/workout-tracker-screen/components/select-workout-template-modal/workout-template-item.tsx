@@ -70,7 +70,7 @@ export default function WorkoutTemplateItem({
                 style={styles.exerciseList}
                 data={workoutTemplate.exercises}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.exerciseId}
             />
         </TouchableOpacity>
     );

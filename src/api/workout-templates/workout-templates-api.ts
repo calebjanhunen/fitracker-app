@@ -1,4 +1,4 @@
-import type { IWorkoutTemplateForm, WorkoutTemplate, WorkoutTemplateSet } from 'src/interfaces';
+import type { IWorkoutTemplateForm, SetType, WorkoutTemplate } from 'src/interfaces';
 import { API } from '../config/axios';
 
 interface IWorkoutTemplatePostRequest {
@@ -10,7 +10,12 @@ interface IWorkoutTemplateExercisePostRequest {
     exerciseId: string;
     name: string;
     order: number;
-    sets: WorkoutTemplateSet[];
+    sets: IWorkoutTemplateSetPostRequest[];
+}
+
+interface IWorkoutTemplateSetPostRequest {
+    setType: SetType;
+    order: number;
 }
 export const workoutTemplatesApi = {
     getWorkoutTemplates: async function (): Promise<WorkoutTemplate[]> {
@@ -26,7 +31,10 @@ export const workoutTemplatesApi = {
                 exerciseId: e.exerciseId,
                 order: e.order,
                 name: e.name,
-                sets: e.sets,
+                sets: e.sets.map((set) => ({
+                    setType: set.setType,
+                    order: set.order,
+                })),
             })),
         };
         const response = await API.post<WorkoutTemplate>(

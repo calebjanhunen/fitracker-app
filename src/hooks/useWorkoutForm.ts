@@ -132,7 +132,7 @@ export function useWorkoutForm(workoutTemplate?: WorkoutTemplate | null): IUseWo
     ): WorkoutFormExercise {
         return {
             name: workoutTemplateExercise.name,
-            id: workoutTemplateExercise.id,
+            id: workoutTemplateExercise.exerciseId,
             sets: workoutTemplateExercise.sets.map((set) => {
                 return {
                     setOrder: set.order,

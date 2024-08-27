@@ -48,7 +48,7 @@ const WorkoutTemplateSetComponent = memo(function WorkoutTemplateSetComponent({
             duration: 200,
             useNativeDriver: false,
         }).start(() => {
-            deleteSet(exerciseId, set.id);
+            deleteSet(exerciseId, set.frontendId);
         });
     }
 
