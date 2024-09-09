@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export default function WorkoutTracker() {
+export default function Home() {
     return (
         <View>
-            <Text>WorkoutTracker</Text>
+            <Text>Home</Text>
         </View>
     );
 }
