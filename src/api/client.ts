@@ -3,12 +3,12 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import getBaseUrl from './utils/GetBaseApiUrl';
 
 interface IErrorResponse {
-    message: string;
+    message: string | string[];
     error: string;
     statusCode: number;
 }
 
-export async function request(options: AxiosRequestConfig) {
+export async function request<T>(options: AxiosRequestConfig<T>) {
     function onSuccess(response: AxiosResponse) {
         return response.data;
     }

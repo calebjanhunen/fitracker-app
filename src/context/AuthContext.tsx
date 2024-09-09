@@ -9,6 +9,14 @@ interface Props {
 interface IAuthContext {
     accessToken: string | null;
     login: (username: string, password: string) => Promise<void>;
+    signup: (
+        username: string,
+        password: string,
+        confirmPassword: string,
+        email: string,
+        firstname: string,
+        lastname: string
+    ) => Promise<void>;
     logout: () => Promise<void>;
     loading: boolean;
     errorMsg: string;
@@ -17,6 +25,7 @@ interface IAuthContext {
 const AuthContext = createContext<IAuthContext>({
     accessToken: null,
     login: async () => {},
+    signup: async () => {},
     logout: async () => {},
     loading: false,
     errorMsg: '',
@@ -32,7 +41,7 @@ export function AuthProvider({ children }: Props) {
         if (accessToken) {
             router.replace('/(app)/WorkoutTracker');
         } else {
-            router.replace('/(auth)/Login');
+            router.replace('/(auth)/Signup');
         }
     }, [accessToken]);
 
@@ -49,12 +58,39 @@ export function AuthProvider({ children }: Props) {
         }
     }
 
+    async function signup(
+        username: string,
+        password: string,
+        confirmPassword: string,
+        email: string,
+        firstname: string,
+        lastname: string
+    ): Promise<void> {
+        setErrorMsg('');
+        setLoading(true);
+        try {
+            const response = await LoginService.signup(
+                username,
+                password,
+                confirmPassword,
+                email,
+                firstname,
+                lastname
+            );
+            setAccessToken(response.accessToken);
+        } catch (e) {
+            setErrorMsg(e.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     async function logout(): Promise<void> {
         setAccessToken(null);
     }
 
     return (
-        <AuthContext.Provider value={{ accessToken, login, logout, loading, errorMsg }}>
+        <AuthContext.Provider value={{ accessToken, login, signup, logout, loading, errorMsg }}>
             {children}
         </AuthContext.Provider>
     );

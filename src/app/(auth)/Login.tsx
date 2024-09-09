@@ -27,8 +27,13 @@ export default function Login() {
                             Fitracker
                         </H1>
                         <YStack flex={1} justifyContent='center' gap='$5'>
-                            <Input placeholder='Username' onChangeText={setUsername} />
-                            <Input placeholder='Password' onChangeText={setPassword} />
+                            <Input placeholder='Username' onChangeText={setUsername} size='$5' />
+                            <Input
+                                placeholder='Password'
+                                onChangeText={setPassword}
+                                size='$5'
+                                secureTextEntry={true}
+                            />
                             <Button
                                 marginTop='$5'
                                 onPress={async () => await login(username, password)}
