@@ -4,16 +4,12 @@ export default {
     expo: {
         name: 'fitracker',
         slug: 'fitracker',
-        extra: {
-            androidEmulatorApiUrl: process.env.ANDROID_EMULATOR_API_URL,
-            iosEmulatorApiUrl: process.env.IOS_EMULATOR_API_URL,
-            physicalDeviceApiUrl: process.env.PHYSICAL_DEVICE_API_URL,
-            apiPort: process.env.API_PORT,
-        },
+        plugins: ['expo-router', 'expo-font'],
+        scheme: 'fitracker',
         version: '1.0.0',
         orientation: 'portrait',
         icon: './assets/icon.png',
-        userInterfaceStyle: 'light',
+        userInterfaceStyle: 'automatic',
         splash: {
             image: './assets/splash.png',
             resizeMode: 'contain',
