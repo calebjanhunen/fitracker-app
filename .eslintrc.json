@@ -3,20 +3,24 @@
         "browser": true,
         "es2021": true
     },
-    "extends": [
-        "plugin:react/recommended",
-        "standard-with-typescript",
-        "prettier"
+    "extends": ["plugin:react/recommended", "standard-with-typescript", "prettier"],
+    "overrides": [
+        {
+            "files": ["**/*.tsx", "**/*.ts"],
+            "rules": {
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "@typescript-eslint/no-confusing-void-expression": "off",
+                "@typescript-eslint/no-misused-promises": "off",
+                "@typescript-eslint/consistent-type-imports": "off"
+            }
+        }
     ],
-    "overrides": [],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
         "project": "./tsconfig.json"
     },
-    "plugins": [
-        "react"
-    ],
+    "plugins": ["react"],
     "rules": {
         "key-spacing": "error",
         "@typescript-eslint/strict-boolean-expressions": 0
