@@ -1,13 +1,15 @@
 import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as LoginService from 'src/api/auth-service/login-service';
+import { useLocalStorage } from 'src/hooks/useLocalStorage';
+
+const ACCESS_TOKEN_STORAGE_KEY = 'access-token';
 
 interface Props {
     children: React.ReactNode;
 }
 
 interface IAuthContext {
-    accessToken: string | null;
     login: (username: string, password: string) => Promise<void>;
     signup: (
         username: string,
@@ -23,7 +25,6 @@ interface IAuthContext {
 }
 
 const AuthContext = createContext<IAuthContext>({
-    accessToken: null,
     login: async () => {},
     signup: async () => {},
     logout: async () => {},
@@ -32,25 +33,32 @@ const AuthContext = createContext<IAuthContext>({
 });
 
 export function AuthProvider({ children }: Props) {
+    const { getFromStorage, saveToStorage, removeFromStorage } = useLocalStorage();
     const router = useRouter();
-    const [accessToken, setAccessToken] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>('');
 
     useEffect(() => {
-        if (accessToken) {
-            router.replace('/(app)/WorkoutTracker');
-        } else {
-            router.replace('/(auth)/Signup');
-        }
-    }, [accessToken]);
+        getAccessTokenFromStorage()
+            .then((accessToken) => {
+                if (accessToken) {
+                    router.replace('/(app)/WorkoutTracker');
+                } else {
+                    router.replace('/(auth)/Signup');
+                }
+            })
+            .catch((e) => {
+                console.error('Error getting access token: ', e);
+            });
+    }, []);
 
     async function login(username: string, password: string): Promise<void> {
         setErrorMsg('');
         setLoading(true);
         try {
             const response = await LoginService.login(username, password);
-            setAccessToken(response.accessToken);
+            await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
+            router.replace('/(app)/WorkoutTracker');
         } catch (e) {
             setErrorMsg(e.message);
         } finally {
@@ -77,7 +85,8 @@ export function AuthProvider({ children }: Props) {
                 firstname,
                 lastname
             );
-            setAccessToken(response.accessToken);
+            await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
+            router.replace('/(app)/WorkoutTracker');
         } catch (e) {
             setErrorMsg(e.message);
         } finally {
@@ -86,11 +95,16 @@ export function AuthProvider({ children }: Props) {
     }
 
     async function logout(): Promise<void> {
-        setAccessToken(null);
+        await removeFromStorage(ACCESS_TOKEN_STORAGE_KEY);
+        router.replace('/(auth)/Signup');
+    }
+
+    async function getAccessTokenFromStorage(): Promise<string | null> {
+        return await getFromStorage(ACCESS_TOKEN_STORAGE_KEY);
     }
 
     return (
-        <AuthContext.Provider value={{ accessToken, login, signup, logout, loading, errorMsg }}>
+        <AuthContext.Provider value={{ login, signup, logout, loading, errorMsg }}>
             {children}
         </AuthContext.Provider>
     );
