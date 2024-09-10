@@ -23,7 +23,7 @@ export default function RootLayout() {
     return (
         <QueryClientProvider client={queryClient}>
             <TamaguiProvider config={config}>
-                <Theme name='green'>
+                <Theme name='light'>
                     <AuthProvider>
                         <Slot />
                     </AuthProvider>
