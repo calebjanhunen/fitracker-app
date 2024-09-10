@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as LoginService from 'src/api/auth-service/login-service';
-import { useLocalStorage } from 'src/hooks/useLocalStorage';
+import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 
 const ACCESS_TOKEN_STORAGE_KEY = 'access-token';
 

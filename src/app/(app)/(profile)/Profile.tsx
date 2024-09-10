@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { useAuth } from 'src/context/AuthContext';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import { Button } from 'tamagui';
 
 export default function Profile() {

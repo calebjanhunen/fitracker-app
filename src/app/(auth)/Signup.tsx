@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from 'src/context/AuthContext';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import {
     Button,
     H1,
