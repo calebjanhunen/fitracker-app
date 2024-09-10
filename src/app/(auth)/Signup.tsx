@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from 'src/context/AuthContext';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import {
     Button,
     H1,
@@ -40,14 +40,14 @@ export default function Signup() {
     }, [username, password, confirmPassword, email, firstName, lastname, loading]);
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.get() }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.val }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 >
                     <ScrollView flex={1} paddingHorizontal='$5'>
-                        <H1 size='$10' textAlign='center' paddingTop='$10'>
+                        <H1 size='$10' color='$color' textAlign='center' paddingTop='$10'>
                             Fitracker
                         </H1>
                         <YStack flex={1} justifyContent='center' gap='$5'>
@@ -92,8 +92,6 @@ export default function Signup() {
                                     )
                                 }
                                 disabled={!username || !password}
-                                backgroundColor={buttonDisabled ? '$gray10' : '$color.green9Dark'}
-                                color={buttonDisabled ? '$gray7Light' : '$white'}
                                 opacity={buttonDisabled ? 0.5 : 1}
                             >
                                 {loading ? <Spinner /> : 'Signup'}
@@ -114,7 +112,6 @@ export default function Signup() {
                             <Link
                                 href='/(auth)/Login'
                                 style={{
-                                    color: theme.color.get(),
                                     textDecorationLine: 'underline',
                                 }}
                             >

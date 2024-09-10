@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from 'src/context/AuthContext';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import { Button, H1, Input, Spinner, Text, useTheme, View, YStack } from 'tamagui';
 
 export default function Login() {
@@ -16,7 +16,7 @@ export default function Login() {
     }, [username, password]);
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.get() }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.val }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}
@@ -42,9 +42,7 @@ export default function Login() {
                             <Button
                                 marginTop='$5'
                                 onPress={async () => await login(username, password)}
-                                disabled={!username || !password}
-                                backgroundColor={buttonDisabled ? '$gray10' : '$color.green9Dark'}
-                                color={buttonDisabled ? '$gray7Light' : '$white'}
+                                disabled={buttonDisabled}
                                 opacity={buttonDisabled ? 0.5 : 1}
                             >
                                 {loading ? <Spinner /> : 'Login'}

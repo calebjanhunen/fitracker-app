@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { AuthProvider } from 'src/context/AuthContext';
+import { AuthProvider } from 'src/context/auth-context/AuthContext';
 import { TamaguiProvider, Theme } from 'tamagui';
 import config from '../../tamagui.config';
 
@@ -23,7 +23,7 @@ export default function RootLayout() {
     return (
         <QueryClientProvider client={queryClient}>
             <TamaguiProvider config={config}>
-                <Theme name='green'>
+                <Theme name='light'>
                     <AuthProvider>
                         <Slot />
                     </AuthProvider>
