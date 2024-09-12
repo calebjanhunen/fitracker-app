@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
 import React from 'react';
-import { StatusBar } from 'react-native';
 import WorkoutInProgressProvider from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useTheme } from 'tamagui';
 
@@ -15,10 +14,9 @@ export default function WorkoutTrackerLayout() {
                     },
                 }}
             >
-                <Stack.Screen name='home' options={{ headerShown: false }} />
-                <Stack.Screen name='workout-form' options={{ headerTitle: '' }} />
+                <Stack.Screen name='Home' options={{ headerShown: false }} />
+                <Stack.Screen name='WorkoutForm' options={{ headerTitle: '' }} />
             </Stack>
-            <StatusBar barStyle='dark-content' />
         </WorkoutInProgressProvider>
     );
 }

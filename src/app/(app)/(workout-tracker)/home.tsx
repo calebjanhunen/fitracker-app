@@ -14,7 +14,7 @@ export default function Home() {
         if (!isWorkoutInProgress) {
             setIsWorkoutInProgress(true);
         }
-        router.push('workout-form');
+        router.push('WorkoutForm');
     }
 
     return (

@@ -42,7 +42,7 @@ export function AuthProvider({ children }: Props) {
         getAccessTokenFromStorage()
             .then((accessToken) => {
                 if (accessToken) {
-                    router.replace('/(app)/(workout-tracker)/home');
+                    router.replace('/(app)/(workout-tracker)/Home');
                 } else {
                     router.replace('/(auth)/Signup');
                 }
