@@ -11,7 +11,7 @@ import {
     addSetToExercise,
     deleteExerciseFromWorkout,
 } from 'src/redux/workout-form/WorkoutFormSlice';
-import WorkoutFormSet from './workout-form-set';
+import WorkoutFormSet from './WorkoutFormSet';
 
 interface Props {
     id: string;
@@ -26,24 +26,14 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({ id, order }: Pro
     });
 
     function onAddSetPress() {
-        dispatch(
-            addSetToExercise({
-                exerciseId: exercise.id,
-                set: {
-                    id: Date.now().toString(),
-                    weight: null,
-                    reps: null,
-                    rpe: null,
-                },
-            })
-        );
+        dispatch(addSetToExercise({ exerciseId: exercise.id }));
     }
 
     return (
         <Animated.View style={[animatedStyle, { flex: 1 }]} onLayout={handleLayout}>
             <XStack alignItems='center' justifyContent='space-between'>
                 <H3 flex={1} numberOfLines={1} color='$blue10'>
-                    Exercise: {order}
+                    {exercise.name}
                 </H3>
                 <PopoverMenu onDelete={handleDelete} />
             </XStack>

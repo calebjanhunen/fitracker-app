@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, View, YStack } from 'tamagui';
 
 import { useRouter } from 'expo-router';
-import WorkoutFormExercise from 'src/components/workout-tracker/workout-form-exercise';
+import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { RootState } from 'src/redux/Store';
-import { addExercise, clearWorkout, updateName } from 'src/redux/workout-form/WorkoutFormSlice';
+import { clearWorkout, updateName } from 'src/redux/workout-form/WorkoutFormSlice';
 
 export default function WorkoutForm() {
     const dispatch = useDispatch();
@@ -16,13 +16,7 @@ export default function WorkoutForm() {
     const workout = useSelector((state: RootState) => state.workoutForm.workout);
 
     function onAddExercisePress() {
-        dispatch(
-            addExercise({
-                id: Date.now().toString(),
-                name: 'Test Exercise',
-                sets: [],
-            })
-        );
+        router.push('AddExercisesToWorkoutModal');
     }
 
     function onCancelWorkoutPress() {

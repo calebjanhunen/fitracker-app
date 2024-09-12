@@ -16,6 +16,13 @@ export default function WorkoutTrackerLayout() {
             >
                 <Stack.Screen name='Home' options={{ headerShown: false }} />
                 <Stack.Screen name='WorkoutForm' options={{ headerTitle: '' }} />
+                <Stack.Screen
+                    name='AddExercisesToWorkoutModal'
+                    options={{
+                        presentation: 'modal',
+                        headerShown: false,
+                    }}
+                />
             </Stack>
         </WorkoutInProgressProvider>
     );

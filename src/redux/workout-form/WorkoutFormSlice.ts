@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { IWorkoutExerciseForm, IWorkoutFormState, IWorkoutSetForm } from './IWorkoutForm';
+import { IExercise } from 'src/app/(app)/(workout-tracker)/AddExercisesToWorkoutModal';
+import { IWorkoutFormState } from './IWorkoutForm';
 
 const initialState: IWorkoutFormState = {
     workout: {
@@ -19,16 +20,31 @@ const workoutFormSlice = createSlice({
         updateName: (state, action: PayloadAction<string>) => {
             state.workout.name = action.payload;
         },
-        addExercise: (state, action: PayloadAction<IWorkoutExerciseForm>) => {
-            state.workout.exercises.push(action.payload.id);
-            state.exercises[action.payload.id] = action.payload;
-        },
-        addSetToExercise: (
+        addExercisesToWorkout: (
             state,
-            action: PayloadAction<{ exerciseId: string; set: IWorkoutSetForm }>
+            action: PayloadAction<{ selectedExerciseIds: string[]; allExercises: IExercise[] }>
         ) => {
-            state.exercises[action.payload.exerciseId].sets.push(action.payload.set.id);
-            state.sets[action.payload.set.id] = action.payload.set;
+            const { selectedExerciseIds, allExercises } = action.payload;
+            state.workout.exercises.push(...selectedExerciseIds);
+            allExercises
+                .filter((e) => selectedExerciseIds.includes(e.id))
+                .forEach((e) => {
+                    state.exercises[e.id] = {
+                        id: e.id,
+                        name: e.name,
+                        sets: [],
+                    };
+                });
+        },
+        addSetToExercise: (state, action: PayloadAction<{ exerciseId: string }>) => {
+            const setId = Date.now().toString();
+            state.exercises[action.payload.exerciseId].sets.push(setId);
+            state.sets[setId] = {
+                id: setId,
+                weight: null,
+                reps: null,
+                rpe: null,
+            };
         },
         updateSetWeight: (
             state,
@@ -70,7 +86,7 @@ const workoutFormSlice = createSlice({
 
 export const {
     updateName,
-    addExercise,
+    addExercisesToWorkout,
     addSetToExercise,
     updateSetWeight,
     updateSetReps,

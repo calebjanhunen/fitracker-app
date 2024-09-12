@@ -11,10 +11,10 @@ interface Props {
 }
 export default function KeyboardAvoidingView({ children }: Props) {
     return (
-        // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KAV style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            {children}
-        </KAV>
-        // </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KAV style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                {children}
+            </KAV>
+        </TouchableWithoutFeedback>
     );
 }
