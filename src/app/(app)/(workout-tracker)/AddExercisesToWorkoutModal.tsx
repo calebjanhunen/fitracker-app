@@ -12,12 +12,13 @@ import { addExercisesToWorkout } from 'src/redux/workout-form/WorkoutFormSlice';
 import { Button, H4, Input, Separator, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
 
 export default function AddExercisesToWorkoutModal() {
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
+    const [exerciseSearchQuery, setExerciseSearchQuery] = useState<string>('');
     const exerciseIdsInWorkout = useSelector(
         (state: RootState) => state.workoutForm.workout.exercises
     );
-    const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
-    const router = useRouter();
-    const dispatch = useDispatch();
     const {
         data: exercises,
         isLoading,
@@ -58,9 +59,15 @@ export default function AddExercisesToWorkoutModal() {
             return <Spinner />;
         }
         if (exercises) {
+            const filteredExercises = exerciseSearchQuery
+                ? exercises.filter((e) =>
+                      e.name.toLowerCase().includes(exerciseSearchQuery.toLowerCase())
+                  )
+                : exercises;
             return (
                 <FlatList
-                    data={exercises}
+                    data={filteredExercises}
+                    keyboardShouldPersistTaps='handled'
                     renderItem={({ item }) => (
                         <Exercise
                             exercise={item}
@@ -96,6 +103,7 @@ export default function AddExercisesToWorkoutModal() {
                 marginBottom='$2'
                 marginHorizontal='$space.3'
                 size='$5'
+                onChangeText={setExerciseSearchQuery}
             />
             {renderBody()}
         </View>
