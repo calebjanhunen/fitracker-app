@@ -47,7 +47,6 @@ export default function AddExercisesToWorkoutModal() {
             return <Spinner />;
         }
         if (exercises) {
-            console.log(exercises.length);
             return (
                 <FlatList
                     data={exercises}
@@ -104,7 +103,6 @@ const Exercise = memo(function Exercise({
     isSelected,
     isAlreadyInWorkout,
 }: Props) {
-    console.log('exercise render: ', exercise.id);
     function onExercisePress() {
         if (isAlreadyInWorkout) {
             return;
