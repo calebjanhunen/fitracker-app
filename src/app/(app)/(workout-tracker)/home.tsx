@@ -3,9 +3,19 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, useTheme } from 'tamagui';
 
+import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
+
 export default function Home() {
     const theme = useTheme();
     const router = useRouter();
+    const { isWorkoutInProgress, setIsWorkoutInProgress } = useIsWorkoutInProgress();
+
+    function onStartWorkoutPress() {
+        if (!isWorkoutInProgress) {
+            setIsWorkoutInProgress(true);
+        }
+        router.push('WorkoutForm');
+    }
 
     return (
         <SafeAreaView
@@ -15,9 +25,9 @@ export default function Home() {
                 fontWeight='bold'
                 backgroundColor='$color.green8Light'
                 color='white'
-                onPress={() => router.replace('/(app)/(workout-tracker)/workout-form')}
+                onPress={onStartWorkoutPress}
             >
-                Start Workout
+                {isWorkoutInProgress ? 'Continue Workout' : 'Start Workout'}
             </Button>
         </SafeAreaView>
     );

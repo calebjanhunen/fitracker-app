@@ -1,10 +1,15 @@
 import { API_PORT } from '@env';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios, {
+    AxiosError,
+    AxiosRequestConfig,
+    AxiosResponse,
+    InternalAxiosRequestConfig,
+} from 'axios';
 import getBaseUrl from './utils/GetBaseApiUrl';
 
-interface IErrorResponse {
-    message: string | string[];
-    error: string;
+export interface IErrorResponse {
+    message: string;
     statusCode: number;
 }
 
@@ -17,7 +22,7 @@ export async function request<T>(options: AxiosRequestConfig<T>) {
         // eslint-disable-next-line prefer-promise-reject-errors
         return await Promise.reject({
             message: error.response?.data?.message,
-            code: error.response?.data?.statusCode,
+            statusCode: error.response?.data?.statusCode,
         });
     }
 
@@ -35,3 +40,16 @@ const client = (() => {
         timeout: 5000,
     });
 })();
+
+client.interceptors.request.use(
+    async function (config: InternalAxiosRequestConfig) {
+        const accessToken = await AsyncStorage.getItem('access-token');
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    async function (error) {
+        return await Promise.reject(error);
+    }
+);
