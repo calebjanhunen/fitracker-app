@@ -80,9 +80,7 @@ const workoutFormSlice = createSlice({
             state.exercises = _.omit(state.exercises, exerciseId);
         },
         reorderExercises: (state, action: PayloadAction<string[]>) => {
-            console.log(state.workout.exercises);
             state.workout.exercises = action.payload;
-            console.log(state.workout.exercises);
         },
         clearWorkout: (state) => {
             state.workout = initialState.workout;
