@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React, { Dispatch, memo, SetStateAction } from 'react';
 import { Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, H3, SizableText, XStack } from 'tamagui';
+import { Button, H3, SizableText, useTheme, XStack } from 'tamagui';
 
 import { FlatList } from 'react-native-gesture-handler';
 import PopoverMenu from 'src/components/common/popover-menu';
@@ -16,11 +16,22 @@ import WorkoutFormSet from './WorkoutFormSet';
 interface Props {
     id: string;
     order: number;
+    drag: () => void;
+    isActive: boolean;
+    isDragging: boolean;
+    setIsDragging: Dispatch<SetStateAction<boolean>>;
 }
 
-const WorkoutFormExercise = memo(function WorkoutFormExercise({ id, order }: Props) {
+const WorkoutFormExercise = memo(function WorkoutFormExercise({
+    id,
+    drag,
+    isActive,
+    isDragging,
+    setIsDragging,
+}: Props) {
     const exercise = useSelector((state: RootState) => state.workoutForm.exercises[id]);
     const dispatch = useDispatch();
+    const theme = useTheme();
     const { animatedStyle, handleDelete, handleLayout } = useDeleteAnimation({
         onDelete: () => dispatch(deleteExerciseFromWorkout({ exerciseId: exercise.id })),
     });
@@ -29,10 +40,34 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({ id, order }: Pro
         dispatch(addSetToExercise({ exerciseId: exercise.id }));
     }
 
+    function startDrag() {
+        setIsDragging(true);
+        setTimeout(() => {
+            drag();
+        }, 15);
+    }
+
     return (
-        <Animated.View style={[animatedStyle, { flex: 1 }]} onLayout={handleLayout}>
+        <Animated.View
+            style={[
+                animatedStyle,
+                {
+                    flex: 1,
+                    backgroundColor: isActive ? theme.gray6.val : theme.background.val,
+                    height: isDragging ? 40 : 'auto',
+                    overflow: 'hidden',
+                },
+            ]}
+            onLayout={handleLayout}
+        >
             <XStack alignItems='center' justifyContent='space-between'>
-                <H3 flex={1} numberOfLines={1} color='$blue10'>
+                <H3
+                    flex={1}
+                    numberOfLines={1}
+                    color='$blue10'
+                    onLongPress={startDrag}
+                    userSelect='none'
+                >
                     {exercise.name}
                 </H3>
                 <PopoverMenu onDelete={handleDelete} />

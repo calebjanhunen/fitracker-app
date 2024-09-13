@@ -1,19 +1,26 @@
-import React from 'react';
-import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, View, YStack } from 'tamagui';
 
-import { useRouter } from 'expo-router';
+import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { RootState } from 'src/redux/Store';
-import { clearWorkout, updateName } from 'src/redux/workout-form/WorkoutFormSlice';
+import {
+    clearWorkout,
+    reorderExercises,
+    updateName,
+} from 'src/redux/workout-form/WorkoutFormSlice';
 
 export default function WorkoutForm() {
     const dispatch = useDispatch();
     const router = useRouter();
     const { setIsWorkoutInProgress } = useIsWorkoutInProgress();
     const workout = useSelector((state: RootState) => state.workoutForm.workout);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
 
     function onAddExercisePress() {
         router.push('AddExercisesToWorkoutModal');
@@ -49,24 +56,38 @@ export default function WorkoutForm() {
     );
 
     return (
-        <View flex={1} backgroundColor='$background' paddingHorizontal='$3'>
-            <Input
-                placeholder='Workout Name'
-                size='$5'
-                marginVertical='$4'
-                onChangeText={(text) => dispatch(updateName(text))}
-                value={workout.name}
-            />
-            <KeyboardAwareFlatList
-                keyboardShouldPersistTaps='handled'
-                data={workout.exercises}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item, index }) => (
-                    <WorkoutFormExercise id={item} order={index + 1} />
-                )}
-                keyExtractor={(item) => item.toString()}
-                ListFooterComponent={renderListFooter}
-            />
-        </View>
+        <KeyboardAvoidingView>
+            <View flex={1} backgroundColor='$background' paddingHorizontal='$3'>
+                <Input
+                    placeholder='Workout Name'
+                    size='$5'
+                    marginVertical='$4'
+                    onChangeText={(text) => dispatch(updateName(text))}
+                    value={workout.name}
+                />
+                <DraggableFlatList
+                    containerStyle={{ flex: 1 }}
+                    keyboardShouldPersistTaps='handled'
+                    data={workout.exercises}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item, getIndex, drag, isActive }) => (
+                        <WorkoutFormExercise
+                            id={item}
+                            order={getIndex()! + 1}
+                            drag={drag}
+                            isActive={isActive}
+                            isDragging={isDragging}
+                            setIsDragging={setIsDragging}
+                        />
+                    )}
+                    keyExtractor={(item) => item.toString()}
+                    ListFooterComponent={renderListFooter}
+                    onDragEnd={({ data }) => {
+                        setIsDragging(false);
+                        dispatch(reorderExercises(data));
+                    }}
+                />
+            </View>
+        </KeyboardAvoidingView>
     );
 }

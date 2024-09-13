@@ -110,4 +110,11 @@ const exerciseData = [
     { id: '2', name: 'Exercise 2', bodyPart: 'arms' },
     { id: '3', name: 'Exercise 3', bodyPart: 'shoulders' },
     { id: '4', name: 'Exercise 4', bodyPart: 'chest' },
+    { id: '5', name: 'Exercise 5', bodyPart: 'chest' },
+    { id: '6', name: 'Exercise 6', bodyPart: 'chest' },
+    { id: '7', name: 'Exercise 7', bodyPart: 'chest' },
+    { id: '8', name: 'Exercise 8', bodyPart: 'chest' },
+    { id: '9', name: 'Exercise 9', bodyPart: 'chest' },
+    { id: '10', name: 'Exercise 10', bodyPart: 'chest' },
+    { id: '11', name: 'Exercise 11', bodyPart: 'chest' },
 ];
