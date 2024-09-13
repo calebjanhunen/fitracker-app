@@ -1,5 +1,11 @@
 import { API_PORT } from '@env';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios, {
+    AxiosError,
+    AxiosRequestConfig,
+    AxiosResponse,
+    InternalAxiosRequestConfig,
+} from 'axios';
 import getBaseUrl from './utils/GetBaseApiUrl';
 
 interface IErrorResponse {
@@ -35,3 +41,16 @@ const client = (() => {
         timeout: 5000,
     });
 })();
+
+client.interceptors.request.use(
+    async function (config: InternalAxiosRequestConfig) {
+        const accessToken = await AsyncStorage.getItem('access-token');
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    async function (error) {
+        return await Promise.reject(error);
+    }
+);

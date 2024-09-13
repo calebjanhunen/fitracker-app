@@ -4,6 +4,7 @@ import { Slot } from 'expo-router';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { DevToolsBubble } from 'react-native-react-query-devtools';
 import { Provider } from 'react-redux';
 import { AuthProvider } from 'src/context/auth-context/AuthContext';
 import { store } from 'src/redux/Store';
@@ -38,6 +39,7 @@ export default function RootLayout() {
                     </TamaguiProvider>
                 </QueryClientProvider>
             </GestureHandlerRootView>
+            <DevToolsBubble />
         </PortalProvider>
     );
 }

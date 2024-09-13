@@ -1,16 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { GET_EXERCISES_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
+import { getAllExercises } from 'src/api/exercise-service/ExerciseApiService';
+import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { RootState } from 'src/redux/Store';
 import { addExercisesToWorkout } from 'src/redux/workout-form/WorkoutFormSlice';
-import { Button, H4, Input, Separator, SizableText, View, XStack, YStack } from 'tamagui';
-
-export interface IExercise {
-    id: string;
-    name: string;
-    bodyPart: string;
-}
+import { Button, H4, Input, Separator, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
 
 export default function AddExercisesToWorkoutModal() {
     const exerciseIdsInWorkout = useSelector(
@@ -19,15 +17,55 @@ export default function AddExercisesToWorkoutModal() {
     const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
     const router = useRouter();
     const dispatch = useDispatch();
+    const {
+        data: exercises,
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: [GET_EXERCISES_QUERY_KEY],
+        queryFn: getAllExercises,
+        refetchOnMount: false,
+    });
 
     function onAddToWorkoutPress() {
+        if (!exercises) return;
+
         dispatch(
             addExercisesToWorkout({
                 selectedExerciseIds: selectedExercises,
-                allExercises: exerciseData,
+                allExercises: exercises,
             })
         );
         router.back();
+    }
+
+    function renderBody() {
+        if (error) {
+            return <SizableText>{error}</SizableText>;
+        }
+        if (isLoading) {
+            return <Spinner />;
+        }
+        if (exercises) {
+            console.log(exercises.length);
+            return (
+                <FlatList
+                    data={exercises}
+                    renderItem={({ item }) => (
+                        <Exercise
+                            exercise={item}
+                            setSelectedExercises={setSelectedExercises}
+                            isSelected={selectedExercises.includes(item.id)}
+                            isAlreadyInWorkout={exerciseIdsInWorkout.includes(item.id)}
+                        />
+                    )}
+                    keyExtractor={(item) => item.id.toString()}
+                    ItemSeparatorComponent={() => <Separator borderColor='$gray10' />}
+                />
+            );
+        } else {
+            return <SizableText>Should not be here</SizableText>;
+        }
     }
 
     return (
@@ -49,30 +87,24 @@ export default function AddExercisesToWorkoutModal() {
                 marginHorizontal='$space.3'
                 size='$5'
             />
-            <FlatList
-                data={exerciseData}
-                renderItem={({ item }) => (
-                    <Exercise
-                        exercise={item}
-                        setSelectedExercises={setSelectedExercises}
-                        isSelected={selectedExercises.includes(item.id)}
-                        isAlreadyInWorkout={exerciseIdsInWorkout.includes(item.id)}
-                    />
-                )}
-                keyExtractor={(item) => item.id.toString()}
-                ItemSeparatorComponent={() => <Separator borderColor='$gray10' />}
-            />
+            {renderBody()}
         </View>
     );
 }
 
 interface Props {
-    exercise: IExercise;
+    exercise: IExerciseResponse;
     setSelectedExercises: Dispatch<SetStateAction<string[]>>;
     isSelected: boolean;
     isAlreadyInWorkout: boolean;
 }
-function Exercise({ exercise, setSelectedExercises, isSelected, isAlreadyInWorkout }: Props) {
+const Exercise = memo(function Exercise({
+    exercise,
+    setSelectedExercises,
+    isSelected,
+    isAlreadyInWorkout,
+}: Props) {
+    console.log('exercise render: ', exercise.id);
     function onExercisePress() {
         if (isAlreadyInWorkout) {
             return;
@@ -103,18 +135,4 @@ function Exercise({ exercise, setSelectedExercises, isSelected, isAlreadyInWorko
             <SizableText>23</SizableText>
         </XStack>
     );
-}
-
-const exerciseData = [
-    { id: '1', name: 'Exercise 1', bodyPart: 'chest' },
-    { id: '2', name: 'Exercise 2', bodyPart: 'arms' },
-    { id: '3', name: 'Exercise 3', bodyPart: 'shoulders' },
-    { id: '4', name: 'Exercise 4', bodyPart: 'chest' },
-    { id: '5', name: 'Exercise 5', bodyPart: 'chest' },
-    { id: '6', name: 'Exercise 6', bodyPart: 'chest' },
-    { id: '7', name: 'Exercise 7', bodyPart: 'chest' },
-    { id: '8', name: 'Exercise 8', bodyPart: 'chest' },
-    { id: '9', name: 'Exercise 9', bodyPart: 'chest' },
-    { id: '10', name: 'Exercise 10', bodyPart: 'chest' },
-    { id: '11', name: 'Exercise 11', bodyPart: 'chest' },
-];
+});

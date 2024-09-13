@@ -5,14 +5,13 @@ import WorkoutInProgressProvider from 'src/context/workout-tracker/IsWorkoutInPr
 export default function WorkoutTrackerLayout() {
     return (
         <WorkoutInProgressProvider>
-            <Stack>
-                <Stack.Screen name='Home' options={{ headerShown: false }} />
-                <Stack.Screen name='WorkoutForm' options={{ headerShown: false }} />
+            <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name='Home' />
+                <Stack.Screen name='WorkoutForm' />
                 <Stack.Screen
                     name='AddExercisesToWorkoutModal'
                     options={{
                         presentation: 'modal',
-                        headerShown: false,
                     }}
                 />
             </Stack>

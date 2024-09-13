@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { IExercise } from 'src/app/(app)/(workout-tracker)/AddExercisesToWorkoutModal';
+import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { IWorkoutFormState } from './IWorkoutForm';
 
 const initialState: IWorkoutFormState = {
@@ -22,7 +22,10 @@ const workoutFormSlice = createSlice({
         },
         addExercisesToWorkout: (
             state,
-            action: PayloadAction<{ selectedExerciseIds: string[]; allExercises: IExercise[] }>
+            action: PayloadAction<{
+                selectedExerciseIds: string[];
+                allExercises: IExerciseResponse[];
+            }>
         ) => {
             const { selectedExerciseIds, allExercises } = action.payload;
             state.workout.exercises.push(...selectedExerciseIds);
