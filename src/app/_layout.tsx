@@ -37,9 +37,9 @@ export default function RootLayout() {
                         </Theme>
                         <StatusBar barStyle='default' />
                     </TamaguiProvider>
+                    <DevToolsBubble />
                 </QueryClientProvider>
             </GestureHandlerRootView>
-            <DevToolsBubble />
         </PortalProvider>
     );
 }
