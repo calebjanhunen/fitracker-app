@@ -9,7 +9,7 @@ import axios, {
 import getBaseUrl from './utils/GetBaseApiUrl';
 
 export interface IErrorResponse {
-    message: string | string[];
+    message: string;
     statusCode: number;
 }
 

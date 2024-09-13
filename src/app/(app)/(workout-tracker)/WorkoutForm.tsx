@@ -3,12 +3,15 @@ import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, H4, Input, View, XStack, YStack } from 'tamagui';
+import { Button, H4, Input, Spinner, View, XStack, YStack } from 'tamagui';
 
+import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { IErrorResponse } from 'src/api/client';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
+import { useCreateWorkout } from 'src/hooks/workout-tracker/useCreateWorkout';
 import { RootState } from 'src/redux/Store';
 import {
     clearWorkout,
@@ -20,22 +23,33 @@ export default function WorkoutForm() {
     const dispatch = useDispatch();
     const router = useRouter();
     const { setIsWorkoutInProgress } = useIsWorkoutInProgress();
-    const workout = useSelector((state: RootState) => state.workoutForm.workout);
+    const workoutFormState = useSelector((state: RootState) => state.workoutForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
+    const { createWorkout, isPending } = useCreateWorkout(resetWorkout, onCreateWorkoutError);
 
     useEffect(() => {
-        setBtnDisabled(!workout.name || workout.exercises.length === 0);
-    }, [workout.name, workout.exercises]);
+        setBtnDisabled(
+            !workoutFormState.workout.name || workoutFormState.workout.exercises.length === 0
+        );
+    }, [workoutFormState.workout.name, workoutFormState.workout.exercises]);
 
     function onAddExercisePress() {
         router.push('AddExercisesToWorkoutModal');
     }
 
-    function onCancelWorkoutPress() {
+    function resetWorkout() {
         setIsWorkoutInProgress(false);
         dispatch(clearWorkout());
         router.back();
+    }
+
+    function onFinishWorkoutPress() {
+        createWorkout(workoutFormState);
+    }
+
+    function onCreateWorkoutError(error: IErrorResponse) {
+        Alert.alert('Error creating workout.', error.message);
     }
 
     const renderListFooter = () => (
@@ -50,7 +64,7 @@ export default function WorkoutForm() {
                 Add Exercise
             </Button>
             <Button
-                onPress={onCancelWorkoutPress}
+                onPress={resetWorkout}
                 backgroundColor='$red6'
                 color='$red10'
                 fontWeight='bold'
@@ -72,8 +86,9 @@ export default function WorkoutForm() {
                             fontWeight='bold'
                             color={btnDisabled ? '$gray10' : '$green10'}
                             disabled={btnDisabled}
+                            onPress={onFinishWorkoutPress}
                         >
-                            Finish Workout
+                            {isPending ? <Spinner /> : 'Finish Workout'}
                         </Button>
                     </XStack>
                     <Input
@@ -81,12 +96,12 @@ export default function WorkoutForm() {
                         size='$5'
                         marginVertical='$4'
                         onChangeText={(text) => dispatch(updateName(text))}
-                        value={workout.name}
+                        value={workoutFormState.workout.name}
                     />
                     <DraggableFlatList
                         containerStyle={{ flex: 1 }}
                         keyboardShouldPersistTaps='handled'
-                        data={workout.exercises}
+                        data={workoutFormState.workout.exercises}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item, getIndex, drag, isActive }) => (
                             <WorkoutFormExercise
