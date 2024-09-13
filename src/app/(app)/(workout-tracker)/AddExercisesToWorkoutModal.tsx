@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { IErrorResponse } from 'src/api/client';
 import { GET_EXERCISES_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
 import { getAllExercises } from 'src/api/exercise-service/ExerciseApiService';
 import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
@@ -21,10 +22,11 @@ export default function AddExercisesToWorkoutModal() {
         data: exercises,
         isLoading,
         error,
-    } = useQuery({
+    } = useQuery<IExerciseResponse[], IErrorResponse>({
         queryKey: [GET_EXERCISES_QUERY_KEY],
         queryFn: getAllExercises,
         refetchOnMount: false,
+        retry: false,
     });
 
     function onAddToWorkoutPress() {
@@ -41,7 +43,16 @@ export default function AddExercisesToWorkoutModal() {
 
     function renderBody() {
         if (error) {
-            return <SizableText>{error}</SizableText>;
+            return (
+                <YStack alignItems='center'>
+                    <SizableText color='$red10' fontWeight='bold'>
+                        Error getting exercises: {error.message}
+                    </SizableText>
+                    <SizableText color='$red10' fontWeight='bold'>
+                        Error Code: {error.statusCode}
+                    </SizableText>
+                </YStack>
+            );
         }
         if (isLoading) {
             return <Spinner />;
@@ -63,7 +74,7 @@ export default function AddExercisesToWorkoutModal() {
                 />
             );
         } else {
-            return <SizableText>Should not be here</SizableText>;
+            return <SizableText>No Exercises to display</SizableText>;
         }
     }
 

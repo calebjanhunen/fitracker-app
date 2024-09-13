@@ -8,9 +8,8 @@ import axios, {
 } from 'axios';
 import getBaseUrl from './utils/GetBaseApiUrl';
 
-interface IErrorResponse {
+export interface IErrorResponse {
     message: string | string[];
-    error: string;
     statusCode: number;
 }
 
@@ -23,7 +22,7 @@ export async function request<T>(options: AxiosRequestConfig<T>) {
         // eslint-disable-next-line prefer-promise-reject-errors
         return await Promise.reject({
             message: error.response?.data?.message,
-            code: error.response?.data?.statusCode,
+            statusCode: error.response?.data?.statusCode,
         });
     }
 
