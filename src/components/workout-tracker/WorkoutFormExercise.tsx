@@ -30,6 +30,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
     setIsDragging,
 }: Props) {
     const exercise = useSelector((state: RootState) => state.workoutForm.exercises[id]);
+    console.log(exercise);
     const dispatch = useDispatch();
     const theme = useTheme();
     const { animatedStyle, handleDelete, handleLayout } = useDeleteAnimation({

@@ -33,12 +33,12 @@ export default function AddExercisesToWorkoutModal() {
     function onAddToWorkoutPress() {
         if (!exercises) return;
 
-        // dispatch(
-        //     addExercisesToWorkout({
-        //         selectedExerciseIds: selectedExercises,
-        //         allExercises: exercises,
-        //     })
-        // );
+        dispatch(
+            addExercisesToWorkout({
+                selectedExerciseIds: selectedExercises,
+                allExercises: exercises,
+            })
+        );
         router.back();
     }
 

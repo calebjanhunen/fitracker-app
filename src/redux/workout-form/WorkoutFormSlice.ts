@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { IWorkoutFormState } from './IWorkoutForm';
 
 const initialState: IWorkoutFormState = {
@@ -11,6 +11,7 @@ const initialState: IWorkoutFormState = {
     },
     exercises: {},
     sets: {},
+    recentSets: {},
 };
 
 const workoutFormSlice = createSlice({
@@ -24,20 +25,28 @@ const workoutFormSlice = createSlice({
             state,
             action: PayloadAction<{
                 selectedExerciseIds: string[];
-                allExercises: IExerciseResponse[];
+                allExercises: IExerciseWithWorkoutDetailsResponse[];
             }>
         ) => {
             const { selectedExerciseIds, allExercises } = action.payload;
-            state.workout.exercises.push(...selectedExerciseIds);
             allExercises
                 .filter((e) => selectedExerciseIds.includes(e.id))
                 .forEach((e) => {
+                    // console.log('exercise: ', JSON.stringify(e, null, 2));r
                     state.exercises[e.id] = {
                         id: e.id,
                         name: e.name,
                         sets: [],
+                        recentSets: e.recentSets.map((recentSet) => recentSet.id),
                     };
+
+                    e.recentSets.forEach((recentSet) => {
+                        // console.log('recent set: ', recentSet);
+                        state.recentSets[recentSet.id] = recentSet;
+                    });
                 });
+
+            // console.log(JSON.stringify(state, null, 2));
         },
         addSetToExercise: (state, action: PayloadAction<{ exerciseId: string }>) => {
             const setId = Date.now().toString();
