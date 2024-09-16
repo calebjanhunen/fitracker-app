@@ -4,9 +4,9 @@ import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { IErrorResponse } from 'src/api/client';
-import { GET_EXERCISES_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
-import { getAllExercises } from 'src/api/exercise-service/ExerciseApiService';
-import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
+import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
+import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { RootState } from 'src/redux/Store';
 import { addExercisesToWorkout } from 'src/redux/workout-form/WorkoutFormSlice';
 import { Button, H4, Input, Separator, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
@@ -23,11 +23,11 @@ export default function AddExercisesToWorkoutModal() {
         data: exercises,
         isLoading,
         error,
-    } = useQuery<IExerciseResponse[], IErrorResponse>({
-        queryKey: [GET_EXERCISES_QUERY_KEY],
-        queryFn: getAllExercises,
-        refetchOnMount: false,
-        retry: false,
+    } = useQuery<IExerciseWithWorkoutDetailsResponse[], IErrorResponse>({
+        queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
+        queryFn: getExercisesWithWorkoutDetails,
+        staleTime: Infinity,
+        gcTime: Infinity,
     });
 
     function onAddToWorkoutPress() {
@@ -111,7 +111,7 @@ export default function AddExercisesToWorkoutModal() {
 }
 
 interface Props {
-    exercise: IExerciseResponse;
+    exercise: IExerciseWithWorkoutDetailsResponse;
     setSelectedExercises: Dispatch<SetStateAction<string[]>>;
     isSelected: boolean;
     isAlreadyInWorkout: boolean;
@@ -149,7 +149,7 @@ const Exercise = memo(function Exercise({
                 <H4>{exercise.name}</H4>
                 <SizableText>{exercise.bodyPart}</SizableText>
             </YStack>
-            <SizableText>23</SizableText>
+            <SizableText>{exercise.numTimesUsed}</SizableText>
         </XStack>
     );
 });

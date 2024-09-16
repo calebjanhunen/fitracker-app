@@ -30,6 +30,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
     setIsDragging,
 }: Props) {
     const exercise = useSelector((state: RootState) => state.workoutForm.exercises[id]);
+    const recentSets = useSelector((state: RootState) => state.workoutForm.recentSets);
     const dispatch = useDispatch();
     const theme = useTheme();
     const { animatedStyle, handleDelete, handleLayout } = useDeleteAnimation({
@@ -93,9 +94,17 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                 <FlatList
                     data={exercise.sets}
                     contentContainerStyle={{ flexGrow: 1 }}
-                    renderItem={({ item, index }) => (
-                        <WorkoutFormSet id={item} order={index + 1} exerciseId={id} />
-                    )}
+                    renderItem={({ item, index }) => {
+                        const recentSet = recentSets[exercise.recentSets[index]];
+                        return (
+                            <WorkoutFormSet
+                                id={item}
+                                order={index + 1}
+                                exerciseId={id}
+                                recentSet={recentSet ?? null}
+                            />
+                        );
+                    }}
                     keyExtractor={(item) => item.toString()}
                 />
             )}

@@ -1,5 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { IErrorResponse } from 'src/api/client';
+import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
+import { queryClient } from 'src/api/react-query-client';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import * as WorkoutApiService from 'src/api/workout-service/WorkoutApiService';
 import { IWorkoutFormState } from 'src/redux/workout-form/IWorkoutForm';
@@ -20,7 +22,10 @@ export function useCreateWorkout(
         isPending,
     } = useMutation<IWorkoutResponse, IErrorResponse, IWorkoutFormState>({
         mutationFn: WorkoutApiService.createWorkout,
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
+            });
             onSuccessCallback();
         },
         onError: (e) => {
