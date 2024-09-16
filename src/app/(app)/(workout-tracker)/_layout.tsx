@@ -10,9 +10,11 @@ export default function WorkoutTrackerLayout() {
                 <Stack.Screen name='WorkoutForm' />
                 <Stack.Screen
                     name='AddExercisesToWorkoutModal'
-                    options={{
-                        presentation: 'modal',
-                    }}
+                    options={
+                        {
+                            // presentation: 'modal',
+                        }
+                    }
                 />
             </Stack>
         </WorkoutInProgressProvider>
