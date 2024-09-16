@@ -4,7 +4,7 @@ import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { IErrorResponse } from 'src/api/client';
-import { GET_EXERCISES_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
+import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
 import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
 import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { RootState } from 'src/redux/Store';
@@ -24,10 +24,10 @@ export default function AddExercisesToWorkoutModal() {
         isLoading,
         error,
     } = useQuery<IExerciseWithWorkoutDetailsResponse[], IErrorResponse>({
-        queryKey: [GET_EXERCISES_QUERY_KEY],
+        queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
         queryFn: getExercisesWithWorkoutDetails,
-        refetchOnMount: false,
-        retry: false,
+        staleTime: Infinity,
+        gcTime: Infinity,
     });
 
     function onAddToWorkoutPress() {

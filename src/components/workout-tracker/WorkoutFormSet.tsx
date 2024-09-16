@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, SizableText, XStack } from 'tamagui';
 
 import { Animated } from 'react-native';
+import { IRecentSet } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
 import {
@@ -17,9 +18,10 @@ interface Props {
     id: string;
     order: number;
     exerciseId: string;
+    recentSet: IRecentSet | null;
 }
 
-const WorkoutFormSet = memo(function WorkoutFormset({ id, order, exerciseId }: Props) {
+const WorkoutFormSet = memo(function WorkoutFormset({ id, order, exerciseId, recentSet }: Props) {
     const set = useSelector((state: RootState) => state.workoutForm.sets[id]);
     const dispatch = useDispatch();
     const { animatedStyle, handleDelete, handleLayout } = useDeleteAnimation({
@@ -79,7 +81,7 @@ const WorkoutFormSet = memo(function WorkoutFormset({ id, order, exerciseId }: P
                             {order}
                         </SizableText>
                         <SizableText textAlign='center' size='$4' flex={2}>
-                            140x8@10
+                            {recentSet && `${recentSet.weight}x${recentSet.reps}@${recentSet.rpe}`}
                         </SizableText>
                         <Input
                             size='$2'
@@ -117,75 +119,4 @@ const WorkoutFormSet = memo(function WorkoutFormset({ id, order, exerciseId }: P
         )
     );
 });
-
-/*
-return (
-         <Stack position='relative' overflow='hidden' flex={1} zIndex={0}>
-                <Stack
-                    flex={1}
-                    position='absolute'
-                    top={0}
-                    bottom={0}
-                    right={0}
-                    left={0}
-                    justifyContent='center'
-                    alignItems='flex-end'
-                    backgroundColor={'red'}
-                    paddingRight='$3'
-                    zIndex={1}
-                >
-                    <SizableText color='white' fontWeight='bold'>
-                        Delete
-                    </SizableText>
-                </Stack>
-                <GestureDetector gesture={swipeGesture}>
-                    <Animated.View style={[animatedStyle, { zIndex: 2 }]}>
-                        <XStack
-                            alignItems='center'
-                            justifyContent='center'
-                            backgroundColor='$background'
-                            paddingVertical='$2'
-                        >
-                            <SizableText textAlign='center' size='$5' flex={1} fontWeight='bold'>
-                                {order}
-                            </SizableText>
-                            <SizableText textAlign='center' size='$4' flex={2}>
-                                140x8@10
-                            </SizableText>
-                            <Input
-                                size='$2'
-                                flex={1}
-                                padding={0}
-                                textAlign='center'
-                                maxLength={4}
-                                keyboardType='number-pad'
-                                value={set.weight?.toString() ?? ''}
-                                onChangeText={onWeightChange}
-                            />
-                            <Input
-                                size='$2'
-                                flex={1}
-                                padding={0}
-                                textAlign='center'
-                                maxLength={4}
-                                keyboardType='number-pad'
-                                value={set.reps?.toString() ?? ''}
-                                onChangeText={onRepsChange}
-                            />
-                            <Input
-                                size='$2'
-                                flex={0.7}
-                                padding={0}
-                                textAlign='center'
-                                maxLength={2}
-                                keyboardType='number-pad'
-                                value={set.rpe?.toString() ?? ''}
-                                onChangeText={onRpeChange}
-                            />
-                        </XStack>
-                    </Animated.View>
-                </GestureDetector>
-            </Stack>
-    );
-*/
 export default WorkoutFormSet;

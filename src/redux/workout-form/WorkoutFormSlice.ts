@@ -29,10 +29,10 @@ const workoutFormSlice = createSlice({
             }>
         ) => {
             const { selectedExerciseIds, allExercises } = action.payload;
+            state.workout.exercises.push(...selectedExerciseIds);
             allExercises
                 .filter((e) => selectedExerciseIds.includes(e.id))
                 .forEach((e) => {
-                    // console.log('exercise: ', JSON.stringify(e, null, 2));r
                     state.exercises[e.id] = {
                         id: e.id,
                         name: e.name,
@@ -41,12 +41,9 @@ const workoutFormSlice = createSlice({
                     };
 
                     e.recentSets.forEach((recentSet) => {
-                        // console.log('recent set: ', recentSet);
                         state.recentSets[recentSet.id] = recentSet;
                     });
                 });
-
-            // console.log(JSON.stringify(state, null, 2));
         },
         addSetToExercise: (state, action: PayloadAction<{ exerciseId: string }>) => {
             const setId = Date.now().toString();

@@ -49,7 +49,11 @@ export default function WorkoutForm() {
     }
 
     function onCreateWorkoutError(error: IErrorResponse) {
-        Alert.alert('Error creating workout.', error.message);
+        if (error.statusCode === 400) {
+            Alert.alert('Error creating workout.', error.message[0]);
+        } else {
+            Alert.alert('Error creating workout.', error.message);
+        }
     }
 
     const renderListFooter = () => (
