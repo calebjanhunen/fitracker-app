@@ -1,10 +1,12 @@
 import { IWorkoutFormState } from 'src/redux/workout-form/IWorkoutForm';
 import { request } from '../client';
 import { ICreateWorkoutRequest } from './requests/ICreateWorkoutRequest';
-import { IWorkoutResponse } from './responses/IWorkoutResponse';
+import { ICreateWorkoutResponse } from './responses/ICreateWorkoutResponse';
 import { workoutEndpoints } from './WorkoutApiConfig';
 
-export async function createWorkout(workoutForm: IWorkoutFormState): Promise<IWorkoutResponse> {
+export async function createWorkout(
+    workoutForm: IWorkoutFormState
+): Promise<ICreateWorkoutResponse> {
     const workoutRequest = fromWorkoutFormToWorkoutRequest(workoutForm);
     return await request<ICreateWorkoutRequest>({
         method: 'POST',
