@@ -127,7 +127,11 @@ export default function AddExercisesToWorkoutModal() {
                             Create Exercise
                         </Button>
                     </Dialog.Trigger>
-                    <CreateExerciseModal isOpen={isModalOpen} setIsOpen={setIsModelOpen} />
+                    <CreateExerciseModal
+                        isOpen={isModalOpen}
+                        setIsOpen={setIsModelOpen}
+                        setSelectedExercises={setSelectedExercises}
+                    />
                 </Dialog>
                 <Input
                     placeholder='Search for Exercise'

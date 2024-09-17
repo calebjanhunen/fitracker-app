@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { GET_ALL_BODY_PARTS_QUERY_KEY } from 'src/api/body-part-service/BodyPartApiConfig';
 import * as BodyPartApi from 'src/api/body-part-service/BodyPartApiService';
+import { IErrorResponse } from 'src/api/client';
 import { GET_ALL_EQUIPMENT_QUERY_KEY } from 'src/api/equipment-service/EquipmentApiConfig';
 import * as EquipmentApi from 'src/api/equipment-service/EquipmentApiService';
 import { useCreateExercise } from 'src/hooks/workout-tracker/useCreateExercise';
@@ -12,9 +13,10 @@ import DropdownMenu from '../common/DropdownMenu';
 interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
+    setSelectedExercises: Dispatch<SetStateAction<string[]>>;
 }
 
-export default function CreateExerciseModal({ setIsOpen }: Props) {
+export default function CreateExerciseModal({ setIsOpen, setSelectedExercises }: Props) {
     const [selectedBodyPart, setSelectedBodyPart] = useState<string>('');
     const [selectedEquipment, setSelectedEquipment] = useState<string>('');
     const [exerciseName, setExerciseName] = useState<string>('');
@@ -31,14 +33,10 @@ export default function CreateExerciseModal({ setIsOpen }: Props) {
         staleTime: Infinity,
         gcTime: Infinity,
     });
-    const { createExercise, isPending } = useCreateExercise(
-        () => {
-            resetState();
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
+    const { createExercise, isPending } = useCreateExercise((createdExercise) => {
+        resetState();
+        setSelectedExercises((prev) => [...prev, createdExercise.id]);
+    }, onCreateExerciseError);
 
     useEffect(() => {
         setDisabled(!exerciseName || !selectedBodyPart || !selectedEquipment);
@@ -52,12 +50,19 @@ export default function CreateExerciseModal({ setIsOpen }: Props) {
     }
 
     function onSaveExercisePress() {
-        console.log(selectedBodyPart, selectedEquipment, exerciseName);
         createExercise({
             name: exerciseName,
             equipmentId: parseInt(selectedEquipment),
             bodyPartId: parseInt(selectedBodyPart),
         });
+    }
+
+    function onCreateExerciseError(error: IErrorResponse) {
+        if (error.statusCode === 400) {
+            Alert.alert('Error saving exercise', error.message[0]);
+        } else {
+            Alert.alert('Error saving exercise', error.message[0]);
+        }
     }
 
     return (

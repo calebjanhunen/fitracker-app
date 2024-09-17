@@ -13,7 +13,7 @@ interface IUseCreateExercise {
 }
 
 export function useCreateExercise(
-    onSuccessCallback: () => void,
+    onSuccessCallback: (createdExercise: IExerciseResponse) => void,
     onErrorCallback: (error: IErrorResponse) => void
 ): IUseCreateExercise {
     const {
@@ -22,13 +22,11 @@ export function useCreateExercise(
         isPending,
     } = useMutation<IExerciseResponse, IErrorResponse, IExerciseRequest>({
         mutationFn: ExerciseApi.createExercise,
-        onSuccess: async (data) => {
-            console.log(data);
-
+        onSuccess: async (createdExercise) => {
             await queryClient.invalidateQueries({
                 queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
             });
-            onSuccessCallback();
+            onSuccessCallback(createdExercise);
         },
         onError: (e) => {
             onErrorCallback(e);
