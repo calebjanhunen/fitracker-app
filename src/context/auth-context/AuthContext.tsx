@@ -58,7 +58,7 @@ export function AuthProvider({ children }: Props) {
         try {
             const response = await LoginService.login(username, password);
             await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
-            router.replace('/(app)/(workout-tracker)/home');
+            router.replace('/(app)/(workout-tracker)/Home');
         } catch (e) {
             setErrorMsg(e.message);
         } finally {
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: Props) {
                 lastname
             );
             await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
-            router.replace('/(app)/(workout-tracker)/home');
+            router.replace('/(app)/(workout-tracker)/Home');
         } catch (e) {
             setErrorMsg(e.message);
         } finally {
