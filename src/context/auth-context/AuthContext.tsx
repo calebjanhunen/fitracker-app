@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as LoginService from 'src/api/auth-service/login-service';
+import { queryClient } from 'src/api/react-query-client';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 
 const ACCESS_TOKEN_STORAGE_KEY = 'access-token';
@@ -95,8 +96,10 @@ export function AuthProvider({ children }: Props) {
     }
 
     async function logout(): Promise<void> {
-        await removeFromStorage(ACCESS_TOKEN_STORAGE_KEY);
         router.replace('/(auth)/Signup');
+        await removeFromStorage(ACCESS_TOKEN_STORAGE_KEY);
+        await queryClient.invalidateQueries();
+        queryClient.clear();
     }
 
     async function getAccessTokenFromStorage(): Promise<string | null> {

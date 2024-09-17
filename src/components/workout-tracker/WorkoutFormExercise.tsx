@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, H3, SizableText, useTheme, XStack } from 'tamagui';
 
 import { FlatList } from 'react-native-gesture-handler';
-import PopoverMenu from 'src/components/common/popover-menu';
+import PopoverMenu from 'src/components/common/PopoverMenu';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
 import {
@@ -71,7 +71,16 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                 >
                     {exercise.name}
                 </H3>
-                <PopoverMenu onDelete={handleDelete} />
+                <PopoverMenu
+                    menuOptions={[
+                        {
+                            text: 'Delete',
+                            icon: 'trash',
+                            iconColor: theme.red11.val,
+                            action: handleDelete,
+                        },
+                    ]}
+                />
             </XStack>
             <XStack>
                 <SizableText textAlign='center' size='$5' fontWeight='bold' flex={1}>

@@ -1,12 +1,12 @@
-import IonIcons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import PopoverMenu from 'src/components/common/popover-menu';
+import PopoverMenu from 'src/components/common/PopoverMenu';
 import { useAuth } from 'src/context/auth-context/AuthContext';
-import { View } from 'tamagui';
+import { useTheme, View } from 'tamagui';
 
 export default function AppLayout() {
     const { logout } = useAuth();
+    const theme = useTheme();
     return (
         <>
             <Tabs>
@@ -18,9 +18,14 @@ export default function AppLayout() {
                         headerRight: () => (
                             <View marginRight='$space.4'>
                                 <PopoverMenu
-                                    onDelete={() => {
-                                        void logout();
-                                    }}
+                                    menuOptions={[
+                                        {
+                                            text: 'Logout',
+                                            icon: 'log-out',
+                                            iconColor: theme.background.val,
+                                            action: logout,
+                                        },
+                                    ]}
                                 />
                             </View>
                         ),
