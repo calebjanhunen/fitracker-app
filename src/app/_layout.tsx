@@ -28,11 +28,11 @@ export default function RootLayout() {
                 <QueryClientProvider client={queryClient}>
                     <TamaguiProvider config={config}>
                         <Theme name='light'>
-                            <AuthProvider>
-                                <Provider store={store}>
+                            <Provider store={store}>
+                                <AuthProvider>
                                     <Slot />
-                                </Provider>
-                            </AuthProvider>
+                                </AuthProvider>
+                            </Provider>
                         </Theme>
                         <StatusBar barStyle='default' />
                     </TamaguiProvider>
