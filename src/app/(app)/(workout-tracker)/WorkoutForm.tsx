@@ -26,7 +26,17 @@ export default function WorkoutForm() {
     const workoutFormState = useSelector((state: RootState) => state.workoutForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
-    const { createWorkout, isPending } = useCreateWorkout(resetWorkout, onCreateWorkoutError);
+    const { createWorkout, isPending } = useCreateWorkout((response) => {
+        resetWorkout();
+        router.push({
+            pathname: 'PostWorkoutSummary',
+            params: {
+                workoutId: response.workoutId,
+                xpGained: response.xpGained.toString(),
+                totalXp: response.totalXp.toString(),
+            },
+        });
+    }, onCreateWorkoutError);
 
     useEffect(() => {
         setBtnDisabled(
@@ -41,7 +51,6 @@ export default function WorkoutForm() {
     function resetWorkout() {
         setIsWorkoutInProgress(false);
         dispatch(clearWorkout());
-        router.back();
     }
 
     function onFinishWorkoutPress() {
@@ -68,7 +77,10 @@ export default function WorkoutForm() {
                 Add Exercise
             </Button>
             <Button
-                onPress={resetWorkout}
+                onPress={() => {
+                    resetWorkout();
+                    router.back();
+                }}
                 backgroundColor='$red6'
                 color='$red10'
                 fontWeight='bold'
