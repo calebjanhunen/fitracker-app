@@ -2,21 +2,25 @@ import IonIcons from '@expo/vector-icons/Ionicons';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Keyboard } from 'react-native';
 import { Adapt, Select, Sheet } from 'tamagui';
+interface IDropdownOption {
+    id: number;
+    name: string;
+}
 
-interface Props {
+interface Props<T extends IDropdownOption> {
     selectedVal: string;
     setSelectedVal: Dispatch<SetStateAction<string>>;
-    options: Array<{ id: number; name: string }>;
+    options: T[];
     placeholder: string;
     label: string;
 }
-export default function DropdownMenu({
+export default function DropdownMenu<T extends IDropdownOption>({
     selectedVal,
     setSelectedVal,
     options,
     placeholder,
     label,
-}: Props) {
+}: Props<T>) {
     return (
         <Select
             value={selectedVal}

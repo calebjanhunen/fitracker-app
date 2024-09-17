@@ -1,6 +1,12 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { Button, Dialog, H4, Input, XStack, YStack } from 'tamagui';
+import { GET_ALL_BODY_PARTS_QUERY_KEY } from 'src/api/body-part-service/BodyPartApiConfig';
+import * as BodyPartApi from 'src/api/body-part-service/BodyPartApiService';
+import { GET_ALL_EQUIPMENT_QUERY_KEY } from 'src/api/equipment-service/EquipmentApiConfig';
+import * as EquipmentApi from 'src/api/equipment-service/EquipmentApiService';
+import { useCreateExercise } from 'src/hooks/workout-tracker/useCreateExercise';
+import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
 import DropdownMenu from '../common/DropdownMenu';
 
 interface Props {
@@ -11,11 +17,54 @@ interface Props {
 export default function CreateExerciseModal({ setIsOpen }: Props) {
     const [selectedBodyPart, setSelectedBodyPart] = useState<string>('');
     const [selectedEquipment, setSelectedEquipment] = useState<string>('');
+    const [exerciseName, setExerciseName] = useState<string>('');
+    const [disabled, setDisabled] = useState<boolean>(true);
+    const { data: equipment } = useQuery({
+        queryFn: EquipmentApi.getAllEquipment,
+        queryKey: [GET_ALL_EQUIPMENT_QUERY_KEY],
+        staleTime: Infinity,
+        gcTime: Infinity,
+    });
+    const { data: bodyParts } = useQuery({
+        queryFn: BodyPartApi.getAllBodyParts,
+        queryKey: [GET_ALL_BODY_PARTS_QUERY_KEY],
+        staleTime: Infinity,
+        gcTime: Infinity,
+    });
+    const { createExercise, isPending } = useCreateExercise(
+        () => {
+            resetState();
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+
+    useEffect(() => {
+        setDisabled(!exerciseName || !selectedBodyPart || !selectedEquipment);
+    }, [exerciseName, selectedBodyPart, selectedEquipment]);
+
+    function resetState() {
+        setSelectedBodyPart('');
+        setSelectedEquipment('');
+        setExerciseName('');
+        setIsOpen(false);
+    }
+
+    function onSaveExercisePress() {
+        console.log(selectedBodyPart, selectedEquipment, exerciseName);
+        createExercise({
+            name: exerciseName,
+            equipmentId: parseInt(selectedEquipment),
+            bodyPartId: parseInt(selectedBodyPart),
+        });
+    }
+
     return (
         <Dialog.Portal>
             <Dialog.Overlay
                 key='create-exercise-modal-overlay'
-                onPress={() => setIsOpen(false)}
+                onPress={resetState}
                 flex={1}
                 zIndex={1}
                 animation='100ms'
@@ -54,36 +103,37 @@ export default function CreateExerciseModal({ setIsOpen }: Props) {
                                 paddingHorizontal='$2'
                                 paddingVertical='$1'
                                 height='0'
+                                onPress={resetState}
                             >
                                 X
                             </Button>
                         </Dialog.Close>
                         <H4>Create Exercise</H4>
-                        <Dialog.Close asChild>
-                            <Button
-                                fontWeight='bold'
-                                backgroundColor='$green6'
-                                color='$green10'
-                                paddingVertical='$2'
-                                height='0'
-                            >
-                                Save
-                            </Button>
-                        </Dialog.Close>
+                        <Button
+                            fontWeight='bold'
+                            backgroundColor={disabled ? '$gray6' : '$green6'}
+                            color={disabled ? '$gray10' : '$green10'}
+                            paddingVertical='$2'
+                            height='0'
+                            onPress={onSaveExercisePress}
+                            disabled={disabled}
+                        >
+                            {isPending ? <Spinner /> : 'Save'}
+                        </Button>
                     </XStack>
                     <YStack gap='$space.4'>
-                        <Input placeholder='Exercise Name' />
+                        <Input placeholder='Exercise Name' onChangeText={setExerciseName} />
                         <DropdownMenu
                             selectedVal={selectedBodyPart}
                             setSelectedVal={setSelectedBodyPart}
-                            options={bodyParts}
+                            options={bodyParts ?? []}
                             placeholder='Select Body Part'
                             label='Body Parts'
                         />
                         <DropdownMenu
                             selectedVal={selectedEquipment}
                             setSelectedVal={setSelectedEquipment}
-                            options={equipment}
+                            options={equipment ?? []}
                             placeholder='Select Equipment'
                             label='Equipment'
                         />
@@ -93,22 +143,3 @@ export default function CreateExerciseModal({ setIsOpen }: Props) {
         </Dialog.Portal>
     );
 }
-
-const bodyParts = [
-    { id: 1, name: 'Biceps' },
-    { id: 2, name: 'Triceps' },
-    { id: 3, name: 'Shoulders' },
-    { id: 4, name: 'Chest' },
-    { id: 5, name: 'Back' },
-    { id: 6, name: 'Core' },
-    { id: 7, name: 'Legs' },
-    { id: 8, name: 'Other' },
-];
-
-const equipment = [
-    { id: 1, name: 'Barbell' },
-    { id: 2, name: 'Dumbbell' },
-    { id: 3, name: 'Cable' },
-    { id: 4, name: 'Machine' },
-    { id: 5, name: 'Bodyweight' },
-];
