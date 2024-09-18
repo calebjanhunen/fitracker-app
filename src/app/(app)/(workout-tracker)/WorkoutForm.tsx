@@ -13,6 +13,7 @@ import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExerc
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useCreateWorkout } from 'src/hooks/workout-tracker/useCreateWorkout';
 import { RootState } from 'src/redux/Store';
+import { updateTotalXP } from 'src/redux/user/UserSlice';
 import {
     clearWorkout,
     reorderExercises,
@@ -36,6 +37,7 @@ export default function WorkoutForm() {
                 totalXp: response.totalXp.toString(),
             },
         });
+        dispatch(updateTotalXP(response.totalXp));
     }, onCreateWorkoutError);
 
     useEffect(() => {

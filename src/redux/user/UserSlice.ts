@@ -28,8 +28,11 @@ const userSlice = createSlice({
             state.lastName = '';
             state.totalXp = 0;
         },
+        updateTotalXP: (state, action: PayloadAction<number>) => {
+            state.totalXp = action.payload;
+        },
     },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, updateTotalXP } = userSlice.actions;
 export default userSlice.reducer;
