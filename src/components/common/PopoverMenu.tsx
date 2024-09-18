@@ -37,7 +37,7 @@ export default function PopoverMenu({ menuOptions }: Props) {
                     <IonIcons size={18} name='ellipsis-horizontal' color={theme.blue10.val} />
                 </Button>
             </Popover.Trigger>
-            <Popover.Content backgroundColor='$gray12' padding='0'>
+            <Popover.Content backgroundColor='$color' padding='0'>
                 <YStack padding='$space.2' paddingRight='$space.7' gap='$space.3'>
                     {menuOptions.map((option, index) => (
                         <Popover.Close asChild key={index}>
@@ -50,7 +50,7 @@ export default function PopoverMenu({ menuOptions }: Props) {
                                         name={option.icon}
                                         size={18}
                                     />
-                                    <SizableText color='white' size='$5' fontWeight='bold'>
+                                    <SizableText color='$color1' size='$5' fontWeight='bold'>
                                         {option.text}
                                     </SizableText>
                                 </XStack>

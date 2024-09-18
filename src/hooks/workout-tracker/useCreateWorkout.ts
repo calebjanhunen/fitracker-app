@@ -4,6 +4,7 @@ import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-s
 import { queryClient } from 'src/api/react-query-client';
 import { GET_USER_BY_ID_QUERY_KEY } from 'src/api/user-service/UserApiConfig';
 import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
+import { GET_ALL_WORKOUTS_QUERY_KEY } from 'src/api/workout-service/WorkoutApiConfig';
 import * as WorkoutApiService from 'src/api/workout-service/WorkoutApiService';
 import { IWorkoutFormState } from 'src/redux/workout-form/IWorkoutForm';
 
@@ -30,6 +31,10 @@ export function useCreateWorkout(
             await queryClient.invalidateQueries({
                 queryKey: [GET_USER_BY_ID_QUERY_KEY],
             });
+            await queryClient.invalidateQueries({
+                queryKey: [GET_ALL_WORKOUTS_QUERY_KEY],
+            });
+
             onSuccessCallback(response);
         },
         onError: (e) => {

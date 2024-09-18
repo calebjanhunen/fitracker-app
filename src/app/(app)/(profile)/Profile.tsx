@@ -10,7 +10,7 @@ export default function Profile() {
     const user = useSelector((state: RootState) => state.user);
 
     return (
-        <View flex={1} alignItems='center' marginTop='$2'>
+        <View flex={1} alignItems='center' paddingTop='$2' backgroundColor='$background'>
             <Circle size={100} backgroundColor='$gray8'>
                 <IonIcons name='person-outline' size={70} />
             </Circle>
