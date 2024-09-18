@@ -3,7 +3,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button, Popover, SizableText, useTheme, XStack, YStack } from 'tamagui';
 
-interface MenuOptions {
+export interface PopoverMenuOptions {
     text: string;
     iconColor: keyof ReturnType<typeof useTheme>;
     icon: keyof typeof IonIcons.glyphMap;
@@ -11,7 +11,7 @@ interface MenuOptions {
 }
 
 interface Props {
-    menuOptions: MenuOptions[];
+    menuOptions: PopoverMenuOptions[];
 }
 
 export default function PopoverMenu({ menuOptions }: Props) {
