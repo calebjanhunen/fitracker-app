@@ -55,9 +55,9 @@ export function AuthProvider({ children }: Props) {
     useEffect(() => {
         getAccessTokenFromStorage()
             .then(async (accessToken) => {
-                await setUserState();
                 if (accessToken) {
                     router.replace('/(app)/(workout-tracker)/Home');
+                    await setUserState();
                 } else {
                     router.replace('/(auth)/Signup');
                 }
