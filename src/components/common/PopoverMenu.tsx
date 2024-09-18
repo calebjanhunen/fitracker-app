@@ -1,5 +1,6 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import React from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button, Popover, SizableText, useTheme, XStack, YStack } from 'tamagui';
 
 interface MenuOptions {
@@ -37,27 +38,23 @@ export default function PopoverMenu({ menuOptions }: Props) {
                 </Button>
             </Popover.Trigger>
             <Popover.Content backgroundColor='$gray12' padding='0'>
-                <YStack>
+                <YStack padding='$space.2' paddingRight='$space.7' gap='$space.3'>
                     {menuOptions.map((option, index) => (
                         <Popover.Close asChild key={index}>
-                            <Button
-                                height='0'
-                                paddingVertical='$2'
-                                chromeless
-                                borderRadius='0'
+                            <TouchableOpacity
                                 onPress={async () => await handleAction(option.action)}
                             >
-                                <XStack alignItems='center' gap='$2'>
+                                <XStack alignItems='center' gap='$space.3'>
                                     <IonIcons
                                         color={option.iconColor}
                                         name={option.icon}
                                         size={18}
                                     />
-                                    <SizableText fontWeight='bold' color='white'>
+                                    <SizableText color='white' size='$5' fontWeight='bold'>
                                         {option.text}
                                     </SizableText>
                                 </XStack>
-                            </Button>
+                            </TouchableOpacity>
                         </Popover.Close>
                     ))}
                 </YStack>
