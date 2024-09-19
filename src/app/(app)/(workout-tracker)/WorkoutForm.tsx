@@ -8,6 +8,7 @@ import { Button, H4, Input, Spinner, View, XStack, YStack } from 'tamagui';
 import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IErrorResponse } from 'src/api/client';
+import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
@@ -33,18 +34,10 @@ export default function WorkoutForm() {
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
     const { removeFromStorage } = useLocalStorage();
-    const { createWorkout, isPending } = useCreateWorkout((response) => {
-        resetWorkout();
-        router.push({
-            pathname: 'PostWorkoutSummary',
-            params: {
-                workoutId: response.workoutId,
-                xpGained: response.xpGained.toString(),
-                totalXp: response.totalXp.toString(),
-            },
-        });
-        dispatch(updateTotalXP(response.totalXp));
-    }, onCreateWorkoutError);
+    const { createWorkout, isPending } = useCreateWorkout(
+        onCreateWorkoutSuccess,
+        onCreateWorkoutError
+    );
 
     useEffect(() => {
         setBtnDisabled(
@@ -64,6 +57,19 @@ export default function WorkoutForm() {
             .catch((e) => console.log(e));
         setWorkoutInProgress(false);
         clearStopwatch();
+    }
+
+    function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
+        resetWorkout();
+        router.push({
+            pathname: 'PostWorkoutSummary',
+            params: {
+                workoutId: response.workoutId,
+                xpGained: response.xpGained.toString(),
+                totalXp: response.totalXp.toString(),
+            },
+        });
+        dispatch(updateTotalXP(response.totalXp));
     }
 
     function onCreateWorkoutError(error: IErrorResponse) {
