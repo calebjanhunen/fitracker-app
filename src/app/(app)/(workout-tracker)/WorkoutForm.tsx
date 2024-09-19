@@ -20,6 +20,7 @@ import {
     reorderExercises,
     updateName,
 } from 'src/redux/workout-form/WorkoutFormSlice';
+import { formatStopwatchTime } from 'src/utils/FormatStopwatchTime';
 
 export default function WorkoutForm() {
     const dispatch = useDispatch();
@@ -97,7 +98,7 @@ export default function WorkoutForm() {
             <KeyboardAvoidingView>
                 <View flex={1} backgroundColor='$background' paddingHorizontal='$3'>
                     <XStack justifyContent='space-between' alignItems='center' marginTop='$3'>
-                        <H4>{elapsedTime}</H4>
+                        <H4>{formatStopwatchTime(elapsedTime)}</H4>
                         <Button
                             backgroundColor={btnDisabled ? '$gray6' : '$green6'}
                             fontWeight='bold'
