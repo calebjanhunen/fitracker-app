@@ -94,7 +94,7 @@ export default function WorkoutForm() {
     );
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }} edges={['top']}>
             <KeyboardAvoidingView>
                 <View flex={1} backgroundColor='$background' paddingHorizontal='$3'>
                     <XStack justifyContent='space-between' alignItems='center' marginTop='$3'>
