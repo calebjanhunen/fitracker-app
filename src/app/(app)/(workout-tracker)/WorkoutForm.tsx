@@ -12,6 +12,7 @@ import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useCreateWorkout } from 'src/hooks/workout-tracker/useCreateWorkout';
+import { useStopwatch } from 'src/hooks/workout-tracker/useStopwatch';
 import { RootState } from 'src/redux/Store';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
 import {
@@ -23,6 +24,7 @@ import {
 export default function WorkoutForm() {
     const dispatch = useDispatch();
     const router = useRouter();
+    const { elapsedTime, clearStopwatch } = useStopwatch();
     const { setIsWorkoutInProgress } = useIsWorkoutInProgress();
     const workoutFormState = useSelector((state: RootState) => state.workoutForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -53,10 +55,7 @@ export default function WorkoutForm() {
     function resetWorkout() {
         setIsWorkoutInProgress(false);
         dispatch(clearWorkout());
-    }
-
-    function onFinishWorkoutPress() {
-        createWorkout(workoutFormState);
+        clearStopwatch();
     }
 
     function onCreateWorkoutError(error: IErrorResponse) {
@@ -98,13 +97,13 @@ export default function WorkoutForm() {
             <KeyboardAvoidingView>
                 <View flex={1} backgroundColor='$background' paddingHorizontal='$3'>
                     <XStack justifyContent='space-between' alignItems='center' marginTop='$3'>
-                        <H4>0:00</H4>
+                        <H4>{elapsedTime}</H4>
                         <Button
                             backgroundColor={btnDisabled ? '$gray6' : '$green6'}
                             fontWeight='bold'
                             color={btnDisabled ? '$gray10' : '$green10'}
                             disabled={btnDisabled}
-                            onPress={onFinishWorkoutPress}
+                            onPress={() => createWorkout(workoutFormState)}
                         >
                             {isPending ? <Spinner /> : 'Finish Workout'}
                         </Button>
