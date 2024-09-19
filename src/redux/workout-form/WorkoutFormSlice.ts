@@ -18,6 +18,12 @@ const workoutFormSlice = createSlice({
     name: 'workoutForm',
     initialState,
     reducers: {
+        loadWorkoutOnRender: (state, action: PayloadAction<IWorkoutFormState>) => {
+            state.workout = action.payload.workout;
+            state.exercises = action.payload.exercises;
+            state.sets = action.payload.sets;
+            state.recentSets = action.payload.recentSets;
+        },
         updateName: (state, action: PayloadAction<string>) => {
             state.workout.name = action.payload;
         },
@@ -107,6 +113,7 @@ export const {
     deleteExerciseFromWorkout,
     clearWorkout,
     reorderExercises,
+    loadWorkoutOnRender,
 } = workoutFormSlice.actions;
 
 export default workoutFormSlice.reducer;

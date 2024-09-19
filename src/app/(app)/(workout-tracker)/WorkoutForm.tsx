@@ -11,10 +11,12 @@ import { IErrorResponse } from 'src/api/client';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
+import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { useCreateWorkout } from 'src/hooks/workout-tracker/useCreateWorkout';
 import { useStopwatch } from 'src/hooks/workout-tracker/useStopwatch';
 import { RootState } from 'src/redux/Store';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
+import { WORKOUT_FORM_STORAGE_KEY } from 'src/redux/workout-form/WorkoutFormMiddleware';
 import {
     clearWorkout,
     reorderExercises,
@@ -30,6 +32,7 @@ export default function WorkoutForm() {
     const workoutFormState = useSelector((state: RootState) => state.workoutForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
+    const { removeFromStorage } = useLocalStorage();
     const { createWorkout, isPending } = useCreateWorkout((response) => {
         resetWorkout();
         router.push({
@@ -54,8 +57,12 @@ export default function WorkoutForm() {
     }
 
     function resetWorkout() {
+        removeFromStorage(WORKOUT_FORM_STORAGE_KEY)
+            .then(() => {
+                dispatch(clearWorkout());
+            })
+            .catch((e) => console.log(e));
         setWorkoutInProgress(false);
-        dispatch(clearWorkout());
         clearStopwatch();
     }
 
