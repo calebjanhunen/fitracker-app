@@ -8,11 +8,11 @@ import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInP
 export default function Home() {
     const theme = useTheme();
     const router = useRouter();
-    const { isWorkoutInProgress, setIsWorkoutInProgress } = useIsWorkoutInProgress();
+    const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
 
     function onStartWorkoutPress() {
         if (!isWorkoutInProgress) {
-            setIsWorkoutInProgress(true);
+            setWorkoutInProgress(true);
         }
         router.push('WorkoutForm');
     }

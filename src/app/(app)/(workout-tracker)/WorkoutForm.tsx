@@ -26,7 +26,7 @@ export default function WorkoutForm() {
     const dispatch = useDispatch();
     const router = useRouter();
     const { elapsedTime, clearStopwatch } = useStopwatch();
-    const { setIsWorkoutInProgress } = useIsWorkoutInProgress();
+    const { setWorkoutInProgress } = useIsWorkoutInProgress();
     const workoutFormState = useSelector((state: RootState) => state.workoutForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
@@ -54,7 +54,7 @@ export default function WorkoutForm() {
     }
 
     function resetWorkout() {
-        setIsWorkoutInProgress(false);
+        setWorkoutInProgress(false);
         dispatch(clearWorkout());
         clearStopwatch();
     }
