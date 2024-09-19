@@ -16,7 +16,7 @@ export function useStopwatch(): IUseStopwatch {
     useEffect(() => {
         startStopwatch()
             .then(() => {
-                console.log('stopwatch started');
+                // console.log('stopwatch started');
             })
             .catch((e) => {
                 console.error(e);
