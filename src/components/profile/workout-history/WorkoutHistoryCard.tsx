@@ -4,6 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import PopoverMenu, { PopoverMenuOptions } from 'src/components/common/PopoverMenu';
 import { formatDate } from 'src/utils/FormatDate';
+import { formatWorkoutDuration } from 'src/utils/formatWorkoutDuration';
 import { Card, H4, SizableText, useTheme, XStack } from 'tamagui';
 
 interface Props {
@@ -41,7 +42,9 @@ export default function WorkoutHistoryCard({ workout }: Props) {
                     </XStack>
                     <XStack alignItems='center' gap='$space.2'>
                         <IonIcons name='time-outline' size={15} />
-                        <SizableText color='$gray10'>30 mins</SizableText>
+                        <SizableText color='$gray10'>
+                            {formatWorkoutDuration(workout.duration)}
+                        </SizableText>
                     </XStack>
                 </XStack>
                 <FlatList

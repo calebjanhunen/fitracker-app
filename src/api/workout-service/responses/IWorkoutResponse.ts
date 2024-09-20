@@ -2,6 +2,7 @@ export interface IWorkoutResponse {
     id: string;
     name: string;
     createdAt: string;
+    duration: number;
     exercises: IWorkoutExerciseResponse[];
 }
 
