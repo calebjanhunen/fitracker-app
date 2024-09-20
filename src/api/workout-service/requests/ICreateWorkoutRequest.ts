@@ -1,5 +1,7 @@
 export interface ICreateWorkoutRequest {
     name: string;
+    createdAt: string;
+    duration: number;
     exercises: ICreateWorkoutExerciseRequest[];
 }
 

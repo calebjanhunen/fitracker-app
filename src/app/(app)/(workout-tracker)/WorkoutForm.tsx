@@ -21,6 +21,7 @@ import { WORKOUT_FORM_STORAGE_KEY } from 'src/redux/workout-form/WorkoutFormMidd
 import {
     clearWorkout,
     reorderExercises,
+    updateDuration,
     updateName,
 } from 'src/redux/workout-form/WorkoutFormSlice';
 import { formatStopwatchTime } from 'src/utils/FormatStopwatchTime';
@@ -57,6 +58,11 @@ export default function WorkoutForm() {
             .catch((e) => console.log(e));
         setWorkoutInProgress(false);
         clearStopwatch();
+    }
+
+    function onCreateWorkout() {
+        dispatch(updateDuration(elapsedTime));
+        createWorkout(workoutFormState);
     }
 
     function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
@@ -117,7 +123,7 @@ export default function WorkoutForm() {
                             fontWeight='bold'
                             color={btnDisabled ? '$gray10' : '$green10'}
                             disabled={btnDisabled}
-                            onPress={() => createWorkout(workoutFormState)}
+                            onPress={onCreateWorkout}
                         >
                             {isPending ? <Spinner /> : 'Finish Workout'}
                         </Button>

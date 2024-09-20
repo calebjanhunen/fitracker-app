@@ -26,6 +26,8 @@ export async function getAllWorkouts(): Promise<IWorkoutResponse[]> {
 function fromWorkoutFormToWorkoutRequest(workoutForm: IWorkoutFormState): ICreateWorkoutRequest {
     return {
         name: workoutForm.workout.name,
+        createdAt: workoutForm.workout.createdAt,
+        duration: workoutForm.workout.duration,
         exercises: workoutForm.workout.exercises.map((exerciseId, index) => {
             return {
                 exerciseId,

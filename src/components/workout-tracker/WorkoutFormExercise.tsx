@@ -37,6 +37,10 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
         onDelete: () => dispatch(deleteExerciseFromWorkout({ exerciseId: exercise.id })),
     });
 
+    if (!exercise) {
+        return null;
+    }
+
     function onAddSetPress() {
         dispatch(addSetToExercise({ exerciseId: exercise.id }));
     }
