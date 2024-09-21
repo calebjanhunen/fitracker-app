@@ -9,7 +9,13 @@ import * as WorkoutApiService from 'src/api/workout-service/WorkoutApiService';
 import { IWorkoutFormState } from 'src/redux/workout-form/IWorkoutForm';
 
 interface IUseCreateWorkout {
-    createWorkout: (workoutForm: IWorkoutFormState) => void;
+    createWorkout: ({
+        workoutForm,
+        duration,
+    }: {
+        workoutForm: IWorkoutFormState;
+        duration: number;
+    }) => void;
     isPending: boolean;
     error: IErrorResponse | null;
 }
@@ -22,7 +28,14 @@ export function useCreateWorkout(
         mutate: createWorkout,
         error,
         isPending,
-    } = useMutation<ICreateWorkoutResponse, IErrorResponse, IWorkoutFormState>({
+    } = useMutation<
+        ICreateWorkoutResponse,
+        IErrorResponse,
+        {
+            workoutForm: IWorkoutFormState;
+            duration: number;
+        }
+    >({
         mutationFn: WorkoutApiService.createWorkout,
         onSuccess: async (response) => {
             await queryClient.invalidateQueries({

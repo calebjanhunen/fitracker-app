@@ -7,7 +7,6 @@ const initialState: IWorkoutFormState = {
     workout: {
         name: '',
         createdAt: '',
-        duration: 0,
         exercises: [],
     },
     exercises: {},
@@ -27,9 +26,6 @@ const workoutFormSlice = createSlice({
         },
         updatedCreatedAt: (state) => {
             state.workout.createdAt = new Date().toISOString();
-        },
-        updateDuration: (state, action: PayloadAction<number>) => {
-            state.workout.duration = action.payload;
         },
         updateName: (state, action: PayloadAction<string>) => {
             state.workout.name = action.payload;
@@ -122,7 +118,6 @@ export const {
     reorderExercises,
     loadWorkoutOnRender,
     updatedCreatedAt,
-    updateDuration,
 } = workoutFormSlice.actions;
 
 export default workoutFormSlice.reducer;

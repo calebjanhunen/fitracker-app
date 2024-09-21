@@ -21,7 +21,6 @@ import { WORKOUT_FORM_STORAGE_KEY } from 'src/redux/workout-form/WorkoutFormMidd
 import {
     clearWorkout,
     reorderExercises,
-    updateDuration,
     updateName,
 } from 'src/redux/workout-form/WorkoutFormSlice';
 import { formatStopwatchTime } from 'src/utils/FormatStopwatchTime';
@@ -61,8 +60,7 @@ export default function WorkoutForm() {
     }
 
     function onCreateWorkout() {
-        dispatch(updateDuration(elapsedTime));
-        createWorkout(workoutFormState);
+        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime });
     }
 
     function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {

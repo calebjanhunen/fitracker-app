@@ -5,10 +5,15 @@ import { ICreateWorkoutResponse } from './responses/ICreateWorkoutResponse';
 import { IWorkoutResponse } from './responses/IWorkoutResponse';
 import { workoutEndpoints } from './WorkoutApiConfig';
 
-export async function createWorkout(
-    workoutForm: IWorkoutFormState
-): Promise<ICreateWorkoutResponse> {
-    const workoutRequest = fromWorkoutFormToWorkoutRequest(workoutForm);
+export async function createWorkout({
+    workoutForm,
+    duration,
+}: {
+    workoutForm: IWorkoutFormState;
+    duration: number;
+}): Promise<ICreateWorkoutResponse> {
+    const workoutRequest = fromWorkoutFormToWorkoutRequest(workoutForm, duration);
+    console.log(workoutRequest);
     return await request<ICreateWorkoutRequest>({
         method: 'POST',
         url: workoutEndpoints.createWorkout(),
@@ -23,11 +28,14 @@ export async function getAllWorkouts(): Promise<IWorkoutResponse[]> {
     });
 }
 
-function fromWorkoutFormToWorkoutRequest(workoutForm: IWorkoutFormState): ICreateWorkoutRequest {
+function fromWorkoutFormToWorkoutRequest(
+    workoutForm: IWorkoutFormState,
+    duration: number
+): ICreateWorkoutRequest {
     return {
         name: workoutForm.workout.name,
         createdAt: workoutForm.workout.createdAt,
-        duration: workoutForm.workout.duration,
+        duration,
         exercises: workoutForm.workout.exercises.map((exerciseId, index) => {
             return {
                 exerciseId,

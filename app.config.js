@@ -18,6 +18,7 @@ export default {
         assetBundlePatterns: ['**/*'],
         ios: {
             supportsTablet: true,
+            bundleIdentifier: 'com.calebjanhunen.fitracker',
         },
         android: {
             adaptiveIcon: {
@@ -27,6 +28,11 @@ export default {
         },
         web: {
             favicon: './assets/favicon.png',
+        },
+        extra: {
+            eas: {
+                projectId: '45091350-52c3-4c87-8398-d0988898db85',
+            },
         },
         sdkVersion: '51.0.0',
     },

@@ -1,4 +1,9 @@
-import { ANDROID_EMULATOR_API_URL, IOS_EMULATOR_API_URL, PHYSICAL_DEVICE_API_URL } from '@env';
+import {
+    ANDROID_EMULATOR_API_URL,
+    IOS_EMULATOR_API_URL,
+    NGROK_URL,
+    PHYSICAL_DEVICE_API_URL,
+} from '@env';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 

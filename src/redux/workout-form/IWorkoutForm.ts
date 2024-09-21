@@ -3,7 +3,6 @@ import { IRecentSet } from 'src/api/exercise-service/interfaces/responses/Exerci
 interface IWorkoutForm {
     name: string;
     createdAt: string;
-    duration: number;
     exercises: string[];
 }
 
