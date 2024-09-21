@@ -13,7 +13,6 @@ export async function createWorkout({
     duration: number;
 }): Promise<ICreateWorkoutResponse> {
     const workoutRequest = fromWorkoutFormToWorkoutRequest(workoutForm, duration);
-    console.log(workoutRequest);
     return await request<ICreateWorkoutRequest>({
         method: 'POST',
         url: workoutEndpoints.createWorkout(),
