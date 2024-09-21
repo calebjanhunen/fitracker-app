@@ -27,6 +27,13 @@ export async function getAllWorkouts(): Promise<IWorkoutResponse[]> {
     });
 }
 
+export async function deleteWorkout(workoutId: string): Promise<{ totalXp: number }> {
+    return await request<{ totalXp: number }>({
+        method: 'DELETE',
+        url: workoutEndpoints.deleteWorkout(workoutId),
+    });
+}
+
 function fromWorkoutFormToWorkoutRequest(
     workoutForm: IWorkoutFormState,
     duration: number

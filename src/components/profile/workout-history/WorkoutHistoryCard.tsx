@@ -1,11 +1,15 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import React from 'react';
+import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import PopoverMenu, { PopoverMenuOptions } from 'src/components/common/PopoverMenu';
+import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
+import { updateTotalXP } from 'src/redux/user/UserSlice';
 import { formatDate } from 'src/utils/FormatDate';
 import { formatWorkoutDuration } from 'src/utils/formatWorkoutDuration';
-import { Card, H4, SizableText, useTheme, XStack } from 'tamagui';
+import { Card, H4, SizableText, Spinner, useTheme, XStack } from 'tamagui';
 
 interface Props {
     workout: IWorkoutResponse;
@@ -13,6 +17,10 @@ interface Props {
 
 export default function WorkoutHistoryCard({ workout }: Props) {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, (error) =>
+        Alert.alert('Could not delete workout', error.message)
+    );
     const menuOptions: PopoverMenuOptions[] = [
         {
             text: 'Edit',
@@ -22,11 +30,19 @@ export default function WorkoutHistoryCard({ workout }: Props) {
         },
         {
             text: 'Delete',
-            action: () => {},
+            action: () => deleteWorkout(workout.id),
             icon: 'trash-outline',
             iconColor: theme.red10.val,
         },
     ];
+
+    function onDeleteSuccess(response: { totalXp: number }) {
+        dispatch(updateTotalXP(response.totalXp));
+    }
+
+    if (isDeleting) {
+        return <Spinner />;
+    }
 
     return (
         <Card>
