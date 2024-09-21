@@ -3,6 +3,7 @@ import React from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import { IErrorResponse } from 'src/api/client';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import PopoverMenu, { PopoverMenuOptions } from 'src/components/common/PopoverMenu';
 import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
@@ -18,9 +19,7 @@ interface Props {
 export default function WorkoutHistoryCard({ workout }: Props) {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, (error) =>
-        Alert.alert('Could not delete workout', error.message)
-    );
+    const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, onDeleteError);
     const menuOptions: PopoverMenuOptions[] = [
         {
             text: 'Edit',
@@ -49,6 +48,10 @@ export default function WorkoutHistoryCard({ workout }: Props) {
 
     function onDeleteSuccess(response: { totalXp: number }) {
         dispatch(updateTotalXP(response.totalXp));
+    }
+
+    function onDeleteError(error: IErrorResponse) {
+        Alert.alert('Could not delete workout', error.message);
     }
 
     if (isDeleting) {
