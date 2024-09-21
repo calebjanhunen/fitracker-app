@@ -30,11 +30,22 @@ export default function WorkoutHistoryCard({ workout }: Props) {
         },
         {
             text: 'Delete',
-            action: () => deleteWorkout(workout.id),
+            action: onDeletePress,
             icon: 'trash-outline',
             iconColor: theme.red10.val,
         },
     ];
+
+    function onDeletePress() {
+        Alert.alert(
+            `Are you sure you want to delete ${workout.name}?`,
+            'This will remove the xp gained from completing the workout.',
+            [
+                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                { text: 'Delete', onPress: () => deleteWorkout(workout.id), style: 'destructive' },
+            ]
+        );
+    }
 
     function onDeleteSuccess(response: { totalXp: number }) {
         dispatch(updateTotalXP(response.totalXp));
