@@ -1,5 +1,9 @@
 export interface ICreateWorkoutResponse {
     workoutId: string;
-    xpGained: number;
-    totalXp: number;
+    currentWorkoutStreak: number;
+    baseXpGain: number;
+    xpGainedFromWorkoutDuration: number;
+    xpGainedFromWorkoutStreak: number;
+    totalXpGained: number;
+    totalUserXp: number;
 }

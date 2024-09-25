@@ -68,12 +68,15 @@ export default function WorkoutForm() {
         router.push({
             pathname: 'PostWorkoutSummary',
             params: {
-                workoutId: response.workoutId,
-                xpGained: response.xpGained.toString(),
-                totalXp: response.totalXp.toString(),
+                baseXpGain: response.baseXpGain.toString(),
+                xpGainedFromWorkoutDuration: response.xpGainedFromWorkoutDuration.toString(),
+                xpGainedFromWorkoutStreak: response.xpGainedFromWorkoutStreak.toString(),
+                totalXpGained: response.totalXpGained.toString(),
+                currentWorkoutStreak: response.currentWorkoutStreak.toString(),
+                totalUserXp: response.totalUserXp.toString(),
             },
         });
-        dispatch(updateTotalXP(response.totalXp));
+        dispatch(updateTotalXP(response.totalUserXp));
     }
 
     function onCreateWorkoutError(error: IErrorResponse) {
