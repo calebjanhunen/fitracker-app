@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import { IErrorResponse } from 'src/api/client';
+import { IDeleteWorkoutResponse } from 'src/api/workout-service/responses/IDeleteWorkoutResponse';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import PopoverMenu, { PopoverMenuOptions } from 'src/components/common/PopoverMenu';
 import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
@@ -46,8 +47,8 @@ export default function WorkoutHistoryCard({ workout }: Props) {
         );
     }
 
-    function onDeleteSuccess(response: { totalXp: number }) {
-        dispatch(updateTotalXP(response.totalXp));
+    function onDeleteSuccess(response: IDeleteWorkoutResponse) {
+        dispatch(updateTotalXP(response.totalUserXp));
     }
 
     function onDeleteError(error: IErrorResponse) {
