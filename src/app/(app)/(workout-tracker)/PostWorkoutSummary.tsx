@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getOrdinalSuffix } from 'src/utils/getOrdinalSuffix';
+import { getOrdinalSuffix } from 'src/utils/GetOrdinalSuffix';
 import { Button, H2, H4, H5, H6, Separator, View, XStack, YStack } from 'tamagui';
 
 export default function PostWorkoutSummary() {

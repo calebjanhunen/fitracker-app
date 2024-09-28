@@ -1,0 +1,33 @@
+{
+    "cli": {
+        "version": ">= 12.3.0",
+        "appVersionSource": "remote"
+    },
+    "build": {
+        "development": {
+            "developmentClient": true,
+            "distribution": "internal",
+            "env": {
+                "PROD_API_URL": "$PROD_API_URL",
+                "ENVIRONMENT": "production"
+            }
+        },
+        "preview": {
+            "distribution": "internal",
+            "env": {
+                "PROD_API_URL": "$PROD_API_URL",
+                "ENVIRONMENT": "production"
+            }
+        },
+        "production": {
+            "autoIncrement": true,
+            "env": {
+                "PROD_API_URL": "$PROD_API_URL",
+                "ENVIRONMENT": "production"
+            }
+        }
+    },
+    "submit": {
+        "production": {}
+    }
+}

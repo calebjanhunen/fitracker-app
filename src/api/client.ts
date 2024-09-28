@@ -1,4 +1,3 @@
-import { API_PORT } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {
     AxiosError,
@@ -32,7 +31,7 @@ export async function request<T>(options: AxiosRequestConfig<T>) {
 // immediately invoked function that's only called once
 const client = (() => {
     return axios.create({
-        baseURL: `${getBaseUrl()}:${API_PORT}`,
+        baseURL: `${getBaseUrl()}`,
         headers: {
             'Content-Type': 'application/json',
         },

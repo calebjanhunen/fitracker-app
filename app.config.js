@@ -33,6 +33,8 @@ export default {
             eas: {
                 projectId: '45091350-52c3-4c87-8398-d0988898db85',
             },
+            PROD_API_URL: process.env.PROD_API_URL ?? 'notset',
+            ENVIRONMENT: process.env.ENVIRONMENT,
         },
         sdkVersion: '51.0.0',
     },

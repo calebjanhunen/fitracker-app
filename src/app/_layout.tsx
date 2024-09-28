@@ -1,4 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
+import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import React from 'react';
@@ -36,7 +37,9 @@ export default function RootLayout() {
                         </Theme>
                         <StatusBar barStyle='default' />
                     </TamaguiProvider>
-                    <DevToolsBubble />
+                    {Constants.expoConfig?.extra?.ENVIRONMENT === 'development' && (
+                        <DevToolsBubble />
+                    )}
                 </QueryClientProvider>
             </GestureHandlerRootView>
         </PortalProvider>
