@@ -60,7 +60,8 @@
     "styled-components": "^6.0.2",
     "tamagui": "^1.110.2",
     "typescript": "^4.9.4",
-    "zeego": "^1.10.0"
+    "zeego": "^1.10.0",
+    "expo-updates": "~0.25.25"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

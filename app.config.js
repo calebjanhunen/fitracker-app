@@ -9,6 +9,9 @@ export default {
         plugins: ['expo-router', 'expo-font'],
         scheme: 'fitracker',
         version: '1.0.0',
+        runtimeVersion: {
+            policy: 'appVersion',
+        },
         orientation: 'portrait',
         icon: './assets/fitracker-icon.png',
         userInterfaceStyle: 'automatic',
@@ -37,6 +40,9 @@ export default {
             },
             PROD_API_URL: prodApiUrl,
             ENVIRONMENT: process.env.ENVIRONMENT,
+        },
+        updates: {
+            url: 'https://u.expo.dev/45091350-52c3-4c87-8398-d0988898db85',
         },
         sdkVersion: '51.0.0',
     },
