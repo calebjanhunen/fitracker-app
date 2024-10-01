@@ -6,23 +6,17 @@
     "build": {
         "development": {
             "developmentClient": true,
-            "distribution": "internal",
-            "env": {
-                "PROD_API_URL": "$PROD_API_URL",
-                "ENVIRONMENT": "production"
-            }
+            "distribution": "internal"
         },
         "preview": {
             "distribution": "internal",
             "env": {
-                "PROD_API_URL": "$PROD_API_URL",
-                "ENVIRONMENT": "production"
+                "ENVIRONMENT": "preview"
             }
         },
         "production": {
             "autoIncrement": true,
             "env": {
-                "PROD_API_URL": "$PROD_API_URL",
                 "ENVIRONMENT": "production"
             }
         }

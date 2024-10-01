@@ -1,11 +1,9 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { DevToolsBubble } from 'react-native-react-query-devtools';
 import { Provider } from 'react-redux';
 import { queryClient } from 'src/api/react-query-client';
 import { AuthProvider } from 'src/context/auth-context/AuthContext';
@@ -37,9 +35,6 @@ export default function RootLayout() {
                         </Theme>
                         <StatusBar barStyle='default' />
                     </TamaguiProvider>
-                    {Constants.expoConfig?.extra?.ENVIRONMENT === 'development' && (
-                        <DevToolsBubble />
-                    )}
                 </QueryClientProvider>
             </GestureHandlerRootView>
         </PortalProvider>

@@ -1,17 +1,19 @@
 import 'dotenv/config';
 
+const prodApiUrl = process.env.PROD_API_URL;
+
 export default {
     expo: {
-        name: 'fitracker',
+        name: 'Fitracker',
         slug: 'fitracker',
         plugins: ['expo-router', 'expo-font'],
         scheme: 'fitracker',
         version: '1.0.0',
         orientation: 'portrait',
-        icon: './assets/icon.png',
+        icon: './assets/fitracker-icon.png',
         userInterfaceStyle: 'automatic',
         splash: {
-            image: './assets/splash.png',
+            image: './assets/fitracker-splash.png',
             resizeMode: 'contain',
             backgroundColor: '#ffffff',
         },
@@ -33,7 +35,7 @@ export default {
             eas: {
                 projectId: '45091350-52c3-4c87-8398-d0988898db85',
             },
-            PROD_API_URL: process.env.PROD_API_URL ?? 'notset',
+            PROD_API_URL: prodApiUrl,
             ENVIRONMENT: process.env.ENVIRONMENT,
         },
         sdkVersion: '51.0.0',
