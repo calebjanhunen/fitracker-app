@@ -1,6 +1,6 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 
-const prodApiUrl = process.env.PROD_API_URL;
+dotenv.config({ path: process.env.NODE_ENV === 'development' ? '.env' : '.env.prod' });
 
 export default {
     expo: {
@@ -38,7 +38,7 @@ export default {
             eas: {
                 projectId: '45091350-52c3-4c87-8398-d0988898db85',
             },
-            PROD_API_URL: prodApiUrl,
+            PROD_API_URL: process.env.API_URL,
             ENVIRONMENT: process.env.ENVIRONMENT,
         },
         updates: {
