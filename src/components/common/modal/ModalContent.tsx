@@ -3,12 +3,10 @@ import { Dialog, DialogContentProps } from 'tamagui';
 
 interface Props extends DialogContentProps {
     children: React.ReactNode;
-    key: string;
 }
-export default function ModalContent({ children, key, ...dialogContentProps }: Props) {
+export default function ModalContent({ children, ...dialogContentProps }: Props) {
     return (
         <Dialog.Content
-            key={key}
             zIndex={2}
             animateOnly={['transform', 'opacity']}
             animation={[
