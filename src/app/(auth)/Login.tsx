@@ -1,10 +1,9 @@
-import Constants from 'expo-constants';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from 'src/context/auth-context/AuthContext';
 
-import { Button, H1, H6, Input, Spinner, Text, useTheme, View, YStack } from 'tamagui';
+import { Button, H1, Input, Spinner, Text, useTheme, View, YStack } from 'tamagui';
 
 export default function Login() {
     const theme = useTheme();
@@ -24,8 +23,6 @@ export default function Login() {
                     style={{ flex: 1 }}
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 >
-                    <H6>PROD Api url: {Constants.expoConfig?.extra?.PROD_API_URL}</H6>
-                    <H6>Environment: {Constants.expoConfig?.extra?.ENVIRONMENT}</H6>
                     <View flex={1} paddingHorizontal='$5'>
                         <H1 size='$10' textAlign='center' paddingTop='$10'>
                             Fitracker
