@@ -70,6 +70,11 @@ export default function AddExercisesToWorkoutModal() {
         router.back();
     }
 
+    function onCancelPress() {
+        setSelectedExercises([]);
+        router.back();
+    }
+
     function renderBody() {
         if (error) {
             return (
@@ -122,17 +127,32 @@ export default function AddExercisesToWorkoutModal() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <KeyboardAvoidingView>
-                <Button
-                    backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
-                    color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
-                    fontWeight='bold'
+                <XStack
+                    alignItems='center'
+                    justifyContent='space-between'
                     marginHorizontal='$space.3'
                     marginBottom='$space.3'
-                    disabled={selectedExercises.length === 0}
-                    onPress={onAddToWorkoutOrTemplatePress}
                 >
-                    {`Add to ${workoutOrTemplate}`}
-                </Button>
+                    <Button
+                        fontWeight='bold'
+                        paddingHorizontal='$2'
+                        paddingVertical='$1'
+                        height='0'
+                        onPress={onCancelPress}
+                        backgroundColor='$gray8'
+                    >
+                        X
+                    </Button>
+                    <Button
+                        backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
+                        color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
+                        fontWeight='bold'
+                        disabled={selectedExercises.length === 0}
+                        onPress={onAddToWorkoutOrTemplatePress}
+                    >
+                        {`Add to ${workoutOrTemplate}`}
+                    </Button>
+                </XStack>
                 <Dialog modal open={isModalOpen} onOpenChange={setIsModelOpen}>
                     <Dialog.Trigger asChild>
                         <Button
