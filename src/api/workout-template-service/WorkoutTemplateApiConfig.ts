@@ -1,5 +1,5 @@
 export const workoutTemplateEndpoints = {
-    createWorkouTemplate: () => '/api/workout-templates',
+    createWorkoutTemplate: () => '/api/workout-templates',
     getAllWorkoutTemplates: () => '/api/workout-templates',
     deleteWorkoutTemplate: (id: string) => `/api/workout-templates/${id}`,
 };

@@ -3,11 +3,14 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Input, View, YStack } from 'tamagui';
+import { Button, Input, Spinner, View, YStack } from 'tamagui';
 
+import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { IErrorResponse } from 'src/api/client';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import WorkoutTemplateFormExercise from 'src/components/workout-tracker/workout-template-form/WorkoutTemplateFormExercise';
+import { useCreateWorkoutTemplate } from 'src/hooks/workout-tracker/workout-template-form/useCreateWorkoutTemplate';
 import { RootState } from 'src/redux/Store';
 import {
     clearWorkoutTemplate,
@@ -16,11 +19,15 @@ import {
 } from 'src/redux/workout-template-form/WorkoutTemplateFormSlice';
 
 export default function WorkoutTemplateForm() {
-    const dispatch = useDispatch();
-    const router = useRouter();
     const workoutTemplateFormState = useSelector((state: RootState) => state.workoutTemplateForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const createBtnDisabled = isBtnDisabled();
+    const { createWorkoutTemplate, isPending } = useCreateWorkoutTemplate(
+        onCreateTemplateSuccess,
+        onCreateTemplateError
+    );
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     function isBtnDisabled() {
         if (workoutTemplateFormState.workoutTemplate.name.trim() === '') return true;
@@ -38,6 +45,19 @@ export default function WorkoutTemplateForm() {
             pathname: 'AddExercisesToWorkoutModal',
             params: { workoutOrTemplate: 'Template' },
         });
+    }
+
+    function onCreateTemplateSuccess() {
+        dispatch(clearWorkoutTemplate());
+        router.back();
+    }
+
+    function onCreateTemplateError(error: IErrorResponse) {
+        if (error.statusCode === 400) {
+            Alert.alert('Error creating workout.', error.message[0]);
+        } else {
+            Alert.alert('Error creating workout.', error.message);
+        }
     }
 
     const renderListFooter = () => (
@@ -75,9 +95,9 @@ export default function WorkoutTemplateForm() {
                         fontWeight='bold'
                         color={createBtnDisabled ? '$gray10' : '$green10'}
                         disabled={createBtnDisabled}
-                        onPress={() => {}}
+                        onPress={() => createWorkoutTemplate(workoutTemplateFormState)}
                     >
-                        Create Workout Template
+                        {isPending ? <Spinner /> : 'Create Workout Template'}
                     </Button>
                     <Input
                         placeholder='Workout Template Name'
