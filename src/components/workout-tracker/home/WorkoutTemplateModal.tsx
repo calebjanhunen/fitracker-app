@@ -1,14 +1,20 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
+import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
-import { Button, H2, H3, H4, SizableText, View, XStack } from 'tamagui';
+import { Button, H4, SizableText, View, XStack } from 'tamagui';
 
 interface Props {
     isModalOpen: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+    workoutTemplate: IWorkoutTemplateResponse;
 }
 
-export default function WorkoutTemplateModal({ isModalOpen, setIsModalOpen }: Props) {
+export default function WorkoutTemplateModal({
+    isModalOpen,
+    setIsModalOpen,
+    workoutTemplate,
+}: Props) {
     const [templateHeaderTextWidth, setTemplateHeaderTextWidth] = useState<number>(0);
 
     return (
@@ -33,22 +39,28 @@ export default function WorkoutTemplateModal({ isModalOpen, setIsModalOpen }: Pr
                     >
                         X
                     </Button>
-                    <H3
+                    <SizableText
                         onTextLayout={(e) =>
                             setTemplateHeaderTextWidth(e.nativeEvent.lines[0].width)
                         }
                         position='absolute'
                         left='50%'
                         transform={[{ translateX: -templateHeaderTextWidth / 2 }]}
+                        size='$6'
+                        fontWeight='bold'
                     >
-                        Template Name
-                    </H3>
+                        {workoutTemplate.name}
+                    </SizableText>
                 </XStack>
                 <FlatList
                     scrollEnabled={false}
-                    data={data}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <H4>{item.title}: 3 sets</H4>}
+                    data={workoutTemplate.exercises}
+                    keyExtractor={(item) => item.exerciseId}
+                    renderItem={({ item }) => (
+                        <H4>
+                            {item.exerciseName}: {item.sets.length}
+                        </H4>
+                    )}
                     ItemSeparatorComponent={() => <View height='$2' />}
                 />
                 <Button
@@ -64,11 +76,3 @@ export default function WorkoutTemplateModal({ isModalOpen, setIsModalOpen }: Pr
         </Modal>
     );
 }
-
-const data = [
-    { id: '1', title: 'Item 1' },
-    { id: '2', title: 'Item 2' },
-    { id: '3', title: 'Item 3' },
-    { id: '4', title: 'Item 4' },
-    { id: '5', title: 'Item 5' },
-];
