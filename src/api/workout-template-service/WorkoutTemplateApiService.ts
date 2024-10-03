@@ -22,6 +22,13 @@ export async function createWorkoutTemplate(
     });
 }
 
+export async function deleteWorkoutTemplate(id: string): Promise<void> {
+    await request({
+        method: 'DELETE',
+        url: workoutTemplateEndpoints.deleteWorkoutTemplate(id),
+    });
+}
+
 function fromWorkoutTemplateFormToWorkoutTemplateRequest(
     workoutTemplateForm: IWorkoutTemplateFormState
 ): ICreateWorkoutTemplateRequest {

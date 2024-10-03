@@ -7,8 +7,9 @@ import { useDispatch } from 'react-redux';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
+import { useDeleteWorkoutTemplate } from 'src/hooks/workout-tracker/workout-template-form/useDeleteWorkoutTemplate';
 import { initializeWorkoutFromTemplate } from 'src/redux/workout-form/WorkoutFormSlice';
-import { Button, H4, SizableText, useTheme, View, XStack } from 'tamagui';
+import { Button, H4, SizableText, Spinner, useTheme, View, XStack } from 'tamagui';
 
 interface Props {
     isModalOpen: boolean;
@@ -24,6 +25,10 @@ export default function WorkoutTemplateModal({
     setIsWorkoutFormOpening,
 }: Props) {
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
+    const { deleteWorkoutTemplate, isDeleting } = useDeleteWorkoutTemplate(
+        () => setIsModalOpen(false),
+        (e) => Alert.alert('Error deleting workout template: ' + e.message)
+    );
     const dispatch = useDispatch();
     const router = useRouter();
     const theme = useTheme();
@@ -49,7 +54,7 @@ export default function WorkoutTemplateModal({
                 {
                     text: 'Yes',
                     onPress: () => {
-                        setIsModalOpen(false);
+                        deleteWorkoutTemplate(workoutTemplate.id);
                     },
                     style: 'destructive',
                 },
@@ -94,7 +99,11 @@ export default function WorkoutTemplateModal({
                         onPress={onDeletePress}
                         backgroundColor='$red6'
                     >
-                        <IonIcons name='trash-outline' size={24} color={theme.red10.val} />
+                        {isDeleting ? (
+                            <Spinner />
+                        ) : (
+                            <IonIcons name='trash-outline' size={24} color={theme.red10.val} />
+                        )}
                     </Button>
                 </XStack>
                 <FlatList
