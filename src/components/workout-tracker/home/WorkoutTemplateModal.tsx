@@ -9,7 +9,7 @@ import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useDeleteWorkoutTemplate } from 'src/hooks/workout-tracker/workout-template-form/useDeleteWorkoutTemplate';
 import { initializeWorkoutFromTemplate } from 'src/redux/workout-form/WorkoutFormSlice';
-import { Button, H4, SizableText, Spinner, useTheme, View, XStack } from 'tamagui';
+import { Button, SizableText, Spinner, useTheme, View, XStack, YStack } from 'tamagui';
 
 interface Props {
     isModalOpen: boolean;
@@ -111,9 +111,11 @@ export default function WorkoutTemplateModal({
                     data={workoutTemplate.exercises}
                     keyExtractor={(item) => item.exerciseId}
                     renderItem={({ item }) => (
-                        <H4>
-                            {item.exerciseName}: {item.sets.length} sets
-                        </H4>
+                        <YStack>
+                            <SizableText size='$4' fontWeight='bold'>
+                                {item.exerciseName}: {item.sets.length} sets
+                            </SizableText>
+                        </YStack>
                     )}
                     ItemSeparatorComponent={() => <View height='$2' />}
                 />
