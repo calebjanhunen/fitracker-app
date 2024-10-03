@@ -108,7 +108,6 @@ const workoutFormSlice = createSlice({
             state,
             action: PayloadAction<{ template: IWorkoutTemplateResponse }>
         ) => {
-            console.log('before: ', JSON.stringify(state, null, 2));
             const { template } = action.payload;
             state.workout.createdAt = new Date().toISOString();
             state.workout.name = template.name;
@@ -130,8 +129,6 @@ const workoutFormSlice = createSlice({
                     };
                 });
             });
-
-            console.log(JSON.stringify(state, null, 2));
         },
     },
 });
