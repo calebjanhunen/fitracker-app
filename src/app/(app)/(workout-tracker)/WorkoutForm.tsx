@@ -167,8 +167,7 @@ export default function WorkoutForm() {
                         keyboardShouldPersistTaps='handled'
                         data={workoutFormState.workout.exercises}
                         showsVerticalScrollIndicator={false}
-                        initialNumToRender={1}
-                        onLayout={() => console.log('rendering')}
+                        initialNumToRender={7}
                         renderItem={renderExercise}
                         keyExtractor={(item) => item.toString()}
                         ListFooterComponent={renderListFooter}

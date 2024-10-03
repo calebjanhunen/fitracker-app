@@ -12,12 +12,14 @@ interface Props {
     isModalOpen: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     workoutTemplate: IWorkoutTemplateResponse;
+    setIsWorkoutFormOpening: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function WorkoutTemplateModal({
     isModalOpen,
     setIsModalOpen,
     workoutTemplate,
+    setIsWorkoutFormOpening,
 }: Props) {
     const [templateHeaderTextWidth, setTemplateHeaderTextWidth] = useState<number>(0);
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
@@ -25,10 +27,16 @@ export default function WorkoutTemplateModal({
     const router = useRouter();
 
     function startWorkout() {
+        setIsWorkoutFormOpening(true);
         setIsModalOpen(false);
-        setWorkoutInProgress(true);
         dispatch(initializeWorkoutFromTemplate({ template: workoutTemplate }));
-        router.push('WorkoutForm');
+        setWorkoutInProgress(true);
+
+        // Timeout used so modal closes before workout form page opens
+        setTimeout(() => {
+            setIsWorkoutFormOpening(false);
+            router.push('WorkoutForm');
+        }, 200);
     }
 
     return (

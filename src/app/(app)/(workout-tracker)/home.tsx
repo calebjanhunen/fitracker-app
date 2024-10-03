@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import { Button, H4, useTheme, View, XStack } from 'tamagui';
+import { Button, H4, Spinner, useTheme, View, XStack } from 'tamagui';
 
 import { IErrorResponse } from 'src/api/client';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
@@ -19,6 +19,7 @@ export default function Home() {
     const theme = useTheme();
     const router = useRouter();
     const dispatch = useDispatch();
+    const [isWorkoutFormOpening, setIsWorkoutFormOpening] = useState<boolean>(false);
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
     const {
         data: workoutTemplates,
@@ -48,7 +49,13 @@ export default function Home() {
                 onPress={onStartWorkoutPress}
                 marginTop='$space.4'
             >
-                {isWorkoutInProgress ? 'Continue Workout' : 'Start Empty Workout'}
+                {isWorkoutFormOpening ? (
+                    <Spinner />
+                ) : isWorkoutInProgress ? (
+                    'Continue Workout'
+                ) : (
+                    'Start Empty Workout'
+                )}
             </Button>
             <XStack
                 alignItems='center'
@@ -77,7 +84,12 @@ export default function Home() {
                 <FlatList
                     data={workoutTemplates}
                     numColumns={2}
-                    renderItem={({ item }) => <WorkoutTemplateCard workoutTemplate={item} />}
+                    renderItem={({ item }) => (
+                        <WorkoutTemplateCard
+                            setIsWorkoutFormOpening={setIsWorkoutFormOpening}
+                            workoutTemplate={item}
+                        />
+                    )}
                     keyExtractor={(item) => item.id}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                     ItemSeparatorComponent={() => <View height='$1' />}
