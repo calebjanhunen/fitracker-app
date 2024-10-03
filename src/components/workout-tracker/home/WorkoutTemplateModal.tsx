@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
+import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { Button, H4, SizableText, View, XStack } from 'tamagui';
 
 interface Props {
@@ -16,6 +17,7 @@ export default function WorkoutTemplateModal({
     workoutTemplate,
 }: Props) {
     const [templateHeaderTextWidth, setTemplateHeaderTextWidth] = useState<number>(0);
+    const { isWorkoutInProgress } = useIsWorkoutInProgress();
 
     return (
         <Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -58,17 +60,18 @@ export default function WorkoutTemplateModal({
                     keyExtractor={(item) => item.exerciseId}
                     renderItem={({ item }) => (
                         <H4>
-                            {item.exerciseName}: {item.sets.length}
+                            {item.exerciseName}: {item.sets.length} sets
                         </H4>
                     )}
                     ItemSeparatorComponent={() => <View height='$2' />}
                 />
                 <Button
                     fontWeight='bold'
-                    backgroundColor='$color.green8Light'
-                    color='white'
                     onPress={() => {}}
                     marginTop='$space.4'
+                    color={isWorkoutInProgress ? '$gray10' : '$green10'}
+                    backgroundColor={isWorkoutInProgress ? '$gray6' : '$green6'}
+                    disabled={isWorkoutInProgress}
                 >
                     Start from template
                 </Button>
