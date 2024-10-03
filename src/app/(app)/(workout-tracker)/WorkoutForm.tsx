@@ -46,7 +46,10 @@ export default function WorkoutForm() {
     }, [workoutFormState.workout.name, workoutFormState.workout.exercises]);
 
     function onAddExercisePress() {
-        router.push('AddExercisesToWorkoutModal');
+        router.push({
+            pathname: 'AddExercisesToWorkoutModal',
+            params: { workoutOrTemplate: 'Workout' },
+        });
     }
 
     function resetWorkout() {

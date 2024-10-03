@@ -1,11 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, H2, useTheme, View } from 'tamagui';
-
-import { useQuery } from '@tanstack/react-query';
 import { FlatList } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+import { Button, H4, useTheme, View, XStack } from 'tamagui';
+
 import { IErrorResponse } from 'src/api/client';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { GET_ALL_WORKOUT_TEMPLATES_QUERY_KEY } from 'src/api/workout-template-service/WorkoutTemplateApiConfig';
@@ -50,9 +50,25 @@ export default function Home() {
             >
                 {isWorkoutInProgress ? 'Continue Workout' : 'Start Empty Workout'}
             </Button>
-            <H2 marginTop='$space.6' marginBottom='$space.3'>
-                Workout Templates
-            </H2>
+            <XStack
+                alignItems='center'
+                justifyContent='space-between'
+                marginTop='$space.6'
+                marginBottom='$space.3'
+            >
+                <H4>Workout Templates</H4>
+                <Button
+                    height='0'
+                    paddingHorizontal='$space.3'
+                    paddingVertical='$space.1'
+                    fontWeight='bold'
+                    onPress={() => router.push('WorkoutTemplateForm')}
+                    color='$green10'
+                    backgroundColor='$green6'
+                >
+                    Create Template
+                </Button>
+            </XStack>
             <WorkoutTemplatesContainer
                 isLoading={isLoading}
                 error={error}
