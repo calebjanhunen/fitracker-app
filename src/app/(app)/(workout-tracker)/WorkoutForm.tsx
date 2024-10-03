@@ -25,6 +25,13 @@ import {
 } from 'src/redux/workout-form/WorkoutFormSlice';
 import { formatStopwatchTime } from 'src/utils/FormatStopwatchTime';
 
+interface WorkoutFormExerciseFunctionParams {
+    item: string;
+    drag: () => void;
+    isActive: boolean;
+    getIndex: () => number | undefined;
+}
+
 export default function WorkoutForm() {
     const dispatch = useDispatch();
     const router = useRouter();
@@ -116,6 +123,22 @@ export default function WorkoutForm() {
         </YStack>
     );
 
+    const renderExercise = ({
+        item,
+        getIndex,
+        drag,
+        isActive,
+    }: WorkoutFormExerciseFunctionParams) => (
+        <WorkoutFormExercise
+            id={item}
+            order={getIndex()! + 1}
+            drag={drag}
+            isActive={isActive}
+            isDragging={isDragging}
+            setIsDragging={setIsDragging}
+        />
+    );
+
     return (
         <SafeAreaView style={{ flex: 1 }} edges={['top']}>
             <KeyboardAvoidingView>
@@ -144,16 +167,9 @@ export default function WorkoutForm() {
                         keyboardShouldPersistTaps='handled'
                         data={workoutFormState.workout.exercises}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item, getIndex, drag, isActive }) => (
-                            <WorkoutFormExercise
-                                id={item}
-                                order={getIndex()! + 1}
-                                drag={drag}
-                                isActive={isActive}
-                                isDragging={isDragging}
-                                setIsDragging={setIsDragging}
-                            />
-                        )}
+                        initialNumToRender={1}
+                        onLayout={() => console.log('rendering')}
+                        renderItem={renderExercise}
                         keyExtractor={(item) => item.toString()}
                         ListFooterComponent={renderListFooter}
                         onDragEnd={({ data }) => {
