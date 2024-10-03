@@ -11,9 +11,6 @@ export interface IWorkoutTemplateExerciseForm {
 
 export interface IWorkoutTemplateSetForm {
     id: string;
-    weight: number | null;
-    reps: number | null;
-    rpe: number | null;
 }
 
 export interface IWorkoutTemplateFormState {
