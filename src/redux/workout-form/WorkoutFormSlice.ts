@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { IWorkoutFormState } from './IWorkoutForm';
 
 const initialState: IWorkoutFormState = {
@@ -101,6 +102,36 @@ const workoutFormSlice = createSlice({
             state.workout = initialState.workout;
             state.exercises = initialState.exercises;
             state.sets = initialState.sets;
+            state.recentSets = initialState.recentSets;
+        },
+        initializeWorkoutFromTemplate: (
+            state,
+            action: PayloadAction<{ template: IWorkoutTemplateResponse }>
+        ) => {
+            console.log('before: ', JSON.stringify(state, null, 2));
+            const { template } = action.payload;
+            state.workout.createdAt = new Date().toISOString();
+            state.workout.name = template.name;
+            state.workout.exercises = template.exercises.map((e) => e.exerciseId);
+            template.exercises.forEach((e) => {
+                state.exercises[e.exerciseId] = {
+                    id: e.exerciseId,
+                    name: e.exerciseName,
+                    recentSets: [],
+                    sets: e.sets.map((set) => set.id),
+                };
+
+                e.sets.forEach((set) => {
+                    state.sets[set.id] = {
+                        id: set.id,
+                        weight: null,
+                        reps: null,
+                        rpe: null,
+                    };
+                });
+            });
+
+            console.log(JSON.stringify(state, null, 2));
         },
     },
 });
@@ -118,6 +149,7 @@ export const {
     reorderExercises,
     loadWorkoutOnRender,
     updatedCreatedAt,
+    initializeWorkoutFromTemplate,
 } = workoutFormSlice.actions;
 
 export default workoutFormSlice.reducer;

@@ -1,8 +1,11 @@
+import { useRouter } from 'expo-router';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
+import { initializeWorkoutFromTemplate } from 'src/redux/workout-form/WorkoutFormSlice';
 import { Button, H4, SizableText, View, XStack } from 'tamagui';
 
 interface Props {
@@ -17,7 +20,16 @@ export default function WorkoutTemplateModal({
     workoutTemplate,
 }: Props) {
     const [templateHeaderTextWidth, setTemplateHeaderTextWidth] = useState<number>(0);
-    const { isWorkoutInProgress } = useIsWorkoutInProgress();
+    const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    function startWorkout() {
+        setIsModalOpen(false);
+        setWorkoutInProgress(true);
+        dispatch(initializeWorkoutFromTemplate({ template: workoutTemplate }));
+        router.push('WorkoutForm');
+    }
 
     return (
         <Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -67,7 +79,7 @@ export default function WorkoutTemplateModal({
                 />
                 <Button
                     fontWeight='bold'
-                    onPress={() => {}}
+                    onPress={startWorkout}
                     marginTop='$space.4'
                     color={isWorkoutInProgress ? '$gray10' : '$green10'}
                     backgroundColor={isWorkoutInProgress ? '$gray6' : '$green6'}
