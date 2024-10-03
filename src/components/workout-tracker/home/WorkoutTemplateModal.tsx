@@ -1,12 +1,14 @@
+import IonIcons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { initializeWorkoutFromTemplate } from 'src/redux/workout-form/WorkoutFormSlice';
-import { Button, H4, SizableText, View, XStack } from 'tamagui';
+import { Button, H4, SizableText, useTheme, View, XStack } from 'tamagui';
 
 interface Props {
     isModalOpen: boolean;
@@ -21,10 +23,10 @@ export default function WorkoutTemplateModal({
     workoutTemplate,
     setIsWorkoutFormOpening,
 }: Props) {
-    const [templateHeaderTextWidth, setTemplateHeaderTextWidth] = useState<number>(0);
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
     const dispatch = useDispatch();
     const router = useRouter();
+    const theme = useTheme();
 
     function startWorkout() {
         setIsWorkoutFormOpening(true);
@@ -37,6 +39,26 @@ export default function WorkoutTemplateModal({
             setIsWorkoutFormOpening(false);
             router.push('WorkoutForm');
         }, 200);
+    }
+
+    function onDeletePress() {
+        Alert.alert(
+            'Delete Workout Template',
+            `Are you sure you want to delete ${workoutTemplate.name}`,
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => {
+                        setIsModalOpen(false);
+                    },
+                    style: 'destructive',
+                },
+                {
+                    text: 'No',
+                    style: 'cancel',
+                },
+            ]
+        );
     }
 
     return (
@@ -59,20 +81,21 @@ export default function WorkoutTemplateModal({
                         height='0'
                         onPress={() => setIsModalOpen(false)}
                     >
-                        X
+                        <IonIcons name='close-outline' size={24} />
                     </Button>
-                    <SizableText
-                        onTextLayout={(e) =>
-                            setTemplateHeaderTextWidth(e.nativeEvent.lines[0].width)
-                        }
-                        position='absolute'
-                        left='50%'
-                        transform={[{ translateX: -templateHeaderTextWidth / 2 }]}
-                        size='$6'
-                        fontWeight='bold'
-                    >
+                    <SizableText size='$6' fontWeight='bold'>
                         {workoutTemplate.name}
                     </SizableText>
+                    <Button
+                        fontWeight='bold'
+                        paddingHorizontal='$2'
+                        paddingVertical='$1'
+                        height='0'
+                        onPress={onDeletePress}
+                        backgroundColor='$red6'
+                    >
+                        <IonIcons name='trash-outline' size={24} color={theme.red10.val} />
+                    </Button>
                 </XStack>
                 <FlatList
                     scrollEnabled={false}
