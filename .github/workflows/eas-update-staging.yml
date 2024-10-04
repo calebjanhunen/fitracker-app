@@ -3,6 +3,10 @@ name: EAS Update Staging
 on:
     workflow_dispatch:
 
+env:
+    API_URL: ${{ secrets.PROD_API_URL }}
+    ENVIRONMENT: PREVIEW
+
 jobs:
     eas_update_staging:
         runs-on: ubuntu-latest
@@ -30,4 +34,4 @@ jobs:
               run: npm install
 
             - name: Create update
-              run: NODE_ENV=test eas update --channel preview --auto --non-interactive
+              run: eas update --channel preview --auto --non-interactive
