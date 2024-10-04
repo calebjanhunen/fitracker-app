@@ -106,26 +106,46 @@ const workoutFormSlice = createSlice({
         },
         initializeWorkoutFromTemplate: (
             state,
-            action: PayloadAction<{ template: IWorkoutTemplateResponse }>
+            action: PayloadAction<{
+                template: IWorkoutTemplateResponse;
+                exerciseWithRecentSets: IExerciseWithWorkoutDetailsResponse[];
+            }>
         ) => {
-            const { template } = action.payload;
+            const { template, exerciseWithRecentSets } = action.payload;
             state.workout.createdAt = new Date().toISOString();
             state.workout.name = template.name;
             state.workout.exercises = template.exercises.map((e) => e.exerciseId);
+
+            // Get the exercise containing the recent sets for the exercise in the workout template
             template.exercises.forEach((e) => {
+                const matchedExerciseWithRecentSets = exerciseWithRecentSets.find(
+                    (ewrs) => ewrs.id === e.exerciseId
+                );
                 state.exercises[e.exerciseId] = {
                     id: e.exerciseId,
                     name: e.exerciseName,
-                    recentSets: [],
+                    recentSets:
+                        matchedExerciseWithRecentSets?.recentSets.map((set) => set.id) ?? [],
                     sets: e.sets.map((set) => set.id),
                 };
 
+                // Add sets from workout template to set Record in workout form state
                 e.sets.forEach((set) => {
                     state.sets[set.id] = {
                         id: set.id,
                         weight: null,
                         reps: null,
                         rpe: null,
+                    };
+                });
+
+                // Add recent sets from the matched exercise to recent sets Record in workout form state
+                matchedExerciseWithRecentSets?.recentSets.forEach((e) => {
+                    state.recentSets[e.id] = {
+                        id: e.id,
+                        weight: e.weight,
+                        reps: e.reps,
+                        rpe: e.rpe,
                     };
                 });
             });
