@@ -7,33 +7,42 @@ on:
             - development
             - staging
 jobs:
-    version_check:
+    check_version:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+            - name: Checkout source branch
+              uses: actions/checkout@v3
+              with:
+                  ref: ${{ github.head_ref }}
 
-            - name: Get base branch's package.json version
-              id: base_version
+            - name: Get source branch version
+              id: source_version
               run: |
-                  git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
-                  BASE_VERSION=$(jq -r '.version' package.json)
-                  echo "BASE_VERSION=$BASE_VERSION" >> $GITHUB_ENV
-
-            - name: Get pull request branch's package.json version
-              id: pr_version
+                  echo "Fetching package.json version from source branch..."
+                  source_version=$(jq -r .version < package.json)
+                  echo "source_version=$source_version" >> $GITHUB_ENV
+            - name: Checkout target branch
               run: |
-                  PR_VERSION=$(jq -r '.version' package.json)
-                  echo "PR_VERSION=$PR_VERSION" >> $GITHUB_ENV
-
-            - name: Compare versions
+                  git fetch origin ${{ github.base_ref }} --depth=1
+                  git checkout ${{ github.base_ref }}
+            - name: Get target branch version
+              id: target_version
               run: |
-                  echo "Base branch version: $BASE_VERSION"
-                  echo "PR branch version: $PR_VERSION"
-                  if [ "$BASE_VERSION" = "$PR_VERSION" ]; then
-                    echo "Error: Version in package.json has not been updated!"
+                  echo "Fetching package.json version from target branch..."
+                  target_version=$(jq -r .version < package.json)
+                  echo "target_version=$target_version" >> $GITHUB_ENV
+            - name: Compare package.json versions
+              run: |
+                  echo "Comparing source and target versions..."
+                  echo "Source version: ${{ env.source_version }}"
+                  echo "Target version: ${{ env.target_version }}"
+                  if [ "$(npx semver ${{ env.source_version }} -r '>${{ env.target_version }}')" == "" ]; then
+                    echo "The version in the source branch is not higher than the target branch."
                     exit 1
                   else
-                    echo "Version has been updated."
+                    echo "The version in the source branch is higher than the target branch."
                   fi
+            - name: Success
+              if: success()
+              run: echo "Version check passed!"
