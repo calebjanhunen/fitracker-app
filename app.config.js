@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import { version } from './package.json';
 
 dotenv.config({
     path:
@@ -21,9 +20,9 @@ export default {
         slug: 'fitracker',
         plugins: ['expo-router', 'expo-font'],
         scheme: 'fitracker',
-        version,
+        version: '1.0.0',
         runtimeVersion: {
-            policy: '1.0.0',
+            policy: 'appVersion',
         },
         orientation: 'portrait',
         icon:
