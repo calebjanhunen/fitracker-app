@@ -1,39 +1,39 @@
 name: Version Check
 
 on:
-  pull_request:
-    branches:
-      - main
-      - development
-      - staging
+    pull_request:
+        branches:
+            - main
+            - development
+            - staging
 jobs:
-  version_check:
-    runs-on: ubuntu-latest
+    version_check:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Get base branch's package.json version
-        id: base_version
-        run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
-          BASE_VERSION=$(jq -r '.version' package.json)
-          echo "BASE_VERSION=$BASE_VERSION" >> $GITHUB_ENV
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-      - name: Get pull request branch's package.json version
-        id: pr_version
-        run: |
-          PR_VERSION=$(jq -r '.version' package.json)
-          echo "PR_VERSION=$PR_VERSION" >> $GITHUB_ENV
+            - name: Get base branch's package.json version
+              id: base_version
+              run: |
+                  git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+                  BASE_VERSION=$(jq -r '.version' package.json)
+                  echo "BASE_VERSION=$BASE_VERSION" >> $GITHUB_ENV
 
-      - name: Compare versions
-        run: |
-          echo "Base branch version: $BASE_VERSION"
-          echo "PR branch version: $PR_VERSION"
-          if [ "$BASE_VERSION" = "$PR_VERSION" ]; then
-            echo "Error: Version in package.json has not been updated!"
-            exit 1
-          else
-            echo "Version has been updated."
-          fi
+            - name: Get pull request branch's package.json version
+              id: pr_version
+              run: |
+                  PR_VERSION=$(jq -r '.version' package.json)
+                  echo "PR_VERSION=$PR_VERSION" >> $GITHUB_ENV
+
+            - name: Compare versions
+              run: |
+                  echo "Base branch version: $BASE_VERSION"
+                  echo "PR branch version: $PR_VERSION"
+                  if [ "$BASE_VERSION" = "$PR_VERSION" ]; then
+                    echo "Error: Version in package.json has not been updated!"
+                    exit 1
+                  else
+                    echo "Version has been updated."
+                  fi
