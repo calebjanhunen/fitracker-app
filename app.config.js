@@ -23,7 +23,7 @@ export default {
         scheme: 'fitracker',
         version,
         runtimeVersion: {
-            policy: 'appVersion',
+            policy: '1.0.0',
         },
         orientation: 'portrait',
         icon:
