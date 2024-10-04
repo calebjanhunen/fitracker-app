@@ -11,7 +11,7 @@
         "lint:fix": "eslint . --ext .ts --ext .tsx --fix",
         "format": "prettier --write src/**/*.{js,jsx,ts,tsx,css,md,json,scss} --config ./.prettierrc",
         "eas:update": "cross-env NODE_ENV=production eas update --channel %npm_config_channel% --message \"%npm_config_message%\"",
-        "eas:update:preview": "cross-env NODE_ENV=test eas update --channel %npm_config_channel% --message \"%npm_config_message%\""
+        "eas:update:preview": "cross-env NODE_ENV=test eas update --channel preview --message \"%npm_config_message%\""
     },
     "dependencies": {
         "@eva-design/eva": "^2.2.0",

@@ -1,39 +1,34 @@
+import Constants from 'expo-constants';
 import * as Updates from 'expo-updates';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { Alert } from 'react-native';
 
 export function useCheckForUpdate() {
-    const [isUpdateAvailable, setIsUpdateAvailable] = useState<boolean>(false);
-    const [isCheckingForUpdate, setIsCheckingForUpdate] = useState<boolean>(true); // Optional to show loader during checking
-
     useEffect(() => {
-        const checkForUpdates = async () => {
-            try {
-                const update = await Updates.checkForUpdateAsync();
-                if (update.isAvailable) {
-                    setIsUpdateAvailable(true);
-                }
-            } catch (error) {
-                return;
-            } finally {
-                setIsCheckingForUpdate(false); // Stop checking once done
-            }
-        };
-
         void checkForUpdates();
     }, []);
 
-    const handleUpdate = async () => {
-        try {
-            await Updates.fetchUpdateAsync();
-            await Updates.reloadAsync();
-        } catch (error) {
-            console.error('Error fetching update:', error);
+    async function checkForUpdates() {
+        if (Constants.expoConfig?.extra?.ENVIRONMENT === 'development') {
+            return;
         }
-    };
 
-    return {
-        isUpdateAvailable,
-        isCheckingForUpdate,
-        handleUpdate,
-    };
+        try {
+            const update = await Updates.checkForUpdateAsync();
+            if (update.isAvailable) {
+                await Updates.fetchUpdateAsync();
+                // Inform the user that the update has been downloaded and will be applied on the next app restart
+                Alert.alert(
+                    'Update Available',
+                    'A new update was downloaded and will be applied when you restart the app.',
+                    [
+                        { text: 'Restart Now', onPress: async () => await Updates.reloadAsync() },
+                        { text: 'Later' },
+                    ]
+                );
+            }
+        } catch (e) {
+            Alert.alert('Could not update.', 'Error encountered when trying to update:');
+        }
+    }
 }

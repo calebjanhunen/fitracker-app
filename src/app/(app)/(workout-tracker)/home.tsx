@@ -1,12 +1,10 @@
 import { useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, useTheme } from 'tamagui';
 
-import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
-import { useCheckForUpdate } from 'src/hooks/common/useCheckForUpdate';
 import { updatedCreatedAt } from 'src/redux/workout-form/WorkoutFormSlice';
 
 export default function Home() {
@@ -14,18 +12,6 @@ export default function Home() {
     const router = useRouter();
     const dispatch = useDispatch();
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
-    const { isUpdateAvailable, handleUpdate } = useCheckForUpdate();
-
-    useEffect(() => {
-        if (isUpdateAvailable) {
-            Alert.alert('Update downloaded', 'Restart app to apply the update.', [
-                {
-                    text: 'OK',
-                    onPress: () => handleUpdate,
-                },
-            ]);
-        }
-    }, []);
 
     function onStartWorkoutPress() {
         if (!isWorkoutInProgress) {
