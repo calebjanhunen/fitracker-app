@@ -1,0 +1,38 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+      - staging
+jobs:
+  version_check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Get current version
+        id: current_version
+        run: |
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          echo "Current version is $CURRENT_VERSION"
+          echo "::set-output name=current_version::$CURRENT_VERSION"
+
+      - name: Get previous version
+        id: previous_version
+        run: |
+          PREVIOUS_VERSION=$(git show HEAD^:package.json | jq -r '.version')
+          echo "Previous version was $PREVIOUS_VERSION"
+          echo "::set-output name=previous_version::$PREVIOUS_VERSION"
+
+      - name: Check if version has changed
+        run: |
+          if [ "${{ steps.current_version.outputs.current_version }}" == "${{ steps.previous_version.outputs.previous_version }}" ]; then
+            echo "Version has not been updated. Please update the version in package.json."
+            exit 1
+          else
+            echo "Version has been updated."
+          fi
