@@ -108,24 +108,23 @@ const workoutFormSlice = createSlice({
             state,
             action: PayloadAction<{
                 template: IWorkoutTemplateResponse;
-                exerciseWithRecentSets: IExerciseWithWorkoutDetailsResponse[];
+                exerciseDetails: IExerciseWithWorkoutDetailsResponse[];
             }>
         ) => {
-            const { template, exerciseWithRecentSets } = action.payload;
+            const { template, exerciseDetails } = action.payload;
             state.workout.createdAt = new Date().toISOString();
             state.workout.name = template.name;
             state.workout.exercises = template.exercises.map((e) => e.exerciseId);
 
-            // Get the exercise containing the recent sets for the exercise in the workout template
+            // Get the exercise details for the current exercise
             template.exercises.forEach((e) => {
-                const matchedExerciseWithRecentSets = exerciseWithRecentSets.find(
-                    (ewrs) => ewrs.id === e.exerciseId
+                const matchedExerciseDetails = exerciseDetails.find(
+                    (exDetails) => exDetails.id === e.exerciseId
                 );
                 state.exercises[e.exerciseId] = {
                     id: e.exerciseId,
                     name: e.exerciseName,
-                    recentSets:
-                        matchedExerciseWithRecentSets?.recentSets.map((set) => set.id) ?? [],
+                    recentSets: matchedExerciseDetails?.recentSets.map((set) => set.id) ?? [],
                     sets: e.sets.map((set) => set.id),
                 };
 
@@ -140,7 +139,7 @@ const workoutFormSlice = createSlice({
                 });
 
                 // Add recent sets from the matched exercise to recent sets Record in workout form state
-                matchedExerciseWithRecentSets?.recentSets.forEach((e) => {
+                matchedExerciseDetails?.recentSets.forEach((e) => {
                     state.recentSets[e.id] = {
                         id: e.id,
                         weight: e.weight,

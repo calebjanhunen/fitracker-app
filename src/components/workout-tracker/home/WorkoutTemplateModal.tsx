@@ -35,9 +35,9 @@ export default function WorkoutTemplateModal({
         (e) => Alert.alert('Error deleting workout template: ' + e.message)
     );
     const {
-        data: exerciseWithDetails,
-        isLoading: isExerciseWithDetailsLoading,
-        error: exerciseWithDetailsError,
+        data: exerciseDetails,
+        isLoading: isExerciseDetailsLoading,
+        error: exerciseDetailsError,
     } = useQuery<IExerciseWithWorkoutDetailsResponse[], IErrorResponse>({
         queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
         queryFn: getExercisesWithWorkoutDetails,
@@ -54,7 +54,7 @@ export default function WorkoutTemplateModal({
         dispatch(
             initializeWorkoutFromTemplate({
                 template: workoutTemplate,
-                exerciseWithRecentSets: exerciseWithDetails ?? [],
+                exerciseDetails: exerciseDetails ?? [],
             })
         );
         setWorkoutInProgress(true);
@@ -139,10 +139,10 @@ export default function WorkoutTemplateModal({
                     )}
                     ItemSeparatorComponent={() => <View height='$2' />}
                 />
-                {exerciseWithDetailsError ? (
+                {exerciseDetailsError ? (
                     <SizableText color='$red10' fontWeight='bold' size='$2' textAlign='center'>
                         Cannot start workout due to unknown error: Please restart app. ( Code:{' '}
-                        {exerciseWithDetailsError.statusCode})
+                        {exerciseDetailsError.statusCode})
                     </SizableText>
                 ) : (
                     <Button
@@ -150,16 +150,12 @@ export default function WorkoutTemplateModal({
                         onPress={startWorkout}
                         marginTop='$space.4'
                         color={
-                            isWorkoutInProgress || isExerciseWithDetailsLoading
-                                ? '$gray10'
-                                : '$green10'
+                            isWorkoutInProgress || isExerciseDetailsLoading ? '$gray10' : '$green10'
                         }
                         backgroundColor={
-                            isWorkoutInProgress || isExerciseWithDetailsLoading
-                                ? '$gray6'
-                                : '$green6'
+                            isWorkoutInProgress || isExerciseDetailsLoading ? '$gray6' : '$green6'
                         }
-                        disabled={isWorkoutInProgress || isExerciseWithDetailsLoading}
+                        disabled={isWorkoutInProgress || isExerciseDetailsLoading}
                     >
                         Start from template
                     </Button>
