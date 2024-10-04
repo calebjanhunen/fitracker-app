@@ -11,6 +11,10 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
+            - name: Verify on production (main) branch
+              if: github.ref == 'refs/heads/main'
+              run: echo "This workflow can only run on the staging branch"
+
             - name: Setup Node
               uses: actions/setup-node@v3
               with:

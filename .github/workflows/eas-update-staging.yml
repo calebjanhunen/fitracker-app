@@ -1,29 +1,33 @@
 name: EAS Update Staging
 
 on:
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
-  eas_update_staging:
-    runs-on: ubuntu-latest
+    eas_update_staging:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
+            - name: Verify on staging branch
+              if: github.ref == 'refs/heads/staging'
+              run: echo "This workflow can only run on the staging branch"
 
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18.x
 
-      - name: Install dependencies
-        run: npm install
+            - name: Setup EAS
+              uses: expo/expo-github-action@v8
+              with:
+                  eas-version: latest
+                  token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Create update
-        run: cross-env NODE_ENV=test eas update --channel preview --auto --non-interactive
+            - name: Install dependencies
+              run: npm install
+
+            - name: Create update
+              run: cross-env NODE_ENV=test eas update --channel preview --auto --non-interactive
