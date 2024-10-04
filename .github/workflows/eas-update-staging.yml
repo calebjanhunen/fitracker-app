@@ -1,0 +1,29 @@
+name: EAS Update Staging
+
+on:
+  workflow_dispatch:
+
+jobs:
+  eas_update_staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create update
+        run: cross-env NODE_ENV=test eas update --channel preview --auto --non-interactive
