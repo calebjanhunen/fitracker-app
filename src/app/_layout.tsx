@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { queryClient } from 'src/api/react-query-client';
 import { AuthProvider } from 'src/context/auth-context/AuthContext';
+import { useCheckForUpdate } from 'src/hooks/common/useCheckForUpdate';
 import { store } from 'src/redux/Store';
 import { PortalProvider, TamaguiProvider, Theme } from 'tamagui';
 import config from '../../tamagui.config';
@@ -16,6 +17,7 @@ export default function RootLayout() {
         Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
         InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
     });
+    useCheckForUpdate();
 
     if (!loaded) {
         return null;
