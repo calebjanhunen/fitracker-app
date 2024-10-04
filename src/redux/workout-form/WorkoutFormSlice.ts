@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { IWorkoutFormState } from './IWorkoutForm';
 
 const initialState: IWorkoutFormState = {
@@ -101,6 +102,52 @@ const workoutFormSlice = createSlice({
             state.workout = initialState.workout;
             state.exercises = initialState.exercises;
             state.sets = initialState.sets;
+            state.recentSets = initialState.recentSets;
+        },
+        initializeWorkoutFromTemplate: (
+            state,
+            action: PayloadAction<{
+                template: IWorkoutTemplateResponse;
+                exerciseDetails: IExerciseWithWorkoutDetailsResponse[];
+            }>
+        ) => {
+            const { template, exerciseDetails } = action.payload;
+            state.workout.createdAt = new Date().toISOString();
+            state.workout.name = template.name;
+            state.workout.exercises = template.exercises.map((e) => e.exerciseId);
+
+            // Get the exercise details for the current exercise
+            template.exercises.forEach((e) => {
+                const matchedExerciseDetails = exerciseDetails.find(
+                    (exDetails) => exDetails.id === e.exerciseId
+                );
+                state.exercises[e.exerciseId] = {
+                    id: e.exerciseId,
+                    name: e.exerciseName,
+                    recentSets: matchedExerciseDetails?.recentSets.map((set) => set.id) ?? [],
+                    sets: e.sets.map((set) => set.id),
+                };
+
+                // Add sets from workout template to set Record in workout form state
+                e.sets.forEach((set) => {
+                    state.sets[set.id] = {
+                        id: set.id,
+                        weight: null,
+                        reps: null,
+                        rpe: null,
+                    };
+                });
+
+                // Add recent sets from the matched exercise to recent sets Record in workout form state
+                matchedExerciseDetails?.recentSets.forEach((e) => {
+                    state.recentSets[e.id] = {
+                        id: e.id,
+                        weight: e.weight,
+                        reps: e.reps,
+                        rpe: e.rpe,
+                    };
+                });
+            });
         },
     },
 });
@@ -118,6 +165,7 @@ export const {
     reorderExercises,
     loadWorkoutOnRender,
     updatedCreatedAt,
+    initializeWorkoutFromTemplate,
 } = workoutFormSlice.actions;
 
 export default workoutFormSlice.reducer;
