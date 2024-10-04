@@ -30,4 +30,4 @@ jobs:
               run: npm install
 
             - name: Create update
-              run: NODE_ENV=test eas update --channel production --auto --non-interactive
+              run: NODE_ENV=production eas update --channel production --auto --non-interactive
