@@ -1,9 +1,14 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import { IErrorResponse } from 'src/api/client';
+import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
+import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
+import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
@@ -29,6 +34,16 @@ export default function WorkoutTemplateModal({
         () => setIsModalOpen(false),
         (e) => Alert.alert('Error deleting workout template: ' + e.message)
     );
+    const {
+        data: exerciseWithDetails,
+        isLoading: isExerciseWithDetailsLoading,
+        error: exerciseWithDetailsError,
+    } = useQuery<IExerciseWithWorkoutDetailsResponse[], IErrorResponse>({
+        queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
+        queryFn: getExercisesWithWorkoutDetails,
+        staleTime: Infinity,
+        gcTime: Infinity,
+    });
     const dispatch = useDispatch();
     const router = useRouter();
     const theme = useTheme();
@@ -36,7 +51,12 @@ export default function WorkoutTemplateModal({
     function startWorkout() {
         setIsWorkoutFormOpening(true);
         setIsModalOpen(false);
-        dispatch(initializeWorkoutFromTemplate({ template: workoutTemplate }));
+        dispatch(
+            initializeWorkoutFromTemplate({
+                template: workoutTemplate,
+                exerciseWithRecentSets: exerciseWithDetails ?? [],
+            })
+        );
         setWorkoutInProgress(true);
 
         // Timeout used so modal closes before workout form page opens
@@ -119,16 +139,31 @@ export default function WorkoutTemplateModal({
                     )}
                     ItemSeparatorComponent={() => <View height='$2' />}
                 />
-                <Button
-                    fontWeight='bold'
-                    onPress={startWorkout}
-                    marginTop='$space.4'
-                    color={isWorkoutInProgress ? '$gray10' : '$green10'}
-                    backgroundColor={isWorkoutInProgress ? '$gray6' : '$green6'}
-                    disabled={isWorkoutInProgress}
-                >
-                    Start from template
-                </Button>
+                {exerciseWithDetailsError ? (
+                    <SizableText color='$red10' fontWeight='bold' size='$2' textAlign='center'>
+                        Cannot start workout due to unknown error: Please restart app. ( Code:{' '}
+                        {exerciseWithDetailsError.statusCode})
+                    </SizableText>
+                ) : (
+                    <Button
+                        fontWeight='bold'
+                        onPress={startWorkout}
+                        marginTop='$space.4'
+                        color={
+                            isWorkoutInProgress || isExerciseWithDetailsLoading
+                                ? '$gray10'
+                                : '$green10'
+                        }
+                        backgroundColor={
+                            isWorkoutInProgress || isExerciseWithDetailsLoading
+                                ? '$gray6'
+                                : '$green6'
+                        }
+                        disabled={isWorkoutInProgress || isExerciseWithDetailsLoading}
+                    >
+                        Start from template
+                    </Button>
+                )}
             </ModalContent>
         </Modal>
     );
