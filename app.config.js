@@ -1,6 +1,13 @@
 import dotenv from 'dotenv';
 
-dotenv.config({ path: process.env.NODE_ENV === 'development' ? '.env' : '.env.prod' });
+dotenv.config({
+    path:
+        process.env.NODE_ENV === 'development'
+            ? '.env'
+            : process.env.NODE_ENV === 'test'
+            ? '.env.prev'
+            : '.env.prod',
+});
 
 export default {
     expo: {
