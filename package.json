@@ -10,7 +10,8 @@
         "lint": "eslint . --ext .ts --ext .tsx",
         "lint:fix": "eslint . --ext .ts --ext .tsx --fix",
         "format": "prettier --write src/**/*.{js,jsx,ts,tsx,css,md,json,scss} --config ./.prettierrc",
-        "eas:update": "cross-env NODE_ENV=production eas update --channel %npm_config_channel% --message \"%npm_config_message%\""
+        "eas:update": "cross-env NODE_ENV=production eas update --channel %npm_config_channel% --message \"%npm_config_message%\"",
+        "eas:update:preview": "cross-env NODE_ENV=test eas update --channel preview --message \"%npm_config_message%\""
     },
     "dependencies": {
         "@eva-design/eva": "^2.2.0",
@@ -42,7 +43,7 @@
         "expo-linking": "~6.3.1",
         "expo-router": "~3.5.23",
         "expo-status-bar": "~1.12.1",
-        "expo-updates": "~0.25.25",
+        "expo-updates": "^0.25.26",
         "lodash": "^4.17.21",
         "react": "18.2.0",
         "react-native": "0.74.5",
