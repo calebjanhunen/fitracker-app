@@ -15,14 +15,19 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
-            - name: Verify on staging branch
-              if: github.ref == 'refs/heads/staging'
-              run: echo "This workflow can only run on the staging branch"
-
             - name: Setup Node
               uses: actions/setup-node@v3
               with:
                   node-version: 18.x
+
+            - name: Verify the branch is 'staging'
+              run: |
+                  if [ "${{ github.ref }}" != "refs/heads/staging" ]; then
+                    echo "Error: This workflow can only run on the 'staging' branch."
+                    exit 1
+                  else
+                    echo "Running on the 'staging' branch."
+                  fi
 
             - name: Setup EAS
               uses: expo/expo-github-action@v8
@@ -34,4 +39,4 @@ jobs:
               run: npm install
 
             - name: Create update
-              run: eas update --channel preview --platform ios --auto --non-interactive
+              run: eas update --channel preview --auto --non-interactive
