@@ -4,7 +4,12 @@ dotenv.config({ path: process.env.NODE_ENV === 'development' ? '.env' : '.env.pr
 
 export default {
     expo: {
-        name: 'Fitracker',
+        name:
+            process.env.ENVIRONMENT === 'preview'
+                ? 'Fitracker Preview'
+                : process.env.ENVIRONMENT === 'development'
+                ? 'Fitracker Dev'
+                : 'Fitracker',
         slug: 'fitracker',
         plugins: ['expo-router', 'expo-font'],
         scheme: 'fitracker',
@@ -13,7 +18,10 @@ export default {
             policy: 'appVersion',
         },
         orientation: 'portrait',
-        icon: './assets/fitracker-icon.png',
+        icon:
+            process.env.ENVIRONMENT === 'preview'
+                ? './assets/fitracker-preview-icon.png'
+                : './assets/fitracker-icon.png',
         userInterfaceStyle: 'automatic',
         splash: {
             image: './assets/fitracker-splash.png',
@@ -23,7 +31,12 @@ export default {
         assetBundlePatterns: ['**/*'],
         ios: {
             supportsTablet: true,
-            bundleIdentifier: 'com.calebjanhunen.fitracker',
+            bundleIdentifier:
+                process.env.ENVIRONMENT === 'preview'
+                    ? 'com.calebjanhunen.fitracker.preview'
+                    : process.env.ENVIRONMENT === 'development'
+                    ? 'com.calebjanhunen.fitracker.development'
+                    : 'com.calebjanhunen.fitracker',
         },
         android: {
             adaptiveIcon: {
