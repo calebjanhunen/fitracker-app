@@ -22,7 +22,7 @@ jobs:
 
             - name: Verify the branch is 'production'
               run: |
-                  if [ "${{ github.ref }}" != "refs/heads/production" ]; then
+                  if [ "${{ github.ref }}" != "refs/heads/main" ]; then
                     echo "Error: This workflow can only run on the 'production' branch."
                     exit 1
                   else
