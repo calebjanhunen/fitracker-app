@@ -8,6 +8,7 @@ export default function WorkoutTrackerLayout() {
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name='Home' />
                 <Stack.Screen name='WorkoutForm' />
+                <Stack.Screen name='WorkoutTemplateForm' />
                 <Stack.Screen name='AddExercisesToWorkoutModal' />
                 <Stack.Screen name='PostWorkoutSummary' options={{ gestureEnabled: false }} />
             </Stack>

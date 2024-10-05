@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,7 @@ import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import CreateExerciseModal from 'src/components/workout-tracker/CreateExerciseModal';
 import { RootState } from 'src/redux/Store';
 import { addExercisesToWorkout } from 'src/redux/workout-form/WorkoutFormSlice';
+import { addExercisesToWorkoutTemplate } from 'src/redux/workout-template-form/WorkoutTemplateFormSlice';
 import {
     Button,
     Dialog,
@@ -32,6 +33,12 @@ export default function AddExercisesToWorkoutModal() {
     const exerciseIdsInWorkout = useSelector(
         (state: RootState) => state.workoutForm.workout.exercises
     );
+    const exerciseIdsInWorkoutTemplate = useSelector(
+        (state: RootState) => state.workoutTemplateForm.workoutTemplate.exercises
+    );
+    const { workoutOrTemplate } = useLocalSearchParams<{
+        workoutOrTemplate: 'Workout' | 'Template';
+    }>();
     const {
         data: exercises,
         isLoading,
@@ -43,15 +50,28 @@ export default function AddExercisesToWorkoutModal() {
         gcTime: Infinity,
     });
 
-    function onAddToWorkoutPress() {
+    function onAddToWorkoutOrTemplatePress() {
         if (!exercises) return;
+        if (workoutOrTemplate === 'Workout') {
+            dispatch(
+                addExercisesToWorkout({
+                    selectedExerciseIds: selectedExercises,
+                    allExercises: exercises,
+                })
+            );
+        } else {
+            dispatch(
+                addExercisesToWorkoutTemplate({
+                    selectedExerciseIds: selectedExercises,
+                    allExercises: exercises,
+                })
+            );
+        }
+        router.back();
+    }
 
-        dispatch(
-            addExercisesToWorkout({
-                selectedExerciseIds: selectedExercises,
-                allExercises: exercises,
-            })
-        );
+    function onCancelPress() {
+        setSelectedExercises([]);
         router.back();
     }
 
@@ -86,7 +106,11 @@ export default function AddExercisesToWorkoutModal() {
                             exercise={item}
                             setSelectedExercises={setSelectedExercises}
                             isSelected={selectedExercises.includes(item.id)}
-                            isAlreadyInWorkout={exerciseIdsInWorkout.includes(item.id)}
+                            isAlreadyInForm={
+                                workoutOrTemplate === 'Workout'
+                                    ? exerciseIdsInWorkout.includes(item.id)
+                                    : exerciseIdsInWorkoutTemplate.includes(item.id)
+                            }
                         />
                     )}
                     keyExtractor={(item) => item.id.toString()}
@@ -103,17 +127,32 @@ export default function AddExercisesToWorkoutModal() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <KeyboardAvoidingView>
-                <Button
-                    backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
-                    color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
-                    fontWeight='bold'
+                <XStack
+                    alignItems='center'
+                    justifyContent='space-between'
                     marginHorizontal='$space.3'
                     marginBottom='$space.3'
-                    disabled={selectedExercises.length === 0}
-                    onPress={onAddToWorkoutPress}
                 >
-                    Add to Workout
-                </Button>
+                    <Button
+                        fontWeight='bold'
+                        paddingHorizontal='$2'
+                        paddingVertical='$1'
+                        height='0'
+                        onPress={onCancelPress}
+                        backgroundColor='$gray8'
+                    >
+                        X
+                    </Button>
+                    <Button
+                        backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
+                        color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
+                        fontWeight='bold'
+                        disabled={selectedExercises.length === 0}
+                        onPress={onAddToWorkoutOrTemplatePress}
+                    >
+                        {`Add to ${workoutOrTemplate}`}
+                    </Button>
+                </XStack>
                 <Dialog modal open={isModalOpen} onOpenChange={setIsModelOpen}>
                     <Dialog.Trigger asChild>
                         <Button
@@ -150,16 +189,16 @@ interface Props {
     exercise: IExerciseWithWorkoutDetailsResponse;
     setSelectedExercises: Dispatch<SetStateAction<string[]>>;
     isSelected: boolean;
-    isAlreadyInWorkout: boolean;
+    isAlreadyInForm: boolean;
 }
 const Exercise = memo(function Exercise({
     exercise,
     setSelectedExercises,
     isSelected,
-    isAlreadyInWorkout,
+    isAlreadyInForm,
 }: Props) {
     function onExercisePress() {
-        if (isAlreadyInWorkout) {
+        if (isAlreadyInForm) {
             return;
         }
         setSelectedExercises((prev) => {
@@ -171,7 +210,7 @@ const Exercise = memo(function Exercise({
         });
     }
 
-    const backgroundColor = isAlreadyInWorkout ? '$gray6' : isSelected ? '$blue6' : '$color4';
+    const backgroundColor = isAlreadyInForm ? '$gray6' : isSelected ? '$blue6' : '$color4';
     return (
         <XStack
             onPress={onExercisePress}
