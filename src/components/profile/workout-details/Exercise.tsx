@@ -4,6 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 
 import { IWorkoutExerciseResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import { H4, SizableText, View, XStack } from 'tamagui';
+import Set from './Set';
 
 interface Props {
     exercise: IWorkoutExerciseResponse;
@@ -27,25 +28,7 @@ export default function Exercise({ exercise }: Props) {
                     RPE
                 </SizableText>
             </XStack>
-            <FlatList
-                data={exercise.sets}
-                renderItem={({ item }) => (
-                    <XStack gap='$space.4' width='80%'>
-                        <SizableText size='$5' textAlign='center' flex={1}>
-                            {item.order}
-                        </SizableText>
-                        <SizableText size='$5' textAlign='center' flex={1}>
-                            {item.weight}
-                        </SizableText>
-                        <SizableText size='$5' textAlign='center' flex={1}>
-                            {item.reps}
-                        </SizableText>
-                        <SizableText size='$5' textAlign='center' flex={1}>
-                            {item.rpe}
-                        </SizableText>
-                    </XStack>
-                )}
-            />
+            <FlatList data={exercise.sets} renderItem={({ item }) => <Set set={item} />} />
         </View>
     );
 }
