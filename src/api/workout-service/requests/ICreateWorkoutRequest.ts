@@ -12,8 +12,8 @@ export interface ICreateWorkoutExerciseRequest {
 }
 
 export interface ICreateWorkoutSetRequest {
-    weight: number;
-    reps: number;
-    rpe: number;
+    weight: number | null;
+    reps: number | null;
+    rpe: number | null;
     order: number;
 }

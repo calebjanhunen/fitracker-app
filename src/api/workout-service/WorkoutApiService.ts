@@ -49,9 +49,9 @@ function fromWorkoutFormToWorkoutRequest(
                 order: index + 1,
                 sets: workoutForm.exercises[exerciseId].sets.map((setId, index) => {
                     return {
-                        weight: workoutForm.sets[setId].weight ?? 0,
-                        reps: workoutForm.sets[setId].reps ?? 0,
-                        rpe: workoutForm.sets[setId].rpe ?? 0,
+                        weight: workoutForm.sets[setId].weight,
+                        reps: workoutForm.sets[setId].reps,
+                        rpe: workoutForm.sets[setId].rpe,
                         order: index + 1,
                     };
                 }),
