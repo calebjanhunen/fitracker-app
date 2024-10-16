@@ -47,7 +47,7 @@ export default function WorkoutDetailsModal() {
     }
 
     return (
-        <View paddingTop='$space.5' paddingHorizontal='$space.4'>
+        <View flex={1} paddingTop='$space.5' paddingHorizontal='$space.4'>
             <XStack alignItems='center' justifyContent='space-between'>
                 <IconBtn onPress={() => router.back()} icon='close-outline' />
                 <H3 textAlign='center'>{decodedWorkout.name}</H3>
@@ -64,8 +64,10 @@ export default function WorkoutDetailsModal() {
                 duration={decodedWorkout.duration}
             />
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={decodedWorkout.exercises}
                 renderItem={({ item }) => <Exercise exercise={item} />}
+                ListFooterComponent={() => <View height='$space.5' />}
             />
         </View>
     );
