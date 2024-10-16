@@ -1,14 +1,19 @@
-import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
+
+import IonIcons from '@expo/vector-icons/Ionicons';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { H3, SizableText, useTheme, View, XStack } from 'tamagui';
+
 import { IErrorResponse } from 'src/api/client';
 import { IDeleteWorkoutResponse } from 'src/api/workout-service/responses/IDeleteWorkoutResponse';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import { IconBtn } from 'src/components/common/icon-btn';
 import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
-import { H3, useTheme, View, XStack } from 'tamagui';
+import { formatDate } from 'src/utils/FormatDate';
+import { formatTime } from 'src/utils/FormatTime';
 
 export default function WorkoutDetailsModal() {
     const { workout } = useLocalSearchParams<{ workout: string }>();
@@ -53,6 +58,20 @@ export default function WorkoutDetailsModal() {
                     iconColor={theme.red10.val}
                     isLoading={isDeleting}
                 />
+            </XStack>
+            <XStack gap='$space.5' paddingTop='$space.4'>
+                <XStack alignItems='center' gap='$space.2'>
+                    <IonIcons name='time-outline' size={18} />
+                    <SizableText color='$gray10' size='$4'>
+                        {formatTime(decodedWorkout.createdAt)}
+                    </SizableText>
+                </XStack>
+                <XStack alignItems='center' gap='$space.2'>
+                    <IonIcons name='calendar-outline' size={18} />
+                    <SizableText color='$gray10' size='$4'>
+                        {formatDate(decodedWorkout.createdAt)}
+                    </SizableText>
+                </XStack>
             </XStack>
         </View>
     );
