@@ -35,7 +35,7 @@ export default function Home() {
             setWorkoutInProgress(true);
             dispatch(updatedCreatedAt());
         }
-        router.push('WorkoutForm');
+        router.push('/workout-tracker/WorkoutForm');
     }
 
     return (
@@ -69,7 +69,7 @@ export default function Home() {
                     paddingHorizontal='$space.3'
                     paddingVertical='$space.1'
                     fontWeight='bold'
-                    onPress={() => router.push('WorkoutTemplateForm')}
+                    onPress={() => router.push('/workout-tracker/WorkoutTemplateForm')}
                     color='$green10'
                     backgroundColor='$green6'
                 >
