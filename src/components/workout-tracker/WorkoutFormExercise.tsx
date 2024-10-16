@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, H3, SizableText, useTheme, XStack } from 'tamagui';
 
 import { FlatList } from 'react-native-gesture-handler';
-import PopoverMenu from 'src/components/common/PopoverMenu';
+import PopoverMenu from 'src/components/common/popover-menu/PopoverMenu';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
 import {

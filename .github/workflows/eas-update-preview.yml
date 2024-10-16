@@ -1,4 +1,4 @@
-name: EAS Update Staging
+name: EAS - Update Preview Build
 
 on:
     workflow_dispatch:
@@ -8,7 +8,7 @@ env:
     ENVIRONMENT: PREVIEW
 
 jobs:
-    eas_update_staging:
+    eas_update_preview:
         runs-on: ubuntu-latest
 
         steps:
@@ -19,15 +19,6 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18.x
-
-            - name: Verify the branch is 'staging'
-              run: |
-                  if [ "${{ github.ref }}" != "refs/heads/staging" ]; then
-                    echo "Error: This workflow can only run on the 'staging' branch."
-                    exit 1
-                  else
-                    echo "Running on the 'staging' branch."
-                  fi
 
             - name: Setup EAS
               uses: expo/expo-github-action@v8

@@ -1,4 +1,5 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
 import React from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -6,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { IErrorResponse } from 'src/api/client';
 import { IDeleteWorkoutResponse } from 'src/api/workout-service/responses/IDeleteWorkoutResponse';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
-import PopoverMenu, { PopoverMenuOptions } from 'src/components/common/PopoverMenu';
+import PopoverMenu, { PopoverMenuOptions } from 'src/components/common/popover-menu/PopoverMenu';
 import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
 import { formatDate } from 'src/utils/FormatDate';
@@ -60,7 +61,14 @@ export default function WorkoutHistoryCard({ workout }: Props) {
     }
 
     return (
-        <Card>
+        <Card
+            onPress={() =>
+                router.push({
+                    pathname: `/profile/${workout.id}`,
+                    params: { workout: encodeURIComponent(JSON.stringify(workout)) },
+                })
+            }
+        >
             <Card.Header elevate bordered borderRadius='$radius.5'>
                 <XStack alignItems='center' justifyContent='space-between'>
                     <H4>{workout.name}</H4>

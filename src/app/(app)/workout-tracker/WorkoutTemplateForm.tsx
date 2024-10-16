@@ -42,7 +42,7 @@ export default function WorkoutTemplateForm() {
 
     function onAddExercisePress() {
         router.push({
-            pathname: 'AddExercisesToWorkoutModal',
+            pathname: 'workout-tracker/AddExercisesToWorkoutModal',
             params: { workoutOrTemplate: 'Template' },
         });
     }

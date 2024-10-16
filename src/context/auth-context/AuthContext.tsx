@@ -56,10 +56,10 @@ export function AuthProvider({ children }: Props) {
         getAccessTokenFromStorage()
             .then(async (accessToken) => {
                 if (accessToken) {
-                    router.replace('/(app)/(workout-tracker)/Home');
+                    router.replace('/workout-tracker/Home');
                     await setUserState();
                 } else {
-                    router.replace('/(auth)/Signup');
+                    router.replace('/Signup');
                 }
             })
             .catch((e) => {
@@ -74,7 +74,7 @@ export function AuthProvider({ children }: Props) {
             const response = await LoginApi.login(username, password);
             await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
             await setUserState();
-            router.replace('/(app)/(workout-tracker)/Home');
+            router.replace('/workout-tracker/Home');
         } catch (e) {
             setErrorMsg(e.message);
         } finally {
@@ -103,7 +103,7 @@ export function AuthProvider({ children }: Props) {
             );
             await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
             await setUserState();
-            router.replace('/(app)/(workout-tracker)/Home');
+            router.replace('/workout-tracker/Home');
         } catch (e) {
             setErrorMsg(e.message);
         } finally {
@@ -112,7 +112,7 @@ export function AuthProvider({ children }: Props) {
     }
 
     async function logout(): Promise<void> {
-        router.replace('/(auth)/Signup');
+        router.replace('/Signup');
         await removeFromStorage(ACCESS_TOKEN_STORAGE_KEY);
         await queryClient.invalidateQueries();
         queryClient.clear();
