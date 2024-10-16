@@ -32,6 +32,13 @@ interface WorkoutFormExerciseFunctionParams {
     getIndex: () => number | undefined;
 }
 
+interface WorkoutFormExerciseFunctionParams {
+    item: string;
+    drag: () => void;
+    isActive: boolean;
+    getIndex: () => number | undefined;
+}
+
 export default function WorkoutForm() {
     const dispatch = useDispatch();
     const router = useRouter();

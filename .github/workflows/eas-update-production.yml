@@ -1,0 +1,42 @@
+name: EAS Update Production
+
+on:
+    workflow_dispatch:
+
+env:
+    API_URL: ${{ secrets.PROD_API_URL }}
+    ENVIRONMENT: PRODUCTION
+
+jobs:
+    eas_update_production:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18.x
+
+            - name: Verify the branch is 'production'
+              run: |
+                  if [ "${{ github.ref }}" != "refs/heads/main" ]; then
+                    echo "Error: This workflow can only run on the 'production' branch."
+                    exit 1
+                  else
+                    echo "Running on the 'production' branch."
+                  fi
+
+            - name: Setup EAS
+              uses: expo/expo-github-action@v8
+              with:
+                  eas-version: latest
+                  token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Create update
+              run: eas update --channel production --auto --non-interactive
