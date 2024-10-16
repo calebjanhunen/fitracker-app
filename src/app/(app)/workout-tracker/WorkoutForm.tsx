@@ -32,6 +32,13 @@ interface WorkoutFormExerciseFunctionParams {
     getIndex: () => number | undefined;
 }
 
+interface WorkoutFormExerciseFunctionParams {
+    item: string;
+    drag: () => void;
+    isActive: boolean;
+    getIndex: () => number | undefined;
+}
+
 export default function WorkoutForm() {
     const dispatch = useDispatch();
     const router = useRouter();
@@ -54,7 +61,7 @@ export default function WorkoutForm() {
 
     function onAddExercisePress() {
         router.push({
-            pathname: 'AddExercisesToWorkoutModal',
+            pathname: '/workout-tracker/AddExercisesToWorkoutModal',
             params: { workoutOrTemplate: 'Workout' },
         });
     }
@@ -76,7 +83,7 @@ export default function WorkoutForm() {
     function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
         resetWorkout();
         router.push({
-            pathname: 'PostWorkoutSummary',
+            pathname: 'workout-tracker/PostWorkoutSummary',
             params: {
                 xpGainedFromWeeklyGoal: response.workoutStats.xpGainedFromWeeklyGoal.toString(),
                 totalGainedXp: response.workoutStats.totalGainedXp.toString(),

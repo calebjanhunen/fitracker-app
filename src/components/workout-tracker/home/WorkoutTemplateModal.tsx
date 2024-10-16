@@ -62,7 +62,7 @@ export default function WorkoutTemplateModal({
         // Timeout used so modal closes before workout form page opens
         setTimeout(() => {
             setIsWorkoutFormOpening(false);
-            router.push('WorkoutForm');
+            router.push('/workout-tracker/WorkoutForm');
         }, 200);
     }
 
