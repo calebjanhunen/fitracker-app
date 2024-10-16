@@ -1,9 +1,12 @@
+import { IWorkoutResponse } from './IWorkoutResponse';
+
 export interface ICreateWorkoutResponse {
-    workoutId: string;
-    currentWorkoutStreak: number;
-    baseXpGain: number;
-    xpGainedFromWorkoutDuration: number;
-    xpGainedFromWorkoutStreak: number;
-    totalXpGained: number;
+    workout: IWorkoutResponse;
+    workoutStats: WorkoutStatsDto;
+}
+
+interface WorkoutStatsDto {
+    xpGainedFromWeeklyGoal: number;
+    totalGainedXp: number;
     totalUserXp: number;
 }
