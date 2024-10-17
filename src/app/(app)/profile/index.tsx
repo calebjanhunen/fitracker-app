@@ -67,7 +67,12 @@ export default function Profile() {
                         alignItems='center'
                         justifyContent='space-between'
                         marginTop='$space.3'
-                        onPress={() => router.push('/profile/WeeklyWorkoutGoalSelect')}
+                        onPress={() =>
+                            router.push({
+                                pathname: '/profile/WeeklyWorkoutGoalSelect',
+                                params: { currentGoal: user.weeklyWorkoutGoal.toString() },
+                            })
+                        }
                     >
                         <XStack alignItems='center' gap='$space.2'>
                             <IonIcons name='flag-outline' size={24} />

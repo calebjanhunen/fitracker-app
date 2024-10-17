@@ -29,6 +29,7 @@ export function useUpdateWeeklyWorkoutGoal(
         onSuccess: async (response) => {
             dispatch(updateWeeklyWorkoutGoal(response.weeklyWorkoutGoal));
             await saveToStorage('weekly-workout-goal', response.weeklyWorkoutGoal.toString());
+            onSuccessCallback();
         },
         onError: (e) => {
             onErrorCallback(e);
