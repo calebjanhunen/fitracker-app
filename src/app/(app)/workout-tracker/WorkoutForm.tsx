@@ -77,23 +77,72 @@ export default function WorkoutForm() {
         clearStopwatch();
     }
 
-    function onCreateWorkout() {
-        // Adds sets in workout to state so newly added sets don't have red background
-        setValidatedSets(
-            Object.keys(workoutFormState.sets).map((setId) => workoutFormState.sets[setId].id)
+    function onFinishWorkoutPress() {
+        // Adds sets that are invalid in workout to state so newly added sets don't have red background
+        const newValidatedSets = Object.keys(workoutFormState.sets)
+            .filter(
+                (setId) =>
+                    !workoutFormState.sets[setId].weight || !workoutFormState.sets[setId].reps
+            )
+            .map((setId) => workoutFormState.sets[setId].id);
+        setValidatedSets(newValidatedSets);
+        displayFinishWorkoutAlert(newValidatedSets);
+    }
+
+    function displayFinishWorkoutAlert(newValidatedSets: string[]) {
+        if (
+            newValidatedSets.length === Object.keys(workoutFormState.sets).length ||
+            !Object.keys(workoutFormState.sets).length
+        ) {
+            onCancelWorkoutPress();
+        } else if (!newValidatedSets.length) {
+            Alert.alert('Finish Workout?', '', [
+                {
+                    style: 'cancel',
+                    text: 'Close',
+                },
+                {
+                    style: 'default',
+                    text: 'Finish',
+                    onPress: () =>
+                        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime }),
+                },
+            ]);
+        } else {
+            Alert.alert('Finish Workout?', 'Any invalid sets and exercises will be removed.', [
+                {
+                    style: 'cancel',
+                    text: 'Close',
+                },
+                {
+                    style: 'default',
+                    text: 'Finish',
+                    onPress: () =>
+                        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime }),
+                },
+            ]);
+        }
+    }
+
+    function onCancelWorkoutPress() {
+        Alert.alert(
+            'Cancel Workout?',
+            'This will clear the current workout. This cannot be undone.',
+            [
+                {
+                    style: 'cancel',
+                    text: 'Resume',
+                },
+                {
+                    style: 'destructive',
+                    text: 'Cancel Workout',
+                    onPress: () => {
+                        router.back();
+                        resetWorkout();
+                    },
+                },
+            ]
         );
-        Alert.alert('Finish Workout?', 'Any invalid sets and exercises will be removed', [
-            {
-                style: 'cancel',
-                text: 'Close',
-            },
-            {
-                style: 'default',
-                text: 'Finish',
-                onPress: () =>
-                    createWorkout({ workoutForm: workoutFormState, duration: elapsedTime }),
-            },
-        ]);
     }
 
     function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
@@ -129,10 +178,7 @@ export default function WorkoutForm() {
                 Add Exercise
             </Button>
             <Button
-                onPress={() => {
-                    resetWorkout();
-                    router.back();
-                }}
+                onPress={onCancelWorkoutPress}
                 backgroundColor='$red6'
                 color='$red10'
                 fontWeight='bold'
@@ -171,7 +217,7 @@ export default function WorkoutForm() {
                             fontWeight='bold'
                             color={btnDisabled ? '$gray10' : '$green10'}
                             disabled={btnDisabled}
-                            onPress={onCreateWorkout}
+                            onPress={onFinishWorkoutPress}
                         >
                             {isPending ? <Spinner /> : 'Finish Workout'}
                         </Button>
