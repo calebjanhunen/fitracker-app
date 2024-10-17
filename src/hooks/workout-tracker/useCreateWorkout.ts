@@ -1,8 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
+import _ from 'lodash';
 import { IErrorResponse } from 'src/api/client';
 import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
 import { queryClient } from 'src/api/react-query-client';
 import { GET_USER_BY_ID_QUERY_KEY } from 'src/api/user-service/UserApiConfig';
+import { ICreateWorkoutRequest } from 'src/api/workout-service/requests/ICreateWorkoutRequest';
 import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
 import { GET_ALL_WORKOUTS_QUERY_KEY } from 'src/api/workout-service/WorkoutApiConfig';
 import * as WorkoutApiService from 'src/api/workout-service/WorkoutApiService';
@@ -36,7 +38,14 @@ export function useCreateWorkout(
             duration: number;
         }
     >({
-        mutationFn: WorkoutApiService.createWorkout,
+        mutationFn: async ({ workoutForm, duration }) => {
+            let newWorkoutForm = removeInvalidSets(workoutForm);
+            newWorkoutForm = removeInvalidExercises(newWorkoutForm);
+            const createWorkoutRequest = fromWorkoutFormToWorkoutRequest(newWorkoutForm, duration);
+            return await WorkoutApiService.createWorkout({
+                createWorkoutRequest,
+            });
+        },
         onSuccess: async (response) => {
             await queryClient.invalidateQueries({
                 queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
@@ -54,6 +63,63 @@ export function useCreateWorkout(
             onErrorCallback(e);
         },
     });
+
+    function removeInvalidSets(workoutForm: IWorkoutFormState): IWorkoutFormState {
+        const newWorkoutForm = _.cloneDeep(workoutForm);
+
+        workoutForm.workout.exercises.forEach((exerciseId) => {
+            workoutForm.exercises[exerciseId].sets.forEach((setId) => {
+                if (!workoutForm.sets[setId].weight || !workoutForm.sets[setId].reps) {
+                    newWorkoutForm.sets = _.omit(newWorkoutForm.sets, setId);
+                    newWorkoutForm.exercises[exerciseId].sets = newWorkoutForm.exercises[
+                        exerciseId
+                    ].sets.filter((id) => id !== setId);
+                }
+            });
+        });
+
+        return newWorkoutForm;
+    }
+
+    function removeInvalidExercises(workoutForm: IWorkoutFormState): IWorkoutFormState {
+        const newWorkoutForm = _.cloneDeep(workoutForm);
+
+        workoutForm.workout.exercises.forEach((exerciseId) => {
+            if (!workoutForm.exercises[exerciseId].sets.length) {
+                newWorkoutForm.exercises = _.omit(newWorkoutForm.exercises, exerciseId);
+                newWorkoutForm.workout.exercises = newWorkoutForm.workout.exercises.filter(
+                    (id) => id !== exerciseId
+                );
+            }
+        });
+
+        return newWorkoutForm;
+    }
+
+    function fromWorkoutFormToWorkoutRequest(
+        workoutForm: IWorkoutFormState,
+        duration: number
+    ): ICreateWorkoutRequest {
+        return {
+            name: workoutForm.workout.name,
+            createdAt: workoutForm.workout.createdAt,
+            duration,
+            exercises: workoutForm.workout.exercises.map((exerciseId, index) => {
+                return {
+                    exerciseId,
+                    order: index + 1,
+                    sets: workoutForm.exercises[exerciseId].sets.map((setId, index) => {
+                        return {
+                            weight: workoutForm.sets[setId].weight,
+                            reps: workoutForm.sets[setId].reps,
+                            rpe: workoutForm.sets[setId].rpe,
+                            order: index + 1,
+                        };
+                    }),
+                };
+            }),
+        };
+    }
 
     return { createWorkout, isPending, error };
 }
