@@ -20,6 +20,7 @@ interface Props {
     isActive: boolean;
     isDragging: boolean;
     setIsDragging: Dispatch<SetStateAction<boolean>>;
+    validatedSets: string[];
 }
 
 const WorkoutFormExercise = memo(function WorkoutFormExercise({
@@ -28,6 +29,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
     isActive,
     isDragging,
     setIsDragging,
+    validatedSets,
 }: Props) {
     const exercise = useSelector((state: RootState) => state.workoutForm.exercises[id]);
     const recentSets = useSelector((state: RootState) => state.workoutForm.recentSets);
@@ -115,6 +117,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                                 order={index + 1}
                                 exerciseId={id}
                                 recentSet={recentSet ?? null}
+                                isSetValidated={validatedSets.includes(item)}
                             />
                         );
                     }}

@@ -47,6 +47,7 @@ export default function WorkoutForm() {
     const workoutFormState = useSelector((state: RootState) => state.workoutForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
+    const [validatedSets, setValidatedSets] = useState<string[]>([]);
     const { removeFromStorage } = useLocalStorage();
     const { createWorkout, isPending } = useCreateWorkout(
         onCreateWorkoutSuccess,
@@ -77,7 +78,22 @@ export default function WorkoutForm() {
     }
 
     function onCreateWorkout() {
-        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime });
+        // Adds sets in workout to state so newly added sets don't have red background
+        setValidatedSets(
+            Object.keys(workoutFormState.sets).map((setId) => workoutFormState.sets[setId].id)
+        );
+        Alert.alert('Finish Workout?', 'Any invalid sets and exercises will be removed', [
+            {
+                style: 'cancel',
+                text: 'Close',
+            },
+            {
+                style: 'default',
+                text: 'Finish',
+                onPress: () =>
+                    createWorkout({ workoutForm: workoutFormState, duration: elapsedTime }),
+            },
+        ]);
     }
 
     function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
@@ -140,6 +156,7 @@ export default function WorkoutForm() {
             isActive={isActive}
             isDragging={isDragging}
             setIsDragging={setIsDragging}
+            validatedSets={validatedSets}
         />
     );
 

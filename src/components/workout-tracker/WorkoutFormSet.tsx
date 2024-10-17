@@ -19,9 +19,16 @@ interface Props {
     order: number;
     exerciseId: string;
     recentSet: IRecentSet | null;
+    isSetValidated: boolean;
 }
 
-const WorkoutFormSet = memo(function WorkoutFormset({ id, order, exerciseId, recentSet }: Props) {
+const WorkoutFormSet = memo(function WorkoutFormset({
+    id,
+    order,
+    exerciseId,
+    recentSet,
+    isSetValidated,
+}: Props) {
     const set = useSelector((state: RootState) => state.workoutForm.sets[id]);
     const dispatch = useDispatch();
     const { animatedStyle, handleDelete, handleLayout } = useDeleteAnimation({
@@ -92,6 +99,9 @@ const WorkoutFormSet = memo(function WorkoutFormset({ id, order, exerciseId, rec
                             keyboardType='number-pad'
                             value={set.weight?.toString() ?? ''}
                             onChangeText={onWeightChange}
+                            backgroundColor={
+                                !set.weight && isSetValidated ? '$red6' : '$background'
+                            }
                         />
                         <Input
                             size='$2'
@@ -102,6 +112,7 @@ const WorkoutFormSet = memo(function WorkoutFormset({ id, order, exerciseId, rec
                             keyboardType='number-pad'
                             value={set.reps?.toString() ?? ''}
                             onChangeText={onRepsChange}
+                            backgroundColor={!set.reps && isSetValidated ? '$red6' : '$background'}
                         />
                         <Input
                             size='$2'
