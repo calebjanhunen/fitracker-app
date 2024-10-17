@@ -4,4 +4,5 @@ export interface IUserResponse {
     firstName: string;
     lastName: string;
     totalXp: number;
+    weeklyWorkoutGoal: number;
 }

@@ -1,29 +1,16 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import WorkoutHistoryTab from 'src/components/profile/workout-history/WorkoutHistoryTab';
-import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { RootState } from 'src/redux/Store';
-import { updateWeeklyWorkoutGoal } from 'src/redux/user/UserSlice';
 import { Circle, H3, H5, Separator, SizableText, Tabs, useTheme, View, XStack } from 'tamagui';
 
 export default function Profile() {
     const user = useSelector((state: RootState) => state.user);
-    const { getFromStorage } = useLocalStorage();
-    const dispatch = useDispatch();
     const theme = useTheme();
     const router = useRouter();
-
-    // TODO: Remove after adding weekly workout goal to get user api call
-    useEffect(() => {
-        getFromStorage('weekly-workout-goal')
-            .then((response) => {
-                dispatch(updateWeeklyWorkoutGoal(Number(response)));
-            })
-            .catch((e) => {});
-    });
 
     return (
         <View flex={1} alignItems='center' paddingTop='$2' backgroundColor='$background'>

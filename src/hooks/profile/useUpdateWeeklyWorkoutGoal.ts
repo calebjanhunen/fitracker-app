@@ -5,7 +5,6 @@ import { IUpdateWeeklyWorkoutGoalRequest } from 'src/api/user-service/interfaces
 import { IUserStatsResponse } from 'src/api/user-service/interfaces/IUserStatsResponse';
 import * as UserApi from 'src/api/user-service/UserApiService';
 import { updateWeeklyWorkoutGoal } from 'src/redux/user/UserSlice';
-import { useLocalStorage } from '../common/useLocalStorage';
 
 interface IUseUpdateWeeklyWorkoutGoal {
     updateGoal: (request: IUpdateWeeklyWorkoutGoalRequest) => void;
@@ -17,7 +16,6 @@ export function useUpdateWeeklyWorkoutGoal(
     onSuccessCallback: () => void,
     onErrorCallback: (e: IErrorResponse) => void
 ): IUseUpdateWeeklyWorkoutGoal {
-    const { saveToStorage } = useLocalStorage();
     const dispatch = useDispatch();
 
     const { mutate, isPending, error } = useMutation<
@@ -28,7 +26,6 @@ export function useUpdateWeeklyWorkoutGoal(
         mutationFn: UserApi.updateWeeklyWorkoutGoal,
         onSuccess: async (response) => {
             dispatch(updateWeeklyWorkoutGoal(response.weeklyWorkoutGoal));
-            await saveToStorage('weekly-workout-goal', response.weeklyWorkoutGoal.toString());
             onSuccessCallback();
         },
         onError: (e) => {
