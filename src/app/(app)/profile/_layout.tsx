@@ -21,6 +21,13 @@ export default function ProfileLayout() {
                 name='[workoutId]'
                 options={{ headerShown: false, presentation: 'modal' }}
             />
+            <Stack.Screen
+                name='WeeklyWorkoutGoalSelect'
+                options={{
+                    headerTitle: 'Select Weekly Workout Goal',
+                    headerBackTitleVisible: false,
+                }}
+            />
         </Stack>
     );
 }

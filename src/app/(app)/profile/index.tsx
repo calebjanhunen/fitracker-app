@@ -1,13 +1,29 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
-import React from 'react';
+import { useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
 import { Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import WorkoutHistoryTab from 'src/components/profile/workout-history/WorkoutHistoryTab';
+import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { RootState } from 'src/redux/Store';
-import { Circle, H3, H5, Separator, SizableText, Tabs, View, XStack } from 'tamagui';
+import { updateWeeklyWorkoutGoal } from 'src/redux/user/UserSlice';
+import { Circle, H3, H5, Separator, SizableText, Tabs, useTheme, View, XStack } from 'tamagui';
 
 export default function Profile() {
     const user = useSelector((state: RootState) => state.user);
+    const { getFromStorage } = useLocalStorage();
+    const dispatch = useDispatch();
+    const theme = useTheme();
+    const router = useRouter();
+
+    // TODO: Remove after adding weekly workout goal to get user api call
+    useEffect(() => {
+        getFromStorage('weekly-workout-goal')
+            .then((response) => {
+                dispatch(updateWeeklyWorkoutGoal(Number(response)));
+            })
+            .catch((e) => {});
+    });
 
     return (
         <View flex={1} alignItems='center' paddingTop='$2' backgroundColor='$background'>
@@ -46,8 +62,28 @@ export default function Profile() {
                     <WorkoutHistoryTab />
                 </Tabs.Content>
 
-                <Tabs.Content value='account-info'>
-                    <H5>Account Info</H5>
+                <Tabs.Content value='account-info' paddingHorizontal='$space.2'>
+                    <XStack
+                        alignItems='center'
+                        justifyContent='space-between'
+                        marginTop='$space.3'
+                        onPress={() => router.push('/profile/WeeklyWorkoutGoalSelect')}
+                    >
+                        <XStack alignItems='center' gap='$space.2'>
+                            <IonIcons name='flag-outline' size={24} />
+                            <SizableText size='$5'>Weekly Workout Goal</SizableText>
+                        </XStack>
+                        <XStack alignItems='center' gap='$space.1'>
+                            <SizableText size='$5' color='$gray10'>
+                                {user.weeklyWorkoutGoal}
+                            </SizableText>
+                            <IonIcons
+                                name='chevron-forward-outline'
+                                size={24}
+                                color={theme.gray10.val}
+                            />
+                        </XStack>
+                    </XStack>
                 </Tabs.Content>
             </Tabs>
         </View>
