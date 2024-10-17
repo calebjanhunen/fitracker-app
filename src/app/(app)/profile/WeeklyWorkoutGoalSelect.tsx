@@ -3,17 +3,17 @@ import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { IErrorResponse } from 'src/api/client';
+import { Button } from 'src/components/common/button';
 import { useUpdateWeeklyWorkoutGoal } from 'src/hooks/profile/useUpdateWeeklyWorkoutGoal';
-import { Label, RadioGroup, View, XStack } from 'tamagui';
+import { Label, RadioGroup, Spinner, View, XStack } from 'tamagui';
 
 export default function WeeklyWorkoutGoalSelect() {
     const { updateGoal, isPending } = useUpdateWeeklyWorkoutGoal(onSuccess, onError);
     const router = useRouter();
     const { currentGoal } = useLocalSearchParams<{ currentGoal: string }>();
-    const [selectedGoal, setSelectedGoal] = useState<number>(0);
+    const [selectedGoal, setSelectedGoal] = useState<number>(Number(currentGoal));
 
     function onSelect(goal: string) {
-        console.log(goal);
         setSelectedGoal(Number(goal));
     }
 
@@ -26,7 +26,7 @@ export default function WeeklyWorkoutGoalSelect() {
     }
     return (
         <View paddingHorizontal='$space.3'>
-            <RadioGroup defaultValue='3'>
+            <RadioGroup defaultValue={currentGoal}>
                 <FlatList
                     data={['3', '4', '5', '6']}
                     renderItem={({ item }) => (
@@ -44,6 +44,14 @@ export default function WeeklyWorkoutGoalSelect() {
                     )}
                 />
             </RadioGroup>
+            <Button
+                color='$green10'
+                backgroundColor='$green6'
+                onPress={() => updateGoal({ weeklyWorkoutGoal: selectedGoal })}
+                disabled={selectedGoal === Number(currentGoal)}
+            >
+                {isPending ? <Spinner /> : 'Save'}
+            </Button>
         </View>
     );
 }

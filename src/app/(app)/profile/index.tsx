@@ -2,7 +2,7 @@ import IonIcons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import WorkoutHistoryTab from 'src/components/profile/workout-history/WorkoutHistoryTab';
 import { RootState } from 'src/redux/Store';
 import { Circle, H3, H5, Separator, SizableText, Tabs, useTheme, View, XStack } from 'tamagui';
