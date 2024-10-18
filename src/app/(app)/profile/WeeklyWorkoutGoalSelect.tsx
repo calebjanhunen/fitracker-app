@@ -5,7 +5,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { IErrorResponse } from 'src/api/client';
 import { Button } from 'src/components/common/button';
 import { useUpdateWeeklyWorkoutGoal } from 'src/hooks/profile/useUpdateWeeklyWorkoutGoal';
-import { Label, RadioGroup, Spinner, View, XStack, YStack } from 'tamagui';
+import { Label, RadioGroup, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
 
 export default function WeeklyWorkoutGoalSelect() {
     const { updateGoal, isPending } = useUpdateWeeklyWorkoutGoal(onSuccess, onError);
@@ -26,6 +26,12 @@ export default function WeeklyWorkoutGoalSelect() {
     }
     return (
         <View paddingHorizontal='$space.3' flex={1}>
+            <SizableText size='$3' color='$gray10' paddingVertical='$space.3'>
+                Your weekly workout goal lets you set a target for how many workouts you want to
+                complete each week. Once you&apos;ve set your goal, you&apos;ll earn XP whenever you
+                hit that number of workouts in a week, helping you stay consistent and reach your
+                fitness goals.
+            </SizableText>
             <YStack flex={1} justifyContent='space-between'>
                 <RadioGroup defaultValue={currentGoal}>
                     <FlatList
@@ -54,6 +60,7 @@ export default function WeeklyWorkoutGoalSelect() {
                     backgroundColor='$green6'
                     onPress={() => updateGoal({ weeklyWorkoutGoal: selectedGoal })}
                     disabled={selectedGoal === Number(currentGoal)}
+                    marginBottom='$space.3'
                 >
                     {isPending ? <Spinner /> : 'Save'}
                 </Button>
