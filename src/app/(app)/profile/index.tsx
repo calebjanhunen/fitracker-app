@@ -1,8 +1,9 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Dimensions } from 'react-native';
 import { useSelector } from 'react-redux';
+import ProfileHeader from 'src/components/profile/profile/ProfileHeader';
 import WorkoutHistoryTab from 'src/components/profile/workout-history/WorkoutHistoryTab';
 import { RootState } from 'src/redux/Store';
 import { Circle, H3, H5, Separator, SizableText, Tabs, useTheme, View, XStack } from 'tamagui';
@@ -14,16 +15,8 @@ export default function Profile() {
 
     return (
         <View flex={1} alignItems='center' paddingTop='$2' backgroundColor='$background'>
-            <Circle size={100} backgroundColor='$gray8'>
-                <IonIcons name='person-outline' size={70} />
-            </Circle>
-            <H3 paddingTop='$space.2'>
-                {user.firstName} {user.lastName}
-            </H3>
-            <XStack gap='$space.2'>
-                <H5>XP:</H5>
-                <H5>{user.totalXp}</H5>
-            </XStack>
+            <Stack.Screen options={{ title: 'test' }} />
+            <ProfileHeader user={user} />
             <Tabs
                 defaultValue='workout-history'
                 flexDirection='column'
