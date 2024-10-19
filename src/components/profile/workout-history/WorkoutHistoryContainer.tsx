@@ -8,7 +8,7 @@ import * as WorkoutApi from 'src/api/workout-service/WorkoutApiService';
 import { SizableText, Spinner, View } from 'tamagui';
 import WorkoutHistoryCard from './WorkoutHistoryCard';
 
-export default function WorkoutHistoryTab() {
+export default function WorkoutHistoryContainer() {
     const {
         data: workouts,
         isLoading,
