@@ -89,10 +89,19 @@ const workoutFormSlice = createSlice({
         },
         deleteExerciseFromWorkout: (state, action: PayloadAction<{ exerciseId: string }>) => {
             const { exerciseId } = action.payload;
+
+            // Remove the exerciseId from the workout.exercises array
             state.workout.exercises = state.workout.exercises.filter((id) => id !== exerciseId);
+
+            // Remove the exercise's sets and recent sets
             state.exercises[exerciseId].sets.forEach(
                 (setId) => (state.sets = _.omit(state.sets, setId))
             );
+            state.exercises[exerciseId].recentSets.forEach((recentSetId) => {
+                state.recentSets = _.omit(state.recentSets, recentSetId);
+            });
+
+            // Remove exercise object
             state.exercises = _.omit(state.exercises, exerciseId);
         },
         reorderExercises: (state, action: PayloadAction<string[]>) => {
