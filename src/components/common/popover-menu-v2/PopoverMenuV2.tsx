@@ -8,6 +8,7 @@ import {
     BottomSheetView,
     TouchableOpacity,
 } from '@gorhom/bottom-sheet';
+import { Keyboard } from 'react-native';
 import { Separator, SizableText, useTheme, View, XStack } from 'tamagui';
 import { IconBtn } from '../icon-btn';
 
@@ -31,7 +32,10 @@ export default function PopoverMenuV2({ options, height }: Props) {
         <View>
             <IconBtn
                 icon='ellipsis-horizontal'
-                onPress={() => ref.current?.present()}
+                onPress={() => {
+                    Keyboard.dismiss();
+                    ref.current?.present();
+                }}
                 backgroundColor={theme.blue6.val}
                 iconColor={theme.blue10.val}
             />
@@ -52,7 +56,6 @@ export default function PopoverMenuV2({ options, height }: Props) {
                 )}
             >
                 <BottomSheetView style={{ flex: 1, paddingHorizontal: 16 }}>
-                    {/* <YStack backgroundColor={theme.gray1.val} borderRadius='$4'> */}
                     <BottomSheetFlatList
                         contentContainerStyle={{
                             backgroundColor: theme.gray1.val,
@@ -82,7 +85,6 @@ export default function PopoverMenuV2({ options, height }: Props) {
                         keyExtractor={(item) => item.icon}
                         ItemSeparatorComponent={() => <Separator borderColor={theme.gray5.val} />}
                     />
-                    {/* </YStack> */}
                 </BottomSheetView>
             </BottomSheetModal>
         </View>
