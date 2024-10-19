@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, H3, SizableText, useTheme, XStack } from 'tamagui';
 
 import { FlatList } from 'react-native-gesture-handler';
-import PopoverMenu from 'src/components/common/popover-menu/PopoverMenu';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
 import {
     addSetToExercise,
     deleteExerciseFromWorkout,
 } from 'src/redux/workout-form/WorkoutFormSlice';
+import { PopoverMenuV2 } from '../common/popover-menu-v2';
 import WorkoutFormSet from './WorkoutFormSet';
 
 interface Props {
@@ -77,12 +77,13 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                 >
                     {exercise.name}
                 </H3>
-                <PopoverMenu
-                    menuOptions={[
+                <PopoverMenuV2
+                    height='15%'
+                    options={[
                         {
-                            text: 'Delete',
+                            text: 'Remove Exercise',
                             icon: 'trash',
-                            iconColor: theme.red11.val,
+                            textColor: theme.red10.val,
                             action: handleDelete,
                         },
                     ]}
