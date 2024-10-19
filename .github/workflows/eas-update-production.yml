@@ -5,7 +5,7 @@ on:
 
 env:
     API_URL: ${{ secrets.PROD_API_URL }}
-    ENVIRONMENT: PRODUCTION
+    APP_VARIANT: PRODUCTION
 
 jobs:
     eas_update_production:

@@ -6,20 +6,24 @@
     "build": {
         "development": {
             "developmentClient": true,
-            "distribution": "internal"
+            "distribution": "internal",
+            "env": {
+                "APP_VARIANT": "development"
+            },
+            "channel": "development"
         },
         "preview": {
             "distribution": "internal",
             "channel": "preview",
             "env": {
-                "ENVIRONMENT": "preview"
+                "APP_VARIANT": "preview"
             }
         },
         "production": {
             "autoIncrement": true,
             "channel": "production",
             "env": {
-                "ENVIRONMENT": "production"
+                "APP_VARIANT": "production"
             }
         }
     },

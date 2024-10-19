@@ -1,32 +1,28 @@
-import dotenv from 'dotenv';
+import 'dotenv/config';
 
-dotenv.config({
-    path:
-        process.env.NODE_ENV === 'development'
-            ? '.env'
-            : process.env.NODE_ENV === 'test'
-            ? '.env.prev'
-            : '.env.prod',
-});
+const appEnv = process.env.APP_VARIANT;
+const apiUrl = process.env.API_URL;
 
 export default {
     expo: {
         name:
-            process.env.ENVIRONMENT === 'preview'
-                ? 'Fitracker Preview'
-                : process.env.ENVIRONMENT === 'development'
-                ? 'Fitracker Dev'
+            appEnv === 'development'
+                ? 'Fitracker (Dev)'
+                : appEnv === 'preview'
+                ? 'Fitracker (Preview)'
                 : 'Fitracker',
         slug: 'fitracker',
         plugins: ['expo-router', 'expo-font'],
         scheme: 'fitracker',
-        version: '1.0.0',
+        version: '1.3.0',
         runtimeVersion: {
             policy: 'appVersion',
         },
         orientation: 'portrait',
         icon:
-            process.env.ENVIRONMENT === 'preview'
+            appEnv === 'development'
+                ? './assets/fitracker-dev-icon.png'
+                : appEnv === 'preview'
                 ? './assets/fitracker-preview-icon.png'
                 : './assets/fitracker-icon.png',
         userInterfaceStyle: 'automatic',
@@ -39,10 +35,10 @@ export default {
         ios: {
             supportsTablet: true,
             bundleIdentifier:
-                process.env.ENVIRONMENT === 'preview'
-                    ? 'com.calebjanhunen.fitracker.preview'
-                    : process.env.ENVIRONMENT === 'development'
+                appEnv === 'development'
                     ? 'com.calebjanhunen.fitracker.development'
+                    : appEnv === 'preview'
+                    ? 'com.calebjanhunen.fitracker.preview'
                     : 'com.calebjanhunen.fitracker',
         },
         android: {
@@ -58,8 +54,8 @@ export default {
             eas: {
                 projectId: '45091350-52c3-4c87-8398-d0988898db85',
             },
-            PROD_API_URL: process.env.API_URL,
-            ENVIRONMENT: process.env.ENVIRONMENT,
+            PROD_API_URL: apiUrl,
+            ENVIRONMENT: appEnv,
         },
         updates: {
             url: 'https://u.expo.dev/45091350-52c3-4c87-8398-d0988898db85',
