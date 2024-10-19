@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
@@ -26,18 +27,20 @@ export default function RootLayout() {
     return (
         <PortalProvider shouldAddRootHost>
             <GestureHandlerRootView style={{ flex: 1 }}>
-                <QueryClientProvider client={queryClient}>
-                    <TamaguiProvider config={config}>
-                        <Theme name='light'>
-                            <Provider store={store}>
-                                <AuthProvider>
-                                    <Slot />
-                                </AuthProvider>
-                            </Provider>
-                        </Theme>
-                        <StatusBar barStyle='default' />
-                    </TamaguiProvider>
-                </QueryClientProvider>
+                <BottomSheetModalProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <TamaguiProvider config={config}>
+                            <Theme name='light'>
+                                <Provider store={store}>
+                                    <AuthProvider>
+                                        <Slot />
+                                    </AuthProvider>
+                                </Provider>
+                            </Theme>
+                            <StatusBar barStyle='default' />
+                        </TamaguiProvider>
+                    </QueryClientProvider>
+                </BottomSheetModalProvider>
             </GestureHandlerRootView>
         </PortalProvider>
     );

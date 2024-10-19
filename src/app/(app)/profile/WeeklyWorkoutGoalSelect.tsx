@@ -25,7 +25,7 @@ export default function WeeklyWorkoutGoalSelect() {
         Alert.alert('Error updating weekly goal', e.message);
     }
     return (
-        <View paddingHorizontal='$space.3' flex={1}>
+        <View paddingHorizontal='$space.3' flex={1} backgroundColor='$background'>
             <SizableText size='$3' color='$gray10' paddingVertical='$space.3'>
                 Your weekly workout goal lets you set a target for how many workouts you want to
                 complete each week. Once you&apos;ve set your goal, you&apos;ll earn XP whenever you

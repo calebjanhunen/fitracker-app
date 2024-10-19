@@ -1,18 +1,20 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
+
 import { router } from 'expo-router';
 import React from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import { Card, H4, SizableText, Spinner, useTheme, XStack } from 'tamagui';
+
 import { IErrorResponse } from 'src/api/client';
 import { IDeleteWorkoutResponse } from 'src/api/workout-service/responses/IDeleteWorkoutResponse';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
-import PopoverMenu, { PopoverMenuOptions } from 'src/components/common/popover-menu/PopoverMenu';
+import { PopoverMenuOptionsV2, PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
 import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
 import { formatDate } from 'src/utils/FormatDate';
 import { formatWorkoutDuration } from 'src/utils/formatWorkoutDuration';
-import { Card, H4, SizableText, Spinner, useTheme, XStack } from 'tamagui';
 
 interface Props {
     workout: IWorkoutResponse;
@@ -22,24 +24,18 @@ export default function WorkoutHistoryCard({ workout }: Props) {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, onDeleteError);
-    const menuOptions: PopoverMenuOptions[] = [
-        {
-            text: 'Edit',
-            action: () => {},
-            icon: 'create-outline',
-            iconColor: theme.blue10.val,
-        },
+    const menuOptions: PopoverMenuOptionsV2[] = [
         {
             text: 'Delete',
             action: onDeletePress,
             icon: 'trash-outline',
-            iconColor: theme.red10.val,
+            textColor: theme.red10.val,
         },
     ];
 
     function onDeletePress() {
         Alert.alert(
-            `Are you sure you want to delete ${workout.name}?`,
+            `Are you sure you want to delete this workout?`,
             'This will remove the xp gained from completing the workout.',
             [
                 { text: 'Cancel', onPress: () => {}, style: 'cancel' },
@@ -72,7 +68,7 @@ export default function WorkoutHistoryCard({ workout }: Props) {
             <Card.Header elevate bordered borderRadius='$radius.5'>
                 <XStack alignItems='center' justifyContent='space-between'>
                     <H4>{workout.name}</H4>
-                    <PopoverMenu menuOptions={menuOptions} />
+                    <PopoverMenuV2 options={menuOptions} height='15%' />
                 </XStack>
                 <XStack gap='$space.4'>
                     <XStack alignItems='center' gap='$space.2'>
