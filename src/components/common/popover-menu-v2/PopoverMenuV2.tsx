@@ -8,7 +8,8 @@ import {
     BottomSheetView,
     TouchableOpacity,
 } from '@gorhom/bottom-sheet';
-import { Separator, SizableText, useTheme, XStack } from 'tamagui';
+import { Separator, SizableText, useTheme, View, XStack } from 'tamagui';
+import { IconBtn } from '../icon-btn';
 
 export interface PopoverMenuOptionsV2 {
     text: string;
@@ -18,73 +19,72 @@ export interface PopoverMenuOptionsV2 {
 }
 
 interface Props {
-    isOpen: boolean;
-    setIsOpen: Dispatch<SetStateAction<boolean>>;
     options: PopoverMenuOptionsV2[];
     height: string;
 }
 
-export default function PopoverMenuV2({ isOpen, setIsOpen, options, height }: Props) {
+export default function PopoverMenuV2({ options, height }: Props) {
     const ref = useRef<BottomSheetModal>(null);
     const theme = useTheme();
 
-    useEffect(() => {
-        if (isOpen) {
-            ref.current?.present();
-        }
-    }, [isOpen]);
-
     return (
-        <BottomSheetModal
-            index={0}
-            ref={ref}
-            snapPoints={[height]}
-            backgroundStyle={{
-                backgroundColor: theme.gray5.val,
-            }}
-            backdropComponent={(props) => (
-                <BottomSheetBackdrop
-                    {...props}
-                    appearsOnIndex={0}
-                    disappearsOnIndex={-1}
-                    opacity={0.3}
-                />
-            )}
-            onDismiss={() => {
-                console.log('close');
-                setIsOpen(false);
-            }}
-        >
-            <BottomSheetView style={{ flex: 1, paddingHorizontal: 16 }}>
-                {/* <YStack backgroundColor={theme.gray1.val} borderRadius='$4'> */}
-                <BottomSheetFlatList
-                    contentContainerStyle={{ backgroundColor: theme.gray1.val, borderRadius: 10 }}
-                    data={options}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            onPress={async () => {
-                                ref.current?.close();
-                                await item.action();
-                            }}
-                        >
-                            <XStack
-                                paddingHorizontal='$space.4'
-                                paddingVertical='$space.3'
-                                alignItems='center'
-                                gap='$space.3'
+        <View>
+            <IconBtn
+                icon='ellipsis-horizontal'
+                onPress={() => ref.current?.present()}
+                backgroundColor={theme.blue6.val}
+                iconColor={theme.blue10.val}
+            />
+            <BottomSheetModal
+                index={0}
+                ref={ref}
+                snapPoints={[height]}
+                backgroundStyle={{
+                    backgroundColor: theme.gray5.val,
+                }}
+                backdropComponent={(props) => (
+                    <BottomSheetBackdrop
+                        {...props}
+                        appearsOnIndex={0}
+                        disappearsOnIndex={-1}
+                        opacity={0.3}
+                    />
+                )}
+            >
+                <BottomSheetView style={{ flex: 1, paddingHorizontal: 16 }}>
+                    {/* <YStack backgroundColor={theme.gray1.val} borderRadius='$4'> */}
+                    <BottomSheetFlatList
+                        contentContainerStyle={{
+                            backgroundColor: theme.gray1.val,
+                            borderRadius: 10,
+                        }}
+                        data={options}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                onPress={async () => {
+                                    ref.current?.close();
+                                    await item.action();
+                                }}
                             >
-                                <IonIcons color={item.textColor} size={30} name={item.icon} />
-                                <SizableText color={item.textColor} size='$6'>
-                                    {item.text}
-                                </SizableText>
-                            </XStack>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item.icon}
-                    ItemSeparatorComponent={() => <Separator borderColor={theme.gray5.val} />}
-                />
-                {/* </YStack> */}
-            </BottomSheetView>
-        </BottomSheetModal>
+                                <XStack
+                                    paddingHorizontal='$space.4'
+                                    paddingVertical='$space.3'
+                                    alignItems='center'
+                                    gap='$space.3'
+                                >
+                                    <IonIcons color={item.textColor} size={30} name={item.icon} />
+                                    <SizableText color={item.textColor} size='$6'>
+                                        {item.text}
+                                    </SizableText>
+                                </XStack>
+                            </TouchableOpacity>
+                        )}
+                        keyExtractor={(item) => item.icon}
+                        ItemSeparatorComponent={() => <Separator borderColor={theme.gray5.val} />}
+                    />
+                    {/* </YStack> */}
+                </BottomSheetView>
+            </BottomSheetModal>
+        </View>
     );
 }

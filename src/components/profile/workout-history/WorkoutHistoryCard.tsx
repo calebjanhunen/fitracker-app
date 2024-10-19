@@ -70,18 +70,7 @@ export default function WorkoutHistoryCard({ workout }: Props) {
             <Card.Header elevate bordered borderRadius='$radius.5'>
                 <XStack alignItems='center' justifyContent='space-between'>
                     <H4>{workout.name}</H4>
-                    <IconBtn
-                        icon='ellipsis-horizontal'
-                        onPress={() => setIsMenuOpen(true)}
-                        backgroundColor={theme.blue6.val}
-                        iconColor={theme.blue10.val}
-                    />
-                    <PopoverMenuV2
-                        isOpen={isMenuOpen}
-                        setIsOpen={setIsMenuOpen}
-                        options={menuOptions}
-                        height='15%'
-                    />
+                    <PopoverMenuV2 options={menuOptions} height='15%' />
                 </XStack>
                 <XStack gap='$space.4'>
                     <XStack alignItems='center' gap='$space.2'>
