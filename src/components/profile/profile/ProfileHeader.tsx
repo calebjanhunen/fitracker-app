@@ -10,7 +10,7 @@ interface Props {
 
 export default function ProfileHeader({ user }: Props) {
     return (
-        <View alignItems='center'>
+        <View alignItems='center' marginBottom='$space.5'>
             <Circle size={100} backgroundColor='$gray8'>
                 <IonIcons name='person-outline' size={70} />
             </Circle>
