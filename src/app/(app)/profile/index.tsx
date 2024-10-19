@@ -1,12 +1,12 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import ProfileHeader from 'src/components/profile/profile/ProfileHeader';
 import WorkoutHistoryTab from 'src/components/profile/workout-history/WorkoutHistoryTab';
 import { RootState } from 'src/redux/Store';
-import { Circle, H3, H5, Separator, SizableText, Tabs, useTheme, View, XStack } from 'tamagui';
+import { Separator, SizableText, Tabs, useTheme, View } from 'tamagui';
 
 export default function Profile() {
     const user = useSelector((state: RootState) => state.user);
@@ -14,8 +14,17 @@ export default function Profile() {
     const router = useRouter();
 
     return (
-        <View flex={1} alignItems='center' paddingTop='$2' backgroundColor='$background'>
-            <Stack.Screen options={{ title: 'test' }} />
+        <View flex={1} alignItems='center' paddingTop='$2' backgroundColor={theme.background.val}>
+            <Stack.Screen
+                options={{
+                    title: user.username,
+                    headerRight: () => (
+                        <TouchableOpacity onPress={() => router.push('/profile/ProfileSettings')}>
+                            <IonIcons color={theme.gray12.val} size={34} name='menu-outline' />
+                        </TouchableOpacity>
+                    ),
+                }}
+            />
             <ProfileHeader user={user} />
             <Tabs
                 defaultValue='workout-history'
@@ -42,34 +51,7 @@ export default function Profile() {
                     <WorkoutHistoryTab />
                 </Tabs.Content>
 
-                <Tabs.Content value='account-info' paddingHorizontal='$space.2'>
-                    <XStack
-                        alignItems='center'
-                        justifyContent='space-between'
-                        marginTop='$space.3'
-                        onPress={() =>
-                            router.push({
-                                pathname: '/profile/WeeklyWorkoutGoalSelect',
-                                params: { currentGoal: user.weeklyWorkoutGoal.toString() },
-                            })
-                        }
-                    >
-                        <XStack alignItems='center' gap='$space.2'>
-                            <IonIcons name='flag-outline' size={24} />
-                            <SizableText size='$5'>Weekly Workout Goal</SizableText>
-                        </XStack>
-                        <XStack alignItems='center' gap='$space.1'>
-                            <SizableText size='$5' color='$gray10'>
-                                {user.weeklyWorkoutGoal}
-                            </SizableText>
-                            <IonIcons
-                                name='chevron-forward-outline'
-                                size={24}
-                                color={theme.gray10.val}
-                            />
-                        </XStack>
-                    </XStack>
-                </Tabs.Content>
+                <Tabs.Content value='account-info' paddingHorizontal='$space.2'></Tabs.Content>
             </Tabs>
         </View>
     );
