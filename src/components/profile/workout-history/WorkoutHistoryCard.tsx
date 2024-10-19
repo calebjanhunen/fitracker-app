@@ -1,7 +1,7 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
@@ -10,7 +10,6 @@ import { Card, H4, SizableText, Spinner, useTheme, XStack } from 'tamagui';
 import { IErrorResponse } from 'src/api/client';
 import { IDeleteWorkoutResponse } from 'src/api/workout-service/responses/IDeleteWorkoutResponse';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
-import { IconBtn } from 'src/components/common/icon-btn';
 import { PopoverMenuOptionsV2, PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
 import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
@@ -25,7 +24,6 @@ export default function WorkoutHistoryCard({ workout }: Props) {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, onDeleteError);
-    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const menuOptions: PopoverMenuOptionsV2[] = [
         {
             text: 'Delete',
