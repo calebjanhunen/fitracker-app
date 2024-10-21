@@ -25,7 +25,7 @@ import {
     YStack,
 } from 'tamagui';
 
-export default function AddExercisesToWorkoutModal() {
+export default function AddExercisesToWorkout() {
     const router = useRouter();
     const dispatch = useDispatch();
     const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
