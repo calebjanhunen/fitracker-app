@@ -6,6 +6,7 @@ export default function WorkoutTemplateFormLayout() {
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name='index' />
             <Stack.Screen name='AddExercisesToTemplate' />
+            <Stack.Screen name='ReplaceExercise' />
         </Stack>
     );
 }

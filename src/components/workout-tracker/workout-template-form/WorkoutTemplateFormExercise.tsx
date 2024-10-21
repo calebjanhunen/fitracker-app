@@ -3,8 +3,9 @@ import { Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, H3, SizableText, useTheme, XStack } from 'tamagui';
 
+import { useRouter } from 'expo-router';
 import { FlatList } from 'react-native-gesture-handler';
-import PopoverMenu from 'src/components/common/popover-menu/PopoverMenu';
+import { PopoverMenuOptionsV2, PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
 import {
@@ -31,10 +32,30 @@ const WorkoutTemplateFormExercise = memo(function WorkoutTemplateFormExercise({
 }: Props) {
     const exercise = useSelector((state: RootState) => state.workoutTemplateForm.exercises[id]);
     const dispatch = useDispatch();
+    const router = useRouter();
     const theme = useTheme();
     const { animatedStyle, handleDelete, handleLayout } = useDeleteAnimation({
         onDelete: () => dispatch(deleteExerciseFromWorkoutTemplate({ exerciseId: exercise.id })),
     });
+    const menuOptions: PopoverMenuOptionsV2[] = [
+        {
+            text: 'Replace Exercise',
+            icon: 'swap-horizontal-outline',
+            textColor: theme.gray12.val,
+            action: () => {
+                router.push({
+                    pathname: '/workout-tracker/workout-template-form/ReplaceExercise',
+                    params: { oldExerciseId: id },
+                });
+            },
+        },
+        {
+            text: 'Delete',
+            icon: 'trash',
+            textColor: theme.red11.val,
+            action: handleDelete,
+        },
+    ];
 
     if (!exercise) {
         return null;
@@ -74,16 +95,7 @@ const WorkoutTemplateFormExercise = memo(function WorkoutTemplateFormExercise({
                 >
                     {exercise.name}
                 </H3>
-                <PopoverMenu
-                    menuOptions={[
-                        {
-                            text: 'Delete',
-                            icon: 'trash',
-                            iconColor: theme.red11.val,
-                            action: handleDelete,
-                        },
-                    ]}
-                />
+                <PopoverMenuV2 height='20%' options={menuOptions} />
             </XStack>
             <XStack>
                 <SizableText textAlign='center' size='$5' fontWeight='bold' flex={1}>
