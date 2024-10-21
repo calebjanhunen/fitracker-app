@@ -11,7 +11,7 @@ import {
     addSetToExercise,
     deleteExerciseFromWorkout,
 } from 'src/redux/workout-form/WorkoutFormSlice';
-import { PopoverMenuOptionsV2, PopoverMenuV2 } from '../common/popover-menu-v2';
+import { PopoverMenuOptionsV2, PopoverMenuV2 } from '../../common/popover-menu-v2';
 import WorkoutFormSet from './WorkoutFormSet';
 
 interface Props {

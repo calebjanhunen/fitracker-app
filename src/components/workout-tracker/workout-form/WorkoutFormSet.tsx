@@ -88,7 +88,10 @@ const WorkoutFormSet = memo(function WorkoutFormset({
                             {order}
                         </SizableText>
                         <SizableText textAlign='center' size='$4' flex={2}>
-                            {recentSet && `${recentSet.weight}x${recentSet.reps}@${recentSet.rpe}`}
+                            {recentSet &&
+                                `${recentSet.weight}x${recentSet.reps}${
+                                    recentSet.rpe ? `@${recentSet.rpe}` : ''
+                                }`}
                         </SizableText>
                         <Input
                             size='$2'
