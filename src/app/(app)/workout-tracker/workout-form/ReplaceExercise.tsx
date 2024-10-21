@@ -9,7 +9,7 @@ import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-s
 import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
 import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
-import CreateExerciseModal from 'src/components/workout-tracker/CreateExerciseModal';
+import CreateExerciseModal from 'src/components/workout-tracker/common/CreateExerciseModal';
 import { RootState } from 'src/redux/Store';
 import { replaceExercise } from 'src/redux/workout-form/WorkoutFormSlice';
 import {
