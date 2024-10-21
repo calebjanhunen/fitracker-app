@@ -75,6 +75,10 @@ export default function AddExercisesToWorkout() {
         router.back();
     }
 
+    function onCreateExerciseSuccess(createdExerciseId: string) {
+        setSelectedExercises((prev) => [...prev, createdExerciseId]);
+    }
+
     function renderBody() {
         if (error) {
             return (
@@ -169,7 +173,7 @@ export default function AddExercisesToWorkout() {
                     <CreateExerciseModal
                         isOpen={isModalOpen}
                         setIsOpen={setIsModelOpen}
-                        setSelectedExercises={setSelectedExercises}
+                        setSelectedExercises={onCreateExerciseSuccess}
                     />
                 </Dialog>
                 <Input

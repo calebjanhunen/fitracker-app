@@ -47,7 +47,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
             textColor: theme.gray12.val,
             action: () => {
                 router.push({
-                    pathname: '/workout-tracker/ReplaceExercise',
+                    pathname: '/workout-tracker/workout-form/ReplaceExercise',
                     params: { oldExerciseId: id },
                 });
             },

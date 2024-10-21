@@ -61,6 +61,10 @@ export default function ReplaceExercise() {
         router.back();
     }
 
+    function onCreateExerciseSuccess(createdExerciseId: string) {
+        setSelectedExercises([createdExerciseId]);
+    }
+
     function renderBody() {
         if (error) {
             return (
@@ -151,7 +155,7 @@ export default function ReplaceExercise() {
                     <CreateExerciseModal
                         isOpen={isModalOpen}
                         setIsOpen={setIsModelOpen}
-                        setSelectedExercises={setSelectedExercises}
+                        setSelectedExercises={onCreateExerciseSuccess}
                     />
                 </Dialog>
                 <Input
