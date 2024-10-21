@@ -6,12 +6,9 @@ export default function WorkoutTrackerLayout() {
     return (
         <WorkoutInProgressProvider>
             <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name='Home' />
-                <Stack.Screen name='WorkoutForm' />
-                <Stack.Screen name='WorkoutTemplateForm' />
-                <Stack.Screen name='AddExercisesToWorkoutModal' />
-                <Stack.Screen name='ReplaceExercise' />
-                <Stack.Screen name='PostWorkoutSummary' options={{ gestureEnabled: false }} />
+                <Stack.Screen name='index' options={{ gestureEnabled: false }} />
+                <Stack.Screen name='workout-form' />
+                <Stack.Screen name='workout-template-form' />
             </Stack>
         </WorkoutInProgressProvider>
     );

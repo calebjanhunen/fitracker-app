@@ -62,7 +62,7 @@ export default function WorkoutForm() {
 
     function onAddExercisePress() {
         router.push({
-            pathname: '/workout-tracker/AddExercisesToWorkoutModal',
+            pathname: '/workout-tracker/workout-form/AddExercisesToWorkoutModal',
             params: { workoutOrTemplate: 'Workout' },
         });
     }
@@ -148,7 +148,7 @@ export default function WorkoutForm() {
     function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
         resetWorkout();
         router.push({
-            pathname: 'workout-tracker/PostWorkoutSummary',
+            pathname: 'workout-tracker/workout-form/PostWorkoutSummary',
             params: {
                 xpGainedFromWeeklyGoal: response.workoutStats.xpGainedFromWeeklyGoal.toString(),
                 totalGainedXp: response.workoutStats.totalGainedXp.toString(),
