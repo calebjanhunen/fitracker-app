@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, H4, Input, Spinner, View, XStack, YStack } from 'tamagui';
@@ -54,12 +54,6 @@ export default function WorkoutForm() {
         onCreateWorkoutError
     );
 
-    useEffect(() => {
-        setBtnDisabled(
-            !workoutFormState.workout.name || workoutFormState.workout.exercises.length === 0
-        );
-    }, [workoutFormState.workout.name, workoutFormState.workout.exercises]);
-
     function resetWorkout() {
         removeFromStorage(WORKOUT_FORM_STORAGE_KEY)
             .then(() => {
@@ -71,6 +65,8 @@ export default function WorkoutForm() {
     }
 
     function onFinishWorkoutPress() {
+        console.log('button disabled');
+        setBtnDisabled(true);
         // Adds sets that are invalid in workout to state so newly added sets don't have red background
         const newValidatedSets = Object.keys(workoutFormState.sets)
             .filter(
@@ -93,6 +89,7 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Close',
+                    onPress: () => setBtnDisabled(false),
                 },
                 {
                     style: 'default',
@@ -106,6 +103,7 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Close',
+                    onPress: () => setBtnDisabled(false),
                 },
                 {
                     style: 'default',
@@ -125,6 +123,7 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Resume',
+                    onPress: () => setBtnDisabled(false),
                 },
                 {
                     style: 'destructive',
