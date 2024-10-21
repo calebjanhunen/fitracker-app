@@ -60,13 +60,6 @@ export default function WorkoutForm() {
         );
     }, [workoutFormState.workout.name, workoutFormState.workout.exercises]);
 
-    function onAddExercisePress() {
-        router.push({
-            pathname: '/workout-tracker/workout-form/AddExercisesToWorkout',
-            params: { workoutOrTemplate: 'Workout' },
-        });
-    }
-
     function resetWorkout() {
         removeFromStorage(WORKOUT_FORM_STORAGE_KEY)
             .then(() => {
@@ -169,7 +162,7 @@ export default function WorkoutForm() {
     const renderListFooter = () => (
         <YStack gap='$3' marginTop='$space.5'>
             <Button
-                onPress={onAddExercisePress}
+                onPress={() => router.push('/workout-tracker/workout-form/AddExercisesToWorkout')}
                 backgroundColor='$blue6'
                 color='$blue10'
                 fontWeight='bold'

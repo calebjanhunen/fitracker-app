@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,7 +12,6 @@ import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import CreateExerciseModal from 'src/components/workout-tracker/common/CreateExerciseModal';
 import { RootState } from 'src/redux/Store';
 import { addExercisesToWorkout } from 'src/redux/workout-form/WorkoutFormSlice';
-import { addExercisesToWorkoutTemplate } from 'src/redux/workout-template-form/WorkoutTemplateFormSlice';
 import {
     Button,
     Dialog,
@@ -33,12 +32,6 @@ export default function AddExercisesToWorkout() {
     const exerciseIdsInWorkout = useSelector(
         (state: RootState) => state.workoutForm.workout.exercises
     );
-    const exerciseIdsInWorkoutTemplate = useSelector(
-        (state: RootState) => state.workoutTemplateForm.workoutTemplate.exercises
-    );
-    const { workoutOrTemplate } = useLocalSearchParams<{
-        workoutOrTemplate: 'Workout' | 'Template';
-    }>();
     const {
         data: exercises,
         isLoading,
@@ -52,21 +45,13 @@ export default function AddExercisesToWorkout() {
 
     function onAddToWorkoutOrTemplatePress() {
         if (!exercises) return;
-        if (workoutOrTemplate === 'Workout') {
-            dispatch(
-                addExercisesToWorkout({
-                    selectedExerciseIds: selectedExercises,
-                    allExercises: exercises,
-                })
-            );
-        } else {
-            dispatch(
-                addExercisesToWorkoutTemplate({
-                    selectedExerciseIds: selectedExercises,
-                    allExercises: exercises,
-                })
-            );
-        }
+
+        dispatch(
+            addExercisesToWorkout({
+                selectedExerciseIds: selectedExercises,
+                allExercises: exercises,
+            })
+        );
         router.back();
     }
 
@@ -110,11 +95,7 @@ export default function AddExercisesToWorkout() {
                             exercise={item}
                             setSelectedExercises={setSelectedExercises}
                             isSelected={selectedExercises.includes(item.id)}
-                            isAlreadyInForm={
-                                workoutOrTemplate === 'Workout'
-                                    ? exerciseIdsInWorkout.includes(item.id)
-                                    : exerciseIdsInWorkoutTemplate.includes(item.id)
-                            }
+                            isAlreadyInForm={exerciseIdsInWorkout.includes(item.id)}
                         />
                     )}
                     keyExtractor={(item) => item.id.toString()}
@@ -154,7 +135,7 @@ export default function AddExercisesToWorkout() {
                         disabled={selectedExercises.length === 0}
                         onPress={onAddToWorkoutOrTemplatePress}
                     >
-                        {`Add to ${workoutOrTemplate}`}
+                        Add to Workout
                     </Button>
                 </XStack>
                 <Dialog modal open={isModalOpen} onOpenChange={setIsModelOpen}>

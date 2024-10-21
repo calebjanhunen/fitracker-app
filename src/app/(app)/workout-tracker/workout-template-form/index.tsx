@@ -40,10 +40,6 @@ export default function WorkoutTemplateForm() {
         return !setsValid;
     }
 
-    function onAddExercisePress() {
-        router.push('workout-tracker/workout-template-form/AddExercisesToTemplate');
-    }
-
     function onCreateTemplateSuccess() {
         dispatch(clearWorkoutTemplate());
         router.back();
@@ -60,7 +56,9 @@ export default function WorkoutTemplateForm() {
     const renderListFooter = () => (
         <YStack gap='$3' marginTop='$space.5'>
             <Button
-                onPress={onAddExercisePress}
+                onPress={() =>
+                    router.push('workout-tracker/workout-template-form/AddExercisesToTemplate')
+                }
                 backgroundColor='$blue6'
                 color='$blue10'
                 fontWeight='bold'
