@@ -43,9 +43,6 @@ const workoutTemplateFormSlice = createSlice({
             state.exercises[action.payload.exerciseId].sets.push(setId);
             state.sets[setId] = {
                 id: setId,
-                weight: null,
-                reps: null,
-                rpe: null,
             };
         },
         deleteSetFromExercise: (
@@ -71,6 +68,32 @@ const workoutTemplateFormSlice = createSlice({
             );
             state.exercises = _.omit(state.exercises, exerciseId);
         },
+        replaceExercise: (
+            state,
+            action: PayloadAction<{
+                oldExerciseId: string;
+                newExercise: IExerciseWithWorkoutDetailsResponse;
+            }>
+        ) => {
+            const { oldExerciseId, newExercise } = action.payload;
+            const exerciseIndex = state.workoutTemplate.exercises.indexOf(oldExerciseId);
+            if (exerciseIndex === -1) {
+                return state;
+            }
+
+            // Replace exercise id in workout.exercises array
+            state.workoutTemplate.exercises[exerciseIndex] = newExercise.id;
+
+            // Create new exercise object
+            state.exercises[newExercise.id] = {
+                id: newExercise.id,
+                name: newExercise.name,
+                sets: state.exercises[oldExerciseId].sets,
+            };
+
+            // Remove old exercise object
+            state.exercises = _.omit(state.exercises, oldExerciseId);
+        },
         reorderExercises: (state, action: PayloadAction<string[]>) => {
             state.workoutTemplate.exercises = action.payload;
         },
@@ -90,6 +113,7 @@ export const {
     deleteExerciseFromWorkoutTemplate,
     clearWorkoutTemplate,
     reorderExercises,
+    replaceExercise,
 } = workoutTemplateFormSlice.actions;
 
 export default workoutTemplateFormSlice.reducer;

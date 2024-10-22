@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, H4, Input, Spinner, View, XStack, YStack } from 'tamagui';
@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { IErrorResponse } from 'src/api/client';
 import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
-import WorkoutFormExercise from 'src/components/workout-tracker/WorkoutFormExercise';
+import WorkoutFormExercise from 'src/components/workout-tracker/workout-form/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { useCreateWorkout } from 'src/hooks/workout-tracker/useCreateWorkout';
@@ -54,19 +54,6 @@ export default function WorkoutForm() {
         onCreateWorkoutError
     );
 
-    useEffect(() => {
-        setBtnDisabled(
-            !workoutFormState.workout.name || workoutFormState.workout.exercises.length === 0
-        );
-    }, [workoutFormState.workout.name, workoutFormState.workout.exercises]);
-
-    function onAddExercisePress() {
-        router.push({
-            pathname: '/workout-tracker/AddExercisesToWorkoutModal',
-            params: { workoutOrTemplate: 'Workout' },
-        });
-    }
-
     function resetWorkout() {
         removeFromStorage(WORKOUT_FORM_STORAGE_KEY)
             .then(() => {
@@ -78,6 +65,8 @@ export default function WorkoutForm() {
     }
 
     function onFinishWorkoutPress() {
+        console.log('button disabled');
+        setBtnDisabled(true);
         // Adds sets that are invalid in workout to state so newly added sets don't have red background
         const newValidatedSets = Object.keys(workoutFormState.sets)
             .filter(
@@ -100,6 +89,7 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Close',
+                    onPress: () => setBtnDisabled(false),
                 },
                 {
                     style: 'default',
@@ -113,6 +103,7 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Close',
+                    onPress: () => setBtnDisabled(false),
                 },
                 {
                     style: 'default',
@@ -132,6 +123,7 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Resume',
+                    onPress: () => setBtnDisabled(false),
                 },
                 {
                     style: 'destructive',
@@ -148,7 +140,7 @@ export default function WorkoutForm() {
     function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
         resetWorkout();
         router.push({
-            pathname: 'workout-tracker/PostWorkoutSummary',
+            pathname: 'workout-tracker/workout-form/PostWorkoutSummary',
             params: {
                 xpGainedFromWeeklyGoal: response.workoutStats.xpGainedFromWeeklyGoal.toString(),
                 totalGainedXp: response.workoutStats.totalGainedXp.toString(),
@@ -169,7 +161,7 @@ export default function WorkoutForm() {
     const renderListFooter = () => (
         <YStack gap='$3' marginTop='$space.5'>
             <Button
-                onPress={onAddExercisePress}
+                onPress={() => router.push('/workout-tracker/workout-form/AddExercisesToWorkout')}
                 backgroundColor='$blue6'
                 color='$blue10'
                 fontWeight='bold'

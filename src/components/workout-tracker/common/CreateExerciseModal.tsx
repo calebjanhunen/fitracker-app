@@ -8,12 +8,12 @@ import { GET_ALL_EQUIPMENT_QUERY_KEY } from 'src/api/equipment-service/Equipment
 import * as EquipmentApi from 'src/api/equipment-service/EquipmentApiService';
 import { useCreateExercise } from 'src/hooks/workout-tracker/useCreateExercise';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
-import DropdownMenu from '../common/DropdownMenu';
+import DropdownMenu from '../../common/DropdownMenu';
 
 interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
-    setSelectedExercises: Dispatch<SetStateAction<string[]>>;
+    setSelectedExercises: (createdExerciseId: string) => void;
 }
 
 export default function CreateExerciseModal({ setIsOpen, setSelectedExercises }: Props) {
@@ -35,7 +35,7 @@ export default function CreateExerciseModal({ setIsOpen, setSelectedExercises }:
     });
     const { createExercise, isPending } = useCreateExercise((createdExercise) => {
         resetState();
-        setSelectedExercises((prev) => [...prev, createdExercise.id]);
+        setSelectedExercises(createdExercise.id);
     }, onCreateExerciseError);
 
     useEffect(() => {

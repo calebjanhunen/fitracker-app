@@ -55,6 +55,43 @@ const workoutFormSlice = createSlice({
                     });
                 });
         },
+        replaceExercise: (
+            state,
+            action: PayloadAction<{
+                oldExerciseId: string;
+                newExercise: IExerciseWithWorkoutDetailsResponse;
+            }>
+        ) => {
+            const { oldExerciseId, newExercise } = action.payload;
+            const exerciseIndex = state.workout.exercises.indexOf(oldExerciseId);
+            if (exerciseIndex === -1) {
+                return state;
+            }
+            // Replace exercise id in workout.exercises array
+            state.workout.exercises[exerciseIndex] = newExercise.id;
+            // Delete recent sets object related to old exercise
+            state.exercises[oldExerciseId].recentSets.forEach((id) => {
+                state.recentSets = _.omit(state.recentSets, id);
+            });
+
+            // Create new exercise object
+            state.exercises[newExercise.id] = {
+                id: newExercise.id,
+                name: newExercise.name,
+                sets: state.exercises[oldExerciseId].sets,
+                recentSets: newExercise.recentSets.map((recentSet) => {
+                    state.recentSets[recentSet.id] = {
+                        id: recentSet.id,
+                        weight: recentSet.weight,
+                        reps: recentSet.reps,
+                        rpe: recentSet.rpe,
+                    };
+                    return recentSet.id;
+                }),
+            };
+            // Remove old exercise object
+            state.exercises = _.omit(state.exercises, oldExerciseId);
+        },
         addSetToExercise: (state, action: PayloadAction<{ exerciseId: string }>) => {
             const setId = Date.now().toString();
             state.exercises[action.payload.exerciseId].sets.push(setId);
@@ -89,10 +126,19 @@ const workoutFormSlice = createSlice({
         },
         deleteExerciseFromWorkout: (state, action: PayloadAction<{ exerciseId: string }>) => {
             const { exerciseId } = action.payload;
+
+            // Remove the exerciseId from the workout.exercises array
             state.workout.exercises = state.workout.exercises.filter((id) => id !== exerciseId);
+
+            // Remove the exercise's sets and recent sets
             state.exercises[exerciseId].sets.forEach(
                 (setId) => (state.sets = _.omit(state.sets, setId))
             );
+            state.exercises[exerciseId].recentSets.forEach((recentSetId) => {
+                state.recentSets = _.omit(state.recentSets, recentSetId);
+            });
+
+            // Remove exercise object
             state.exercises = _.omit(state.exercises, exerciseId);
         },
         reorderExercises: (state, action: PayloadAction<string[]>) => {
@@ -166,6 +212,7 @@ export const {
     loadWorkoutOnRender,
     updatedCreatedAt,
     initializeWorkoutFromTemplate,
+    replaceExercise,
 } = workoutFormSlice.actions;
 
 export default workoutFormSlice.reducer;

@@ -1,19 +1,15 @@
 import Constants from 'expo-constants';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, H2, H4, H6, Separator, SizableText, View, XStack, YStack } from 'tamagui';
 export default function PostWorkoutSummary() {
-    const router = useRouter();
     const { xpGainedFromWeeklyGoal, totalGainedXp } = useLocalSearchParams<{
         xpGainedFromWeeklyGoal: string;
         totalGainedXp: string;
         totalUserXp: string;
     }>();
 
-    function onBtnPress() {
-        router.dismissAll();
-    }
     return (
         <SafeAreaView
             style={{
@@ -63,9 +59,11 @@ export default function PostWorkoutSummary() {
                     </>
                 )}
             </View>
-            <Button backgroundColor='$blue6' color='$blue10' fontWeight='bold' onPress={onBtnPress}>
-                Return to Home
-            </Button>
+            <Link href='workout-tracker' asChild>
+                <Button backgroundColor='$blue6' color='$blue10' fontWeight='bold'>
+                    Return to Home
+                </Button>
+            </Link>
         </SafeAreaView>
     );
 }
