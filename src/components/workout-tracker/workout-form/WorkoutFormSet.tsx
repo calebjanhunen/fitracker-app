@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
+import { Animated } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input, SizableText, XStack } from 'tamagui';
+import { SizableText, XStack } from 'tamagui';
 
-import { Animated } from 'react-native';
 import { IRecentSet } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
@@ -13,6 +13,8 @@ import {
     updateSetRpe,
     updateSetWeight,
 } from 'src/redux/workout-form/WorkoutFormSlice';
+import RpeInput from './RpeInput';
+import WeightAndRepsInput from './WeightAndRepsInput';
 
 interface Props {
     id: string;
@@ -51,85 +53,61 @@ const WorkoutFormSet = memo(function WorkoutFormset({
         }
     }
 
-    function onRpeChange(text: string) {
-        if (text) {
-            dispatch(updateSetRpe({ setId: set.id, rpe: parseInt(text) }));
-        } else {
-            dispatch(updateSetRpe({ setId: set.id, rpe: null }));
-        }
+    function onRpeSelect(rpe: number | null) {
+        dispatch(updateSetRpe({ setId: set.id, rpe }));
     }
 
     return (
         set && (
-            <Animated.View style={[animatedStyle, { flex: 1 }]} onLayout={handleLayout}>
-                <Swipeable
-                    renderRightActions={() => (
-                        <XStack
-                            backgroundColor='$red9'
-                            flex={1}
-                            justifyContent='flex-end'
-                            alignItems='center'
-                            paddingRight='$2'
-                        >
-                            <SizableText color='white' fontWeight='bold'>
-                                Delete
-                            </SizableText>
-                        </XStack>
-                    )}
-                    onSwipeableWillOpen={() => handleDelete()}
-                >
-                    <XStack
-                        alignItems='center'
-                        justifyContent='center'
-                        backgroundColor='$background'
-                        paddingVertical='$2'
+            <>
+                <Animated.View style={[animatedStyle, { flex: 1 }]} onLayout={handleLayout}>
+                    <Swipeable
+                        renderRightActions={() => (
+                            <XStack
+                                backgroundColor='$red9'
+                                flex={1}
+                                justifyContent='flex-end'
+                                alignItems='center'
+                                paddingRight='$2'
+                            >
+                                <SizableText color='white' fontWeight='bold'>
+                                    Delete
+                                </SizableText>
+                            </XStack>
+                        )}
+                        onSwipeableWillOpen={() => handleDelete()}
                     >
-                        <SizableText textAlign='center' size='$5' flex={1} fontWeight='bold'>
-                            {order}
-                        </SizableText>
-                        <SizableText textAlign='center' size='$4' flex={2}>
-                            {recentSet &&
-                                `${recentSet.weight}x${recentSet.reps}${
-                                    recentSet.rpe ? `@${recentSet.rpe}` : ''
-                                }`}
-                        </SizableText>
-                        <Input
-                            size='$2'
-                            flex={1}
-                            padding={0}
-                            textAlign='center'
-                            maxLength={4}
-                            keyboardType='number-pad'
-                            value={set.weight?.toString() ?? ''}
-                            onChangeText={onWeightChange}
-                            backgroundColor={
-                                !set.weight && isSetValidated ? '$red6' : '$background'
-                            }
-                        />
-                        <Input
-                            size='$2'
-                            flex={1}
-                            padding={0}
-                            textAlign='center'
-                            maxLength={4}
-                            keyboardType='number-pad'
-                            value={set.reps?.toString() ?? ''}
-                            onChangeText={onRepsChange}
-                            backgroundColor={!set.reps && isSetValidated ? '$red6' : '$background'}
-                        />
-                        <Input
-                            size='$2'
-                            flex={0.7}
-                            padding={0}
-                            textAlign='center'
-                            maxLength={2}
-                            keyboardType='number-pad'
-                            value={set.rpe?.toString() ?? ''}
-                            onChangeText={onRpeChange}
-                        />
-                    </XStack>
-                </Swipeable>
-            </Animated.View>
+                        <XStack
+                            alignItems='center'
+                            justifyContent='center'
+                            backgroundColor='$background'
+                            paddingVertical='$2'
+                            gap='$space.3'
+                        >
+                            <SizableText textAlign='center' size='$5' flex={0.7} fontWeight='bold'>
+                                {order}
+                            </SizableText>
+                            <SizableText textAlign='center' size='$4' flex={2}>
+                                {recentSet &&
+                                    `${recentSet.weight}x${recentSet.reps}${
+                                        recentSet.rpe ? `@${recentSet.rpe}` : ''
+                                    }`}
+                            </SizableText>
+                            <WeightAndRepsInput
+                                isSetValidated={isSetValidated}
+                                value={set.weight}
+                                onValueChange={onWeightChange}
+                            />
+                            <WeightAndRepsInput
+                                isSetValidated={isSetValidated}
+                                value={set.reps}
+                                onValueChange={onRepsChange}
+                            />
+                            <RpeInput rpeVal={set.rpe} onRpeSelect={onRpeSelect} />
+                        </XStack>
+                    </Swipeable>
+                </Animated.View>
+            </>
         )
     );
 });

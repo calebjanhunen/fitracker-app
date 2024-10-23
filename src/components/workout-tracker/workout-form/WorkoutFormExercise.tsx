@@ -100,12 +100,12 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                 </H3>
                 <PopoverMenuV2 height='20%' options={menuOptions} />
             </XStack>
-            <XStack>
-                <SizableText textAlign='center' size='$5' fontWeight='bold' flex={1}>
+            <XStack gap='$space.2'>
+                <SizableText textAlign='center' size='$5' fontWeight='bold' flex={0.7}>
                     Set
                 </SizableText>
                 <SizableText textAlign='center' size='$5' fontWeight='bold' flex={2}>
-                    Previous Set
+                    Previous
                 </SizableText>
                 <SizableText textAlign='center' size='$5' fontWeight='bold' flex={1}>
                     Weight
@@ -113,7 +113,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                 <SizableText textAlign='center' size='$5' fontWeight='bold' flex={1}>
                     Reps
                 </SizableText>
-                <SizableText textAlign='center' size='$5' fontWeight='bold' flex={0.7}>
+                <SizableText textAlign='center' size='$5' fontWeight='bold' flex={0.6}>
                     RPE
                 </SizableText>
             </XStack>
@@ -121,6 +121,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                 <FlatList
                     data={exercise.sets}
                     contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps='handled'
                     renderItem={({ item, index }) => {
                         const recentSet = recentSets[exercise.recentSets[index]];
                         return (
