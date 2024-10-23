@@ -71,7 +71,8 @@ export default function WorkoutForm() {
         const newValidatedSets = Object.keys(workoutFormState.sets)
             .filter(
                 (setId) =>
-                    !workoutFormState.sets[setId].weight || !workoutFormState.sets[setId].reps
+                    workoutFormState.sets[setId].weight === null ||
+                    workoutFormState.sets[setId].reps === null
             )
             .map((setId) => workoutFormState.sets[setId].id);
         setValidatedSets(newValidatedSets);
