@@ -20,6 +20,7 @@ export default function Home() {
     const router = useRouter();
     const dispatch = useDispatch();
     const [isWorkoutFormOpening, setIsWorkoutFormOpening] = useState<boolean>(false);
+    const [startWorkoutBtnDisabled, setStartWorkoutBtnDisabled] = useState<boolean>(false);
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
     const {
         data: workoutTemplates,
@@ -30,12 +31,17 @@ export default function Home() {
         queryKey: [GET_ALL_WORKOUT_TEMPLATES_QUERY_KEY],
     });
 
-    function onStartWorkoutPress() {
+    async function onStartWorkoutPress() {
         if (!isWorkoutInProgress) {
             setWorkoutInProgress(true);
             dispatch(updatedCreatedAt());
         }
         router.push('/workout-tracker/workout-form');
+
+        // Renable after 10 ms to avoid multiple workout forms opening
+        setTimeout(() => {
+            setStartWorkoutBtnDisabled(false);
+        }, 10);
     }
 
     return (
@@ -48,6 +54,7 @@ export default function Home() {
                 color='white'
                 onPress={onStartWorkoutPress}
                 marginTop='$space.4'
+                disabled={startWorkoutBtnDisabled}
             >
                 {isWorkoutFormOpening ? (
                     <Spinner />
