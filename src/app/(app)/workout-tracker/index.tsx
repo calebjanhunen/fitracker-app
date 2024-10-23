@@ -20,6 +20,8 @@ export default function Home() {
     const router = useRouter();
     const dispatch = useDispatch();
     const [isWorkoutFormOpening, setIsWorkoutFormOpening] = useState<boolean>(false);
+    const [startWorkoutBtnDisabled, setStartWorkoutBtnDisabled] = useState<boolean>(false);
+    const [createTemplateDisabled, setCreateTemplateBtnDisabled] = useState<boolean>(false);
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
     const {
         data: workoutTemplates,
@@ -36,6 +38,21 @@ export default function Home() {
             dispatch(updatedCreatedAt());
         }
         router.push('/workout-tracker/workout-form');
+
+        // Renable after 10 ms to avoid multiple workout form pages opening
+        setTimeout(() => {
+            setStartWorkoutBtnDisabled(false);
+        }, 10);
+    }
+
+    function onCreateTemplatePress() {
+        setCreateTemplateBtnDisabled(true);
+        router.push('/workout-tracker/workout-template-form');
+
+        // Renable after 10 ms to avoid multiple workout template form pages opening
+        setTimeout(() => {
+            setCreateTemplateBtnDisabled(false);
+        }, 10);
     }
 
     return (
@@ -48,6 +65,7 @@ export default function Home() {
                 color='white'
                 onPress={onStartWorkoutPress}
                 marginTop='$space.4'
+                disabled={startWorkoutBtnDisabled}
             >
                 {isWorkoutFormOpening ? (
                     <Spinner />
@@ -69,9 +87,10 @@ export default function Home() {
                     paddingHorizontal='$space.3'
                     paddingVertical='$space.1'
                     fontWeight='bold'
-                    onPress={() => router.push('/workout-tracker/workout-template-form')}
+                    onPress={onCreateTemplatePress}
                     color='$green10'
                     backgroundColor='$green6'
+                    disabled={createTemplateDisabled}
                 >
                     Create Template
                 </Button>
