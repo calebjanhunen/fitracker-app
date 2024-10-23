@@ -24,7 +24,7 @@ export default function ProfileSettings() {
                     onPress={() =>
                         router.push({
                             pathname: '/profile/WeeklyWorkoutGoalSelect',
-                            params: { currentGoal: user.weeklyWorkoutGoal.toString() },
+                            params: { currentGoal: user.weeklyWorkoutGoal?.toString() },
                         })
                     }
                 >
@@ -34,7 +34,7 @@ export default function ProfileSettings() {
                     </XStack>
                     <XStack alignItems='center' gap='$space.1'>
                         <SizableText size='$5' color='$gray10'>
-                            {user.weeklyWorkoutGoal}
+                            {user.weeklyWorkoutGoal ?? 0}
                         </SizableText>
                         <IonIcons
                             name='chevron-forward-outline'
