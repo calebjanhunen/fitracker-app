@@ -46,7 +46,7 @@ export default function WorkoutForm() {
     const { setWorkoutInProgress } = useIsWorkoutInProgress();
     const workoutFormState = useSelector((state: RootState) => state.workoutForm);
     const [isDragging, setIsDragging] = useState<boolean>(false);
-    const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
+    const [finishWorkoutBtnDisabled, setFinishWorkoutBtnDisabled] = useState<boolean>(false);
     const [validatedSets, setValidatedSets] = useState<string[]>([]);
     const { removeFromStorage } = useLocalStorage();
     const { createWorkout, isPending } = useCreateWorkout(
@@ -65,8 +65,7 @@ export default function WorkoutForm() {
     }
 
     function onFinishWorkoutPress() {
-        console.log('button disabled');
-        setBtnDisabled(true);
+        setFinishWorkoutBtnDisabled(true);
         // Adds sets that are invalid in workout to state so newly added sets don't have red background
         const newValidatedSets = Object.keys(workoutFormState.sets)
             .filter(
@@ -90,13 +89,15 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Close',
-                    onPress: () => setBtnDisabled(false),
+                    onPress: () => setFinishWorkoutBtnDisabled(false),
                 },
                 {
                     style: 'default',
                     text: 'Finish',
-                    onPress: () =>
-                        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime }),
+                    onPress: () => {
+                        setFinishWorkoutBtnDisabled(false);
+                        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime });
+                    },
                 },
             ]);
         } else {
@@ -104,13 +105,15 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Close',
-                    onPress: () => setBtnDisabled(false),
+                    onPress: () => setFinishWorkoutBtnDisabled(false),
                 },
                 {
                     style: 'default',
                     text: 'Finish',
-                    onPress: () =>
-                        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime }),
+                    onPress: () => {
+                        setFinishWorkoutBtnDisabled(false);
+                        createWorkout({ workoutForm: workoutFormState, duration: elapsedTime });
+                    },
                 },
             ]);
         }
@@ -124,7 +127,7 @@ export default function WorkoutForm() {
                 {
                     style: 'cancel',
                     text: 'Resume',
-                    onPress: () => setBtnDisabled(false),
+                    onPress: () => setFinishWorkoutBtnDisabled(false),
                 },
                 {
                     style: 'destructive',
@@ -206,11 +209,12 @@ export default function WorkoutForm() {
                     <XStack justifyContent='space-between' alignItems='center' marginTop='$3'>
                         <H4>{formatStopwatchTime(elapsedTime)}</H4>
                         <Button
-                            backgroundColor={btnDisabled ? '$gray6' : '$green6'}
+                            backgroundColor={finishWorkoutBtnDisabled ? '$gray6' : '$green6'}
                             fontWeight='bold'
-                            color={btnDisabled ? '$gray10' : '$green10'}
-                            disabled={btnDisabled}
+                            color={finishWorkoutBtnDisabled ? '$gray10' : '$green10'}
+                            disabled={finishWorkoutBtnDisabled}
                             onPress={onFinishWorkoutPress}
+                            width='40%'
                         >
                             {isPending ? <Spinner /> : 'Finish Workout'}
                         </Button>
