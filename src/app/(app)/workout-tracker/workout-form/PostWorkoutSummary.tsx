@@ -26,7 +26,7 @@ export default function PostWorkoutSummary() {
                             ====================================
                         </SizableText>
                         <SizableText color='$orange10' fontWeight='bold'>
-                            Workout XP calulation is under construction
+                            Workout XP calculation is under construction
                         </SizableText>
                         <SizableText color='$orange10'>
                             ====================================
