@@ -1,7 +1,7 @@
 import React from 'react';
 
 import IonIcons from '@expo/vector-icons/Ionicons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { Spinner, useTheme } from 'tamagui';
 
 interface Props {
@@ -16,6 +16,7 @@ export default function IconBtn({ onPress, icon, backgroundColor, iconColor, isL
     return (
         <TouchableOpacity
             style={{ backgroundColor, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 }}
+            onPress={onPress}
         >
             {isLoading ? <Spinner /> : <IonIcons name={icon} size={24} color={iconColor} />}
         </TouchableOpacity>
