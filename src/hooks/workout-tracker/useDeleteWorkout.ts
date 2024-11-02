@@ -29,6 +29,7 @@ export function useDeleteWorkout(
                 queryClient.invalidateQueries({
                     queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
                 }),
+                queryClient.invalidateQueries({ queryKey: ['exercises'] }),
             ]);
             onSuccessCallback(response);
         },
