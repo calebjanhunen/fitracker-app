@@ -94,6 +94,12 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                     numberOfLines={1}
                     color='$blue10'
                     onLongPress={startDrag}
+                    onPress={() =>
+                        router.push({
+                            pathname: `/workout-tracker/workout-form/${id}`,
+                            params: { exerciseName: exercise.name },
+                        })
+                    }
                     userSelect='none'
                 >
                     {exercise.name}
