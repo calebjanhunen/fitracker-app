@@ -83,7 +83,6 @@ export default function Home() {
             >
                 <H4>Workout Templates</H4>
                 <Button
-                    height='0'
                     paddingHorizontal='$space.3'
                     paddingVertical='$space.1'
                     fontWeight='bold'

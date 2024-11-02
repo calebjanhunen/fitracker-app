@@ -19,7 +19,7 @@ export default function WorkoutTemplateCard({ workoutTemplate, setIsWorkoutFormO
                 setIsWorkoutFormOpening={setIsWorkoutFormOpening}
             />
             <Card flex={0.47} onPress={() => setIsModalOpen(true)}>
-                <Card.Header elevate bordered borderRadius='$radius.5' padding='$3' height='$11'>
+                <Card.Header bordered borderRadius='$radius.5' padding='$3' height='$11'>
                     <SizableText size='$4' fontWeight='bold' numberOfLines={1}>
                         {workoutTemplate.name}
                     </SizableText>
