@@ -18,5 +18,5 @@ export interface IWorkoutSetResponse {
     order: number;
     weight: number;
     reps: number;
-    rpe: number;
+    rpe: number | null;
 }
