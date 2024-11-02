@@ -1,7 +1,8 @@
 import React from 'react';
 
 import IonIcons from '@expo/vector-icons/Ionicons';
-import { Button, Spinner, useTheme } from 'tamagui';
+import { TouchableOpacity } from 'react-native';
+import { Spinner, useTheme } from 'tamagui';
 
 interface Props {
     onPress: () => void;
@@ -13,15 +14,11 @@ interface Props {
 
 export default function IconBtn({ onPress, icon, backgroundColor, iconColor, isLoading }: Props) {
     return (
-        <Button
-            fontWeight='bold'
-            paddingHorizontal='$2'
-            paddingVertical='$1'
-            height='0'
+        <TouchableOpacity
+            style={{ backgroundColor, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10 }}
             onPress={onPress}
-            backgroundColor={backgroundColor}
         >
             {isLoading ? <Spinner /> : <IonIcons name={icon} size={24} color={iconColor} />}
-        </Button>
+        </TouchableOpacity>
     );
 }
