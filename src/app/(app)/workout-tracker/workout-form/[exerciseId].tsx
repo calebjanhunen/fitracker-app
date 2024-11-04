@@ -7,7 +7,7 @@ import { getExerciseWorkoutHistory } from 'src/api/exercise-service/ExerciseApiS
 import { IconBtn } from 'src/components/common/icon-btn';
 import { PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
 import WorkoutHistory from 'src/components/workout-tracker/workout-form/exercise-details/WorkoutHistory';
-import { H3, SizableText, Spinner, View, XStack } from 'tamagui';
+import { H3, H4, SizableText, Spinner, View, XStack } from 'tamagui';
 
 export default function ExerciseDetails() {
     const { exerciseId, exerciseName } = useLocalSearchParams<{
@@ -40,12 +40,15 @@ export default function ExerciseDetails() {
         }
 
         return (
-            <FlatList
-                data={workoutHistory}
-                renderItem={({ item }) => <WorkoutHistory workout={item} />}
-                ItemSeparatorComponent={() => <View height='$space.3' />}
-                keyExtractor={(item) => item.id}
-            />
+            <View>
+                <H4>History</H4>
+                <FlatList
+                    data={workoutHistory}
+                    renderItem={({ item }) => <WorkoutHistory workout={item} />}
+                    ItemSeparatorComponent={() => <View height='$space.3' />}
+                    keyExtractor={(item) => item.id}
+                />
+            </View>
         );
     }
 
