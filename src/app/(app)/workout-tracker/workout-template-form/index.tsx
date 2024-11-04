@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useDispatch, useSelector } from 'react-redux';
@@ -55,17 +55,11 @@ export default function WorkoutTemplateForm() {
 
     const renderListFooter = () => (
         <YStack gap='$3' marginTop='$space.5'>
-            <Button
-                onPress={() =>
-                    router.push('workout-tracker/workout-template-form/AddExercisesToTemplate')
-                }
-                backgroundColor='$blue6'
-                color='$blue10'
-                fontWeight='bold'
-                size='$3'
-            >
-                Add Exercise
-            </Button>
+            <Link href='workout-tracker/workout-template-form/AddExercisesToTemplate'>
+                <Button backgroundColor='$blue6' color='$blue10' fontWeight='bold' size='$3'>
+                    Add Exercise
+                </Button>
+            </Link>
             <Button
                 onPress={() => {
                     dispatch(clearWorkoutTemplate());

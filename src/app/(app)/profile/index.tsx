@@ -1,7 +1,7 @@
 import React from 'react';
 
 import IonIcons from '@expo/vector-icons/Ionicons';
-import { Stack, useRouter } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { SizableText, useTheme, View } from 'tamagui';
@@ -13,7 +13,6 @@ import { RootState } from 'src/redux/Store';
 export default function Profile() {
     const user = useSelector((state: RootState) => state.user);
     const theme = useTheme();
-    const router = useRouter();
 
     return (
         <View
@@ -26,9 +25,11 @@ export default function Profile() {
                 options={{
                     title: user.username,
                     headerRight: () => (
-                        <TouchableOpacity onPress={() => router.push('/profile/ProfileSettings')}>
-                            <IonIcons color={theme.gray12.val} size={34} name='menu-outline' />
-                        </TouchableOpacity>
+                        <Link href='/profile/ProfileSettings' asChild>
+                            <TouchableOpacity>
+                                <IonIcons color={theme.gray12.val} size={34} name='menu-outline' />
+                            </TouchableOpacity>
+                        </Link>
                     ),
                 }}
             />

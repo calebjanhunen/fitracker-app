@@ -1,7 +1,7 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 
-import { router } from 'expo-router';
-import React, { useState } from 'react';
+import { Link } from 'expo-router';
+import React from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
@@ -24,7 +24,6 @@ export default function WorkoutHistoryCard({ workout }: Props) {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, onDeleteError);
-    const [isNavigating, setIsNagivating] = useState<boolean>(false);
     const menuOptions: PopoverMenuOptionsV2[] = [
         {
             text: 'Delete',
@@ -53,55 +52,55 @@ export default function WorkoutHistoryCard({ workout }: Props) {
         Alert.alert('Could not delete workout', error.message);
     }
 
-    function onOpenWorkoutPress() {
-        if (isNavigating) return;
-        setIsNagivating(true);
-        router.push({
-            pathname: `/profile/${workout.id}`,
-            params: { workout: encodeURIComponent(JSON.stringify(workout)) },
-        });
-        setTimeout(() => setIsNagivating(false), 10);
-    }
-
     if (isDeleting) {
         return <Spinner />;
     }
 
     return (
-        <Card onPress={onOpenWorkoutPress}>
-            <Card.Header elevate bordered borderRadius='$radius.5'>
-                <XStack alignItems='center' justifyContent='space-between'>
-                    <H4>{workout.name}</H4>
-                    <PopoverMenuV2 options={menuOptions} height='15%' />
-                </XStack>
-                <XStack gap='$space.4'>
-                    <XStack alignItems='center' gap='$space.2'>
-                        <IonIcons name='calendar-outline' size={15} />
-                        <SizableText color='$gray10'>{formatDate(workout.createdAt)}</SizableText>
+        <Link
+            href={{
+                pathname: `/profile/${workout.id}`,
+                params: { workout: encodeURIComponent(JSON.stringify(workout)) },
+            }}
+            asChild
+        >
+            <Card>
+                <Card.Header elevate bordered borderRadius='$radius.5'>
+                    <XStack alignItems='center' justifyContent='space-between'>
+                        <H4>{workout.name}</H4>
+                        <PopoverMenuV2 options={menuOptions} height='15%' />
                     </XStack>
-                    <XStack alignItems='center' gap='$space.2'>
-                        <IonIcons name='time-outline' size={15} />
-                        <SizableText color='$gray10'>
-                            {formatWorkoutDuration(workout.duration)}
-                        </SizableText>
-                    </XStack>
-                </XStack>
-                <FlatList
-                    scrollEnabled={false}
-                    ListHeaderComponent={() => (
-                        <SizableText fontWeight='bold'>Exercises</SizableText>
-                    )}
-                    data={workout.exercises}
-                    renderItem={({ item }) => (
-                        <XStack gap='$space.3'>
-                            <SizableText>
-                                {item.name} - {item.sets.length}{' '}
-                                {item.sets.length === 1 ? 'Set' : 'Sets'}
+                    <XStack gap='$space.4'>
+                        <XStack alignItems='center' gap='$space.2'>
+                            <IonIcons name='calendar-outline' size={15} />
+                            <SizableText color='$gray10'>
+                                {formatDate(workout.createdAt)}
                             </SizableText>
                         </XStack>
-                    )}
-                />
-            </Card.Header>
-        </Card>
+                        <XStack alignItems='center' gap='$space.2'>
+                            <IonIcons name='time-outline' size={15} />
+                            <SizableText color='$gray10'>
+                                {formatWorkoutDuration(workout.duration)}
+                            </SizableText>
+                        </XStack>
+                    </XStack>
+                    <FlatList
+                        scrollEnabled={false}
+                        ListHeaderComponent={() => (
+                            <SizableText fontWeight='bold'>Exercises</SizableText>
+                        )}
+                        data={workout.exercises}
+                        renderItem={({ item }) => (
+                            <XStack gap='$space.3'>
+                                <SizableText>
+                                    {item.name} - {item.sets.length}{' '}
+                                    {item.sets.length === 1 ? 'Set' : 'Sets'}
+                                </SizableText>
+                            </XStack>
+                        )}
+                    />
+                </Card.Header>
+            </Card>
+        </Link>
     );
 }

@@ -1,6 +1,6 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -20,14 +20,12 @@ interface Props {
     isModalOpen: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     workoutTemplate: IWorkoutTemplateResponse;
-    setIsWorkoutFormOpening: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function WorkoutTemplateModal({
     isModalOpen,
     setIsModalOpen,
     workoutTemplate,
-    setIsWorkoutFormOpening,
 }: Props) {
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
     const { deleteWorkoutTemplate, isDeleting } = useDeleteWorkoutTemplate(
@@ -45,25 +43,21 @@ export default function WorkoutTemplateModal({
         gcTime: Infinity,
     });
     const dispatch = useDispatch();
-    const router = useRouter();
     const theme = useTheme();
 
     function startWorkout() {
-        setIsWorkoutFormOpening(true);
         setIsModalOpen(false);
-        dispatch(
-            initializeWorkoutFromTemplate({
-                template: workoutTemplate,
-                exerciseDetails: exerciseDetails ?? [],
-            })
-        );
         setWorkoutInProgress(true);
-
-        // Timeout used so modal closes before workout form page opens
         setTimeout(() => {
-            setIsWorkoutFormOpening(false);
-            router.push('/workout-tracker/workout-form');
-        }, 200);
+            dispatch(
+                initializeWorkoutFromTemplate({
+                    template: workoutTemplate,
+                    exerciseDetails: exerciseDetails ?? [],
+                })
+            );
+
+            // Timeout used so modal closes before workout form page opens
+        }, 300);
     }
 
     function onDeletePress() {
@@ -145,20 +139,26 @@ export default function WorkoutTemplateModal({
                         {exerciseDetailsError.statusCode})
                     </SizableText>
                 ) : (
-                    <Button
-                        fontWeight='bold'
-                        onPress={startWorkout}
-                        marginTop='$space.4'
-                        color={
-                            isWorkoutInProgress || isExerciseDetailsLoading ? '$gray10' : '$green10'
-                        }
-                        backgroundColor={
-                            isWorkoutInProgress || isExerciseDetailsLoading ? '$gray6' : '$green6'
-                        }
-                        disabled={isWorkoutInProgress || isExerciseDetailsLoading}
-                    >
-                        Start from template
-                    </Button>
+                    <Link href='/workout-tracker/workout-form' asChild>
+                        <Button
+                            fontWeight='bold'
+                            onPress={startWorkout}
+                            marginTop='$space.4'
+                            color={
+                                isWorkoutInProgress || isExerciseDetailsLoading
+                                    ? '$gray10'
+                                    : '$green10'
+                            }
+                            backgroundColor={
+                                isWorkoutInProgress || isExerciseDetailsLoading
+                                    ? '$gray6'
+                                    : '$green6'
+                            }
+                            disabled={isWorkoutInProgress || isExerciseDetailsLoading}
+                        >
+                            Start from template
+                        </Button>
+                    </Link>
                 )}
             </ModalContent>
         </Modal>

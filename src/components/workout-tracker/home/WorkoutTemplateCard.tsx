@@ -1,14 +1,13 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
 import { Card, SizableText } from 'tamagui';
 import WorkoutTemplateModal from './WorkoutTemplateModal';
 
 interface Props {
     workoutTemplate: IWorkoutTemplateResponse;
-    setIsWorkoutFormOpening: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function WorkoutTemplateCard({ workoutTemplate, setIsWorkoutFormOpening }: Props) {
+export default function WorkoutTemplateCard({ workoutTemplate }: Props) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     return (
         <>
@@ -16,7 +15,6 @@ export default function WorkoutTemplateCard({ workoutTemplate, setIsWorkoutFormO
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
                 workoutTemplate={workoutTemplate}
-                setIsWorkoutFormOpening={setIsWorkoutFormOpening}
             />
             <Card flex={0.47} onPress={() => setIsModalOpen(true)}>
                 <Card.Header elevate bordered borderRadius='$radius.5' padding='$3' height='$11'>

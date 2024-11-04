@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { Link } from 'expo-router';
+import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import { Button, H4, Spinner, useTheme, View, XStack } from 'tamagui';
+import { Button, H4, useTheme, View, XStack } from 'tamagui';
 
 import { IErrorResponse } from 'src/api/client';
 import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
@@ -17,11 +17,7 @@ import { updatedCreatedAt } from 'src/redux/workout-form/WorkoutFormSlice';
 
 export default function Home() {
     const theme = useTheme();
-    const router = useRouter();
     const dispatch = useDispatch();
-    const [isWorkoutFormOpening, setIsWorkoutFormOpening] = useState<boolean>(false);
-    const [startWorkoutBtnDisabled, setStartWorkoutBtnDisabled] = useState<boolean>(false);
-    const [createTemplateDisabled, setCreateTemplateBtnDisabled] = useState<boolean>(false);
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
     const {
         data: workoutTemplates,
@@ -37,44 +33,23 @@ export default function Home() {
             setWorkoutInProgress(true);
             dispatch(updatedCreatedAt());
         }
-        router.push('/workout-tracker/workout-form');
-
-        // Renable after 10 ms to avoid multiple workout form pages opening
-        setTimeout(() => {
-            setStartWorkoutBtnDisabled(false);
-        }, 10);
-    }
-
-    function onCreateTemplatePress() {
-        setCreateTemplateBtnDisabled(true);
-        router.push('/workout-tracker/workout-template-form');
-
-        // Renable after 10 ms to avoid multiple workout template form pages opening
-        setTimeout(() => {
-            setCreateTemplateBtnDisabled(false);
-        }, 10);
     }
 
     return (
         <SafeAreaView
             style={{ flex: 1, backgroundColor: theme.background.val, paddingHorizontal: 16 }}
         >
-            <Button
-                fontWeight='bold'
-                backgroundColor='$color.green8Light'
-                color='white'
-                onPress={onStartWorkoutPress}
-                marginTop='$space.4'
-                disabled={startWorkoutBtnDisabled}
-            >
-                {isWorkoutFormOpening ? (
-                    <Spinner />
-                ) : isWorkoutInProgress ? (
-                    'Continue Workout'
-                ) : (
-                    'Start Empty Workout'
-                )}
-            </Button>
+            <Link href='/workout-tracker/workout-form' asChild>
+                <Button
+                    fontWeight='bold'
+                    backgroundColor='$color.green8Light'
+                    color='white'
+                    onPress={onStartWorkoutPress}
+                    marginTop='$space.4'
+                >
+                    {isWorkoutInProgress ? 'Continue Workout' : 'Start Empty Workout'}
+                </Button>
+            </Link>
             <XStack
                 alignItems='center'
                 justifyContent='space-between'
@@ -82,18 +57,18 @@ export default function Home() {
                 marginBottom='$space.3'
             >
                 <H4>Workout Templates</H4>
-                <Button
-                    height='0'
-                    paddingHorizontal='$space.3'
-                    paddingVertical='$space.1'
-                    fontWeight='bold'
-                    onPress={onCreateTemplatePress}
-                    color='$green10'
-                    backgroundColor='$green6'
-                    disabled={createTemplateDisabled}
-                >
-                    Create Template
-                </Button>
+                <Link href='/workout-tracker/workout-template-form' asChild>
+                    <Button
+                        height='0'
+                        paddingHorizontal='$space.3'
+                        paddingVertical='$space.1'
+                        fontWeight='bold'
+                        color='$green10'
+                        backgroundColor='$green6'
+                    >
+                        Create Template
+                    </Button>
+                </Link>
             </XStack>
             <WorkoutTemplatesContainer
                 isLoading={isLoading}
@@ -103,12 +78,7 @@ export default function Home() {
                 <FlatList
                     data={workoutTemplates}
                     numColumns={2}
-                    renderItem={({ item }) => (
-                        <WorkoutTemplateCard
-                            setIsWorkoutFormOpening={setIsWorkoutFormOpening}
-                            workoutTemplate={item}
-                        />
-                    )}
+                    renderItem={({ item }) => <WorkoutTemplateCard workoutTemplate={item} />}
                     keyExtractor={(item) => item.id}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                     ItemSeparatorComponent={() => <View height='$1' />}
