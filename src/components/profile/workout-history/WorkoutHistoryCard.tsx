@@ -1,7 +1,7 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 
 import { router } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
@@ -24,6 +24,7 @@ export default function WorkoutHistoryCard({ workout }: Props) {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, onDeleteError);
+    const [isNavigating, setIsNagivating] = useState<boolean>(false);
     const menuOptions: PopoverMenuOptionsV2[] = [
         {
             text: 'Delete',
@@ -52,19 +53,22 @@ export default function WorkoutHistoryCard({ workout }: Props) {
         Alert.alert('Could not delete workout', error.message);
     }
 
+    function onOpenWorkoutPress() {
+        if (isNavigating) return;
+        setIsNagivating(true);
+        router.push({
+            pathname: `/profile/${workout.id}`,
+            params: { workout: encodeURIComponent(JSON.stringify(workout)) },
+        });
+        setTimeout(() => setIsNagivating(false), 10);
+    }
+
     if (isDeleting) {
         return <Spinner />;
     }
 
     return (
-        <Card
-            onPress={() =>
-                router.push({
-                    pathname: `/profile/${workout.id}`,
-                    params: { workout: encodeURIComponent(JSON.stringify(workout)) },
-                })
-            }
-        >
+        <Card onPress={onOpenWorkoutPress}>
             <Card.Header elevate bordered borderRadius='$radius.5'>
                 <XStack alignItems='center' justifyContent='space-between'>
                     <H4>{workout.name}</H4>
