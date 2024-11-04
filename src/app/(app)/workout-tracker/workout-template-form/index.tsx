@@ -55,7 +55,7 @@ export default function WorkoutTemplateForm() {
 
     const renderListFooter = () => (
         <YStack gap='$3' marginTop='$space.5'>
-            <Link href='workout-tracker/workout-template-form/AddExercisesToTemplate'>
+            <Link href='workout-tracker/workout-template-form/AddExercisesToTemplate' asChild>
                 <Button backgroundColor='$blue6' color='$blue10' fontWeight='bold' size='$3'>
                     Add Exercise
                 </Button>
