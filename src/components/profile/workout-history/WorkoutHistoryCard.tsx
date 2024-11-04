@@ -65,7 +65,7 @@ export default function WorkoutHistoryCard({ workout }: Props) {
             asChild
         >
             <Card>
-                <Card.Header elevate bordered borderRadius='$radius.5'>
+                <Card.Header bordered borderRadius='$radius.5'>
                     <XStack alignItems='center' justifyContent='space-between'>
                         <H4>{workout.name}</H4>
                         <PopoverMenuV2 options={menuOptions} height='15%' />
