@@ -41,7 +41,7 @@ export default function WorkoutHistoryContainer() {
         );
     }
     return (
-        <View paddingTop='$space.2'>
+        <View paddingTop='$space.2' flex={1}>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={workouts}
