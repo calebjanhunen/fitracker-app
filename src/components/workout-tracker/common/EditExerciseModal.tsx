@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { Link, useRouter } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { IBodyPartResponse } from 'src/api/body-part-service/interfaces/IBodyPartResponse';
 import { IErrorResponse } from 'src/api/client';
@@ -20,6 +20,7 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
     const [selectedEquipment, setSelectedEquipment] = useState<string>('');
     const [newExerciseName, setNewExerciseName] = useState<string>('');
     const [disabled, setDisabled] = useState<boolean>(true);
+    const isNavigatingRef = useRef<boolean>(false);
     const router = useRouter();
     const {
         equipment,
@@ -55,19 +56,21 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
         return null;
     }
 
-    function handleCloseModal(newName?: string) {
+    function handleCloseModal(shouldNavigate: boolean, newName?: string) {
+        if (isNavigatingRef.current) return;
+        isNavigatingRef.current = true;
+
         setSelectedBodyPart('');
         setSelectedEquipment('');
         setNewExerciseName('');
         setIsModalOpen(false);
-        setTimeout(
-            () =>
-                router.push({
-                    pathname: `${routeToNavigateBackTo}/${exerciseToEdit.id}`,
-                    params: { exerciseName: newName ?? exerciseToEdit.name },
-                }),
-            150
-        );
+        if (shouldNavigate) {
+            router.push({
+                pathname: `${routeToNavigateBackTo}/${exerciseToEdit.id}`,
+                params: { exerciseName: newName ?? exerciseToEdit.name },
+            });
+        }
+        setTimeout(() => (isNavigatingRef.current = false), 50);
     }
 
     function onSaveExercisePress() {
@@ -82,6 +85,8 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
                 bodyPartId: Number(selectedBodyPart),
                 equipmentId: Number(selectedEquipment),
             });
+        } else {
+            handleCloseModal(false);
         }
     }
 
@@ -95,14 +100,14 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
 
     async function onUpdateExerciseSuccess(response: IExerciseResponse) {
         updateExerciseNameInForm(response.id, response.name);
-        handleCloseModal(response.name);
+        handleCloseModal(false);
     }
     return (
         <Dialog modal open={isModalOpen} onOpenChange={setIsModalOpen}>
             <Dialog.Portal>
                 <Dialog.Overlay
                     key='create-exercise-modal-overlay'
-                    onPress={() => handleCloseModal()}
+                    onPress={() => handleCloseModal(true)}
                     flex={1}
                     zIndex={1}
                     animation='100ms'
@@ -136,28 +141,44 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
                             paddingBottom='$4'
                         >
                             <Dialog.Close asChild>
-                                <Button
-                                    fontWeight='bold'
-                                    paddingHorizontal='$2'
-                                    paddingVertical='$1'
-                                    height='auto'
-                                    onPress={() => handleCloseModal()}
+                                <Link
+                                    href={{
+                                        pathname: `${routeToNavigateBackTo}/${exerciseToEdit.id}`,
+                                        params: { exerciseName: exerciseToEdit.name },
+                                    }}
+                                    asChild
                                 >
-                                    X
-                                </Button>
+                                    <Button
+                                        fontWeight='bold'
+                                        paddingHorizontal='$2'
+                                        paddingVertical='$1'
+                                        height='auto'
+                                        onPress={() => handleCloseModal(false)}
+                                    >
+                                        X
+                                    </Button>
+                                </Link>
                             </Dialog.Close>
                             <H4>Edit Exercise</H4>
-                            <Button
-                                fontWeight='bold'
-                                backgroundColor={disabled ? '$gray6' : '$green6'}
-                                color={disabled ? '$gray10' : '$green10'}
-                                paddingVertical='$2'
-                                height='auto'
-                                onPress={onSaveExercisePress}
-                                disabled={disabled}
+                            <Link
+                                href={{
+                                    pathname: `${routeToNavigateBackTo}/${exerciseToEdit.id}`,
+                                    params: { exerciseName: newExerciseName },
+                                }}
+                                asChild
                             >
-                                {isPending ? <Spinner /> : 'Update'}
-                            </Button>
+                                <Button
+                                    fontWeight='bold'
+                                    backgroundColor={disabled ? '$gray6' : '$green6'}
+                                    color={disabled ? '$gray10' : '$green10'}
+                                    paddingVertical='$2'
+                                    height='auto'
+                                    onPress={onSaveExercisePress}
+                                    disabled={disabled}
+                                >
+                                    {isPending ? <Spinner /> : 'Update'}
+                                </Button>
+                            </Link>
                         </XStack>
                         <YStack gap='$space.4'>
                             <Input
