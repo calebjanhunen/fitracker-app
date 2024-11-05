@@ -5,7 +5,7 @@ import {
     IExerciseResponse,
     IExerciseWithWorkoutDetailsResponse,
 } from './interfaces/responses/ExerciseResponse';
-import { IExerciseWorkoutHistoryResponse } from './interfaces/responses/IExerciseWorkoutHistoryResponse';
+import { IExerciseDetailsResponse } from './interfaces/responses/IExerciseWorkoutHistoryResponse';
 
 export async function getAllExercises(): Promise<IExerciseResponse[]> {
     return await request({
@@ -31,11 +31,9 @@ export async function createExercise(exercise: IExerciseRequest): Promise<IExerc
     });
 }
 
-export async function getExerciseWorkoutHistory(
-    id: string
-): Promise<IExerciseWorkoutHistoryResponse[]> {
+export async function getExerciseDetails(id: string): Promise<IExerciseDetailsResponse> {
     return await request({
         method: 'GET',
-        url: exerciseEndpoints.getExerciseWorkoutHistory(id),
+        url: exerciseEndpoints.getExerciseDetails(id),
     });
 }
