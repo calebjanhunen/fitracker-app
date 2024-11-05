@@ -1,11 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { GET_ALL_BODY_PARTS_QUERY_KEY } from 'src/api/body-part-service/BodyPartApiConfig';
-import * as BodyPartApi from 'src/api/body-part-service/BodyPartApiService';
 import { IErrorResponse } from 'src/api/client';
-import { GET_ALL_EQUIPMENT_QUERY_KEY } from 'src/api/equipment-service/EquipmentApiConfig';
-import * as EquipmentApi from 'src/api/equipment-service/EquipmentApiService';
+import { useGetEquipmentAndBodyParts } from 'src/hooks/common/useGetEquipmentAndBodyParts';
 import { useCreateExercise } from 'src/hooks/workout-tracker/useCreateExercise';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
 import DropdownMenu from '../../common/DropdownMenu';
@@ -21,18 +17,12 @@ export default function CreateExerciseModal({ setIsOpen, setSelectedExercises }:
     const [selectedEquipment, setSelectedEquipment] = useState<string>('');
     const [exerciseName, setExerciseName] = useState<string>('');
     const [disabled, setDisabled] = useState<boolean>(true);
-    const { data: equipment } = useQuery({
-        queryFn: EquipmentApi.getAllEquipment,
-        queryKey: [GET_ALL_EQUIPMENT_QUERY_KEY],
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
-    const { data: bodyParts } = useQuery({
-        queryFn: BodyPartApi.getAllBodyParts,
-        queryKey: [GET_ALL_BODY_PARTS_QUERY_KEY],
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
+    const {
+        equipment,
+        bodyParts,
+        isLoading: isEqAndBpLoading,
+        error: eqAndBpErr,
+    } = useGetEquipmentAndBodyParts();
     const { createExercise, isPending } = useCreateExercise((createdExercise) => {
         resetState();
         setSelectedExercises(createdExercise.id);
@@ -41,6 +31,15 @@ export default function CreateExerciseModal({ setIsOpen, setSelectedExercises }:
     useEffect(() => {
         setDisabled(!exerciseName || !selectedBodyPart || !selectedEquipment);
     }, [exerciseName, selectedBodyPart, selectedEquipment]);
+
+    if (isEqAndBpLoading) {
+        return <Spinner />;
+    }
+
+    if (eqAndBpErr) {
+        Alert.alert('Error getting equipment and body parts');
+        return null;
+    }
 
     function resetState() {
         setSelectedBodyPart('');
