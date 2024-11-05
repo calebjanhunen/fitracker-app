@@ -80,7 +80,7 @@ export default function ExerciseDetails() {
                 <Button
                     backgroundColor='$blue6'
                     color='$blue10'
-                    // disabled={!exerciseDetails?.isCustom}
+                    disabled={!exerciseDetails?.isCustom}
                     onPress={onOpenEditExerciseModalPress}
                 >
                     Edit
