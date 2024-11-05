@@ -11,14 +11,9 @@ interface IEditExerciseModalContext {
     setExerciseToEdit: Dispatch<SetStateAction<IExerciseDetailsResponse>>;
 }
 
-const EditExerciseModalContext = createContext<IEditExerciseModalContext>({
-    isModalOpen: false,
-    setIsModalOpen: () => {},
-    routeToNavigateBackTo: '',
-    setRouteToNavigateBackTo: () => {},
-    exerciseToEdit: {} as IExerciseDetailsResponse,
-    setExerciseToEdit: () => {},
-});
+const EditExerciseModalContext = createContext<IEditExerciseModalContext>(
+    {} as IEditExerciseModalContext
+);
 
 export default function EditExerciseModalProvider({ children }: { children: React.ReactNode }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

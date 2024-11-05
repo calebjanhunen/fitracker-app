@@ -1,6 +1,7 @@
 import { request } from '../client';
 import { exerciseEndpoints } from './ExerciseApiConfig';
 import { IExerciseRequest } from './interfaces/requests/IExerciseRequest';
+import { IUpdateExerciseRequest } from './interfaces/requests/IUpdateExerciseRequest';
 import {
     IExerciseResponse,
     IExerciseWithWorkoutDetailsResponse,
@@ -35,5 +36,15 @@ export async function getExerciseDetails(id: string): Promise<IExerciseDetailsRe
     return await request({
         method: 'GET',
         url: exerciseEndpoints.getExerciseDetails(id),
+    });
+}
+
+export async function updateExercise(
+    updateDto: IUpdateExerciseRequest
+): Promise<IExerciseResponse> {
+    return await request({
+        method: 'PUT',
+        url: exerciseEndpoints.updateExercise(updateDto.id),
+        data: updateDto,
     });
 }

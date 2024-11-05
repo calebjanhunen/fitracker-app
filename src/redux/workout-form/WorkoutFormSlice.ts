@@ -55,6 +55,12 @@ const workoutFormSlice = createSlice({
                     });
                 });
         },
+        updateExerciseName: (
+            state,
+            action: PayloadAction<{ exerciseId: string; newName: string }>
+        ) => {
+            state.exercises[action.payload.exerciseId].name = action.payload.newName;
+        },
         replaceExercise: (
             state,
             action: PayloadAction<{
@@ -213,6 +219,7 @@ export const {
     updatedCreatedAt,
     initializeWorkoutFromTemplate,
     replaceExercise,
+    updateExerciseName,
 } = workoutFormSlice.actions;
 
 export default workoutFormSlice.reducer;

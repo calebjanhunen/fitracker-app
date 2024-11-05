@@ -3,6 +3,7 @@ export const exerciseEndpoints = {
     getExercisesWithWorkoutDetails: () => '/api/exercises/workout-details',
     createExercise: () => '/api/exercises',
     getExerciseDetails: (exerciseId: string) => `/api/exercises/${exerciseId}/details`,
+    updateExercise: (exerciseId: string) => `/api/exercises/${exerciseId}`,
 };
 
 export const GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY =

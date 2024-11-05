@@ -1,12 +1,21 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { IBodyPartResponse } from 'src/api/body-part-service/interfaces/IBodyPartResponse';
+import { IErrorResponse } from 'src/api/client';
+import { IEquipmentResponse } from 'src/api/equipment-service/interfaces/IEquipmentResponse';
+import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { useEditExerciseModal } from 'src/context/workout-tracker/EditExerciseModalContext';
 import { useGetEquipmentAndBodyParts } from 'src/hooks/common/useGetEquipmentAndBodyParts';
+import { useUpdateExercise } from 'src/hooks/workout-tracker/useUpdateExercise';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
 import DropdownMenu from '../../common/DropdownMenu';
 
-export default function EditExerciseModal() {
+interface Props {
+    updateExerciseNameInForm: (exerciseId: string, newName: string) => void;
+}
+
+export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
     const [selectedBodyPart, setSelectedBodyPart] = useState<string>('');
     const [selectedEquipment, setSelectedEquipment] = useState<string>('');
     const [newExerciseName, setNewExerciseName] = useState<string>('');
@@ -18,18 +27,17 @@ export default function EditExerciseModal() {
         isLoading: isEqAndBpLoading,
         error: eqAndBpErr,
     } = useGetEquipmentAndBodyParts();
+    const { updateExercise, isPending } = useUpdateExercise(
+        onUpdateExerciseSuccess,
+        onUpdateExerciseError
+    );
     const { isModalOpen, setIsModalOpen, routeToNavigateBackTo, exerciseToEdit } =
         useEditExerciseModal();
 
     useEffect(() => {
-        console.log(equipment, bodyParts, exerciseToEdit.bodyPart, exerciseToEdit.equipment);
         if (isModalOpen) {
-            setSelectedBodyPart(
-                bodyParts.find((bp) => bp.name === exerciseToEdit.bodyPart)?.id.toString() ?? ''
-            );
-            setSelectedEquipment(
-                equipment.find((eq) => eq.name === exerciseToEdit.equipment)?.id.toString() ?? ''
-            );
+            setSelectedBodyPart(getBodyPartId(exerciseToEdit.bodyPart, bodyParts));
+            setSelectedEquipment(getEquipmentId(exerciseToEdit.equipment, equipment));
             setNewExerciseName(exerciseToEdit.name);
         }
     }, [isModalOpen, exerciseToEdit]);
@@ -47,8 +55,7 @@ export default function EditExerciseModal() {
         return null;
     }
 
-    function handleCloseModal() {
-        console.log(exerciseToEdit);
+    function handleCloseModal(newName?: string) {
         setSelectedBodyPart('');
         setSelectedEquipment('');
         setNewExerciseName('');
@@ -57,28 +64,47 @@ export default function EditExerciseModal() {
             () =>
                 router.push({
                     pathname: `${routeToNavigateBackTo}/${exerciseToEdit.id}`,
-                    params: { exerciseName: exerciseToEdit.name },
+                    params: { exerciseName: newName ?? exerciseToEdit.name },
                 }),
             150
         );
     }
 
-    function onSaveExercisePress() {}
+    function onSaveExercisePress() {
+        if (
+            selectedBodyPart !== getBodyPartId(exerciseToEdit.bodyPart, bodyParts) ||
+            selectedEquipment !== getEquipmentId(exerciseToEdit.equipment, equipment) ||
+            newExerciseName !== exerciseToEdit.name
+        ) {
+            updateExercise({
+                id: exerciseToEdit.id,
+                name: newExerciseName,
+                bodyPartId: Number(selectedBodyPart),
+                equipmentId: Number(selectedEquipment),
+            });
+        }
+    }
 
-    // function onCreateExerciseError(error: IErrorResponse) {
-    //     if (error.statusCode === 400) {
-    //         Alert.alert('Error saving exercise', error.message[0]);
-    //     } else {
-    //         Alert.alert('Error saving exercise', error.message[0]);
-    //     }
-    // }
+    function onUpdateExerciseError(error: IErrorResponse) {
+        if (error.statusCode === 400) {
+            Alert.alert('Error saving exercise', error.message[0]);
+        } else {
+            Alert.alert('Error saving exercise', error.message[0]);
+        }
+    }
+
+    async function onUpdateExerciseSuccess(response: IExerciseResponse) {
+        updateExerciseNameInForm(response.id, response.name);
+        // await refetchExerciseDetails();
+        handleCloseModal(response.name);
+    }
     return (
         <Dialog modal open={isModalOpen} onOpenChange={setIsModalOpen}>
             {/* <Dialog.Trigger asChild>{triggerElement}</Dialog.Trigger> */}
             <Dialog.Portal>
                 <Dialog.Overlay
                     key='create-exercise-modal-overlay'
-                    onPress={handleCloseModal}
+                    onPress={() => handleCloseModal()}
                     flex={1}
                     zIndex={1}
                     animation='100ms'
@@ -116,8 +142,8 @@ export default function EditExerciseModal() {
                                     fontWeight='bold'
                                     paddingHorizontal='$2'
                                     paddingVertical='$1'
-                                    height='0'
-                                    onPress={handleCloseModal}
+                                    height='auto'
+                                    onPress={() => handleCloseModal()}
                                 >
                                     X
                                 </Button>
@@ -128,11 +154,11 @@ export default function EditExerciseModal() {
                                 backgroundColor={disabled ? '$gray6' : '$green6'}
                                 color={disabled ? '$gray10' : '$green10'}
                                 paddingVertical='$2'
-                                height='0'
+                                height='auto'
                                 onPress={onSaveExercisePress}
                                 disabled={disabled}
                             >
-                                Save
+                                {isPending ? <Spinner /> : 'Update'}
                             </Button>
                         </XStack>
                         <YStack gap='$space.4'>
@@ -161,4 +187,11 @@ export default function EditExerciseModal() {
             </Dialog.Portal>
         </Dialog>
     );
+}
+
+function getEquipmentId(name: string, equipment: IEquipmentResponse[]): string {
+    return equipment.find((eq) => eq.name === name)?.id.toString() ?? '';
+}
+function getBodyPartId(name: string, bodyParts: IBodyPartResponse[]): string {
+    return bodyParts.find((bp) => bp.name === name)?.id.toString() ?? '';
 }
