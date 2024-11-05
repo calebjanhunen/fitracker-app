@@ -68,7 +68,12 @@ export default function ExerciseDetails() {
 
     return (
         <View flex={1} paddingTop='$space.5' paddingHorizontal='$space.4'>
-            <XStack justifyContent='space-between' alignItems='center' marginBottom='$space.3'>
+            <XStack
+                justifyContent='space-between'
+                alignItems='center'
+                marginBottom='$space.3'
+                gap='$space.2'
+            >
                 <IconBtn
                     backgroundColor={theme.gray7.val}
                     onPress={() => router.back()}
@@ -80,6 +85,9 @@ export default function ExerciseDetails() {
                 <Button
                     backgroundColor='$blue6'
                     color='$blue10'
+                    height='auto'
+                    paddingVertical={3}
+                    paddingHorizontal={8}
                     disabled={!exerciseDetails?.isCustom}
                     onPress={onOpenEditExerciseModalPress}
                 >

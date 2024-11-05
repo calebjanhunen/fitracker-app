@@ -95,12 +95,10 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
 
     async function onUpdateExerciseSuccess(response: IExerciseResponse) {
         updateExerciseNameInForm(response.id, response.name);
-        // await refetchExerciseDetails();
         handleCloseModal(response.name);
     }
     return (
         <Dialog modal open={isModalOpen} onOpenChange={setIsModalOpen}>
-            {/* <Dialog.Trigger asChild>{triggerElement}</Dialog.Trigger> */}
             <Dialog.Portal>
                 <Dialog.Overlay
                     key='create-exercise-modal-overlay'

@@ -29,7 +29,6 @@ export function useUpdateExercise(
     } = useMutation<IExerciseResponse, IErrorResponse, IUpdateExerciseRequest>({
         mutationFn: ExerciseApiService.updateExercise,
         onSuccess: async (updatedExercise) => {
-            console.log('updated exercise: ', updatedExercise);
             await queryClient.invalidateQueries({
                 queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
             });
