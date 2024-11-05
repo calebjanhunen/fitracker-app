@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { IErrorResponse } from 'src/api/client';
 import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
+import EditExerciseModal from 'src/components/workout-tracker/common/EditExerciseModal';
 import WorkoutFormExercise from 'src/components/workout-tracker/workout-form/WorkoutFormExercise';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
@@ -237,6 +238,7 @@ export default function WorkoutForm() {
                         }}
                     />
                 </View>
+                <EditExerciseModal />
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
