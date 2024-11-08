@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { AuthEndpoints } from 'src/api/auth-service/login-endpoints';
 import * as LoginApi from 'src/api/auth-service/login-service';
-import { IErrorResponse } from 'src/api/client';
+import { apiClient, IErrorResponse } from 'src/api/client';
 import { queryClient } from 'src/api/react-query-client';
 import { IUserResponse } from 'src/api/user-service/interfaces/IUserResponse';
 import { GET_USER_BY_ID_QUERY_KEY } from 'src/api/user-service/UserApiConfig';
@@ -46,34 +47,73 @@ export function AuthProvider({ children }: Props) {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>('');
-    const { refetch } = useQuery<IUserResponse, IErrorResponse>({
-        queryFn: UserApi.getUserById,
-        queryKey: [GET_USER_BY_ID_QUERY_KEY],
-        enabled: false,
-    });
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+    // const { refetch } = useQuery<IUserResponse, IErrorResponse>({
+    //     queryFn: UserApi.getUserById,
+    //     queryKey: [GET_USER_BY_ID_QUERY_KEY],
+    //     enabled: false,
+    // });
 
     useEffect(() => {
-        getAccessTokenFromStorage()
-            .then(async (accessToken) => {
-                if (accessToken) {
-                    router.replace('/workout-tracker');
-                    await setUserState();
-                } else {
-                    router.replace('/Signup');
-                }
+        LoginApi.refreshToken()
+            .then((accessTokenResponse) => {
+                setAccessToken(accessTokenResponse);
+                router.replace('/workout-tracker');
             })
-            .catch((e) => {
-                console.error('Error getting access token: ', e);
-            });
+            .catch((e) => router.replace('/Signup'));
+    }, []);
+
+    useEffect(() => {
+        const requestInterceptor = apiClient.interceptors.request.use((config) => {
+            if (config && !config._retry && accessToken) {
+                config.headers.Authorization = `Bearer ${accessToken}`;
+            }
+            return config;
+        });
+
+        return () => {
+            apiClient.interceptors.request.eject(requestInterceptor);
+        };
+    }, [accessToken]);
+
+    useEffect(() => {
+        const responseInterceptor = apiClient.interceptors.response.use(
+            (response) => response,
+            async (error) => {
+                const originalRequest = error.config;
+
+                if (
+                    error.response &&
+                    error.response.status === 401 &&
+                    !originalRequest._retry &&
+                    originalRequest.url !== AuthEndpoints.refreshToken()
+                ) {
+                    originalRequest._retry = true;
+
+                    try {
+                        const accessToken = await LoginApi.refreshToken();
+                        setAccessToken(accessToken);
+                        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                        return await apiClient(originalRequest);
+                    } catch (e) {
+                        router.replace('/Signup');
+                    }
+                    return await Promise.reject(error);
+                }
+            }
+        );
+
+        return () => {
+            apiClient.interceptors.request.eject(responseInterceptor);
+        };
     }, []);
 
     async function login(username: string, password: string): Promise<void> {
         setErrorMsg('');
         setLoading(true);
         try {
-            const response = await LoginApi.login(username, password);
-            await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
-            await setUserState();
+            const accessToken = await LoginApi.login(username, password);
+            setAccessToken(accessToken);
             router.replace('/workout-tracker');
         } catch (e) {
             setErrorMsg(e.message);
@@ -102,7 +142,7 @@ export function AuthProvider({ children }: Props) {
                 lastname
             );
             await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
-            await setUserState();
+            // await setUserState();
             router.replace('/workout-tracker');
         } catch (e) {
             setErrorMsg(e.message);
@@ -123,13 +163,13 @@ export function AuthProvider({ children }: Props) {
         return await getFromStorage(ACCESS_TOKEN_STORAGE_KEY);
     }
 
-    async function setUserState() {
-        const { data } = await refetch();
-        if (!data) {
-            throw new Error('Could not get user');
-        }
-        dispatch(setUser(data));
-    }
+    // async function setUserState() {
+    //     const { data } = await refetch();
+    //     if (!data) {
+    //         throw new Error('Could not get user');
+    //     }
+    //     dispatch(setUser(data));
+    // }
 
     return (
         <AuthContext.Provider value={{ login, signup, logout, loading, errorMsg }}>
