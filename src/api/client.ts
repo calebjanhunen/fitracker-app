@@ -1,10 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, {
-    AxiosError,
-    AxiosRequestConfig,
-    AxiosResponse,
-    InternalAxiosRequestConfig,
-} from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import getBaseUrl from './utils/GetBaseApiUrl';
 
 export interface IErrorResponse {
@@ -25,30 +19,18 @@ export async function request<T>(options: AxiosRequestConfig<T>) {
         });
     }
 
-    return await client(options).then(onSuccess).catch(onError);
+    return await apiClient(options).then(onSuccess).catch(onError);
 }
 
 // immediately invoked function that's only called once
-const client = (() => {
+export const apiClient = (() => {
     return axios.create({
         baseURL: `${getBaseUrl()}`,
         headers: {
             'Content-Type': 'application/json',
+            'X-Device-Id': 'test-device-id',
         },
         withCredentials: true,
         timeout: 5000,
     });
 })();
-
-client.interceptors.request.use(
-    async function (config: InternalAxiosRequestConfig) {
-        const accessToken = await AsyncStorage.getItem('access-token');
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
-        }
-        return config;
-    },
-    async function (error) {
-        return await Promise.reject(error);
-    }
-);

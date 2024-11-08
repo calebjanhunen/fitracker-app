@@ -4,6 +4,7 @@
     "main": "expo-router/entry",
     "scripts": {
         "start": "cross-env APP_VARIANT=development expo start --go",
+        "start:cache": "cross-env APP_VARIANT=development expo start --go -c --clear",
         "start:dev-client": "cross-env APP_VARIANT=development expo start --dev-client",
         "android": "expo start --android",
         "ios": "expo start --ios",
