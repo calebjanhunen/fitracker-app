@@ -17,11 +17,12 @@ export async function login(username: string, password: string): Promise<string>
     return response.accessToken;
 }
 
-export async function logout(): Promise<string> {
-    return await request({
+export async function logout(): Promise<void> {
+    await request({
         method: 'POST',
         url: AuthEndpoints.logout(),
     });
+    await AsyncStorage.removeItem('refresh-token');
 }
 
 export async function signup(
