@@ -78,7 +78,7 @@ export function useCreateWorkout(
 
         workoutForm.workout.exercises.forEach((exerciseId) => {
             workoutForm.exercises[exerciseId].sets.forEach((setId) => {
-                if (!workoutForm.sets[setId].weight || !workoutForm.sets[setId].reps) {
+                if (workoutForm.sets[setId].weight === null || !workoutForm.sets[setId].reps) {
                     newWorkoutForm.sets = _.omit(newWorkoutForm.sets, setId);
                     newWorkoutForm.exercises[exerciseId].sets = newWorkoutForm.exercises[
                         exerciseId

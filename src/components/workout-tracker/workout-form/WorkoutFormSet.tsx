@@ -97,11 +97,13 @@ const WorkoutFormSet = memo(function WorkoutFormset({
                                 isSetValidated={isSetValidated}
                                 value={set.weight}
                                 onValueChange={onWeightChange}
+                                type='WEIGHT'
                             />
                             <WeightAndRepsInput
                                 isSetValidated={isSetValidated}
                                 value={set.reps}
                                 onValueChange={onRepsChange}
+                                type='REPS'
                             />
                             <RpeInput rpeVal={set.rpe} onRpeSelect={onRpeSelect} />
                         </XStack>

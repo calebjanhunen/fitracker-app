@@ -73,7 +73,7 @@ export default function WorkoutForm() {
             .filter(
                 (setId) =>
                     workoutFormState.sets[setId].weight === null ||
-                    workoutFormState.sets[setId].reps === null
+                    !workoutFormState.sets[setId].reps
             )
             .map((setId) => workoutFormState.sets[setId].id);
         setValidatedSets(newValidatedSets);
