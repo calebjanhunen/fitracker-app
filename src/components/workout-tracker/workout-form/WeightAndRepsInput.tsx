@@ -21,9 +21,7 @@ export default function WeightAndRepsInput({ isSetValidated, value, onValueChang
     }
 
     const backgroundColor = () => {
-        console.log(type, !value, isSetValidated);
         if (type === 'REPS' && !value && isSetValidated) {
-            console.log('invvalid reps');
             return '$red6';
         } else if (type === 'WEIGHT' && value === null && isSetValidated) {
             return '$red6';

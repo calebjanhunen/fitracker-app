@@ -27,7 +27,8 @@ export function setupResponseInterceptor(
             if (
                 error.response?.status === 401 &&
                 !originalRequest._retry &&
-                originalRequest.url !== AuthEndpoints.refreshToken()
+                originalRequest.url !== AuthEndpoints.refreshToken() &&
+                originalRequest.url !== AuthEndpoints.login()
             ) {
                 originalRequest._retry = true;
 

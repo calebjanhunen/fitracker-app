@@ -71,7 +71,6 @@ export function AuthProvider({ children }: Props) {
                 setAccessToken(accessToken);
                 router.replace('/workout-tracker');
             } catch (e) {
-                console.log('error getting refresh:EFEWFWEPFWEF', e);
                 router.replace('/Signup');
             }
         }
