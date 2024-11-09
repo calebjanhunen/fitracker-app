@@ -1,8 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { request } from '../client';
 import { ILoginResponse } from './interfaces/login-response';
 import { SignupRequestDto } from './interfaces/requests/signup-request-dto';
 import { AuthEndpoints } from './login-endpoints';
+
+const REFRESH_TOKEN_STORAGE_KEY = 'refresh-token';
 
 export async function login(username: string, password: string): Promise<string> {
     const response = await request({
@@ -13,7 +15,7 @@ export async function login(username: string, password: string): Promise<string>
             password,
         },
     });
-    await AsyncStorage.setItem('refresh-token', response.refreshToken);
+    SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
     return response.accessToken;
 }
 
@@ -22,7 +24,7 @@ export async function logout(): Promise<void> {
         method: 'POST',
         url: AuthEndpoints.logout(),
     });
-    await AsyncStorage.removeItem('refresh-token');
+    await SecureStore.deleteItemAsync(REFRESH_TOKEN_STORAGE_KEY);
 }
 
 export async function signup(
@@ -48,7 +50,7 @@ export async function signup(
 }
 
 export async function refreshToken(): Promise<string> {
-    const refreshToken = await AsyncStorage.getItem('refresh-token');
+    const refreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
     if (!refreshToken) {
         throw new Error('No refresh token');
     }
@@ -64,6 +66,6 @@ export async function refreshToken(): Promise<string> {
         throw new Error('No response');
     }
 
-    await AsyncStorage.setItem('refresh-token', response.refreshToken);
+    SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
     return response.accessToken;
 }
