@@ -1,6 +1,6 @@
 {
     "name": "fitracker",
-    "version": "1.8.0",
+    "version": "2.0.0",
     "main": "expo-router/entry",
     "scripts": {
         "start": "cross-env APP_VARIANT=development expo start --go",
