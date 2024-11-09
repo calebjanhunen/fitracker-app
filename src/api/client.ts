@@ -4,6 +4,9 @@ import axios, {
     AxiosResponse,
     InternalAxiosRequestConfig,
 } from 'axios';
+import * as SecureStore from 'expo-secure-store';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import getBaseUrl from './utils/GetBaseApiUrl';
 
 export interface IErrorResponse {
@@ -29,11 +32,16 @@ export async function request<T>(options: AxiosRequestConfig<T>) {
 
 // immediately invoked function that's only called once
 export const apiClient = (() => {
+    const deviceIdFromStorage = SecureStore.getItem('device-id');
+    const generatedDeviceId = uuidv4();
+    if (!deviceIdFromStorage) {
+        SecureStore.setItem('device-id', generatedDeviceId);
+    }
     return axios.create({
         baseURL: `${getBaseUrl()}`,
         headers: {
             'Content-Type': 'application/json',
-            'X-Device-Id': 'test-device-id',
+            'X-Device-Id': deviceIdFromStorage ?? generatedDeviceId,
         },
         withCredentials: true,
         timeout: 5000,
