@@ -14,8 +14,8 @@ export interface IErrorResponse {
     statusCode: number;
 }
 
-export async function request<T>(options: AxiosRequestConfig<T>) {
-    function onSuccess(response: AxiosResponse) {
+export async function request<T, R>(options: AxiosRequestConfig<T>) {
+    function onSuccess(response: AxiosResponse<R>) {
         return response.data;
     }
 

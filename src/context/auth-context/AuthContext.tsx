@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { AuthEndpoints } from 'src/api/auth-service/login-endpoints';
 import * as AuthApi from 'src/api/auth-service/login-service';
@@ -9,10 +10,7 @@ import { queryClient } from 'src/api/react-query-client';
 import { IUserResponse } from 'src/api/user-service/interfaces/IUserResponse';
 import { GET_USER_BY_ID_QUERY_KEY } from 'src/api/user-service/UserApiConfig';
 import * as UserApi from 'src/api/user-service/UserApiService';
-import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { clearUser, setUser } from 'src/redux/user/UserSlice';
-
-const ACCESS_TOKEN_STORAGE_KEY = 'access-token';
 
 interface Props {
     children: React.ReactNode;
@@ -42,22 +40,22 @@ const AuthContext = createContext<IAuthContext>({
 });
 
 export function AuthProvider({ children }: Props) {
-    const { getFromStorage, saveToStorage, removeFromStorage } = useLocalStorage();
     const dispatch = useDispatch();
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>('');
     const [accessToken, setAccessToken] = useState<string | null>(null);
-    // const { refetch } = useQuery<IUserResponse, IErrorResponse>({
-    //     queryFn: UserApi.getUserById,
-    //     queryKey: [GET_USER_BY_ID_QUERY_KEY],
-    //     enabled: false,
-    // });
+    const { refetch: getUserData } = useQuery<IUserResponse, IErrorResponse>({
+        queryFn: UserApi.getUserById,
+        queryKey: [GET_USER_BY_ID_QUERY_KEY],
+        enabled: false,
+    });
 
     // Get new access token on initial render
     useEffect(() => {
         AuthApi.refreshToken()
-            .then((accessTokenResponse) => {
+            .then(async (accessTokenResponse) => {
+                await setUserState();
                 setAccessToken(accessTokenResponse);
                 router.replace('/workout-tracker');
             })
@@ -94,8 +92,8 @@ export function AuthProvider({ children }: Props) {
                     } catch (e) {
                         router.replace('/Signup');
                     }
-                    return await Promise.reject(error);
                 }
+                return await Promise.reject(error);
             }
         );
 
@@ -109,6 +107,7 @@ export function AuthProvider({ children }: Props) {
         setLoading(true);
         try {
             const accessToken = await AuthApi.login(username, password);
+            await setUserState();
             setAccessToken(accessToken);
             router.replace('/workout-tracker');
         } catch (e) {
@@ -129,7 +128,7 @@ export function AuthProvider({ children }: Props) {
         setErrorMsg('');
         setLoading(true);
         try {
-            const response = await AuthApi.signup(
+            const accessToken = await AuthApi.signup(
                 username,
                 password,
                 confirmPassword,
@@ -137,8 +136,8 @@ export function AuthProvider({ children }: Props) {
                 firstname,
                 lastname
             );
-            await saveToStorage(ACCESS_TOKEN_STORAGE_KEY, response.accessToken);
-            // await setUserState();
+            await setUserState();
+            setAccessToken(accessToken);
             router.replace('/workout-tracker');
         } catch (e) {
             setErrorMsg(e.message);
@@ -153,6 +152,15 @@ export function AuthProvider({ children }: Props) {
         await queryClient.invalidateQueries();
         queryClient.clear();
         dispatch(clearUser());
+    }
+
+    async function setUserState() {
+        const { data } = await getUserData();
+        if (!data) {
+            Alert.alert('Could not get user data');
+            return;
+        }
+        dispatch(setUser(data));
     }
 
     return (
