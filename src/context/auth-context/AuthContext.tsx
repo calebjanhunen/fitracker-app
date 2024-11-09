@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AuthEndpoints } from 'src/api/auth-service/login-endpoints';
 import * as LoginApi from 'src/api/auth-service/login-service';
-import { apiClient, IErrorResponse } from 'src/api/client';
+import { apiClient, IErrorResponse, setupRequestInterceptor } from 'src/api/client';
 import { queryClient } from 'src/api/react-query-client';
 import { IUserResponse } from 'src/api/user-service/interfaces/IUserResponse';
 import { GET_USER_BY_ID_QUERY_KEY } from 'src/api/user-service/UserApiConfig';
@@ -54,6 +54,7 @@ export function AuthProvider({ children }: Props) {
     //     enabled: false,
     // });
 
+    // Get new access token on initial render
     useEffect(() => {
         LoginApi.refreshToken()
             .then((accessTokenResponse) => {
@@ -64,12 +65,7 @@ export function AuthProvider({ children }: Props) {
     }, []);
 
     useEffect(() => {
-        const requestInterceptor = apiClient.interceptors.request.use((config) => {
-            if (config && !config._retry && accessToken) {
-                config.headers.Authorization = `Bearer ${accessToken}`;
-            }
-            return config;
-        });
+        const requestInterceptor = setupRequestInterceptor(accessToken);
 
         return () => {
             apiClient.interceptors.request.eject(requestInterceptor);
@@ -157,10 +153,6 @@ export function AuthProvider({ children }: Props) {
         await queryClient.invalidateQueries();
         queryClient.clear();
         dispatch(clearUser());
-    }
-
-    async function getAccessTokenFromStorage(): Promise<string | null> {
-        return await getFromStorage(ACCESS_TOKEN_STORAGE_KEY);
     }
 
     // async function setUserState() {
