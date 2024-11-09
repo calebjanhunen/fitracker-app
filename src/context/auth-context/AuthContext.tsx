@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AuthEndpoints } from 'src/api/auth-service/login-endpoints';
-import * as LoginApi from 'src/api/auth-service/login-service';
+import * as AuthApi from 'src/api/auth-service/login-service';
 import { apiClient, IErrorResponse, setupRequestInterceptor } from 'src/api/client';
 import { queryClient } from 'src/api/react-query-client';
 import { IUserResponse } from 'src/api/user-service/interfaces/IUserResponse';
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: Props) {
 
     // Get new access token on initial render
     useEffect(() => {
-        LoginApi.refreshToken()
+        AuthApi.refreshToken()
             .then((accessTokenResponse) => {
                 setAccessToken(accessTokenResponse);
                 router.replace('/workout-tracker');
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: Props) {
                     originalRequest._retry = true;
 
                     try {
-                        const accessToken = await LoginApi.refreshToken();
+                        const accessToken = await AuthApi.refreshToken();
                         setAccessToken(accessToken);
                         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                         return await apiClient(originalRequest);
@@ -108,7 +108,7 @@ export function AuthProvider({ children }: Props) {
         setErrorMsg('');
         setLoading(true);
         try {
-            const accessToken = await LoginApi.login(username, password);
+            const accessToken = await AuthApi.login(username, password);
             setAccessToken(accessToken);
             router.replace('/workout-tracker');
         } catch (e) {
@@ -129,7 +129,7 @@ export function AuthProvider({ children }: Props) {
         setErrorMsg('');
         setLoading(true);
         try {
-            const response = await LoginApi.signup(
+            const response = await AuthApi.signup(
                 username,
                 password,
                 confirmPassword,
@@ -149,19 +149,11 @@ export function AuthProvider({ children }: Props) {
 
     async function logout(): Promise<void> {
         router.replace('/Signup');
-        await removeFromStorage(ACCESS_TOKEN_STORAGE_KEY);
+        await AuthApi.logout();
         await queryClient.invalidateQueries();
         queryClient.clear();
         dispatch(clearUser());
     }
-
-    // async function setUserState() {
-    //     const { data } = await refetch();
-    //     if (!data) {
-    //         throw new Error('Could not get user');
-    //     }
-    //     dispatch(setUser(data));
-    // }
 
     return (
         <AuthContext.Provider value={{ login, signup, logout, loading, errorMsg }}>

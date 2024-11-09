@@ -17,6 +17,13 @@ export async function login(username: string, password: string): Promise<string>
     return response.accessToken;
 }
 
+export async function logout(): Promise<string> {
+    return await request({
+        method: 'POST',
+        url: AuthEndpoints.logout(),
+    });
+}
+
 export async function signup(
     username: string,
     password: string,
