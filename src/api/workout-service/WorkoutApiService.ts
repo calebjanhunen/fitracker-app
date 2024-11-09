@@ -10,7 +10,7 @@ export async function createWorkout({
 }: {
     createWorkoutRequest: ICreateWorkoutRequest;
 }): Promise<ICreateWorkoutResponse> {
-    return await request<ICreateWorkoutRequest>({
+    return await request<ICreateWorkoutRequest, ICreateWorkoutResponse>({
         method: 'POST',
         url: workoutEndpoints.createWorkout(),
         data: createWorkoutRequest,
@@ -18,14 +18,14 @@ export async function createWorkout({
 }
 
 export async function getAllWorkouts(): Promise<IWorkoutResponse[]> {
-    return await request<IWorkoutResponse[]>({
+    return await request<null, IWorkoutResponse[]>({
         method: 'GET',
         url: workoutEndpoints.getAllWorkouts(),
     });
 }
 
 export async function deleteWorkout(workoutId: string): Promise<IDeleteWorkoutResponse> {
-    return await request<IDeleteWorkoutResponse>({
+    return await request<null, IDeleteWorkoutResponse>({
         method: 'DELETE',
         url: workoutEndpoints.deleteWorkout(workoutId),
     });

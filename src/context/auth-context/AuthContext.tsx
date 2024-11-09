@@ -148,10 +148,10 @@ export function AuthProvider({ children }: Props) {
 
     async function logout(): Promise<void> {
         router.replace('/Signup');
-        await AuthApi.logout();
         await queryClient.invalidateQueries();
         queryClient.clear();
         dispatch(clearUser());
+        await AuthApi.logout();
     }
 
     async function setUserState() {
