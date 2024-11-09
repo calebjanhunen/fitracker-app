@@ -5,9 +5,10 @@ interface Props {
     isSetValidated: boolean;
     value: number | null;
     onValueChange: (value: string) => void;
+    type: 'REPS' | 'WEIGHT';
 }
 
-export default function WeightAndRepsInput({ isSetValidated, value, onValueChange }: Props) {
+export default function WeightAndRepsInput({ isSetValidated, value, onValueChange, type }: Props) {
     const inputRef = useRef<Input>(null);
 
     function handleFocus() {
@@ -18,6 +19,15 @@ export default function WeightAndRepsInput({ isSetValidated, value, onValueChang
             });
         }
     }
+
+    const backgroundColor = () => {
+        if (type === 'REPS' && !value && isSetValidated) {
+            return '$red6';
+        } else if (type === 'WEIGHT' && value === null && isSetValidated) {
+            return '$red6';
+        }
+        return '$background';
+    };
 
     return (
         <Input
@@ -32,7 +42,7 @@ export default function WeightAndRepsInput({ isSetValidated, value, onValueChang
             value={value?.toString() ?? ''}
             onChangeText={onValueChange}
             borderRadius={10}
-            backgroundColor={!value && isSetValidated ? '$red6' : '$background'}
+            backgroundColor={backgroundColor()}
         />
     );
 }

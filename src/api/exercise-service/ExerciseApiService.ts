@@ -25,7 +25,7 @@ export async function getExercisesWithWorkoutDetails(): Promise<
 }
 
 export async function createExercise(exercise: IExerciseRequest): Promise<IExerciseResponse> {
-    return await request<IExerciseRequest>({
+    return await request<IExerciseRequest, IExerciseResponse>({
         method: 'POST',
         url: exerciseEndpoints.createExercise(),
         data: exercise,

@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import _ from 'lodash';
 import { IErrorResponse } from 'src/api/client';
 import {
-    exerciseWorkoutHistoryQueryKey,
+    exerciseDetailsQueryKey,
     GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY,
 } from 'src/api/exercise-service/ExerciseApiConfig';
 import { queryClient } from 'src/api/react-query-client';
@@ -62,7 +62,7 @@ export function useCreateWorkout(
 
             for (const exercise of response.workout.exercises) {
                 await queryClient.invalidateQueries({
-                    queryKey: exerciseWorkoutHistoryQueryKey(exercise.id),
+                    queryKey: exerciseDetailsQueryKey(exercise.id),
                 });
             }
 
@@ -78,7 +78,7 @@ export function useCreateWorkout(
 
         workoutForm.workout.exercises.forEach((exerciseId) => {
             workoutForm.exercises[exerciseId].sets.forEach((setId) => {
-                if (!workoutForm.sets[setId].weight || !workoutForm.sets[setId].reps) {
+                if (workoutForm.sets[setId].weight === null || !workoutForm.sets[setId].reps) {
                     newWorkoutForm.sets = _.omit(newWorkoutForm.sets, setId);
                     newWorkoutForm.exercises[exerciseId].sets = newWorkoutForm.exercises[
                         exerciseId
