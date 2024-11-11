@@ -2,20 +2,20 @@ import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from 'src/context/auth-context/AuthContext';
 import fitrackerLogo from '../../../../assets/fitracker-icon.png';
 
+import { useLogin } from 'src/hooks/auth/useLogin';
 import { Button, Image, Input, Spinner, Text, useTheme, View, XStack, YStack } from 'tamagui';
 
 export default function Login() {
     const theme = useTheme();
-    const { login, loading, errorMsg } = useAuth();
+    const { login, isLoading, error } = useLogin();
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
     useEffect(() => {
-        setButtonDisabled(!username || !password || loading);
+        setButtonDisabled(!username || !password || isLoading);
     }, [username, password]);
 
     return (
@@ -47,35 +47,41 @@ export default function Login() {
                             />
                             <Button
                                 marginTop='$5'
-                                onPress={async () => await login(username, password)}
+                                onPress={() => login({ username, password })}
                                 disabled={buttonDisabled}
                                 opacity={buttonDisabled ? 0.5 : 1}
                             >
-                                {loading ? <Spinner /> : 'Login'}
+                                {isLoading ? <Spinner /> : 'Login'}
                             </Button>
-                            {errorMsg && (
+                            {error && (
                                 <Text color='$red11Light' textAlign='center'>
-                                    {errorMsg}
+                                    Login failed. {error.message}
                                 </Text>
                             )}
-                            <XStack
-                                alignItems='center'
-                                justifyContent='center'
-                                paddingTop='$2'
-                                gap='$2'
+                            <Link
+                                href='/(auth)/login'
+                                style={{ textAlign: 'center', textDecorationLine: 'underline' }}
                             >
-                                <Text>Don&apos;t have an account?</Text>
-                                <Link
-                                    push
-                                    href='/(auth)/signup'
-                                    style={{
-                                        textDecorationLine: 'underline',
-                                    }}
-                                >
-                                    Sign up
-                                </Link>
-                            </XStack>
+                                Forgot Password?
+                            </Link>
                         </YStack>
+                        <XStack
+                            alignItems='center'
+                            justifyContent='center'
+                            paddingTop='$2'
+                            gap='$2'
+                        >
+                            <Text>Don&apos;t have an account?</Text>
+                            <Link
+                                push
+                                href='/(auth)/signup'
+                                style={{
+                                    textDecorationLine: 'underline',
+                                }}
+                            >
+                                Sign up
+                            </Link>
+                        </XStack>
                     </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>

@@ -7,14 +7,11 @@ import { AuthEndpoints } from './login-endpoints';
 
 const REFRESH_TOKEN_STORAGE_KEY = 'refresh-token';
 
-export async function login(username: string, password: string): Promise<string> {
+export async function login(loginForm: LoginRequestDto): Promise<string> {
     const response = await request<LoginRequestDto, ILoginResponse>({
         method: 'POST',
         url: AuthEndpoints.login(),
-        data: {
-            username,
-            password,
-        },
+        data: loginForm,
     });
     SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
     return response.accessToken;
