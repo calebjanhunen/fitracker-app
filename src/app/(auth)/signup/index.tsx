@@ -110,7 +110,8 @@ export default function Signup() {
                         >
                             <Text>Already have an account?</Text>
                             <Link
-                                href='/(auth)/Login'
+                                push
+                                href='/(auth)/login'
                                 style={{
                                     textDecorationLine: 'underline',
                                 }}

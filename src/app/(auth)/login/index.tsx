@@ -1,9 +1,10 @@
+import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from 'src/context/auth-context/AuthContext';
 
-import { Button, H1, Input, Spinner, Text, useTheme, View, YStack } from 'tamagui';
+import { Button, H1, Input, Spinner, Text, useTheme, View, XStack, YStack } from 'tamagui';
 
 export default function Login() {
     const theme = useTheme();
@@ -53,6 +54,23 @@ export default function Login() {
                                     {errorMsg}
                                 </Text>
                             )}
+                            <XStack
+                                alignItems='center'
+                                justifyContent='center'
+                                paddingTop='$2'
+                                gap='$2'
+                            >
+                                <Text>Don&apos;t have an account?</Text>
+                                <Link
+                                    push
+                                    href='/(auth)/signup'
+                                    style={{
+                                        textDecorationLine: 'underline',
+                                    }}
+                                >
+                                    Sign up
+                                </Link>
+                            </XStack>
                         </YStack>
                     </View>
                 </KeyboardAvoidingView>
