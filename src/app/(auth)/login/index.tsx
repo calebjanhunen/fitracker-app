@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from 'src/context/auth-context/AuthContext';
+import fitrackerLogo from '../../../../assets/fitracker-icon.png';
 
-import { Button, H1, Input, Spinner, Text, useTheme, View, XStack, YStack } from 'tamagui';
+import { Button, Image, Input, Spinner, Text, useTheme, View, XStack, YStack } from 'tamagui';
 
 export default function Login() {
     const theme = useTheme();
@@ -24,11 +25,14 @@ export default function Login() {
                     style={{ flex: 1 }}
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 >
-                    <View flex={1} paddingHorizontal='$5'>
-                        <H1 size='$10' textAlign='center' paddingTop='$10'>
-                            Fitracker
-                        </H1>
+                    <View flex={1} paddingHorizontal='$5' backgroundColor='white'>
                         <YStack flex={1} justifyContent='center' gap='$5'>
+                            <Image
+                                alignSelf='center'
+                                source={fitrackerLogo}
+                                width={100}
+                                height={100}
+                            />
                             <Input
                                 placeholder='Username'
                                 onChangeText={setUsername}
