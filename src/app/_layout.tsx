@@ -3,7 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { queryClient } from 'src/api/react-query-client';
@@ -32,9 +32,14 @@ export default function RootLayout() {
                         <TamaguiProvider config={config}>
                             <Theme name='light'>
                                 <Provider store={store}>
-                                    <AuthProvider>
-                                        <Slot />
-                                    </AuthProvider>
+                                    <KeyboardAvoidingView
+                                        style={{ flex: 1 }}
+                                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                                    >
+                                        <AuthProvider>
+                                            <Slot />
+                                        </AuthProvider>
+                                    </KeyboardAvoidingView>
                                 </Provider>
                             </Theme>
                             <StatusBar barStyle='default' />
