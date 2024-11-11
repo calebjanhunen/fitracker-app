@@ -78,7 +78,7 @@ export function AuthProvider({ children }: Props) {
                 setAccessToken(accessToken);
                 router.replace('/workout-tracker');
             } catch (e) {
-                router.replace('/(auth)/login');
+                router.replace('/(auth)');
             }
         }
 
@@ -119,7 +119,7 @@ export function AuthProvider({ children }: Props) {
     }
 
     async function logout(): Promise<void> {
-        router.replace('/(auth)/login');
+        router.replace('/(auth)');
         await queryClient.invalidateQueries();
         queryClient.clear();
         dispatch(clearUser());
@@ -137,7 +137,7 @@ export function AuthProvider({ children }: Props) {
 
     function handleRefreshError() {
         setAccessToken(null);
-        router.replace('/(auth)/login');
+        router.replace('/(auth)');
     }
 
     return (
