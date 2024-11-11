@@ -60,7 +60,7 @@ export default function Login() {
                         <Text>Don&apos;t have an account?</Text>
                         <Link
                             push
-                            href='/(auth)/signup'
+                            href='/(auth)/signup/EnterEmail'
                             style={{
                                 textDecorationLine: 'underline',
                             }}
