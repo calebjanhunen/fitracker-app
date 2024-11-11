@@ -4,7 +4,7 @@ import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
 import { H3, Input, SizableText } from 'tamagui';
 
-export default function EnterProfileName() {
+export default function EnterAccountInfo() {
     return (
         <ScreenViewWithKeyboard>
             <H3>Add your name</H3>
@@ -17,7 +17,7 @@ export default function EnterProfileName() {
                 inputMode='text'
                 marginBottom='$space.4'
             />
-            <Link href='/signup/CreatePassword' asChild>
+            <Link href='/signup/EnterUsernameAndPassword' asChild>
                 <Button backgroundColor='$blue6' color='$blue10'>
                     Next
                 </Button>

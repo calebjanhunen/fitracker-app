@@ -22,7 +22,7 @@ export default function EnterCode() {
                 inputMode='numeric'
                 marginBottom='$space.4'
             />
-            <Link href='/signup/EnterProfileName' asChild>
+            <Link href='/signup/EnterAccountInfo' asChild>
                 <Button backgroundColor='$blue6' color='$blue10'>
                     Next
                 </Button>

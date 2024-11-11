@@ -16,8 +16,8 @@ export default function SignupLayout() {
             >
                 <Stack.Screen name='EnterEmail' />
                 <Stack.Screen name='EnterCode' />
-                <Stack.Screen name='EnterProfileName' />
-                <Stack.Screen name='EnterLoginInfo' />
+                <Stack.Screen name='EnterAccountInfo' />
+                <Stack.Screen name='EnterUsernameAndPassword' />
             </Stack>
             <Footer />
         </SafeAreaView>
