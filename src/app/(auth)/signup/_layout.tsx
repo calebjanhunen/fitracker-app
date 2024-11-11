@@ -14,9 +14,10 @@ export default function SignupLayout() {
                     headerStyle: { backgroundColor: theme.background.val },
                 }}
             >
-                <Stack.Screen name='EnterEmail' options={{ headerShown: false }} />
+                <Stack.Screen name='EnterEmail' />
                 <Stack.Screen name='EnterCode' />
                 <Stack.Screen name='EnterProfileName' />
+                <Stack.Screen name='EnterLoginInfo' />
             </Stack>
             <Footer />
         </SafeAreaView>
