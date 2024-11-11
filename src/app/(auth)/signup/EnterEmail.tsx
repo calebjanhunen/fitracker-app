@@ -29,7 +29,9 @@ export default function EnterEmail() {
                                 marginBottom='$space.4'
                             />
                             <Link href='/signup/EnterCode' asChild>
-                                <Button>Next</Button>
+                                <Button backgroundColor='$blue6' color='$blue10'>
+                                    Next
+                                </Button>
                             </Link>
                         </View>
                         <XStack
