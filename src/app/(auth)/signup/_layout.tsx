@@ -4,7 +4,7 @@ import React from 'react';
 export default function SignupLayout() {
     return (
         <Stack screenOptions={{ headerTitle: '' }}>
-            <Stack.Screen name='EnterEmail' />
+            <Stack.Screen name='EnterEmail' options={{ headerShown: false }} />
             <Stack.Screen name='EnterCode' />
         </Stack>
     );
