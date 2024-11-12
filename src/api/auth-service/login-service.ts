@@ -1,7 +1,9 @@
 import * as SecureStore from 'expo-secure-store';
 import { request } from '../client';
 import { ILoginResponse } from './interfaces/login-response';
+import { ConfirmSignupCodeDto } from './interfaces/requests/confirm-signup-code-dto';
 import { LoginRequestDto } from './interfaces/requests/login-request-dto';
+import { SendSignupCodeDto } from './interfaces/requests/send-signup-code-dto';
 import { SignupRequestDto } from './interfaces/requests/signup-request-dto';
 import { AuthEndpoints } from './login-endpoints';
 
@@ -68,4 +70,20 @@ export async function refreshToken(): Promise<string> {
 
     SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
     return response.accessToken;
+}
+
+export async function sendSignupCode(sendSignupCodeDto: SendSignupCodeDto): Promise<void> {
+    await request<SendSignupCodeDto, null>({
+        method: 'POST',
+        url: AuthEndpoints.sendSignupCode(),
+        data: sendSignupCodeDto,
+    });
+}
+
+export async function confirmSignupCode(confirmSignupCodeDto: ConfirmSignupCodeDto): Promise<void> {
+    await request<SendSignupCodeDto, null>({
+        method: 'POST',
+        url: AuthEndpoints.confirmSignupCode(),
+        data: confirmSignupCodeDto,
+    });
 }
