@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import signupFormReducer from './signup-form/SignupFormSlice';
 import userReducer from './user/UserSlice';
 import { saveWorkoutMiddleware } from './workout-form/WorkoutFormMiddleware';
 import workoutFormReducer from './workout-form/WorkoutFormSlice';
@@ -9,6 +10,7 @@ export const store = configureStore({
         workoutForm: workoutFormReducer,
         user: userReducer,
         workoutTemplateForm: workoutTemplateFormReducer,
+        signupForm: signupFormReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(saveWorkoutMiddleware),
 });
