@@ -3,8 +3,8 @@ import { request } from '../client';
 import { ILoginResponse } from './interfaces/login-response';
 import { ConfirmSignupCodeDto } from './interfaces/requests/confirm-signup-code-dto';
 import { LoginRequestDto } from './interfaces/requests/login-request-dto';
-import { SendSignupCodeDto } from './interfaces/requests/send-signup-code-dto';
 import { SignupRequestDto } from './interfaces/requests/signup-request-dto';
+import { SendSignupCodeDto } from './interfaces/requests/verify-email-dto';
 import { AuthEndpoints } from './login-endpoints';
 
 const REFRESH_TOKEN_STORAGE_KEY = 'refresh-token';

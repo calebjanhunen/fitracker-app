@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useSendSignupCode } from 'src/hooks/auth/useSendSignupCode';
+import { useVerifyEmail } from 'src/hooks/auth/useVerifyEmail';
 import { updateEmail } from 'src/redux/signup-form/SignupFormSlice';
 import { H3, Input, SizableText, Spinner, View } from 'tamagui';
 
@@ -11,7 +11,7 @@ export default function EnterEmail() {
     const [email, setEmail] = useState<string>('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { sendCode, isLoading, error } = useSendSignupCode(onSendCodeSuccess);
+    const { sendCode, isLoading, error } = useVerifyEmail(onSendCodeSuccess);
 
     function onSendCodeSuccess() {
         dispatch(updateEmail(email));
