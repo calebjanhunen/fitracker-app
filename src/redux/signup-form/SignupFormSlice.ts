@@ -5,7 +5,7 @@ const initialState: ISignupForm = {
     email: '',
     firstName: '',
     lastName: '',
-    birthday: new Date(),
+    birthday: null,
     username: '',
     password: '',
     confirmPassword: '',

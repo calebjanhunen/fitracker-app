@@ -75,7 +75,7 @@ export async function refreshToken(): Promise<string> {
 export async function sendSignupCode(sendSignupCodeDto: SendSignupCodeDto): Promise<void> {
     await request<SendSignupCodeDto, null>({
         method: 'POST',
-        url: AuthEndpoints.sendSignupCode(),
+        url: AuthEndpoints.verifyEmail(),
         data: sendSignupCodeDto,
     });
 }

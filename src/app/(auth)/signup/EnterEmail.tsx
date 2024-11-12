@@ -1,11 +1,22 @@
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { H3, Input, SizableText, useTheme, View } from 'tamagui';
+import { useSendSignupCode } from 'src/hooks/auth/useSendSignupCode';
+import { updateEmail } from 'src/redux/signup-form/SignupFormSlice';
+import { H3, Input, SizableText, Spinner, View } from 'tamagui';
 
 export default function EnterEmail() {
     const [email, setEmail] = useState<string>('');
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const { sendCode, isLoading, error } = useSendSignupCode(onSendCodeSuccess);
+
+    function onSendCodeSuccess() {
+        dispatch(updateEmail(email));
+        router.push('/signup/EnterCode');
+    }
 
     return (
         <ScreenViewWithKeyboard>
@@ -24,11 +35,19 @@ export default function EnterEmail() {
                     autoCapitalize='none'
                     marginBottom='$space.4'
                 />
-                <Link href='/signup/EnterCode' asChild>
-                    <Button backgroundColor='$blue6' color='$blue10'>
-                        Next
-                    </Button>
-                </Link>
+                <Button
+                    onPress={() => sendCode({ email })}
+                    backgroundColor='$blue6'
+                    color='$blue10'
+                    disabled={!email || isLoading}
+                >
+                    {isLoading ? <Spinner /> : 'Next'}
+                </Button>
+                {error && (
+                    <SizableText textAlign='center' color='$red10'>
+                        {error.message}
+                    </SizableText>
+                )}
             </View>
         </ScreenViewWithKeyboard>
     );

@@ -3,6 +3,6 @@ export const AuthEndpoints = {
     logout: () => '/auth/logout',
     signup: () => '/auth/signup',
     refreshToken: () => '/auth/refresh',
-    sendSignupCode: () => '/auth/send-signup-code',
+    verifyEmail: () => '/auth/verify-email',
     confirmSignupCode: () => '/auth/confirm-signup-code',
 };
