@@ -4,7 +4,8 @@ import { ILoginResponse } from './interfaces/login-response';
 import { ConfirmSignupCodeDto } from './interfaces/requests/confirm-signup-code-dto';
 import { LoginRequestDto } from './interfaces/requests/login-request-dto';
 import { SignupRequestDto } from './interfaces/requests/signup-request-dto';
-import { SendSignupCodeDto } from './interfaces/requests/verify-email-dto';
+import { VerifyEmailDto } from './interfaces/requests/verify-email-dto';
+import { ISignupResponse } from './interfaces/signup-response';
 import { AuthEndpoints } from './login-endpoints';
 
 const REFRESH_TOKEN_STORAGE_KEY = 'refresh-token';
@@ -27,28 +28,14 @@ export async function logout(): Promise<void> {
     await SecureStore.deleteItemAsync(REFRESH_TOKEN_STORAGE_KEY);
 }
 
-export async function signup(
-    username: string,
-    password: string,
-    confirmPassword: string,
-    email: string,
-    firstName: string,
-    lastName: string
-): Promise<string> {
-    const response = await request<SignupRequestDto, ILoginResponse>({
+export async function signup(signupDto: SignupRequestDto): Promise<ISignupResponse> {
+    const response = await request<SignupRequestDto, ISignupResponse & { refreshToken: string }>({
         method: 'POST',
         url: AuthEndpoints.signup(),
-        data: {
-            username,
-            password,
-            confirmPassword,
-            email,
-            firstName,
-            lastName,
-        },
+        data: signupDto,
     });
     SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
-    return response.accessToken;
+    return response;
 }
 
 export async function refreshToken(): Promise<string> {
@@ -72,8 +59,8 @@ export async function refreshToken(): Promise<string> {
     return response.accessToken;
 }
 
-export async function sendSignupCode(sendSignupCodeDto: SendSignupCodeDto): Promise<void> {
-    await request<SendSignupCodeDto, null>({
+export async function sendSignupCode(sendSignupCodeDto: VerifyEmailDto): Promise<void> {
+    await request<VerifyEmailDto, null>({
         method: 'POST',
         url: AuthEndpoints.verifyEmail(),
         data: sendSignupCodeDto,
@@ -81,7 +68,7 @@ export async function sendSignupCode(sendSignupCodeDto: SendSignupCodeDto): Prom
 }
 
 export async function confirmSignupCode(confirmSignupCodeDto: ConfirmSignupCodeDto): Promise<void> {
-    await request<SendSignupCodeDto, null>({
+    await request<VerifyEmailDto, null>({
         method: 'POST',
         url: AuthEndpoints.confirmSignupCode(),
         data: confirmSignupCodeDto,

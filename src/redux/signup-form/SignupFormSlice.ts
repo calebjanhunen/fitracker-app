@@ -38,10 +38,18 @@ const signupFormSlice = createSlice({
             state.password = password;
             state.confirmPassword = confirmPassword;
         },
+        clearSignupForm: (state) => {
+            state = initialState;
+        },
     },
 });
 
-export const { updateEmail, updateAccountInfo, updateUsernameAndPassword, updateCodeVerified } =
-    signupFormSlice.actions;
+export const {
+    updateEmail,
+    updateAccountInfo,
+    updateUsernameAndPassword,
+    updateCodeVerified,
+    clearSignupForm,
+} = signupFormSlice.actions;
 
 export default signupFormSlice.reducer;

@@ -1,13 +1,28 @@
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { Button, H3, Input, ScrollView, SizableText, View, XStack, YStack } from 'tamagui';
+import { useSignup } from 'src/hooks/auth/useSignup';
+import { RootState } from 'src/redux/Store';
+import { H3, Input, ScrollView, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
 
 export default function EnterUsernameAndPassword() {
     const [username, setUserName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [dispPasswordReq, setDispPasswordReq] = useState<boolean>(false);
+    const { signup, isLoading, error: signupError } = useSignup(onSignupSuccess);
+    const router = useRouter();
+    const signupForm = useSelector((state: RootState) => state.signupForm);
+
+    async function onSignupSuccess() {
+        router.replace('/workout-tracker');
+    }
+
+    function onSignupPress() {
+        signup({ ...signupForm, username, password, confirmPassword });
+    }
 
     return (
         <ScreenViewWithKeyboard>
@@ -19,6 +34,7 @@ export default function EnterUsernameAndPassword() {
                         onChangeText={setUserName}
                         size='$5'
                         inputMode='text'
+                        autoCapitalize='none'
                     />
                     <Input
                         onFocus={() => {
@@ -48,11 +64,20 @@ export default function EnterUsernameAndPassword() {
                         textContentType='newPassword'
                     />
                 </YStack>
-                <Link href='/signup/EnterLoginInfo' asChild>
-                    <Button backgroundColor='$blue6' color='$blue10'>
-                        Create Account
-                    </Button>
-                </Link>
+                <Button
+                    onPress={onSignupPress}
+                    backgroundColor='$blue6'
+                    color='$blue10'
+                    marginBottom='$space.3'
+                    disabled={!username || !password || !confirmPassword || isLoading}
+                >
+                    {isLoading ? <Spinner /> : 'Create Account'}
+                </Button>
+                {signupError && (
+                    <SizableText color='$red10' textAlign='center'>
+                        {signupError.message}
+                    </SizableText>
+                )}
             </ScrollView>
         </ScreenViewWithKeyboard>
     );
