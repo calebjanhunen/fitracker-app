@@ -6,4 +6,5 @@ export interface ISignupForm {
     username: string;
     password: string;
     confirmPassword: string;
+    isCodeVerified: boolean;
 }

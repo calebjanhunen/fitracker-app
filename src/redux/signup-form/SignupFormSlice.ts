@@ -9,6 +9,7 @@ const initialState: ISignupForm = {
     username: '',
     password: '',
     confirmPassword: '',
+    isCodeVerified: false,
 };
 
 const signupFormSlice = createSlice({
@@ -17,6 +18,9 @@ const signupFormSlice = createSlice({
     reducers: {
         updateEmail: (state, action: PayloadAction<string>) => {
             state.email = action.payload;
+        },
+        updateCodeVerified: (state) => {
+            state.isCodeVerified = true;
         },
         updateAccountInfo: (
             state,
@@ -39,7 +43,7 @@ const signupFormSlice = createSlice({
     },
 });
 
-export const { updateEmail, updateAccountInfo, updateUsernameAndPassword } =
+export const { updateEmail, updateAccountInfo, updateUsernameAndPassword, updateCodeVerified } =
     signupFormSlice.actions;
 
 export default signupFormSlice.reducer;
