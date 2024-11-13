@@ -5,7 +5,6 @@ const initialState: ISignupForm = {
     email: '',
     firstName: '',
     lastName: '',
-    birthday: null,
     username: '',
     password: '',
     confirmPassword: '',
@@ -24,12 +23,11 @@ const signupFormSlice = createSlice({
         },
         updateAccountInfo: (
             state,
-            action: PayloadAction<{ firstName: string; lastName: string; birthday: Date }>
+            action: PayloadAction<{ firstName: string; lastName: string }>
         ) => {
-            const { firstName, lastName, birthday } = action.payload;
+            const { firstName, lastName } = action.payload;
             state.firstName = firstName;
             state.lastName = lastName;
-            state.birthday = birthday;
         },
         updateUsernameAndPassword: (
             state,
