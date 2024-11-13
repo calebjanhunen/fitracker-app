@@ -31,7 +31,7 @@ export default function AuthHome() {
                     />
                 </XStack>
                 <YStack gap='$space.4'>
-                    <Link href='/signup/EnterEmail' asChild>
+                    <Link href='/signup' asChild>
                         <Button backgroundColor='$blue10' color='white'>
                             Create New Account
                         </Button>

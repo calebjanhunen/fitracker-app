@@ -7,7 +7,9 @@ export default function ScreenViewWithKeyboard({ children }: { children: React.R
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.val }}>
-                <View paddingHorizontal='$space.5'>{children}</View>
+                <View paddingHorizontal='$space.5' flex={1}>
+                    {children}
+                </View>
             </SafeAreaView>
         </TouchableWithoutFeedback>
     );

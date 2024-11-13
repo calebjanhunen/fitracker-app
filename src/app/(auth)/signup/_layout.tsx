@@ -13,6 +13,7 @@ export default function SignupLayout() {
                     headerTitle: '',
                     headerStyle: { backgroundColor: theme.background.val },
                 }}
+                initialRouteName='EnterEmail'
             >
                 <Stack.Screen name='EnterEmail' />
                 <Stack.Screen name='EnterCode' />
