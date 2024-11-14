@@ -3,8 +3,8 @@ import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
 import { Dimensions, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
-import { WORKOUT_FORM_STORAGE_KEY } from 'src/redux/workout-form/WorkoutFormMiddleware';
 import { loadWorkoutOnRender } from 'src/redux/workout-form/WorkoutFormSlice';
 
 const { width, height } = Dimensions.get('window');
@@ -14,7 +14,7 @@ export default function AppLayout() {
     const { getFromStorage } = useLocalStorage();
 
     useEffect(() => {
-        getFromStorage(WORKOUT_FORM_STORAGE_KEY)
+        getFromStorage(LocalStorageKeys.workoutForm)
             .then((result) => {
                 if (result) {
                     dispatch(loadWorkoutOnRender(JSON.parse(result)));

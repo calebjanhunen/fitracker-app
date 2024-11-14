@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 
 interface IWorkoutInProgressContext {
@@ -11,14 +12,12 @@ const WorkoutInProgressContext = createContext<IWorkoutInProgressContext>({
     setWorkoutInProgress: () => {},
 });
 
-const IS_WORKOUT_IN_PROGRESS_STORAGE_KEY = 'is-workout-in-progress';
-
 export default function WorkoutInProgressProvider({ children }: { children: React.ReactNode }) {
     const [isWorkoutInProgress, setIsWorkoutInProgress] = useState<boolean>(false);
     const { saveToStorage, getFromStorage, removeFromStorage } = useLocalStorage();
 
     useEffect(() => {
-        getFromStorage(IS_WORKOUT_IN_PROGRESS_STORAGE_KEY)
+        getFromStorage(LocalStorageKeys.isWorkoutInProgress)
             .then((response) => {
                 if (response) {
                     setIsWorkoutInProgress(true);
@@ -29,11 +28,11 @@ export default function WorkoutInProgressProvider({ children }: { children: Reac
 
     async function setWorkoutInProgress(val: boolean) {
         if (val) {
-            await saveToStorage(IS_WORKOUT_IN_PROGRESS_STORAGE_KEY, 'true');
+            await saveToStorage(LocalStorageKeys.isWorkoutInProgress, 'true');
             setIsWorkoutInProgress(true);
         } else {
             setIsWorkoutInProgress(false);
-            await removeFromStorage(IS_WORKOUT_IN_PROGRESS_STORAGE_KEY);
+            await removeFromStorage(LocalStorageKeys.isWorkoutInProgress);
         }
     }
 

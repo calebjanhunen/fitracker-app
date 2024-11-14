@@ -10,14 +10,14 @@ import { AuthEndpoints } from './login-endpoints';
 
 const REFRESH_TOKEN_STORAGE_KEY = 'refresh-token';
 
-export async function login(loginForm: LoginRequestDto): Promise<string> {
-    const response = await request<LoginRequestDto, ILoginResponse>({
+export async function login(loginForm: LoginRequestDto): Promise<ILoginResponse> {
+    const response = await request<LoginRequestDto, ILoginResponse & { refreshToken: string }>({
         method: 'POST',
         url: AuthEndpoints.login(),
         data: loginForm,
     });
     SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
-    return response.accessToken;
+    return response;
 }
 
 export async function logout(): Promise<void> {
@@ -38,13 +38,13 @@ export async function signup(signupDto: SignupRequestDto): Promise<ISignupRespon
     return response;
 }
 
-export async function refreshToken(): Promise<string> {
+export async function refreshToken(): Promise<ILoginResponse> {
     const refreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
     if (!refreshToken) {
         throw new Error('No refresh token');
     }
 
-    const response = await request<null, ILoginResponse>({
+    const response = await request<null, ILoginResponse & { refreshToken: string }>({
         method: 'POST',
         url: '/auth/refresh',
         headers: {
@@ -56,7 +56,7 @@ export async function refreshToken(): Promise<string> {
     }
 
     SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
-    return response.accessToken;
+    return response;
 }
 
 export async function sendSignupCode(sendSignupCodeDto: VerifyEmailDto): Promise<void> {

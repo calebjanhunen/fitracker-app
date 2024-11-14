@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 
 interface IUseLocalStorage {
     saveToStorage: (key: string, value: string) => Promise<void>;
     getFromStorage: (key: string) => Promise<string | null>;
     removeFromStorage: (key: string) => Promise<void>;
+    clearStorage: () => Promise<void>;
 }
 
 export function useLocalStorage(): IUseLocalStorage {
@@ -19,5 +21,10 @@ export function useLocalStorage(): IUseLocalStorage {
         await AsyncStorage.removeItem(key);
     }
 
-    return { saveToStorage, getFromStorage, removeFromStorage };
+    async function clearStorage(): Promise<void> {
+        const localStorageKeys = Object.values(LocalStorageKeys);
+        await AsyncStorage.multiRemove(localStorageKeys);
+    }
+
+    return { saveToStorage, getFromStorage, removeFromStorage, clearStorage };
 }
