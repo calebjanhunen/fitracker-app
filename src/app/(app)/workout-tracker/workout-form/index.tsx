@@ -12,13 +12,13 @@ import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreat
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import EditExerciseModal from 'src/components/workout-tracker/common/EditExerciseModal';
 import WorkoutFormExercise from 'src/components/workout-tracker/workout-form/WorkoutFormExercise';
+import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { useCreateWorkout } from 'src/hooks/workout-tracker/useCreateWorkout';
 import { useStopwatch } from 'src/hooks/workout-tracker/useStopwatch';
 import { RootState } from 'src/redux/Store';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
-import { WORKOUT_FORM_STORAGE_KEY } from 'src/redux/workout-form/WorkoutFormMiddleware';
 import {
     clearWorkout,
     reorderExercises,
@@ -57,7 +57,7 @@ export default function WorkoutForm() {
     );
 
     function resetWorkout() {
-        removeFromStorage(WORKOUT_FORM_STORAGE_KEY)
+        removeFromStorage(LocalStorageKeys.workoutForm)
             .then(() => {
                 dispatch(clearWorkout());
             })

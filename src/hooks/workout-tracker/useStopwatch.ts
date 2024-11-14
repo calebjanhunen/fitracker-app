@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { useLocalStorage } from '../common/useLocalStorage';
 
 interface IUseStopwatch {
     elapsedTime: number;
     clearStopwatch: () => void;
 }
-const START_TIME_STORAGE_KEY = 'stopwatch-start-time';
 
 export function useStopwatch(): IUseStopwatch {
     const [elapsedTime, setElapsedTime] = useState<number>(0);
@@ -31,13 +31,13 @@ export function useStopwatch(): IUseStopwatch {
     }, []);
 
     async function startStopwatch() {
-        const startTimeFromStorage = await getFromStorage(START_TIME_STORAGE_KEY);
+        const startTimeFromStorage = await getFromStorage(LocalStorageKeys.startTime);
 
         if (startTimeFromStorage) {
             startTime.current = parseInt(startTimeFromStorage);
         } else {
             startTime.current = Date.now();
-            await saveToStorage(START_TIME_STORAGE_KEY, startTime.current.toString());
+            await saveToStorage(LocalStorageKeys.startTime, startTime.current.toString());
         }
 
         intervalRef.current = setInterval(() => {
@@ -50,7 +50,7 @@ export function useStopwatch(): IUseStopwatch {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
         }
-        await removeFromStorage(START_TIME_STORAGE_KEY);
+        await removeFromStorage(LocalStorageKeys.startTime);
         setElapsedTime(0);
         startTime.current = 0;
     }
