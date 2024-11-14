@@ -39,24 +39,29 @@ export async function signup(signupDto: SignupRequestDto): Promise<ISignupRespon
 }
 
 export async function refreshToken(): Promise<ILoginResponse> {
-    const refreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
-    if (!refreshToken) {
-        throw new Error('No refresh token');
-    }
+    try {
+        const refreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
+        if (!refreshToken) {
+            throw new Error('No refresh token');
+        }
 
-    const response = await request<null, ILoginResponse & { refreshToken: string }>({
-        method: 'POST',
-        url: '/auth/refresh',
-        headers: {
-            'X-Refresh-Token': refreshToken,
-        },
-    });
-    if (!response) {
-        throw new Error('No response');
-    }
+        const response = await request<null, ILoginResponse & { refreshToken: string }>({
+            method: 'POST',
+            url: '/auth/refresh',
+            headers: {
+                'X-Refresh-Token': refreshToken,
+            },
+        });
+        if (!response) {
+            throw new Error('No response');
+        }
 
-    SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
-    return response;
+        SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
+        return response;
+    } catch (e) {
+        await SecureStore.deleteItemAsync(REFRESH_TOKEN_STORAGE_KEY);
+        throw e;
+    }
 }
 
 export async function sendSignupCode(sendSignupCodeDto: VerifyEmailDto): Promise<void> {

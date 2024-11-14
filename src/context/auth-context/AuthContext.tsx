@@ -26,9 +26,14 @@ const AuthContext = createContext<IAuthContext>({
 export function AuthProvider({ children }: Props) {
     const router = useRouter();
     const [accessToken, setAccessToken] = useState<string | null>(null);
-    const { refreshToken } = useRefreshToken((accessToken) => {
-        setAccessToken(accessToken);
-    });
+    const { refreshToken } = useRefreshToken(
+        (accessToken) => {
+            setAccessToken(accessToken);
+        },
+        () => {
+            setAccessToken(null);
+        }
+    );
 
     useEffect(() => {
         const requestInterceptor = setupRequestInterceptor(accessToken);

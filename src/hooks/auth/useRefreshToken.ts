@@ -12,7 +12,10 @@ interface IUseRefreshToken {
     refreshToken: () => void;
 }
 
-export function useRefreshToken(onSuccess: (accessToken: string) => void): IUseRefreshToken {
+export function useRefreshToken(
+    onSuccess: (accessToken: string) => void,
+    onErrorCallback: () => void
+): IUseRefreshToken {
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -29,6 +32,7 @@ export function useRefreshToken(onSuccess: (accessToken: string) => void): IUseR
         },
         onError: (e) => {
             router.replace('/(auth)');
+            onErrorCallback();
         },
     });
 
