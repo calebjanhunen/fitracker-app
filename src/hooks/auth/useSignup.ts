@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
+import { IAuthenticationResponse } from 'src/api/auth-service/interfaces/authentication-response';
 import { SignupRequestDto } from 'src/api/auth-service/interfaces/requests/signup-request-dto';
-import { ISignupResponse } from 'src/api/auth-service/interfaces/signup-response';
 import * as AuthApi from 'src/api/auth-service/login-service';
 import { IErrorResponse } from 'src/api/client';
 import { useAuth } from 'src/context/auth-context/AuthContext';
@@ -22,9 +22,9 @@ export function useSignup(onSuccessCallback: () => void): IUseSignup {
         mutate: signup,
         isPending: isLoading,
         error,
-    } = useMutation<ISignupResponse, IErrorResponse, SignupRequestDto>({
+    } = useMutation<IAuthenticationResponse, IErrorResponse, SignupRequestDto>({
         mutationFn: AuthApi.signup,
-        onSuccess: (response: ISignupResponse) => {
+        onSuccess: (response: IAuthenticationResponse) => {
             setAccessToken(response.accessToken);
             dispatch(setUser(response.user));
             onSuccessCallback();
