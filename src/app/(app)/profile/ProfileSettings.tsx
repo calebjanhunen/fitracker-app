@@ -1,16 +1,23 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useAuth } from 'src/context/auth-context/AuthContext';
+import { useLogout } from 'src/hooks/auth/useLogout';
 import { RootState } from 'src/redux/Store';
 import { SizableText, useTheme, View, XStack } from 'tamagui';
 
 export default function ProfileSettings() {
     const user = useSelector((state: RootState) => state.user);
-    const { logout } = useAuth();
     const theme = useTheme();
+    const { logout } = useLogout();
+
+    function onLogoutPress() {
+        Alert.alert('Are you sure you want to logout?', '', [
+            { text: 'Logout', style: 'destructive', onPress: () => logout() },
+            { text: 'Cancel', style: 'cancel' },
+        ]);
+    }
 
     return (
         <View flex={1} backgroundColor={theme.background.val}>
@@ -51,7 +58,7 @@ export default function ProfileSettings() {
                     backgroundColor: theme.gray4.val,
                     marginBottom: 12,
                 }}
-                onPress={logout}
+                onPress={onLogoutPress}
             >
                 <SizableText color={theme.red10.val} size='$5' textAlign='center' fontWeight='bold'>
                     Logout

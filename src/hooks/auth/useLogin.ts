@@ -27,7 +27,7 @@ export function useLogin(): IUseLogin {
         mutationFn: AuthApi.login,
         onSuccess: (response) => {
             dispatch(setUser(response.user));
-            router.replace('/(workout-tracker');
+            router.replace('/workout-tracker');
             setAccessToken(response.accessToken);
         },
     });
