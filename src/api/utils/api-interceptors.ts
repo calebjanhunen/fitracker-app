@@ -33,9 +33,9 @@ export function setupResponseInterceptor(
                 originalRequest._retry = true;
 
                 try {
-                    const accessToken = await AuthApi.refreshToken();
-                    updateAccessToken(accessToken);
-                    originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                    const response = await AuthApi.refreshToken();
+                    updateAccessToken(response.accessToken);
+                    originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
                     return apiClient(originalRequest);
                 } catch (e) {
                     handleRefreshError();
