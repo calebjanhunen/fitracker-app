@@ -67,10 +67,12 @@ export async function sendSignupCode(sendSignupCodeDto: VerifyEmailDto): Promise
     });
 }
 
-export async function confirmSignupCode(confirmSignupCodeDto: ConfirmSignupCodeDto): Promise<void> {
+export async function confirmEmailVerificationCode(
+    confirmSignupCodeDto: ConfirmSignupCodeDto
+): Promise<void> {
     await request<VerifyEmailDto, null>({
         method: 'POST',
-        url: AuthEndpoints.confirmSignupCode(),
+        url: AuthEndpoints.confirmEmailVerificationCode(),
         data: confirmSignupCodeDto,
     });
 }
