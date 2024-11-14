@@ -38,14 +38,14 @@ export async function signup(signupDto: SignupRequestDto): Promise<ISignupRespon
     return response;
 }
 
-export async function refreshToken(): Promise<ILoginResponse> {
+export async function refreshToken(): Promise<ISignupResponse> {
     try {
         const refreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
         if (!refreshToken) {
             throw new Error('No refresh token');
         }
 
-        const response = await request<null, ILoginResponse & { refreshToken: string }>({
+        const response = await request<null, ISignupResponse & { refreshToken: string }>({
             method: 'POST',
             url: '/auth/refresh',
             headers: {
