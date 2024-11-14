@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useConfirmCode } from 'src/hooks/auth/useConfirmCode';
+import { useConfirmEmailVerificationCode } from 'src/hooks/auth/useConfirmEmailVerificationCode';
 import { updateCodeVerified } from 'src/redux/signup-form/SignupFormSlice';
 import { RootState } from 'src/redux/Store';
 import { H3, Input, SizableText } from 'tamagui';
 
 export default function EnterCode() {
-    const { confirmCode, isLoading, error } = useConfirmCode(onSuccess);
+    const { confirmCode, isLoading, error } = useConfirmEmailVerificationCode(onSuccess);
     const dispatch = useDispatch();
     const signupForm = useSelector((state: RootState) => state.signupForm);
     const router = useRouter();

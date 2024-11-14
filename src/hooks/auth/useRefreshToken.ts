@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
-import { ILoginResponse } from 'src/api/auth-service/interfaces/login-response';
+import { IAuthenticationResponse } from 'src/api/auth-service/interfaces/authentication-response';
 import * as AuthApi from 'src/api/auth-service/login-service';
 import { IErrorResponse } from 'src/api/client';
 import { setUser } from 'src/redux/user/UserSlice';
@@ -12,7 +12,10 @@ interface IUseRefreshToken {
     refreshToken: () => void;
 }
 
-export function useRefreshToken(onSuccess: (accessToken: string) => void): IUseRefreshToken {
+export function useRefreshToken(
+    onSuccess: (accessToken: string) => void,
+    onErrorCallback: () => void
+): IUseRefreshToken {
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -20,7 +23,7 @@ export function useRefreshToken(onSuccess: (accessToken: string) => void): IUseR
         mutate: refreshToken,
         isPending,
         error,
-    } = useMutation<ILoginResponse, IErrorResponse>({
+    } = useMutation<IAuthenticationResponse, IErrorResponse>({
         mutationFn: AuthApi.refreshToken,
         onSuccess: (response) => {
             dispatch(setUser(response.user));
@@ -29,6 +32,7 @@ export function useRefreshToken(onSuccess: (accessToken: string) => void): IUseR
         },
         onError: (e) => {
             router.replace('/(auth)');
+            onErrorCallback();
         },
     });
 

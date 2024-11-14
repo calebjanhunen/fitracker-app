@@ -97,7 +97,7 @@ export default function WorkoutTemplateModal({
                         fontWeight='bold'
                         paddingHorizontal='$2'
                         paddingVertical='$1'
-                        height='0'
+                        height='auto'
                         onPress={() => setIsModalOpen(false)}
                     >
                         <IonIcons name='close-outline' size={24} />
@@ -109,7 +109,7 @@ export default function WorkoutTemplateModal({
                         fontWeight='bold'
                         paddingHorizontal='$2'
                         paddingVertical='$1'
-                        height='0'
+                        height='auto'
                         onPress={onDeletePress}
                         backgroundColor='$red6'
                     >
