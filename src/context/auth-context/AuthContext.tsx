@@ -7,7 +7,6 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
 import { apiClient } from 'src/api/client';
 import { setupRequestInterceptor, setupResponseInterceptor } from 'src/api/utils/api-interceptors';
 import { useRefreshToken } from 'src/hooks/auth/useRefreshToken';
@@ -27,7 +26,9 @@ const AuthContext = createContext<IAuthContext>({
 export function AuthProvider({ children }: Props) {
     const router = useRouter();
     const [accessToken, setAccessToken] = useState<string | null>(null);
-    const { refreshToken } = useRefreshToken();
+    const { refreshToken } = useRefreshToken((accessToken) => {
+        setAccessToken(accessToken);
+    });
 
     useEffect(() => {
         const requestInterceptor = setupRequestInterceptor(accessToken);
