@@ -3,4 +3,4 @@ export const userEndpoints = {
     updateWeeklyWorkoutGoal: () => '/api/users',
 };
 
-export const GET_USER_BY_ID_QUERY_KEY = 'get-user-by-id';
+export const getUserByIdQueryKey = ['user', 'me'];

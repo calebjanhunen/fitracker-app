@@ -2,7 +2,14 @@
 /* eslint-disable @typescript-eslint/return-await */
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+    createContext,
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as AuthApi from 'src/api/auth-service/login-service';
@@ -19,7 +26,6 @@ interface Props {
 }
 
 interface IAuthContext {
-    login: (username: string, password: string) => Promise<void>;
     signup: (
         username: string,
         password: string,
@@ -31,14 +37,15 @@ interface IAuthContext {
     logout: () => Promise<void>;
     loading: boolean;
     errorMsg: string;
+    setAccessToken: Dispatch<SetStateAction<string | null>>;
 }
 
 const AuthContext = createContext<IAuthContext>({
-    login: async () => {},
     signup: async () => {},
     logout: async () => {},
     loading: false,
     errorMsg: '',
+    setAccessToken: () => {},
 });
 
 export function AuthProvider({ children }: Props) {
@@ -71,7 +78,7 @@ export function AuthProvider({ children }: Props) {
                 setAccessToken(accessToken);
                 router.replace('/workout-tracker');
             } catch (e) {
-                router.replace('/Signup');
+                router.replace('/(auth)');
             }
         }
 
@@ -81,21 +88,6 @@ export function AuthProvider({ children }: Props) {
             apiClient.interceptors.request.eject(responseInterceptor);
         };
     }, []);
-
-    async function login(username: string, password: string): Promise<void> {
-        setErrorMsg('');
-        setLoading(true);
-        try {
-            const accessToken = await AuthApi.login(username, password);
-            await setUserState();
-            setAccessToken(accessToken);
-            router.replace('/workout-tracker');
-        } catch (e) {
-            setErrorMsg(e.message);
-        } finally {
-            setLoading(false);
-        }
-    }
 
     async function signup(
         username: string,
@@ -127,7 +119,7 @@ export function AuthProvider({ children }: Props) {
     }
 
     async function logout(): Promise<void> {
-        router.replace('/Signup');
+        router.replace('/(auth)');
         await queryClient.invalidateQueries();
         queryClient.clear();
         dispatch(clearUser());
@@ -145,11 +137,11 @@ export function AuthProvider({ children }: Props) {
 
     function handleRefreshError() {
         setAccessToken(null);
-        router.replace('/Signup');
+        router.replace('/(auth)');
     }
 
     return (
-        <AuthContext.Provider value={{ login, signup, logout, loading, errorMsg }}>
+        <AuthContext.Provider value={{ signup, logout, loading, errorMsg, setAccessToken }}>
             {children}
         </AuthContext.Provider>
     );
