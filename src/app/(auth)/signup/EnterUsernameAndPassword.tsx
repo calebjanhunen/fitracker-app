@@ -37,10 +37,7 @@ export default function EnterUsernameAndPassword() {
                         autoCapitalize='none'
                     />
                     <Input
-                        onFocus={() => {
-                            console.log('display');
-                            setDispPasswordReq(true);
-                        }}
+                        onFocus={() => setDispPasswordReq(true)}
                         onBlur={() => setDispPasswordReq(false)}
                         placeholder='Password'
                         onChangeText={setPassword}

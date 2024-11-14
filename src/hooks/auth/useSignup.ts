@@ -25,7 +25,6 @@ export function useSignup(onSuccessCallback: () => void): IUseSignup {
     } = useMutation<ISignupResponse, IErrorResponse, SignupRequestDto>({
         mutationFn: AuthApi.signup,
         onSuccess: (response: ISignupResponse) => {
-            console.log('signup success: ', response);
             setAccessToken(response.accessToken);
             dispatch(setUser(response.user));
             onSuccessCallback();
