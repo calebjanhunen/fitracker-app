@@ -14,7 +14,7 @@ interface IUseLogin {
     login: (loginForm: LoginRequestDto) => void;
 }
 
-export function useLogin(): IUseLogin {
+export function useLogin(onErrorCallback?: (e: IErrorResponse) => void): IUseLogin {
     const router = useRouter();
     const dispatch = useDispatch();
     const { setAccessToken } = useAuth();
@@ -29,6 +29,11 @@ export function useLogin(): IUseLogin {
             dispatch(setUser(response.user));
             router.replace('/workout-tracker');
             setAccessToken(response.accessToken);
+        },
+        onError: (e) => {
+            if (onErrorCallback) {
+                onErrorCallback(e);
+            }
         },
     });
 
