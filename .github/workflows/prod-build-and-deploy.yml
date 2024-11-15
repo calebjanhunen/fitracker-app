@@ -21,7 +21,7 @@ jobs:
               run: |
                   VERSION=${{ env.VERSION }}
                   git tag "$VERSION"
-                  git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/calebjanhunen/fitracker-api.git "$VERSION"
+                  git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/calebjanhunen/fitracker-app.git "$VERSION"
 
             - name: Setup Node
               uses: actions/setup-node@v3
