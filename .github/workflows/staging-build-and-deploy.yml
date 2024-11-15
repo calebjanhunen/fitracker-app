@@ -34,4 +34,4 @@ jobs:
                   echo "VERSION=$VERSION" >> $GITHUB_ENV
 
             - name: Run build for ${{ env.VERSION }}-staging
-              run: eas build --profile preview --platform ios --auto --non-interactive
+              run: eas build --profile preview --platform ios --non-interactive --message "${{ env.VERSION }}-staging"
