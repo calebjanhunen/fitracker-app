@@ -1,4 +1,4 @@
-import { Link, useLocalSearchParams, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
@@ -7,12 +7,12 @@ import { H3, Input, SizableText, View, XStack, YStack } from 'tamagui';
 
 export default function ResetPassword() {
     const { token } = useLocalSearchParams<{ token: string }>();
-    const router = useRouter();
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [dispPasswordReq, setDispPasswordReq] = useState<boolean>(false);
-    const { resetPassword, isPending, error } = useResetPassword(() => {
-        router.replace('/login');
+    const { resetPassword, isPending, error, isSuccess } = useResetPassword(() => {
+        setPassword('');
+        setConfirmPassword('');
     });
 
     return (
@@ -25,6 +25,7 @@ export default function ResetPassword() {
                             onFocus={() => setDispPasswordReq(true)}
                             onBlur={() => setDispPasswordReq(false)}
                             placeholder='Password'
+                            value={password}
                             onChangeText={setPassword}
                             size='$5'
                             secureTextEntry
@@ -37,6 +38,7 @@ export default function ResetPassword() {
                         {dispPasswordReq && <PasswordRequirementDisplay password={password} />}
                         <Input
                             placeholder='Confirm Password'
+                            value={confirmPassword}
                             onChangeText={setConfirmPassword}
                             size='$5'
                             secureTextEntry
@@ -58,6 +60,11 @@ export default function ResetPassword() {
                     {error && (
                         <SizableText textAlign='center' color='$red10'>
                             {error.message}
+                        </SizableText>
+                    )}
+                    {isSuccess && (
+                        <SizableText color='$green10' textAlign='center'>
+                            Password successfully reset. Go back to login to login to your account.
                         </SizableText>
                     )}
                 </View>

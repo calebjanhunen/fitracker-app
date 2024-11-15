@@ -7,6 +7,7 @@ interface IUseResetPassword {
     resetPassword: (forgotPasswordDto: ResetPasswordDto) => void;
     isPending: boolean;
     error: IErrorResponse | null;
+    isSuccess: boolean;
 }
 
 export function useResetPassword(onSuccessCallback: () => void): IUseResetPassword {
@@ -14,10 +15,11 @@ export function useResetPassword(onSuccessCallback: () => void): IUseResetPasswo
         mutate: resetPassword,
         isPending,
         error,
+        isSuccess,
     } = useMutation<unknown, IErrorResponse, ResetPasswordDto>({
         mutationFn: AuthApi.resetPassword,
         onSuccess: onSuccessCallback,
     });
 
-    return { resetPassword, isPending, error };
+    return { resetPassword, isPending, error, isSuccess };
 }
