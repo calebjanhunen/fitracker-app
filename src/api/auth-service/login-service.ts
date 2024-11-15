@@ -4,6 +4,7 @@ import { IAuthenticationResponse } from './interfaces/authentication-response';
 import { ILoginResponse } from './interfaces/login-response';
 import { ConfirmSignupCodeDto } from './interfaces/requests/confirm-signup-code-dto';
 import { LoginRequestDto } from './interfaces/requests/login-request-dto';
+import { ResetPasswordDto } from './interfaces/requests/reset-password-dto';
 import { SignupRequestDto } from './interfaces/requests/signup-request-dto';
 import { VerifyEmailDto } from './interfaces/requests/verify-email-dto';
 import { AuthEndpoints } from './login-endpoints';
@@ -82,5 +83,20 @@ export async function confirmEmailVerificationCode(
         method: 'POST',
         url: AuthEndpoints.confirmEmailVerificationCode(),
         data: confirmSignupCodeDto,
+    });
+}
+
+export async function forgotPassword(forgotPasswordDto: VerifyEmailDto): Promise<void> {
+    await request<VerifyEmailDto, null>({
+        method: 'POST',
+        url: AuthEndpoints.forgotPassword(),
+        data: forgotPasswordDto,
+    });
+}
+export async function resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
+    await request<ResetPasswordDto, null>({
+        method: 'PATCH',
+        url: AuthEndpoints.resetPassword(),
+        data: resetPasswordDto,
     });
 }
