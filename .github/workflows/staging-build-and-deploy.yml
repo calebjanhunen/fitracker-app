@@ -1,10 +1,10 @@
-name: EAS - Update Production Build
+name: Build and Deploy - Staging
 
 on:
     workflow_dispatch:
 
 jobs:
-    eas_update_production:
+    build-staging:
         runs-on: ubuntu-latest
 
         steps:
