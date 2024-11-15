@@ -31,7 +31,6 @@ export function useRefreshToken(
             onSuccess(response.accessToken);
         },
         onError: (e) => {
-            router.replace('/(auth)');
             onErrorCallback();
         },
     });

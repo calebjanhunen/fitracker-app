@@ -61,7 +61,7 @@ export default function Login() {
                     </Text>
                 )}
                 <Link
-                    href='/(auth)/login'
+                    href='/login/ForgotPassword'
                     style={{ textAlign: 'center', textDecorationLine: 'underline' }}
                 >
                     Forgot Password?

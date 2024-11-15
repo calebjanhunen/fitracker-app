@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 import React, {
     createContext,
     Dispatch,
@@ -25,12 +25,17 @@ const AuthContext = createContext<IAuthContext>({
 
 export function AuthProvider({ children }: Props) {
     const router = useRouter();
+    const path = usePathname();
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const { refreshToken } = useRefreshToken(
         (accessToken) => {
             setAccessToken(accessToken);
         },
         () => {
+            // If clicking link from reset password email, don't want to redirect to login
+            if (path !== '/login/ResetPassword') {
+                router.replace('/(auth)');
+            }
             setAccessToken(null);
         }
     );
