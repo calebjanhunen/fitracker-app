@@ -1,9 +1,8 @@
 name: EAS - Update Preview Build
 
 on:
-    pull_request:
-        branches:
-            - main
+    workflow_dispatch:
+
 env:
     API_URL: ${{ secrets.PROD_API_URL }}
     APP_VARIANTs: PREVIEW
