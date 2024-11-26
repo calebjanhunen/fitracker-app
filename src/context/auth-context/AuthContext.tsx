@@ -1,4 +1,4 @@
-import { usePathname, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, {
     createContext,
     Dispatch,
@@ -17,25 +17,25 @@ interface Props {
 
 interface IAuthContext {
     setAccessToken: Dispatch<SetStateAction<string | null>>;
+    isRefreshTokenFetching: boolean;
+    status: string;
 }
 
 const AuthContext = createContext<IAuthContext>({
     setAccessToken: () => {},
+    isRefreshTokenFetching: false,
+    status: '',
 });
 
 export function AuthProvider({ children }: Props) {
     const router = useRouter();
-    const path = usePathname();
+
     const [accessToken, setAccessToken] = useState<string | null>(null);
-    const { refreshToken } = useRefreshToken(
+    const { refreshToken, isPending, status } = useRefreshToken(
         (accessToken) => {
             setAccessToken(accessToken);
         },
         () => {
-            // If clicking link from reset password email, don't want to redirect to login
-            if (path !== '/login/ResetPassword') {
-                router.replace('/(auth)');
-            }
             setAccessToken(null);
         }
     );
@@ -60,7 +60,11 @@ export function AuthProvider({ children }: Props) {
         router.replace('/(auth)');
     }
 
-    return <AuthContext.Provider value={{ setAccessToken }}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={{ setAccessToken, isRefreshTokenFetching: isPending, status }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export function useAuth() {
