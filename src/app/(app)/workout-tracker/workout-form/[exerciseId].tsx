@@ -54,7 +54,7 @@ export default function ExerciseDetails() {
         }
 
         return (
-            <View>
+            <View flex={1} paddingBottom='$space.5'>
                 <H4>History</H4>
                 <FlatList
                     data={exerciseDetails.workoutHistory}
