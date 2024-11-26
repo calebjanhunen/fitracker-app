@@ -210,7 +210,9 @@ const Exercise = memo(function Exercise({
                 <SizableText color='$gray10'>Equipment: {exercise.equipment}</SizableText>
                 <SizableText color='$gray10'>Body Part: {exercise.bodyPart}</SizableText>
             </YStack>
-            <SizableText>{exercise.numTimesUsed} uses</SizableText>
+            <SizableText>
+                {exercise.numTimesUsed} {exercise.numTimesUsed === 1 ? 'use' : 'uses'}
+            </SizableText>
         </XStack>
     );
 });
