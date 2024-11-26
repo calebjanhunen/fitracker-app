@@ -122,7 +122,7 @@ export default function AddExercisesToWorkout() {
                         fontWeight='bold'
                         paddingHorizontal='$2'
                         paddingVertical='$1'
-                        height='0'
+                        height='auto'
                         onPress={onCancelPress}
                         backgroundColor='$gray8'
                     >
