@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
 import { IAuthenticationResponse } from 'src/api/auth-service/interfaces/authentication-response';
 import * as AuthApi from 'src/api/auth-service/login-service';
@@ -10,24 +9,24 @@ interface IUseRefreshToken {
     isPending: boolean;
     error: IErrorResponse | null;
     refreshToken: () => void;
+    status: string;
 }
 
 export function useRefreshToken(
     onSuccess: (accessToken: string) => void,
     onErrorCallback: () => void
 ): IUseRefreshToken {
-    const router = useRouter();
     const dispatch = useDispatch();
 
     const {
         mutate: refreshToken,
         isPending,
         error,
+        status,
     } = useMutation<IAuthenticationResponse, IErrorResponse>({
         mutationFn: AuthApi.refreshToken,
         onSuccess: (response) => {
             dispatch(setUser(response.user));
-            router.replace('/workout-tracker');
             onSuccess(response.accessToken);
         },
         onError: (e) => {
@@ -35,5 +34,5 @@ export function useRefreshToken(
         },
     });
 
-    return { refreshToken, isPending, error };
+    return { refreshToken, isPending, error, status };
 }

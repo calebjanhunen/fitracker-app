@@ -29,27 +29,29 @@ export default function ProfileSettings() {
                     }}
                     asChild
                 >
-                    <XStack
-                        paddingHorizontal='$space.3'
-                        alignItems='center'
-                        justifyContent='space-between'
-                        marginTop='$space.3'
-                    >
-                        <XStack alignItems='center' gap='$space.2'>
-                            <IonIcons color={theme.gray12.val} name='flag-outline' size={24} />
-                            <SizableText size='$5'>Weekly Workout Goal</SizableText>
+                    <TouchableOpacity>
+                        <XStack
+                            paddingHorizontal='$space.3'
+                            alignItems='center'
+                            justifyContent='space-between'
+                            marginTop='$space.3'
+                        >
+                            <XStack alignItems='center' gap='$space.2'>
+                                <IonIcons color={theme.gray12.val} name='flag-outline' size={24} />
+                                <SizableText size='$5'>Weekly Workout Goal</SizableText>
+                            </XStack>
+                            <XStack alignItems='center' gap='$space.1'>
+                                <SizableText size='$5' color='$gray10'>
+                                    {user.weeklyWorkoutGoal ?? 0}
+                                </SizableText>
+                                <IonIcons
+                                    name='chevron-forward-outline'
+                                    size={24}
+                                    color={theme.gray10.val}
+                                />
+                            </XStack>
                         </XStack>
-                        <XStack alignItems='center' gap='$space.1'>
-                            <SizableText size='$5' color='$gray10'>
-                                {user.weeklyWorkoutGoal ?? 0}
-                            </SizableText>
-                            <IonIcons
-                                name='chevron-forward-outline'
-                                size={24}
-                                color={theme.gray10.val}
-                            />
-                        </XStack>
-                    </XStack>
+                    </TouchableOpacity>
                 </Link>
             </View>
             <TouchableOpacity
