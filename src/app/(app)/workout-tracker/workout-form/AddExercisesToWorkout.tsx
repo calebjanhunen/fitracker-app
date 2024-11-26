@@ -207,9 +207,10 @@ const Exercise = memo(function Exercise({
         >
             <YStack>
                 <H4>{exercise.name}</H4>
-                <SizableText>{exercise.bodyPart}</SizableText>
+                <SizableText color='$gray10'>Equipment: {exercise.equipment}</SizableText>
+                <SizableText color='$gray10'>Body Part: {exercise.bodyPart}</SizableText>
             </YStack>
-            <SizableText>{exercise.numTimesUsed}</SizableText>
+            <SizableText>{exercise.numTimesUsed} uses</SizableText>
         </XStack>
     );
 });
