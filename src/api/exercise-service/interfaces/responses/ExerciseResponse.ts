@@ -12,6 +12,7 @@ export interface IExerciseWithWorkoutDetailsResponse {
     id: string;
     name: string;
     bodyPart: BodyPart;
+    equipment: string;
     numTimesUsed: number;
     recentSets: IRecentSet[];
 }
