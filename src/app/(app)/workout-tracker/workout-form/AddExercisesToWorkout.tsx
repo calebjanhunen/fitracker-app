@@ -122,7 +122,7 @@ export default function AddExercisesToWorkout() {
                         fontWeight='bold'
                         paddingHorizontal='$2'
                         paddingVertical='$1'
-                        height='0'
+                        height='auto'
                         onPress={onCancelPress}
                         backgroundColor='$gray8'
                     >
@@ -207,9 +207,12 @@ const Exercise = memo(function Exercise({
         >
             <YStack>
                 <H4>{exercise.name}</H4>
-                <SizableText>{exercise.bodyPart}</SizableText>
+                <SizableText color='$gray10'>Equipment: {exercise.equipment}</SizableText>
+                <SizableText color='$gray10'>Body Part: {exercise.bodyPart}</SizableText>
             </YStack>
-            <SizableText>{exercise.numTimesUsed}</SizableText>
+            <SizableText>
+                {exercise.numTimesUsed} {exercise.numTimesUsed === 1 ? 'use' : 'uses'}
+            </SizableText>
         </XStack>
     );
 });
