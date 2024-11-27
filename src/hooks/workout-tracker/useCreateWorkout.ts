@@ -6,7 +6,6 @@ import {
     GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY,
 } from 'src/api/exercise-service/ExerciseApiConfig';
 import { queryClient } from 'src/api/react-query-client';
-import { GET_USER_BY_ID_QUERY_KEY } from 'src/api/user-service/UserApiConfig';
 import { ICreateWorkoutRequest } from 'src/api/workout-service/requests/ICreateWorkoutRequest';
 import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
 import { GET_ALL_WORKOUTS_QUERY_KEY } from 'src/api/workout-service/WorkoutApiConfig';
@@ -52,9 +51,6 @@ export function useCreateWorkout(
         onSuccess: async (response) => {
             await queryClient.invalidateQueries({
                 queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
-            });
-            await queryClient.invalidateQueries({
-                queryKey: [GET_USER_BY_ID_QUERY_KEY],
             });
             await queryClient.invalidateQueries({
                 queryKey: [GET_ALL_WORKOUTS_QUERY_KEY],
@@ -112,6 +108,7 @@ export function useCreateWorkout(
         return {
             name: workoutForm.workout.name,
             createdAt: workoutForm.workout.createdAt,
+            lastUpdatedAt: workoutForm.workout.lastUpdatedAt,
             duration,
             exercises: workoutForm.workout.exercises.map((exerciseId, index) => {
                 return {

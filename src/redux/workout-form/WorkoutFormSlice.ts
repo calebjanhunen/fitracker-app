@@ -8,6 +8,7 @@ const initialState: IWorkoutFormState = {
     workout: {
         name: '',
         createdAt: '',
+        lastUpdatedAt: '',
         exercises: [],
     },
     exercises: {},
@@ -26,7 +27,12 @@ const workoutFormSlice = createSlice({
             state.recentSets = action.payload.recentSets;
         },
         updatedCreatedAt: (state) => {
-            state.workout.createdAt = new Date().toISOString();
+            const date = new Date().toISOString();
+            state.workout.createdAt = date;
+            state.workout.lastUpdatedAt = date;
+        },
+        updateLastUpdatedAt: (state) => {
+            state.workout.lastUpdatedAt = new Date().toISOString();
         },
         updateName: (state, action: PayloadAction<string>) => {
             state.workout.name = action.payload;
@@ -220,6 +226,7 @@ export const {
     initializeWorkoutFromTemplate,
     replaceExercise,
     updateExerciseName,
+    updateLastUpdatedAt,
 } = workoutFormSlice.actions;
 
 export default workoutFormSlice.reducer;
