@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import { useAuth } from 'src/context/auth-context/AuthContext';
+import { useDispatch } from 'react-redux';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
+import { updateUsername } from 'src/redux/user/UserSlice';
 import { IErrorResponse } from '../client';
 import { queryClient } from '../react-query-client';
 import { authApiService } from '../services';
@@ -10,7 +11,8 @@ export function useLogin(
     onSuccessCallback: (username: string) => void,
     onErrorCallback?: (e: IErrorResponse) => void
 ) {
-    const { setAccessToken } = useAuth();
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     const {
         mutate: login,
@@ -19,8 +21,9 @@ export function useLogin(
     } = useMutation({
         mutationFn: authApiService.login,
         onSuccess: (response) => {
-            setAccessToken(response.accessToken);
-            onSuccessCallback(response.username);
+            dispatch(updateUsername(response.username));
+            router.replace('/workout-tracker');
+            onSuccessCallback(response.accessToken);
         },
         onError: (e) => {
             if (onErrorCallback) {
@@ -32,9 +35,8 @@ export function useLogin(
     return { login, isPending, error };
 }
 
-export function useLogout() {
+export function useLogout(onSettledCallback: () => void) {
     const router = useRouter();
-    const { setAccessToken } = useAuth();
     const { clearStorage } = useLocalStorage();
 
     const { mutate: logout, isPending } = useMutation({
@@ -42,7 +44,7 @@ export function useLogout() {
             await authApiService.logout();
         },
         onSettled: async () => {
-            setAccessToken(null);
+            onSettledCallback();
             queryClient.clear();
             await clearStorage();
             router.replace('/(auth)');
@@ -50,4 +52,29 @@ export function useLogout() {
     });
 
     return { logout, isPending };
+}
+
+export function useRefreshToken(
+    onSuccess: (accessToken: string) => void,
+    onErrorCallback: () => void
+) {
+    const dispatch = useDispatch();
+
+    const {
+        mutate: refreshToken,
+        isPending,
+        error,
+        status,
+    } = useMutation({
+        mutationFn: authApiService.refreshToken,
+        onSuccess: (response) => {
+            dispatch(updateUsername(response.username));
+            onSuccess(response.accessToken);
+        },
+        onError: (e) => {
+            onErrorCallback();
+        },
+    });
+
+    return { refreshToken, isPending, error, status };
 }

@@ -2,11 +2,10 @@ import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import fitrackerLogo from '../../../../assets/fitracker-transparent-logo.png';
 
-import { useDispatch } from 'react-redux';
 import { IErrorResponse } from 'src/api/client';
 import { useLogin } from 'src/api/hooks';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { updateUsername } from 'src/redux/user/UserSlice';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import { Button, Image, Input, Spinner, Text, XStack, YStack } from 'tamagui';
 
 export default function Login() {
@@ -15,11 +14,10 @@ export default function Login() {
     const [password, setPassword] = useState<string>('123');
     const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
     const router = useRouter();
-    const dispatch = useDispatch();
+    const { setAccessToken } = useAuth();
 
-    function onLoginSuccess(username: string) {
-        dispatch(updateUsername(username));
-        router.replace('/workout-tracker');
+    function onLoginSuccess(accessToken: string) {
+        setAccessToken(accessToken);
     }
 
     function onLoginError(e: IErrorResponse) {

@@ -4,19 +4,25 @@ import React from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useLogout } from 'src/api/hooks';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import { RootState } from 'src/redux/Store';
 import { SizableText, useTheme, View, XStack } from 'tamagui';
 
 export default function ProfileSettings() {
     const user = useSelector((state: RootState) => state.user);
     const theme = useTheme();
-    const { logout } = useLogout();
+    const { logout } = useLogout(onSettled);
+    const { setAccessToken } = useAuth();
 
     function onLogoutPress() {
         Alert.alert('Are you sure you want to logout?', '', [
             { text: 'Logout', style: 'destructive', onPress: () => logout() },
             { text: 'Cancel', style: 'cancel' },
         ]);
+    }
+
+    async function onSettled() {
+        setAccessToken(null);
     }
 
     return (

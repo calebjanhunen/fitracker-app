@@ -8,8 +8,8 @@ import React, {
     useState,
 } from 'react';
 import { apiClient } from 'src/api/client';
+import { useRefreshToken } from 'src/api/hooks';
 import { setupRequestInterceptor, setupResponseInterceptor } from 'src/api/utils/api-interceptors';
-import { useRefreshToken } from 'src/hooks/auth/useRefreshToken';
 
 interface Props {
     children: React.ReactNode;
