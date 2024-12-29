@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/return-await */
 import { InternalAxiosRequestConfig } from 'axios';
-import { AuthEndpoints } from '../auth-service/login-endpoints';
 import { apiClient } from '../client';
 import { authApiService } from '../services';
 
@@ -15,6 +14,11 @@ export function setupRequestInterceptor(accessToken: string | null) {
     );
 }
 
+const noTokenRefreshEndpoints = {
+    login: '/auth/login',
+    refreshToken: '/auth/refresh',
+};
+
 export function setupResponseInterceptor(
     updateAccessToken: (accessToken: string) => void,
     handleRefreshError: () => void
@@ -27,11 +31,9 @@ export function setupResponseInterceptor(
             if (
                 error.response?.status === 401 &&
                 !originalRequest._retry &&
-                originalRequest.url !== AuthEndpoints.refreshToken() &&
-                originalRequest.url !== AuthEndpoints.login()
+                !Object.values(noTokenRefreshEndpoints).includes(originalRequest.url)
             ) {
                 originalRequest._retry = true;
-
                 try {
                     const response = await authApiService.refreshToken();
                     updateAccessToken(response.accessToken);
