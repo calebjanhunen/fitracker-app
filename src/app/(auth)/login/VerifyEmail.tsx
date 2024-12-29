@@ -1,9 +1,11 @@
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLogin } from 'src/api/hooks';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
 import { useConfirmEmailVerificationCode } from 'src/hooks/auth/useConfirmEmailVerificationCode';
-import { useLogin } from 'src/hooks/auth/useLogin';
+import { updateUsername } from 'src/redux/user/UserSlice';
 import { H3, Input, SizableText, Spinner } from 'tamagui';
 
 export default function VerifyEmail() {
@@ -18,8 +20,10 @@ export default function VerifyEmail() {
         isLoading: isConfirmEmailCodeLoading,
         error: confirmCodeError,
     } = useConfirmEmailVerificationCode(onConfirmEmailVerificationCodeSuccess);
-    const { login, isLoading: isLoginLoading, error: loginError } = useLogin();
+    const { login, isPending: isLoginLoading, error: loginError } = useLogin(onLoginSuccess);
     const [errorMsg, setErrorMsg] = useState<string>('');
+    const router = useRouter();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (confirmCodeError) {
@@ -28,6 +32,11 @@ export default function VerifyEmail() {
             setErrorMsg(loginError.message);
         }
     }, [confirmCodeError, loginError]);
+
+    function onLoginSuccess(username: string) {
+        dispatch(updateUsername(username));
+        router.replace('/workout-tracker');
+    }
 
     function onConfirmEmailVerificationCodeSuccess() {
         login({ username, password });

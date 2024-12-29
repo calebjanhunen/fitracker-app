@@ -37,8 +37,12 @@ const userSlice = createSlice({
         updateWeeklyWorkoutGoal: (state, action: PayloadAction<number>) => {
             state.weeklyWorkoutGoal = action.payload;
         },
+        updateUsername: (state, action: PayloadAction<string>) => {
+            state.username = action.payload;
+        },
     },
 });
 
-export const { setUser, clearUser, updateTotalXP, updateWeeklyWorkoutGoal } = userSlice.actions;
+export const { setUser, clearUser, updateTotalXP, updateWeeklyWorkoutGoal, updateUsername } =
+    userSlice.actions;
 export default userSlice.reducer;
