@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/return-await */
 import { InternalAxiosRequestConfig } from 'axios';
 import { AuthEndpoints } from '../auth-service/login-endpoints';
-import * as AuthApi from '../auth-service/login-service';
 import { apiClient } from '../client';
+import { authApiService } from '../services';
 
 export function setupRequestInterceptor(accessToken: string | null) {
     return apiClient.interceptors.request.use(
@@ -33,7 +33,7 @@ export function setupResponseInterceptor(
                 originalRequest._retry = true;
 
                 try {
-                    const response = await AuthApi.refreshToken();
+                    const response = await authApiService.refreshToken();
                     updateAccessToken(response.accessToken);
                     originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
                     return apiClient(originalRequest);

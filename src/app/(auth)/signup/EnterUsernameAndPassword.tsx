@@ -1,9 +1,9 @@
-import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useSignup } from 'src/api/hooks';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useSignup } from 'src/hooks/auth/useSignup';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import { RootState } from 'src/redux/Store';
 import { H3, Input, ScrollView, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
 
@@ -13,11 +13,11 @@ export default function EnterUsernameAndPassword() {
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [dispPasswordReq, setDispPasswordReq] = useState<boolean>(false);
     const { signup, isLoading, error: signupError } = useSignup(onSignupSuccess);
-    const router = useRouter();
+    const { setAccessToken } = useAuth();
     const signupForm = useSelector((state: RootState) => state.signupForm);
 
-    async function onSignupSuccess() {
-        router.replace('/workout-tracker');
+    async function onSignupSuccess(accessToken: string) {
+        setAccessToken(accessToken);
     }
 
     function onSignupPress() {

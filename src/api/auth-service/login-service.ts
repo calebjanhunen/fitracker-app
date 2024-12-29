@@ -3,50 +3,8 @@ import { request } from '../client';
 import { IAuthenticationResponse } from './interfaces/authentication-response';
 import { ConfirmSignupCodeDto } from './interfaces/requests/confirm-signup-code-dto';
 import { ResetPasswordDto } from './interfaces/requests/reset-password-dto';
-import { SignupRequestDto } from './interfaces/requests/signup-request-dto';
 import { VerifyEmailDto } from './interfaces/requests/verify-email-dto';
 import { AuthEndpoints } from './login-endpoints';
-
-const REFRESH_TOKEN_STORAGE_KEY = 'refresh-token';
-
-export async function signup(signupDto: SignupRequestDto): Promise<IAuthenticationResponse> {
-    const response = await request<
-        SignupRequestDto,
-        IAuthenticationResponse & { refreshToken: string }
-    >({
-        method: 'POST',
-        url: AuthEndpoints.signup(),
-        data: signupDto,
-    });
-    SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
-    return response;
-}
-
-export async function refreshToken(): Promise<IAuthenticationResponse> {
-    try {
-        const refreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
-        if (!refreshToken) {
-            throw new Error('No refresh token');
-        }
-
-        const response = await request<null, IAuthenticationResponse & { refreshToken: string }>({
-            method: 'POST',
-            url: '/auth/refresh',
-            headers: {
-                'X-Refresh-Token': refreshToken,
-            },
-        });
-        if (!response) {
-            throw new Error('No response');
-        }
-
-        SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
-        return response;
-    } catch (e) {
-        await SecureStore.deleteItemAsync(REFRESH_TOKEN_STORAGE_KEY);
-        throw e;
-    }
-}
 
 export async function sendSignupCode(sendSignupCodeDto: VerifyEmailDto): Promise<void> {
     await request<VerifyEmailDto, null>({

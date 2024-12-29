@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
+import { clearSignupForm } from 'src/redux/signup-form/SignupFormSlice';
 import { updateUsername } from 'src/redux/user/UserSlice';
 import { IErrorResponse } from '../client';
 import { queryClient } from '../react-query-client';
@@ -59,6 +60,7 @@ export function useRefreshToken(
     onErrorCallback: () => void
 ) {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const {
         mutate: refreshToken,
@@ -70,6 +72,7 @@ export function useRefreshToken(
         onSuccess: (response) => {
             dispatch(updateUsername(response.username));
             onSuccess(response.accessToken);
+            router.replace('/workout-tracker');
         },
         onError: (e) => {
             onErrorCallback();
@@ -77,4 +80,23 @@ export function useRefreshToken(
     });
 
     return { refreshToken, isPending, error, status };
+}
+
+export function useSignup(onSuccessCallback: (accessToken: string) => void) {
+    const dispatch = useDispatch();
+
+    const {
+        mutate: signup,
+        isPending: isLoading,
+        error,
+    } = useMutation({
+        mutationFn: authApiService.signup,
+        onSuccess: (response) => {
+            dispatch(updateUsername(response.username));
+            onSuccessCallback(response.accessToken);
+            dispatch(clearSignupForm());
+        },
+    });
+
+    return { signup, isLoading, error };
 }
