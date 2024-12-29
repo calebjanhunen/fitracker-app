@@ -1,9 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Alert, FlatList } from 'react-native';
-import { exerciseDetailsQueryKey } from 'src/api/exercise-service/ExerciseApiConfig';
-import { getExerciseDetails } from 'src/api/exercise-service/ExerciseApiService';
+import { useGetExerciseDetails } from 'src/api/hooks';
 import { Button } from 'src/components/common/button';
 import { IconBtn } from 'src/components/common/icon-btn';
 import WorkoutHistory from 'src/components/workout-tracker/workout-form/exercise-details/WorkoutHistory';
@@ -17,15 +15,7 @@ export default function ExerciseDetails() {
         exerciseId: string;
         exerciseName: string;
     }>();
-    const {
-        data: exerciseDetails,
-        isLoading,
-        error,
-    } = useQuery({
-        queryFn: async () => await getExerciseDetails(exerciseId),
-        queryKey: exerciseDetailsQueryKey(exerciseId),
-        staleTime: Infinity,
-    });
+    const { data: exerciseDetails, isLoading, error } = useGetExerciseDetails(exerciseId);
 
     function onOpenEditExerciseModalPress() {
         if (!exerciseDetails) {

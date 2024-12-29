@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
-import { IExerciseDetailsResponse } from 'src/api/exercise-service/interfaces/responses/IExerciseWorkoutHistoryResponse';
+import { ExerciseDetailsDto } from 'src/api/generated';
 
 interface IEditExerciseModalContext {
     isModalOpen: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     routeToNavigateBackTo: string;
     setRouteToNavigateBackTo: Dispatch<SetStateAction<string>>;
-    exerciseToEdit: IExerciseDetailsResponse;
-    setExerciseToEdit: Dispatch<SetStateAction<IExerciseDetailsResponse>>;
+    exerciseToEdit: ExerciseDetailsDto;
+    setExerciseToEdit: Dispatch<SetStateAction<ExerciseDetailsDto>>;
 }
 
 const EditExerciseModalContext = createContext<IEditExerciseModalContext>(
@@ -18,8 +18,8 @@ const EditExerciseModalContext = createContext<IEditExerciseModalContext>(
 export default function EditExerciseModalProvider({ children }: { children: React.ReactNode }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [routeToNavigateBackTo, setRouteToNavigateBackTo] = useState<string>('');
-    const [exerciseToEdit, setExerciseToEdit] = useState<IExerciseDetailsResponse>(
-        {} as IExerciseDetailsResponse
+    const [exerciseToEdit, setExerciseToEdit] = useState<ExerciseDetailsDto>(
+        {} as ExerciseDetailsDto
     );
 
     return (
