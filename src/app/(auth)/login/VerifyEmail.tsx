@@ -1,10 +1,9 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLogin } from 'src/api/hooks';
+import { useConfirmEmailVerificationCode, useLogin } from 'src/api/hooks';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useConfirmEmailVerificationCode } from 'src/hooks/auth/useConfirmEmailVerificationCode';
 import { updateUsername } from 'src/redux/user/UserSlice';
 import { H3, Input, SizableText, Spinner } from 'tamagui';
 
@@ -17,7 +16,7 @@ export default function VerifyEmail() {
     const [code, setCode] = useState<string>('');
     const {
         confirmCode,
-        isLoading: isConfirmEmailCodeLoading,
+        isPending: isConfirmEmailCodeLoading,
         error: confirmCodeError,
     } = useConfirmEmailVerificationCode(onConfirmEmailVerificationCodeSuccess);
     const { login, isPending: isLoginLoading, error: loginError } = useLogin(onLoginSuccess);

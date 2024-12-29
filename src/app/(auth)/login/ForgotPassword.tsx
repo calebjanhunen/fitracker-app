@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useForgotPassword } from 'src/api/hooks';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useForgotPassword } from 'src/hooks/auth/useForgotPassword';
 import { H3, Input, SizableText, Spinner } from 'tamagui';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState<string>('');
     const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+    const [btnDisabled, setBtnDisabled] = useState(false);
     const { forgotPassword, isPending, error } = useForgotPassword(() => {
+        setBtnDisabled(true);
         setShowSuccessMessage(true);
     });
 
@@ -33,7 +35,7 @@ export default function ForgotPassword() {
                 }}
                 backgroundColor='$blue6'
                 color='$blue10'
-                disabled={!email || isPending}
+                disabled={!email || isPending || btnDisabled}
             >
                 {isPending ? <Spinner /> : 'Send Email'}
             </Button>

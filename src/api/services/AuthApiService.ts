@@ -57,7 +57,7 @@ export const authApiService = {
     async forgotPassword(request: VerifyEmailDto): Promise<void> {
         await authApi.forgotPassword(request);
     },
-    async resetPassowrd(request: ResetPasswordDto): Promise<void> {
+    async resetPassword(request: ResetPasswordDto): Promise<void> {
         await authApi.resetPassword(request);
     },
 };

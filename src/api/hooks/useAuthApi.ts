@@ -100,3 +100,56 @@ export function useSignup(onSuccessCallback: (accessToken: string) => void) {
 
     return { signup, isLoading, error };
 }
+
+export function useConfirmEmailVerificationCode(onSuccessCallback: () => void) {
+    const {
+        mutate: confirmCode,
+        isPending,
+        error,
+    } = useMutation({
+        mutationFn: authApiService.confirmEmailVerificationCode,
+        onSuccess: onSuccessCallback,
+    });
+
+    return { confirmCode, isPending, error };
+}
+
+export function useVerifyEmail(onSuccessCallback: () => void) {
+    const {
+        mutate: sendCode,
+        isPending: isLoading,
+        error,
+    } = useMutation({
+        mutationFn: authApiService.sendSignupCode,
+        onSuccess: onSuccessCallback,
+    });
+
+    return { sendCode, isLoading, error };
+}
+
+export function useForgotPassword(onSuccessCallback: () => void) {
+    const {
+        mutate: forgotPassword,
+        isPending,
+        error,
+    } = useMutation({
+        mutationFn: authApiService.forgotPassword,
+        onSuccess: onSuccessCallback,
+    });
+
+    return { forgotPassword, isPending, error };
+}
+
+export function useResetPassword(onSuccessCallback: () => void) {
+    const {
+        mutate: resetPassword,
+        isPending,
+        error,
+        isSuccess,
+    } = useMutation({
+        mutationFn: authApiService.resetPassword,
+        onSuccess: onSuccessCallback,
+    });
+
+    return { resetPassword, isPending, error, isSuccess };
+}
