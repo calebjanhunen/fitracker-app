@@ -394,6 +394,31 @@ export interface UpdateWeeklyWorkoutGoalDto {
 /**
  * 
  * @export
+ * @interface UserProfileDto
+ */
+export interface UserProfileDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserProfileDto
+     */
+    'firstName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserProfileDto
+     */
+    'lastName': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'weeklyWorkoutGoal': number;
+}
+/**
+ * 
+ * @export
  * @interface UserSignupDto
  */
 export interface UserSignupDto {
@@ -433,25 +458,6 @@ export interface UserSignupDto {
      * @memberof UserSignupDto
      */
     'lastName': string;
-}
-/**
- * 
- * @export
- * @interface UserStatsResponseDto
- */
-export interface UserStatsResponseDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof UserStatsResponseDto
-     */
-    'totalXp': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof UserStatsResponseDto
-     */
-    'weeklyWorkoutGoal': number;
 }
 /**
  * 
@@ -2049,7 +2055,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserStatsResponseDto>> {
+        async updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UsersApi.updateWeeklyWorkoutGoal']?.[localVarOperationServerIndex]?.url;
@@ -2071,7 +2077,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): AxiosPromise<UserStatsResponseDto> {
+        updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): AxiosPromise<UserProfileDto> {
             return localVarFp.updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options).then((request) => request(axios, basePath));
         },
     };
