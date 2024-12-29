@@ -3,7 +3,7 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useLogout } from 'src/hooks/auth/useLogout';
+import { useLogout } from 'src/api/hooks';
 import { RootState } from 'src/redux/Store';
 import { SizableText, useTheme, View, XStack } from 'tamagui';
 

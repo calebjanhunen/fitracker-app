@@ -1,33 +1,13 @@
 import * as SecureStore from 'expo-secure-store';
 import { request } from '../client';
 import { IAuthenticationResponse } from './interfaces/authentication-response';
-import { ILoginResponse } from './interfaces/login-response';
 import { ConfirmSignupCodeDto } from './interfaces/requests/confirm-signup-code-dto';
-import { LoginRequestDto } from './interfaces/requests/login-request-dto';
 import { ResetPasswordDto } from './interfaces/requests/reset-password-dto';
 import { SignupRequestDto } from './interfaces/requests/signup-request-dto';
 import { VerifyEmailDto } from './interfaces/requests/verify-email-dto';
 import { AuthEndpoints } from './login-endpoints';
 
 const REFRESH_TOKEN_STORAGE_KEY = 'refresh-token';
-
-export async function login(loginForm: LoginRequestDto): Promise<ILoginResponse> {
-    const response = await request<LoginRequestDto, ILoginResponse & { refreshToken: string }>({
-        method: 'POST',
-        url: AuthEndpoints.login(),
-        data: loginForm,
-    });
-    SecureStore.setItem(REFRESH_TOKEN_STORAGE_KEY, response.refreshToken);
-    return response;
-}
-
-export async function logout(): Promise<void> {
-    await request({
-        method: 'POST',
-        url: AuthEndpoints.logout(),
-    });
-    await SecureStore.deleteItemAsync(REFRESH_TOKEN_STORAGE_KEY);
-}
 
 export async function signup(signupDto: SignupRequestDto): Promise<IAuthenticationResponse> {
     const response = await request<
