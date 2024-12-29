@@ -1,9 +1,9 @@
-import { apiClient } from './client';
+import { apiClient } from '../client';
 import {
     WorkoutTemplateRequestDto,
     WorkoutTemplateResponseDto,
     WorkoutTemplatesApi,
-} from './generated';
+} from '../generated';
 
 const workoutTemplatesApi = new WorkoutTemplatesApi(undefined, undefined, apiClient);
 
