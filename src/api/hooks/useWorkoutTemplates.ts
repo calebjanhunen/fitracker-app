@@ -4,11 +4,10 @@ import { apiClient, IErrorResponse } from '../client';
 import { WorkoutTemplateRequestDto, WorkoutTemplatesApi } from '../generated';
 import { queryClient } from '../react-query-client';
 
+const workoutTemplatesApi = new WorkoutTemplatesApi(undefined, undefined, apiClient);
 export const WorkoutTemplateQueryKeys = {
     getAllWorkoutTemplates: ['workoutTemplates'],
 };
-
-const workoutTemplatesApi = new WorkoutTemplatesApi(undefined, undefined, apiClient);
 
 export function useGetAllWorkoutTemplates() {
     const { data, isLoading, error } = useQuery({
@@ -45,6 +44,27 @@ export function useCreateWorkoutTemplate(
     });
 
     return { createWorkoutTemplate, isPending, error };
+}
+
+export function useDeleteWorkoutTemplate(
+    onSuccessCallback: () => void,
+    onErrorCallback: (error: IErrorResponse) => void
+) {
+    const { mutate: deleteWorkoutTemplate, isPending } = useMutation({
+        mutationFn: workoutTemplatesApi.deleteWorkoutTemplate,
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
+            });
+            onSuccessCallback();
+        },
+        onError: (error) => {
+            // console.log(JSON.stringify(error, null, 2));
+            onErrorCallback(error);
+        },
+    });
+
+    return { deleteWorkoutTemplate, isPending };
 }
 
 function mapFromWorkoutTemplateFormToWorkoutTemplateRequest(
