@@ -4,10 +4,9 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, H2, H4, H6, Separator, SizableText, View, XStack, YStack } from 'tamagui';
 export default function PostWorkoutSummary() {
-    const { xpGainedFromWeeklyGoal, totalGainedXp } = useLocalSearchParams<{
-        xpGainedFromWeeklyGoal: string;
-        totalGainedXp: string;
-        totalUserXp: string;
+    const { totalWorkoutXp, workoutEffortXp } = useLocalSearchParams<{
+        totalWorkoutXp: string;
+        workoutEffortXp: string;
     }>();
 
     return (
@@ -37,7 +36,7 @@ export default function PostWorkoutSummary() {
                         <H4>XP gained from workout:</H4>
                         <XStack gap='$space.3'>
                             <YStack alignItems='flex-end'>
-                                <H6>Weekly Goal: </H6>
+                                <H6>Workout Effort: </H6>
                                 <Separator
                                     borderWidth='1'
                                     alignSelf='stretch'
@@ -46,14 +45,14 @@ export default function PostWorkoutSummary() {
                                 <H6>Total XP Gained: </H6>
                             </YStack>
                             <YStack alignItems='flex-end'>
-                                <H6>{xpGainedFromWeeklyGoal}</H6>
+                                <H6>{workoutEffortXp}</H6>
                                 <Separator
                                     borderWidth='1'
                                     alignSelf='stretch'
                                     borderColor='$blue10'
                                 />
 
-                                <H6>{totalGainedXp}</H6>
+                                <H6>{totalWorkoutXp}</H6>
                             </YStack>
                         </XStack>
                     </>
