@@ -43,7 +43,7 @@ export function setupResponseInterceptor(
             }
             // eslint-disable-next-line prefer-promise-reject-errors
             return Promise.reject({
-                message: error.response?.data?.message,
+                message: error.response?.data?.message ?? 'Unknown Error',
                 statusCode: error.response?.data?.statusCode,
             });
         }

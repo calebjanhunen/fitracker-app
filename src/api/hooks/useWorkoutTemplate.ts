@@ -1,20 +1,17 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { IWorkoutTemplateFormState } from 'src/redux/workout-template-form/IWorkoutTemplateForm';
-import { apiClient, IErrorResponse } from '../client';
-import { WorkoutTemplateRequestDto, WorkoutTemplatesApi } from '../generated';
+import { IErrorResponse } from '../client';
+import { WorkoutTemplateRequestDto } from '../generated';
 import { queryClient } from '../react-query-client';
+import { workoutTemplateApiService } from '../WorkoutTemplateApiService';
 
-const workoutTemplatesApi = new WorkoutTemplatesApi(undefined, undefined, apiClient);
 export const WorkoutTemplateQueryKeys = {
     getAllWorkoutTemplates: ['workoutTemplates'],
 };
 
 export function useGetAllWorkoutTemplates() {
     const { data, isLoading, error } = useQuery({
-        queryFn: async () => {
-            const response = await workoutTemplatesApi.getAllWorkoutTemplates();
-            return response.data;
-        },
+        queryFn: workoutTemplateApiService.getAllWorkoutTemplates,
         queryKey: WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
     });
 
@@ -32,7 +29,7 @@ export function useCreateWorkoutTemplate(
     } = useMutation({
         mutationFn: async (workoutTemplateForm: IWorkoutTemplateFormState) => {
             const dto = mapFromWorkoutTemplateFormToWorkoutTemplateRequest(workoutTemplateForm);
-            await workoutTemplatesApi.createWorkoutTemplate(dto);
+            await workoutTemplateApiService.createWorkoutTemplate(dto);
         },
         onSuccess: async (response) => {
             await queryClient.invalidateQueries({
@@ -51,17 +48,14 @@ export function useDeleteWorkoutTemplate(
     onErrorCallback: (error: IErrorResponse) => void
 ) {
     const { mutate: deleteWorkoutTemplate, isPending } = useMutation({
-        mutationFn: workoutTemplatesApi.deleteWorkoutTemplate,
+        mutationFn: workoutTemplateApiService.deleteWorkoutTemplate,
         onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
             });
             onSuccessCallback();
         },
-        onError: (error) => {
-            // console.log(JSON.stringify(error, null, 2));
-            onErrorCallback(error);
-        },
+        onError: onErrorCallback,
     });
 
     return { deleteWorkoutTemplate, isPending };

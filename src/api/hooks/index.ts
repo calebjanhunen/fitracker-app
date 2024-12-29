@@ -1,1 +1,1 @@
-export * from './useWorkoutTemplates';
+export * from './useWorkoutTemplate';
