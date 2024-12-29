@@ -827,9 +827,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerConfirmEmailVerificationCode: async (confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        confirmEmailVerificationCode: async (confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'confirmEmailVerificationCodeDto' is not null or undefined
-            assertParamExists('authControllerConfirmEmailVerificationCode', 'confirmEmailVerificationCodeDto', confirmEmailVerificationCodeDto)
+            assertParamExists('confirmEmailVerificationCode', 'confirmEmailVerificationCodeDto', confirmEmailVerificationCodeDto)
             const localVarPath = `/auth/confirm-email-verification-code`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -862,9 +862,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerForgotPassword: async (verifyEmailDto: VerifyEmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        forgotPassword: async (verifyEmailDto: VerifyEmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'verifyEmailDto' is not null or undefined
-            assertParamExists('authControllerForgotPassword', 'verifyEmailDto', verifyEmailDto)
+            assertParamExists('forgotPassword', 'verifyEmailDto', verifyEmailDto)
             const localVarPath = `/auth/forgotPassword`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -897,9 +897,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerLogin: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        login: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('authControllerLogin', 'xDeviceId', xDeviceId)
+            assertParamExists('login', 'xDeviceId', xDeviceId)
             const localVarPath = `/auth/login`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -932,9 +932,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerLogout: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        logout: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('authControllerLogout', 'xDeviceId', xDeviceId)
+            assertParamExists('logout', 'xDeviceId', xDeviceId)
             const localVarPath = `/auth/logout`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -971,9 +971,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerRefreshToken: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refreshToken: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('authControllerRefreshToken', 'xDeviceId', xDeviceId)
+            assertParamExists('refreshToken', 'xDeviceId', xDeviceId)
             const localVarPath = `/auth/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1010,9 +1010,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerResetPassword: async (resetPasswordDto: ResetPasswordDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        resetPassword: async (resetPasswordDto: ResetPasswordDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'resetPasswordDto' is not null or undefined
-            assertParamExists('authControllerResetPassword', 'resetPasswordDto', resetPasswordDto)
+            assertParamExists('resetPassword', 'resetPasswordDto', resetPasswordDto)
             const localVarPath = `/auth/resetPassword`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1046,11 +1046,11 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerSignup: async (xDeviceId: string, userSignupDto: UserSignupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        signup: async (xDeviceId: string, userSignupDto: UserSignupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('authControllerSignup', 'xDeviceId', xDeviceId)
+            assertParamExists('signup', 'xDeviceId', xDeviceId)
             // verify required parameter 'userSignupDto' is not null or undefined
-            assertParamExists('authControllerSignup', 'userSignupDto', userSignupDto)
+            assertParamExists('signup', 'userSignupDto', userSignupDto)
             const localVarPath = `/auth/signup`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1086,9 +1086,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerVerifyEmailOnSignup: async (verifyEmailDto: VerifyEmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        verifyEmailOnSignup: async (verifyEmailDto: VerifyEmailDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'verifyEmailDto' is not null or undefined
-            assertParamExists('authControllerVerifyEmailOnSignup', 'verifyEmailDto', verifyEmailDto)
+            assertParamExists('verifyEmailOnSignup', 'verifyEmailDto', verifyEmailDto)
             const localVarPath = `/auth/verify-email-on-signup`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1131,10 +1131,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerConfirmEmailVerificationCode(confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerConfirmEmailVerificationCode(confirmEmailVerificationCodeDto, options);
+        async confirmEmailVerificationCode(confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.confirmEmailVerificationCode(confirmEmailVerificationCodeDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerConfirmEmailVerificationCode']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.confirmEmailVerificationCode']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1143,10 +1143,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerForgotPassword(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerForgotPassword(verifyEmailDto, options);
+        async forgotPassword(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.forgotPassword(verifyEmailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerForgotPassword']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.forgotPassword']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1155,10 +1155,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerLogin(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerLogin(xDeviceId, options);
+        async login(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.login(xDeviceId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerLogin']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.login']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1167,10 +1167,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerLogout(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerLogout(xDeviceId, options);
+        async logout(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(xDeviceId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerLogout']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.logout']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1179,10 +1179,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerRefreshToken(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerRefreshToken(xDeviceId, options);
+        async refreshToken(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshToken(xDeviceId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerRefreshToken']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.refreshToken']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1191,10 +1191,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerResetPassword(resetPasswordDto: ResetPasswordDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerResetPassword(resetPasswordDto, options);
+        async resetPassword(resetPasswordDto: ResetPasswordDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.resetPassword(resetPasswordDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerResetPassword']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.resetPassword']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1204,10 +1204,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerSignup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerSignup(xDeviceId, userSignupDto, options);
+        async signup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.signup(xDeviceId, userSignupDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerSignup']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.signup']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1216,10 +1216,10 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerVerifyEmailOnSignup(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerVerifyEmailOnSignup(verifyEmailDto, options);
+        async verifyEmailOnSignup(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyEmailOnSignup(verifyEmailDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.authControllerVerifyEmailOnSignup']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.verifyEmailOnSignup']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -1238,8 +1238,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerConfirmEmailVerificationCode(confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.authControllerConfirmEmailVerificationCode(confirmEmailVerificationCodeDto, options).then((request) => request(axios, basePath));
+        confirmEmailVerificationCode(confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.confirmEmailVerificationCode(confirmEmailVerificationCodeDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1247,8 +1247,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerForgotPassword(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.authControllerForgotPassword(verifyEmailDto, options).then((request) => request(axios, basePath));
+        forgotPassword(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.forgotPassword(verifyEmailDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1256,8 +1256,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerLogin(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
-            return localVarFp.authControllerLogin(xDeviceId, options).then((request) => request(axios, basePath));
+        login(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
+            return localVarFp.login(xDeviceId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1265,8 +1265,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerLogout(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.authControllerLogout(xDeviceId, options).then((request) => request(axios, basePath));
+        logout(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.logout(xDeviceId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1274,8 +1274,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerRefreshToken(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
-            return localVarFp.authControllerRefreshToken(xDeviceId, options).then((request) => request(axios, basePath));
+        refreshToken(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
+            return localVarFp.refreshToken(xDeviceId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1283,8 +1283,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerResetPassword(resetPasswordDto: ResetPasswordDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.authControllerResetPassword(resetPasswordDto, options).then((request) => request(axios, basePath));
+        resetPassword(resetPasswordDto: ResetPasswordDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.resetPassword(resetPasswordDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1293,8 +1293,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerSignup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
-            return localVarFp.authControllerSignup(xDeviceId, userSignupDto, options).then((request) => request(axios, basePath));
+        signup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
+            return localVarFp.signup(xDeviceId, userSignupDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1302,8 +1302,8 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerVerifyEmailOnSignup(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
-            return localVarFp.authControllerVerifyEmailOnSignup(verifyEmailDto, options).then((request) => request(axios, basePath));
+        verifyEmailOnSignup(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
+            return localVarFp.verifyEmailOnSignup(verifyEmailDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1322,8 +1322,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerConfirmEmailVerificationCode(confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerConfirmEmailVerificationCode(confirmEmailVerificationCodeDto, options).then((request) => request(this.axios, this.basePath));
+    public confirmEmailVerificationCode(confirmEmailVerificationCodeDto: ConfirmEmailVerificationCodeDto, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).confirmEmailVerificationCode(confirmEmailVerificationCodeDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1333,8 +1333,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerForgotPassword(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerForgotPassword(verifyEmailDto, options).then((request) => request(this.axios, this.basePath));
+    public forgotPassword(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).forgotPassword(verifyEmailDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1344,8 +1344,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerLogin(xDeviceId: string, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerLogin(xDeviceId, options).then((request) => request(this.axios, this.basePath));
+    public login(xDeviceId: string, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).login(xDeviceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1355,8 +1355,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerLogout(xDeviceId: string, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerLogout(xDeviceId, options).then((request) => request(this.axios, this.basePath));
+    public logout(xDeviceId: string, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).logout(xDeviceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1366,8 +1366,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerRefreshToken(xDeviceId: string, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerRefreshToken(xDeviceId, options).then((request) => request(this.axios, this.basePath));
+    public refreshToken(xDeviceId: string, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).refreshToken(xDeviceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1377,8 +1377,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerResetPassword(resetPasswordDto: ResetPasswordDto, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerResetPassword(resetPasswordDto, options).then((request) => request(this.axios, this.basePath));
+    public resetPassword(resetPasswordDto: ResetPasswordDto, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).resetPassword(resetPasswordDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1389,8 +1389,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerSignup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerSignup(xDeviceId, userSignupDto, options).then((request) => request(this.axios, this.basePath));
+    public signup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).signup(xDeviceId, userSignupDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1400,8 +1400,8 @@ export class AuthApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public authControllerVerifyEmailOnSignup(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).authControllerVerifyEmailOnSignup(verifyEmailDto, options).then((request) => request(this.axios, this.basePath));
+    public verifyEmailOnSignup(verifyEmailDto: VerifyEmailDto, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).verifyEmailOnSignup(verifyEmailDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1415,79 +1415,13 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        bodyPartControllerGetAllBodyParts: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/body-parts`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication access-token required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        equipmentControllerGetAllEquipment: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/equipment`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication access-token required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {ExerciseRequestDto} exerciseRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerCreateExercise: async (exerciseRequestDto: ExerciseRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createExercise: async (exerciseRequestDto: ExerciseRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'exerciseRequestDto' is not null or undefined
-            assertParamExists('exercisesControllerCreateExercise', 'exerciseRequestDto', exerciseRequestDto)
+            assertParamExists('createExercise', 'exerciseRequestDto', exerciseRequestDto)
             const localVarPath = `/api/exercises`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1524,9 +1458,9 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerDeleteExercise: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteExercise: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('exercisesControllerDeleteExercise', 'id', id)
+            assertParamExists('deleteExercise', 'id', id)
             const localVarPath = `/api/exercises/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1560,7 +1494,73 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerGetAllExercises: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAllBodyParts: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/body-parts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication access-token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllEquipment: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/equipment`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication access-token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllExercises: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/exercises`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1594,9 +1594,9 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerGetExerciseDetails: async (exerciseId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getExerciseDetails: async (exerciseId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'exerciseId' is not null or undefined
-            assertParamExists('exercisesControllerGetExerciseDetails', 'exerciseId', exerciseId)
+            assertParamExists('getExerciseDetails', 'exerciseId', exerciseId)
             const localVarPath = `/api/exercises/{exerciseId}/details`
                 .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1630,7 +1630,7 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerGetExercisesWithWorkoutDetails: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getExercisesWithWorkoutDetails: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/exercises/workout-details`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1665,11 +1665,11 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerUpdateExercise: async (id: string, exerciseRequestDto: ExerciseRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateExercise: async (id: string, exerciseRequestDto: ExerciseRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('exercisesControllerUpdateExercise', 'id', id)
+            assertParamExists('updateExercise', 'id', id)
             // verify required parameter 'exerciseRequestDto' is not null or undefined
-            assertParamExists('exercisesControllerUpdateExercise', 'exerciseRequestDto', exerciseRequestDto)
+            assertParamExists('updateExercise', 'exerciseRequestDto', exerciseRequestDto)
             const localVarPath = `/api/exercises/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1713,36 +1713,14 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async bodyPartControllerGetAllBodyParts(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BodyPartDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.bodyPartControllerGetAllBodyParts(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.bodyPartControllerGetAllBodyParts']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async equipmentControllerGetAllEquipment(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EquipmentDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.equipmentControllerGetAllEquipment(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.equipmentControllerGetAllEquipment']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @param {ExerciseRequestDto} exerciseRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exercisesControllerCreateExercise(exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exercisesControllerCreateExercise(exerciseRequestDto, options);
+        async createExercise(exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createExercise(exerciseRequestDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.exercisesControllerCreateExercise']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.createExercise']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1751,10 +1729,10 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exercisesControllerDeleteExercise(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exercisesControllerDeleteExercise(id, options);
+        async deleteExercise(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteExercise(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.exercisesControllerDeleteExercise']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.deleteExercise']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1762,10 +1740,32 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exercisesControllerGetAllExercises(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseResponseDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exercisesControllerGetAllExercises(options);
+        async getAllBodyParts(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BodyPartDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllBodyParts(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.exercisesControllerGetAllExercises']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.getAllBodyParts']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllEquipment(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EquipmentDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllEquipment(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.getAllEquipment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllExercises(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllExercises(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.getAllExercises']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1774,10 +1774,10 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exercisesControllerGetExerciseDetails(exerciseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseDetailsDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exercisesControllerGetExerciseDetails(exerciseId, options);
+        async getExerciseDetails(exerciseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseDetailsDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getExerciseDetails(exerciseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.exercisesControllerGetExerciseDetails']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.getExerciseDetails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1785,10 +1785,10 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exercisesControllerGetExercisesWithWorkoutDetails(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseWithWorkoutDetailsDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exercisesControllerGetExercisesWithWorkoutDetails(options);
+        async getExercisesWithWorkoutDetails(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseWithWorkoutDetailsDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getExercisesWithWorkoutDetails(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.exercisesControllerGetExercisesWithWorkoutDetails']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.getExercisesWithWorkoutDetails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1798,10 +1798,10 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exercisesControllerUpdateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exercisesControllerUpdateExercise(id, exerciseRequestDto, options);
+        async updateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateExercise(id, exerciseRequestDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.exercisesControllerUpdateExercise']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.updateExercise']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -1816,28 +1816,12 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        bodyPartControllerGetAllBodyParts(options?: RawAxiosRequestConfig): AxiosPromise<Array<BodyPartDto>> {
-            return localVarFp.bodyPartControllerGetAllBodyParts(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        equipmentControllerGetAllEquipment(options?: RawAxiosRequestConfig): AxiosPromise<Array<EquipmentDto>> {
-            return localVarFp.equipmentControllerGetAllEquipment(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {ExerciseRequestDto} exerciseRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerCreateExercise(exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseResponseDto> {
-            return localVarFp.exercisesControllerCreateExercise(exerciseRequestDto, options).then((request) => request(axios, basePath));
+        createExercise(exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseResponseDto> {
+            return localVarFp.createExercise(exerciseRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1845,16 +1829,32 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerDeleteExercise(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.exercisesControllerDeleteExercise(id, options).then((request) => request(axios, basePath));
+        deleteExercise(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteExercise(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerGetAllExercises(options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseResponseDto>> {
-            return localVarFp.exercisesControllerGetAllExercises(options).then((request) => request(axios, basePath));
+        getAllBodyParts(options?: RawAxiosRequestConfig): AxiosPromise<Array<BodyPartDto>> {
+            return localVarFp.getAllBodyParts(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllEquipment(options?: RawAxiosRequestConfig): AxiosPromise<Array<EquipmentDto>> {
+            return localVarFp.getAllEquipment(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllExercises(options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseResponseDto>> {
+            return localVarFp.getAllExercises(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1862,16 +1862,16 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerGetExerciseDetails(exerciseId: string, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseDetailsDto> {
-            return localVarFp.exercisesControllerGetExerciseDetails(exerciseId, options).then((request) => request(axios, basePath));
+        getExerciseDetails(exerciseId: string, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseDetailsDto> {
+            return localVarFp.getExerciseDetails(exerciseId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerGetExercisesWithWorkoutDetails(options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseWithWorkoutDetailsDto>> {
-            return localVarFp.exercisesControllerGetExercisesWithWorkoutDetails(options).then((request) => request(axios, basePath));
+        getExercisesWithWorkoutDetails(options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseWithWorkoutDetailsDto>> {
+            return localVarFp.getExercisesWithWorkoutDetails(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1880,8 +1880,8 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exercisesControllerUpdateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseResponseDto> {
-            return localVarFp.exercisesControllerUpdateExercise(id, exerciseRequestDto, options).then((request) => request(axios, basePath));
+        updateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseResponseDto> {
+            return localVarFp.updateExercise(id, exerciseRequestDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1895,33 +1895,13 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
 export class ExercisesApi extends BaseAPI {
     /**
      * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ExercisesApi
-     */
-    public bodyPartControllerGetAllBodyParts(options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).bodyPartControllerGetAllBodyParts(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ExercisesApi
-     */
-    public equipmentControllerGetAllEquipment(options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).equipmentControllerGetAllEquipment(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {ExerciseRequestDto} exerciseRequestDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ExercisesApi
      */
-    public exercisesControllerCreateExercise(exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).exercisesControllerCreateExercise(exerciseRequestDto, options).then((request) => request(this.axios, this.basePath));
+    public createExercise(exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).createExercise(exerciseRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1931,8 +1911,8 @@ export class ExercisesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ExercisesApi
      */
-    public exercisesControllerDeleteExercise(id: string, options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).exercisesControllerDeleteExercise(id, options).then((request) => request(this.axios, this.basePath));
+    public deleteExercise(id: string, options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).deleteExercise(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1941,8 +1921,28 @@ export class ExercisesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ExercisesApi
      */
-    public exercisesControllerGetAllExercises(options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).exercisesControllerGetAllExercises(options).then((request) => request(this.axios, this.basePath));
+    public getAllBodyParts(options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).getAllBodyParts(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExercisesApi
+     */
+    public getAllEquipment(options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).getAllEquipment(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExercisesApi
+     */
+    public getAllExercises(options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).getAllExercises(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1952,8 +1952,8 @@ export class ExercisesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ExercisesApi
      */
-    public exercisesControllerGetExerciseDetails(exerciseId: string, options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).exercisesControllerGetExerciseDetails(exerciseId, options).then((request) => request(this.axios, this.basePath));
+    public getExerciseDetails(exerciseId: string, options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).getExerciseDetails(exerciseId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1962,8 +1962,8 @@ export class ExercisesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ExercisesApi
      */
-    public exercisesControllerGetExercisesWithWorkoutDetails(options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).exercisesControllerGetExercisesWithWorkoutDetails(options).then((request) => request(this.axios, this.basePath));
+    public getExercisesWithWorkoutDetails(options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).getExercisesWithWorkoutDetails(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1974,8 +1974,8 @@ export class ExercisesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ExercisesApi
      */
-    public exercisesControllerUpdateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).exercisesControllerUpdateExercise(id, exerciseRequestDto, options).then((request) => request(this.axios, this.basePath));
+    public updateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).updateExercise(id, exerciseRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1993,9 +1993,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userControllerUpdateWeeklyWorkoutGoal: async (updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateWeeklyWorkoutGoal: async (updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateWeeklyWorkoutGoalDto' is not null or undefined
-            assertParamExists('userControllerUpdateWeeklyWorkoutGoal', 'updateWeeklyWorkoutGoalDto', updateWeeklyWorkoutGoalDto)
+            assertParamExists('updateWeeklyWorkoutGoal', 'updateWeeklyWorkoutGoalDto', updateWeeklyWorkoutGoalDto)
             const localVarPath = `/api/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2042,10 +2042,10 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userControllerUpdateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserStatsResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userControllerUpdateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options);
+        async updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserStatsResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UsersApi.userControllerUpdateWeeklyWorkoutGoal']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.updateWeeklyWorkoutGoal']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -2064,8 +2064,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userControllerUpdateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): AxiosPromise<UserStatsResponseDto> {
-            return localVarFp.userControllerUpdateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options).then((request) => request(axios, basePath));
+        updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig): AxiosPromise<UserStatsResponseDto> {
+            return localVarFp.updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2084,8 +2084,8 @@ export class UsersApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public userControllerUpdateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig) {
-        return UsersApiFp(this.configuration).userControllerUpdateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options).then((request) => request(this.axios, this.basePath));
+    public updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto: UpdateWeeklyWorkoutGoalDto, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).updateWeeklyWorkoutGoal(updateWeeklyWorkoutGoalDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2103,9 +2103,9 @@ export const WorkoutTemplatesApiAxiosParamCreator = function (configuration?: Co
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutTemplateControllerCreateWorkoutTemplate: async (workoutTemplateRequestDto: WorkoutTemplateRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createWorkoutTemplate: async (workoutTemplateRequestDto: WorkoutTemplateRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'workoutTemplateRequestDto' is not null or undefined
-            assertParamExists('workoutTemplateControllerCreateWorkoutTemplate', 'workoutTemplateRequestDto', workoutTemplateRequestDto)
+            assertParamExists('createWorkoutTemplate', 'workoutTemplateRequestDto', workoutTemplateRequestDto)
             const localVarPath = `/api/workout-templates`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2142,9 +2142,9 @@ export const WorkoutTemplatesApiAxiosParamCreator = function (configuration?: Co
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutTemplateControllerDeleteWorkoutTemplate: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteWorkoutTemplate: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workoutTemplateControllerDeleteWorkoutTemplate', 'id', id)
+            assertParamExists('deleteWorkoutTemplate', 'id', id)
             const localVarPath = `/api/workout-templates/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2178,7 +2178,7 @@ export const WorkoutTemplatesApiAxiosParamCreator = function (configuration?: Co
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutTemplateControllerGetAllWorkoutTemplates: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAllWorkoutTemplates: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/workout-templates`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2222,10 +2222,10 @@ export const WorkoutTemplatesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutTemplateControllerCreateWorkoutTemplate(workoutTemplateRequestDto: WorkoutTemplateRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutTemplateResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutTemplateControllerCreateWorkoutTemplate(workoutTemplateRequestDto, options);
+        async createWorkoutTemplate(workoutTemplateRequestDto: WorkoutTemplateRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutTemplateResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkoutTemplate(workoutTemplateRequestDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutTemplatesApi.workoutTemplateControllerCreateWorkoutTemplate']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutTemplatesApi.createWorkoutTemplate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2234,10 +2234,10 @@ export const WorkoutTemplatesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutTemplateControllerDeleteWorkoutTemplate(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutTemplateControllerDeleteWorkoutTemplate(id, options);
+        async deleteWorkoutTemplate(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkoutTemplate(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutTemplatesApi.workoutTemplateControllerDeleteWorkoutTemplate']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutTemplatesApi.deleteWorkoutTemplate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2245,10 +2245,10 @@ export const WorkoutTemplatesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutTemplateControllerGetAllWorkoutTemplates(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkoutTemplateResponseDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutTemplateControllerGetAllWorkoutTemplates(options);
+        async getAllWorkoutTemplates(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkoutTemplateResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllWorkoutTemplates(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutTemplatesApi.workoutTemplateControllerGetAllWorkoutTemplates']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutTemplatesApi.getAllWorkoutTemplates']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -2267,8 +2267,8 @@ export const WorkoutTemplatesApiFactory = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutTemplateControllerCreateWorkoutTemplate(workoutTemplateRequestDto: WorkoutTemplateRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutTemplateResponseDto> {
-            return localVarFp.workoutTemplateControllerCreateWorkoutTemplate(workoutTemplateRequestDto, options).then((request) => request(axios, basePath));
+        createWorkoutTemplate(workoutTemplateRequestDto: WorkoutTemplateRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutTemplateResponseDto> {
+            return localVarFp.createWorkoutTemplate(workoutTemplateRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2276,16 +2276,16 @@ export const WorkoutTemplatesApiFactory = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutTemplateControllerDeleteWorkoutTemplate(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.workoutTemplateControllerDeleteWorkoutTemplate(id, options).then((request) => request(axios, basePath));
+        deleteWorkoutTemplate(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteWorkoutTemplate(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutTemplateControllerGetAllWorkoutTemplates(options?: RawAxiosRequestConfig): AxiosPromise<Array<WorkoutTemplateResponseDto>> {
-            return localVarFp.workoutTemplateControllerGetAllWorkoutTemplates(options).then((request) => request(axios, basePath));
+        getAllWorkoutTemplates(options?: RawAxiosRequestConfig): AxiosPromise<Array<WorkoutTemplateResponseDto>> {
+            return localVarFp.getAllWorkoutTemplates(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2304,8 +2304,8 @@ export class WorkoutTemplatesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutTemplatesApi
      */
-    public workoutTemplateControllerCreateWorkoutTemplate(workoutTemplateRequestDto: WorkoutTemplateRequestDto, options?: RawAxiosRequestConfig) {
-        return WorkoutTemplatesApiFp(this.configuration).workoutTemplateControllerCreateWorkoutTemplate(workoutTemplateRequestDto, options).then((request) => request(this.axios, this.basePath));
+    public createWorkoutTemplate(workoutTemplateRequestDto: WorkoutTemplateRequestDto, options?: RawAxiosRequestConfig) {
+        return WorkoutTemplatesApiFp(this.configuration).createWorkoutTemplate(workoutTemplateRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2315,8 +2315,8 @@ export class WorkoutTemplatesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutTemplatesApi
      */
-    public workoutTemplateControllerDeleteWorkoutTemplate(id: string, options?: RawAxiosRequestConfig) {
-        return WorkoutTemplatesApiFp(this.configuration).workoutTemplateControllerDeleteWorkoutTemplate(id, options).then((request) => request(this.axios, this.basePath));
+    public deleteWorkoutTemplate(id: string, options?: RawAxiosRequestConfig) {
+        return WorkoutTemplatesApiFp(this.configuration).deleteWorkoutTemplate(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2325,8 +2325,8 @@ export class WorkoutTemplatesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutTemplatesApi
      */
-    public workoutTemplateControllerGetAllWorkoutTemplates(options?: RawAxiosRequestConfig) {
-        return WorkoutTemplatesApiFp(this.configuration).workoutTemplateControllerGetAllWorkoutTemplates(options).then((request) => request(this.axios, this.basePath));
+    public getAllWorkoutTemplates(options?: RawAxiosRequestConfig) {
+        return WorkoutTemplatesApiFp(this.configuration).getAllWorkoutTemplates(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2344,9 +2344,9 @@ export const WorkoutsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerCreateWorkout: async (workoutRequestDto: WorkoutRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createWorkout: async (workoutRequestDto: WorkoutRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'workoutRequestDto' is not null or undefined
-            assertParamExists('workoutControllerCreateWorkout', 'workoutRequestDto', workoutRequestDto)
+            assertParamExists('createWorkout', 'workoutRequestDto', workoutRequestDto)
             const localVarPath = `/api/workouts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2383,9 +2383,9 @@ export const WorkoutsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerDeleteWorkout: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteWorkout: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workoutControllerDeleteWorkout', 'id', id)
+            assertParamExists('deleteWorkout', 'id', id)
             const localVarPath = `/api/workouts/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2419,7 +2419,7 @@ export const WorkoutsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerGetAllWorkouts: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAllWorkouts: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/workouts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2453,9 +2453,9 @@ export const WorkoutsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerGetWorkoutById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getWorkoutById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workoutControllerGetWorkoutById', 'id', id)
+            assertParamExists('getWorkoutById', 'id', id)
             const localVarPath = `/api/workouts/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2491,11 +2491,11 @@ export const WorkoutsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerUpdateWorkout: async (id: string, workoutRequestDto: WorkoutRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateWorkout: async (id: string, workoutRequestDto: WorkoutRequestDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workoutControllerUpdateWorkout', 'id', id)
+            assertParamExists('updateWorkout', 'id', id)
             // verify required parameter 'workoutRequestDto' is not null or undefined
-            assertParamExists('workoutControllerUpdateWorkout', 'workoutRequestDto', workoutRequestDto)
+            assertParamExists('updateWorkout', 'workoutRequestDto', workoutRequestDto)
             const localVarPath = `/api/workouts/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2543,10 +2543,10 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutControllerCreateWorkout(workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateWorkoutResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutControllerCreateWorkout(workoutRequestDto, options);
+        async createWorkout(workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateWorkoutResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkout(workoutRequestDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.workoutControllerCreateWorkout']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.createWorkout']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2555,10 +2555,10 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutControllerDeleteWorkout(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutControllerDeleteWorkout(id, options);
+        async deleteWorkout(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkout(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.workoutControllerDeleteWorkout']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.deleteWorkout']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2566,10 +2566,10 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutControllerGetAllWorkouts(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkoutResponseDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutControllerGetAllWorkouts(options);
+        async getAllWorkouts(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkoutResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllWorkouts(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.workoutControllerGetAllWorkouts']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.getAllWorkouts']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2578,10 +2578,10 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutControllerGetWorkoutById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutControllerGetWorkoutById(id, options);
+        async getWorkoutById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkoutById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.workoutControllerGetWorkoutById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.getWorkoutById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2591,10 +2591,10 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workoutControllerUpdateWorkout(id: string, workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutControllerUpdateWorkout(id, workoutRequestDto, options);
+        async updateWorkout(id: string, workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkout(id, workoutRequestDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.workoutControllerUpdateWorkout']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.updateWorkout']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -2613,8 +2613,8 @@ export const WorkoutsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerCreateWorkout(workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<CreateWorkoutResponseDto> {
-            return localVarFp.workoutControllerCreateWorkout(workoutRequestDto, options).then((request) => request(axios, basePath));
+        createWorkout(workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<CreateWorkoutResponseDto> {
+            return localVarFp.createWorkout(workoutRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2622,16 +2622,16 @@ export const WorkoutsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerDeleteWorkout(id: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.workoutControllerDeleteWorkout(id, options).then((request) => request(axios, basePath));
+        deleteWorkout(id: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.deleteWorkout(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerGetAllWorkouts(options?: RawAxiosRequestConfig): AxiosPromise<Array<WorkoutResponseDto>> {
-            return localVarFp.workoutControllerGetAllWorkouts(options).then((request) => request(axios, basePath));
+        getAllWorkouts(options?: RawAxiosRequestConfig): AxiosPromise<Array<WorkoutResponseDto>> {
+            return localVarFp.getAllWorkouts(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2639,8 +2639,8 @@ export const WorkoutsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerGetWorkoutById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutResponseDto> {
-            return localVarFp.workoutControllerGetWorkoutById(id, options).then((request) => request(axios, basePath));
+        getWorkoutById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutResponseDto> {
+            return localVarFp.getWorkoutById(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2649,8 +2649,8 @@ export const WorkoutsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workoutControllerUpdateWorkout(id: string, workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutResponseDto> {
-            return localVarFp.workoutControllerUpdateWorkout(id, workoutRequestDto, options).then((request) => request(axios, basePath));
+        updateWorkout(id: string, workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutResponseDto> {
+            return localVarFp.updateWorkout(id, workoutRequestDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2669,8 +2669,8 @@ export class WorkoutsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutsApi
      */
-    public workoutControllerCreateWorkout(workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig) {
-        return WorkoutsApiFp(this.configuration).workoutControllerCreateWorkout(workoutRequestDto, options).then((request) => request(this.axios, this.basePath));
+    public createWorkout(workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig) {
+        return WorkoutsApiFp(this.configuration).createWorkout(workoutRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2680,8 +2680,8 @@ export class WorkoutsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutsApi
      */
-    public workoutControllerDeleteWorkout(id: string, options?: RawAxiosRequestConfig) {
-        return WorkoutsApiFp(this.configuration).workoutControllerDeleteWorkout(id, options).then((request) => request(this.axios, this.basePath));
+    public deleteWorkout(id: string, options?: RawAxiosRequestConfig) {
+        return WorkoutsApiFp(this.configuration).deleteWorkout(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2690,8 +2690,8 @@ export class WorkoutsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutsApi
      */
-    public workoutControllerGetAllWorkouts(options?: RawAxiosRequestConfig) {
-        return WorkoutsApiFp(this.configuration).workoutControllerGetAllWorkouts(options).then((request) => request(this.axios, this.basePath));
+    public getAllWorkouts(options?: RawAxiosRequestConfig) {
+        return WorkoutsApiFp(this.configuration).getAllWorkouts(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2701,8 +2701,8 @@ export class WorkoutsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutsApi
      */
-    public workoutControllerGetWorkoutById(id: string, options?: RawAxiosRequestConfig) {
-        return WorkoutsApiFp(this.configuration).workoutControllerGetWorkoutById(id, options).then((request) => request(this.axios, this.basePath));
+    public getWorkoutById(id: string, options?: RawAxiosRequestConfig) {
+        return WorkoutsApiFp(this.configuration).getWorkoutById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2713,8 +2713,8 @@ export class WorkoutsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutsApi
      */
-    public workoutControllerUpdateWorkout(id: string, workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig) {
-        return WorkoutsApiFp(this.configuration).workoutControllerUpdateWorkout(id, workoutRequestDto, options).then((request) => request(this.axios, this.basePath));
+    public updateWorkout(id: string, workoutRequestDto: WorkoutRequestDto, options?: RawAxiosRequestConfig) {
+        return WorkoutsApiFp(this.configuration).updateWorkout(id, workoutRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

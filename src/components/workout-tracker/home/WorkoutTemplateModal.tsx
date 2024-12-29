@@ -9,7 +9,7 @@ import { IErrorResponse } from 'src/api/client';
 import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
 import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
 import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
-import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
+import { WorkoutTemplateResponseDto } from 'src/api/generated';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useDeleteWorkoutTemplate } from 'src/hooks/workout-tracker/workout-template-form/useDeleteWorkoutTemplate';
@@ -19,7 +19,7 @@ import { Button, SizableText, Spinner, useTheme, View, XStack, YStack } from 'ta
 interface Props {
     isModalOpen: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-    workoutTemplate: IWorkoutTemplateResponse;
+    workoutTemplate: WorkoutTemplateResponseDto;
 }
 
 export default function WorkoutTemplateModal({

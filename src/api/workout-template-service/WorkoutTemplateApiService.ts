@@ -1,10 +1,10 @@
 import { IWorkoutTemplateFormState } from 'src/redux/workout-template-form/IWorkoutTemplateForm';
 import { request } from '../client';
+import { WorkoutTemplateResponseDto } from '../generated';
 import { ICreateWorkoutTemplateRequest } from './requests/ICreateWorkoutTemplateRequest';
-import { IWorkoutTemplateResponse } from './responses/IWorkoutTemplateResponse';
 import { workoutTemplateEndpoints } from './WorkoutTemplateApiConfig';
 
-export async function getAllWorkoutTemplates(): Promise<IWorkoutTemplateResponse[]> {
+export async function getAllWorkoutTemplates(): Promise<WorkoutTemplateResponseDto[]> {
     return await request({
         method: 'GET',
         url: workoutTemplateEndpoints.getAllWorkoutTemplates(),
@@ -13,7 +13,7 @@ export async function getAllWorkoutTemplates(): Promise<IWorkoutTemplateResponse
 
 export async function createWorkoutTemplate(
     workoutTemplateForm: IWorkoutTemplateFormState
-): Promise<IWorkoutTemplateResponse> {
+): Promise<WorkoutTemplateResponseDto> {
     const requestBody = fromWorkoutTemplateFormToWorkoutTemplateRequest(workoutTemplateForm);
     return await request({
         method: 'POST',
