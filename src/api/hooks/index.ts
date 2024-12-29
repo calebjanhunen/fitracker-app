@@ -1,1 +1,2 @@
-export * from './useWorkoutTemplate';
+export * from './useExerciseApi';
+export * from './useWorkoutTemplateApi';

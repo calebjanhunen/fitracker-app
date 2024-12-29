@@ -1,16 +1,11 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import { IErrorResponse } from 'src/api/client';
-import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
-import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
-import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { WorkoutTemplateResponseDto } from 'src/api/generated';
-import { useDeleteWorkoutTemplate } from 'src/api/hooks';
+import { useDeleteWorkoutTemplate, useGetExercisesWithWorkoutDetails } from 'src/api/hooks';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { initializeWorkoutFromTemplate } from 'src/redux/workout-form/WorkoutFormSlice';
@@ -36,12 +31,7 @@ export default function WorkoutTemplateModal({
         data: exerciseDetails,
         isLoading: isExerciseDetailsLoading,
         error: exerciseDetailsError,
-    } = useQuery<IExerciseWithWorkoutDetailsResponse[], IErrorResponse>({
-        queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
-        queryFn: getExercisesWithWorkoutDetails,
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
+    } = useGetExercisesWithWorkoutDetails();
     const dispatch = useDispatch();
     const theme = useTheme();
 
