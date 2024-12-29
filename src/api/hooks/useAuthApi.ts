@@ -84,6 +84,7 @@ export function useRefreshToken(
 
 export function useSignup(onSuccessCallback: (accessToken: string) => void) {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const {
         mutate: signup,
@@ -93,8 +94,9 @@ export function useSignup(onSuccessCallback: (accessToken: string) => void) {
         mutationFn: authApiService.signup,
         onSuccess: (response) => {
             dispatch(updateUsername(response.username));
-            onSuccessCallback(response.accessToken);
             dispatch(clearSignupForm());
+            onSuccessCallback(response.accessToken);
+            router.replace('/workout-tracker');
         },
     });
 
