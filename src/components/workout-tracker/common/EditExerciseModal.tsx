@@ -4,10 +4,10 @@ import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { IBodyPartResponse } from 'src/api/body-part-service/interfaces/IBodyPartResponse';
 import { IErrorResponse } from 'src/api/client';
 import { IEquipmentResponse } from 'src/api/equipment-service/interfaces/IEquipmentResponse';
-import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { ExerciseResponseDto } from 'src/api/generated';
+import { useUpdateExercise } from 'src/api/hooks';
 import { useEditExerciseModal } from 'src/context/workout-tracker/EditExerciseModalContext';
 import { useGetEquipmentAndBodyParts } from 'src/hooks/common/useGetEquipmentAndBodyParts';
-import { useUpdateExercise } from 'src/hooks/workout-tracker/useUpdateExercise';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
 import DropdownMenu from '../../common/DropdownMenu';
 
@@ -81,9 +81,11 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
         ) {
             updateExercise({
                 id: exerciseToEdit.id,
-                name: newExerciseName,
-                bodyPartId: Number(selectedBodyPart),
-                equipmentId: Number(selectedEquipment),
+                request: {
+                    name: newExerciseName,
+                    bodyPartId: Number(selectedBodyPart),
+                    equipmentId: Number(selectedEquipment),
+                },
             });
         } else {
             handleCloseModal(false);
@@ -98,7 +100,7 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
         }
     }
 
-    async function onUpdateExerciseSuccess(response: IExerciseResponse) {
+    async function onUpdateExerciseSuccess(response: ExerciseResponseDto) {
         updateExerciseNameInForm(response.id, response.name);
         handleCloseModal(false);
     }

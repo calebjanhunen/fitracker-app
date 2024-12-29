@@ -36,7 +36,13 @@ export const exerciseApiService = {
         const response = await exerciseApi.createExercise(request);
         return response.data;
     },
-    async updateExercise(id: string, request: ExerciseRequestDto): Promise<ExerciseResponseDto> {
+    async updateExercise({
+        id,
+        request,
+    }: {
+        id: string;
+        request: ExerciseRequestDto;
+    }): Promise<ExerciseResponseDto> {
         const response = await exerciseApi.updateExercise(id, request);
         return response.data;
     },
