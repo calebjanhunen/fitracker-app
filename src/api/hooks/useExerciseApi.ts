@@ -9,6 +9,8 @@ import { WorkoutTemplateQueryKeys } from './useWorkoutTemplateApi';
 
 export const ExerciseApiQueryKeys = {
     getExercisesWithWorkoutDetails: ['exercisesWithWorkoutDetails'],
+    getEquipment: ['equipment'],
+    getBodyParts: ['bodyParts'],
     getExerciseDetails: (exerciseId: string) => ['exercises', exerciseId, 'details'],
 };
 
@@ -32,6 +34,37 @@ export function useGetExerciseDetails(exerciseId: string) {
     });
 
     return { data, isLoading, error };
+}
+
+export function useGetEquipmentAndBodyParts() {
+    const {
+        data: equipment,
+        isLoading: isEquipmentLoading,
+        error: equipmentError,
+    } = useQuery({
+        queryFn: exerciseApiService.getEquipment,
+        queryKey: ExerciseApiQueryKeys.getEquipment,
+        staleTime: Infinity,
+        gcTime: Infinity,
+    });
+
+    const {
+        data: bodyParts,
+        isLoading: isBodyPartsLoading,
+        error: bodyPartsError,
+    } = useQuery({
+        queryFn: exerciseApiService.getBodyParts,
+        queryKey: ExerciseApiQueryKeys.getBodyParts,
+        staleTime: Infinity,
+        gcTime: Infinity,
+    });
+
+    return {
+        equipment: equipment ?? [],
+        bodyParts: bodyParts ?? [],
+        isLoading: isBodyPartsLoading || isEquipmentLoading,
+        error: bodyPartsError ?? equipmentError,
+    };
 }
 
 export function useCreateExercise(

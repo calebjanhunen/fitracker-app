@@ -5,9 +5,8 @@ import { IBodyPartResponse } from 'src/api/body-part-service/interfaces/IBodyPar
 import { IErrorResponse } from 'src/api/client';
 import { IEquipmentResponse } from 'src/api/equipment-service/interfaces/IEquipmentResponse';
 import { ExerciseResponseDto } from 'src/api/generated';
-import { useUpdateExercise } from 'src/api/hooks';
+import { useGetEquipmentAndBodyParts, useUpdateExercise } from 'src/api/hooks';
 import { useEditExerciseModal } from 'src/context/workout-tracker/EditExerciseModalContext';
-import { useGetEquipmentAndBodyParts } from 'src/hooks/common/useGetEquipmentAndBodyParts';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
 import DropdownMenu from '../../common/DropdownMenu';
 
