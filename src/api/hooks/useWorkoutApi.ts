@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import _ from 'lodash';
 import { IWorkoutFormState } from 'src/redux/workout-form/IWorkoutForm';
 import { IErrorResponse } from '../client';
-import { CreateWorkoutResponseDto, WorkoutRequestDto } from '../generated';
+import { CreateWorkoutResponseDto, DeleteWorkoutDto, WorkoutRequestDto } from '../generated';
 import { queryClient } from '../react-query-client';
 import { workoutApiService } from '../services';
 import { ExerciseApiQueryKeys } from './useExerciseApi';
@@ -62,6 +62,27 @@ export function useCreateWorkout(
     });
 
     return { createWorkout, isPending, error };
+}
+
+export function useDeleteWorkout(
+    onSuccessCallback: (response: DeleteWorkoutDto) => void,
+    onErrorCallback: (error: IErrorResponse) => void
+) {
+    const { mutate: deleteWorkout, isPending: isDeleting } = useMutation({
+        mutationFn: workoutApiService.deleteWorkout,
+        onSuccess: async (response) => {
+            await Promise.all([
+                queryClient.refetchQueries({ queryKey: WorkoutApiQueryKeys.getWorkouts }),
+                queryClient.invalidateQueries({
+                    queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                }),
+            ]);
+            onSuccessCallback(response);
+        },
+        onError: onErrorCallback,
+    });
+
+    return { deleteWorkout, isDeleting };
 }
 
 // Helper functions for creating workout... TODO: move to different file?

@@ -7,12 +7,12 @@ import { H3, useTheme, View, XStack } from 'tamagui';
 
 import { FlatList } from 'react-native-gesture-handler';
 import { IErrorResponse } from 'src/api/client';
-import { IDeleteWorkoutResponse } from 'src/api/workout-service/responses/IDeleteWorkoutResponse';
+import { DeleteWorkoutDto } from 'src/api/generated';
+import { useDeleteWorkout } from 'src/api/hooks';
 import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import { IconBtn } from 'src/components/common/icon-btn';
 import Exercise from 'src/components/profile/workout-details/Exercise';
 import TimeAndDateInfo from 'src/components/profile/workout-details/TimeAndDateInfo';
-import { useDeleteWorkout } from 'src/hooks/workout-tracker/useDeleteWorkout';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
 
 export default function WorkoutDetailsModal() {
@@ -37,7 +37,7 @@ export default function WorkoutDetailsModal() {
         );
     }
 
-    function onDeleteSuccess(response: IDeleteWorkoutResponse) {
+    function onDeleteSuccess(response: DeleteWorkoutDto) {
         dispatch(updateTotalXP(response.totalUserXp));
         router.back();
     }

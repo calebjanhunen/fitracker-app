@@ -1,6 +1,7 @@
 import { apiClient } from '../client';
 import {
     CreateWorkoutResponseDto,
+    DeleteWorkoutDto,
     WorkoutRequestDto,
     WorkoutResponseDto,
     WorkoutsApi,
@@ -17,7 +18,8 @@ export const workoutApiService = {
         const response = await workoutApi.createWorkout(request);
         return response.data;
     },
-    async deleteWorkout(workoutId: string): Promise<void> {
-        await workoutApi.deleteWorkout(workoutId);
+    async deleteWorkout(workoutId: string): Promise<DeleteWorkoutDto> {
+        const response = await workoutApi.deleteWorkout(workoutId);
+        return response.data;
     },
 };
