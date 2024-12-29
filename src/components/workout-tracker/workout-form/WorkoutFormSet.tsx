@@ -4,7 +4,7 @@ import { Swipeable } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { SizableText, XStack } from 'tamagui';
 
-import { IRecentSet } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { RecentSetDto } from 'src/api/generated';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
 import {
@@ -20,7 +20,7 @@ interface Props {
     id: string;
     order: number;
     exerciseId: string;
-    recentSet: IRecentSet | null;
+    recentSet: RecentSetDto | null;
     isSetValidated: boolean;
 }
 
