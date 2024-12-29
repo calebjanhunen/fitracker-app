@@ -178,12 +178,6 @@ export interface ExerciseRequestDto {
      * @type {string}
      * @memberof ExerciseRequestDto
      */
-    'id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExerciseRequestDto
-     */
     'name': string;
     /**
      * 
