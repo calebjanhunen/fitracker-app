@@ -3,13 +3,9 @@ import _ from 'lodash';
 import { IWorkoutFormState } from 'src/redux/workout-form/IWorkoutForm';
 import { IErrorResponse } from '../client';
 import { CreateWorkoutResponseDto, DeleteWorkoutDto, WorkoutRequestDto } from '../generated';
+import { ExerciseApiQueryKeys, WorkoutApiQueryKeys } from '../QueryKeys';
 import { queryClient } from '../react-query-client';
 import { workoutApiService } from '../services';
-import { ExerciseApiQueryKeys } from './useExerciseApi';
-
-export const WorkoutApiQueryKeys = {
-    getWorkouts: ['workouts'],
-};
 
 export function useGetWorkouts() {
     const { data, isLoading, error, isSuccess } = useQuery({

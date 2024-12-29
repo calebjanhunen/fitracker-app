@@ -2,17 +2,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { IErrorResponse } from '../client';
 import { ExerciseDetailsDto, ExerciseResponseDto } from '../generated';
+import { ExerciseApiQueryKeys, WorkoutApiQueryKeys, WorkoutTemplateQueryKeys } from '../QueryKeys';
 import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
-import { WorkoutApiQueryKeys } from './useWorkoutApi';
-import { WorkoutTemplateQueryKeys } from './useWorkoutTemplateApi';
-
-export const ExerciseApiQueryKeys = {
-    getExercisesWithWorkoutDetails: ['exercisesWithWorkoutDetails'],
-    getEquipment: ['equipment'],
-    getBodyParts: ['bodyParts'],
-    getExerciseDetails: (exerciseId: string) => ['exercises', exerciseId, 'details'],
-};
 
 export function useGetExercisesWithWorkoutDetails() {
     const { data, isLoading, error } = useQuery({

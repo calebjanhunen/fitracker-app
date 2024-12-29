@@ -2,12 +2,9 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { IWorkoutTemplateFormState } from 'src/redux/workout-template-form/IWorkoutTemplateForm';
 import { IErrorResponse } from '../client';
 import { WorkoutTemplateRequestDto } from '../generated';
+import { WorkoutTemplateQueryKeys } from '../QueryKeys';
 import { queryClient } from '../react-query-client';
 import { workoutTemplateApiService } from '../services/WorkoutTemplateApiService';
-
-export const WorkoutTemplateQueryKeys = {
-    getAllWorkoutTemplates: ['workoutTemplates'],
-};
 
 export function useGetAllWorkoutTemplates() {
     const { data, isLoading, error } = useQuery({
