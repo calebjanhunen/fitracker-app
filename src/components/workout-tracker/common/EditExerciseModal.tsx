@@ -1,10 +1,8 @@
 import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { IBodyPartResponse } from 'src/api/body-part-service/interfaces/IBodyPartResponse';
 import { IErrorResponse } from 'src/api/client';
-import { IEquipmentResponse } from 'src/api/equipment-service/interfaces/IEquipmentResponse';
-import { ExerciseResponseDto } from 'src/api/generated';
+import { BodyPartDto, EquipmentDto, ExerciseResponseDto } from 'src/api/generated';
 import { useGetEquipmentAndBodyParts, useUpdateExercise } from 'src/api/hooks';
 import { useEditExerciseModal } from 'src/context/workout-tracker/EditExerciseModalContext';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
@@ -209,9 +207,9 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
     );
 }
 
-function getEquipmentId(name: string, equipment: IEquipmentResponse[]): string {
+function getEquipmentId(name: string, equipment: EquipmentDto[]): string {
     return equipment.find((eq) => eq.name === name)?.id.toString() ?? '';
 }
-function getBodyPartId(name: string, bodyParts: IBodyPartResponse[]): string {
+function getBodyPartId(name: string, bodyParts: BodyPartDto[]): string {
     return bodyParts.find((bp) => bp.name === name)?.id.toString() ?? '';
 }
