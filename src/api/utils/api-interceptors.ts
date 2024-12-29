@@ -42,7 +42,10 @@ export function setupResponseInterceptor(
                 }
             }
             // eslint-disable-next-line prefer-promise-reject-errors
-            return Promise.reject(error);
+            return Promise.reject({
+                message: error.response?.data?.message,
+                statusCode: error.response?.data?.statusCode,
+            });
         }
     );
 }
