@@ -16,12 +16,14 @@ interface Props {
 }
 
 interface IAuthContext {
+    accessToken: string | null;
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     isRefreshTokenFetching: boolean;
     status: string;
 }
 
 const AuthContext = createContext<IAuthContext>({
+    accessToken: null,
     setAccessToken: () => {},
     isRefreshTokenFetching: false,
     status: '',
@@ -61,7 +63,9 @@ export function AuthProvider({ children }: Props) {
     }
 
     return (
-        <AuthContext.Provider value={{ setAccessToken, isRefreshTokenFetching: isPending, status }}>
+        <AuthContext.Provider
+            value={{ setAccessToken, isRefreshTokenFetching: isPending, status, accessToken }}
+        >
             {children}
         </AuthContext.Provider>
     );
