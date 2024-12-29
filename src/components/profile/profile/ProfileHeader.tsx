@@ -1,11 +1,11 @@
 import React from 'react';
 
 import IonIcons from '@expo/vector-icons/Ionicons';
-import { IUserResponse } from 'src/api/user-service/interfaces/IUserResponse';
+import { UserProfileDto } from 'src/api/generated';
 import { Circle, H3, H5, View, XStack } from 'tamagui';
 
 interface Props {
-    user: IUserResponse;
+    user: UserProfileDto;
 }
 
 export default function ProfileHeader({ user }: Props) {
