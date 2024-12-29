@@ -434,6 +434,12 @@ export interface UserProfileDto {
      * @memberof UserProfileDto
      */
     'weeklyWorkoutGoal': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'totalXp': number;
 }
 /**
  * 
