@@ -2,7 +2,6 @@ import { request } from '../client';
 import { ICreateWorkoutRequest } from './requests/ICreateWorkoutRequest';
 import { ICreateWorkoutResponse } from './responses/ICreateWorkoutResponse';
 import { IDeleteWorkoutResponse } from './responses/IDeleteWorkoutResponse';
-import { IWorkoutResponse } from './responses/IWorkoutResponse';
 import { workoutEndpoints } from './WorkoutApiConfig';
 
 export async function createWorkout({
@@ -14,13 +13,6 @@ export async function createWorkout({
         method: 'POST',
         url: workoutEndpoints.createWorkout(),
         data: createWorkoutRequest,
-    });
-}
-
-export async function getAllWorkouts(): Promise<IWorkoutResponse[]> {
-    return await request<null, IWorkoutResponse[]>({
-        method: 'GET',
-        url: workoutEndpoints.getAllWorkouts(),
     });
 }
 
