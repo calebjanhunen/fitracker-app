@@ -8,9 +8,9 @@ import * as ExerciseApiService from 'src/api/exercise-service/ExerciseApiService
 import { IUpdateExerciseRequest } from 'src/api/exercise-service/interfaces/requests/IUpdateExerciseRequest';
 import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
 import { IExerciseDetailsResponse } from 'src/api/exercise-service/interfaces/responses/IExerciseWorkoutHistoryResponse';
+import { WorkoutTemplateQueryKeys } from 'src/api/hooks';
 import { queryClient } from 'src/api/react-query-client';
 import { GET_ALL_WORKOUTS_QUERY_KEY } from 'src/api/workout-service/WorkoutApiConfig';
-import { GET_ALL_WORKOUT_TEMPLATES_QUERY_KEY } from 'src/api/workout-template-service/WorkoutTemplateApiConfig';
 
 interface IUseUpdateExercise {
     updateExercise: (exercise: IUpdateExerciseRequest) => void;
@@ -36,7 +36,7 @@ export function useUpdateExercise(
                 queryKey: [exerciseDetailsQueryKey(updatedExercise.id)],
             });
             await queryClient.invalidateQueries({
-                queryKey: [GET_ALL_WORKOUT_TEMPLATES_QUERY_KEY],
+                queryKey: WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
             });
             await queryClient.invalidateQueries({ queryKey: [GET_ALL_WORKOUTS_QUERY_KEY] });
             onSuccessCallback(updatedExercise);

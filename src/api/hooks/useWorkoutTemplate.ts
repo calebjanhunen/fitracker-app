@@ -3,7 +3,7 @@ import { IWorkoutTemplateFormState } from 'src/redux/workout-template-form/IWork
 import { IErrorResponse } from '../client';
 import { WorkoutTemplateRequestDto } from '../generated';
 import { queryClient } from '../react-query-client';
-import { workoutTemplateApiService } from '../WorkoutTemplateApiService';
+import { workoutTemplateApiService } from '../services/WorkoutTemplateApiService';
 
 export const WorkoutTemplateQueryKeys = {
     getAllWorkoutTemplates: ['workoutTemplates'],
