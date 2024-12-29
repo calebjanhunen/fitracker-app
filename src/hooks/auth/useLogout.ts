@@ -17,7 +17,7 @@ export function useLogout(): IUseLogout {
 
     const { mutate: logout, isPending } = useMutation({
         mutationFn: AuthApi.logout,
-        onMutate: async () => {
+        onSettled: async () => {
             router.replace('/(auth)');
             setAccessToken(null);
             queryClient.clear();
