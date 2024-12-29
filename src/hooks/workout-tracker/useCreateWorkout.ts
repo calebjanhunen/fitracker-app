@@ -1,10 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import _ from 'lodash';
 import { IErrorResponse } from 'src/api/client';
-import {
-    exerciseDetailsQueryKey,
-    GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY,
-} from 'src/api/exercise-service/ExerciseApiConfig';
+import { ExerciseApiQueryKeys } from 'src/api/hooks';
 import { queryClient } from 'src/api/react-query-client';
 import { ICreateWorkoutRequest } from 'src/api/workout-service/requests/ICreateWorkoutRequest';
 import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
@@ -50,7 +47,7 @@ export function useCreateWorkout(
         },
         onSuccess: async (response) => {
             await queryClient.invalidateQueries({
-                queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
+                queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
             });
             await queryClient.invalidateQueries({
                 queryKey: [GET_ALL_WORKOUTS_QUERY_KEY],
@@ -58,7 +55,7 @@ export function useCreateWorkout(
 
             for (const exercise of response.workout.exercises) {
                 await queryClient.invalidateQueries({
-                    queryKey: exerciseDetailsQueryKey(exercise.id),
+                    queryKey: ExerciseApiQueryKeys.getExerciseDetails(exercise.id),
                 });
             }
 
