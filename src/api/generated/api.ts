@@ -108,6 +108,19 @@ export interface CreateWorkoutResponseDto {
 /**
  * 
  * @export
+ * @interface DeleteWorkoutDto
+ */
+export interface DeleteWorkoutDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof DeleteWorkoutDto
+     */
+    'totalUserXp': number;
+}
+/**
+ * 
+ * @export
  * @interface EquipmentDto
  */
 export interface EquipmentDto {
@@ -2549,7 +2562,7 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWorkout(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async deleteWorkout(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteWorkoutDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkout(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.deleteWorkout']?.[localVarOperationServerIndex]?.url;
@@ -2616,7 +2629,7 @@ export const WorkoutsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkout(id: string, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        deleteWorkout(id: string, options?: RawAxiosRequestConfig): AxiosPromise<DeleteWorkoutDto> {
             return localVarFp.deleteWorkout(id, options).then((request) => request(axios, basePath));
         },
         /**
