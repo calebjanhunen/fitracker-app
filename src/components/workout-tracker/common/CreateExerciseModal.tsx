@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { IErrorResponse } from 'src/api/client';
+import { useCreateExercise } from 'src/api/hooks';
 import { useGetEquipmentAndBodyParts } from 'src/hooks/common/useGetEquipmentAndBodyParts';
-import { useCreateExercise } from 'src/hooks/workout-tracker/useCreateExercise';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
 import DropdownMenu from '../../common/DropdownMenu';
 

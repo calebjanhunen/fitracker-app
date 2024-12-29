@@ -1,4 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { IErrorResponse } from '../client';
+import { ExerciseResponseDto } from '../generated';
+import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
 
 export const ExerciseApiQueryKeys = {
@@ -14,4 +17,26 @@ export function useGetExercisesWithWorkoutDetails() {
     });
 
     return { data, isLoading, error };
+}
+
+export function useCreateExercise(
+    onSuccessCallback: (createdExercise: ExerciseResponseDto) => void,
+    onErrorCallback: (error: IErrorResponse) => void
+) {
+    const {
+        mutate: createExercise,
+        error,
+        isPending,
+    } = useMutation({
+        mutationFn: exerciseApiService.createExercise,
+        onSuccess: async (createdExercise) => {
+            await queryClient.invalidateQueries({
+                queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+            });
+            onSuccessCallback(createdExercise);
+        },
+        onError: onErrorCallback,
+    });
+
+    return { createExercise, isPending, error };
 }
