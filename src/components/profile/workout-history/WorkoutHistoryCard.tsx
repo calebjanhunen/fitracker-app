@@ -8,16 +8,15 @@ import { useDispatch } from 'react-redux';
 import { Card, H4, SizableText, Spinner, useTheme, XStack } from 'tamagui';
 
 import { IErrorResponse } from 'src/api/client';
-import { DeleteWorkoutDto } from 'src/api/generated';
+import { DeleteWorkoutDto, WorkoutResponseDto } from 'src/api/generated';
 import { useDeleteWorkout } from 'src/api/hooks';
-import { IWorkoutResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
 import { PopoverMenuOptionsV2, PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
 import { updateTotalXP } from 'src/redux/user/UserSlice';
 import { formatDate } from 'src/utils/FormatDate';
 import { formatWorkoutDuration } from 'src/utils/formatWorkoutDuration';
 
 interface Props {
-    workout: IWorkoutResponse;
+    workout: WorkoutResponseDto;
 }
 
 export default function WorkoutHistoryCard({ workout }: Props) {

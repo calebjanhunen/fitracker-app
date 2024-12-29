@@ -1,9 +1,9 @@
 import React from 'react';
-import { IWorkoutSetResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
+import { WorkoutSetResponseDto } from 'src/api/generated';
 import { SizableText, XStack } from 'tamagui';
 
 interface Props {
-    set: IWorkoutSetResponse;
+    set: WorkoutSetResponseDto;
 }
 
 export default function Set({ set }: Props) {

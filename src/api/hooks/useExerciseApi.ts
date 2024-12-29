@@ -4,7 +4,7 @@ import { IErrorResponse } from '../client';
 import { ExerciseDetailsDto, ExerciseResponseDto } from '../generated';
 import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
-import { GET_ALL_WORKOUTS_QUERY_KEY } from '../workout-service/WorkoutApiConfig';
+import { WorkoutApiQueryKeys } from './useWorkoutApi';
 import { WorkoutTemplateQueryKeys } from './useWorkoutTemplateApi';
 
 export const ExerciseApiQueryKeys = {
@@ -104,7 +104,7 @@ export function useUpdateExercise(
                 ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
                 ExerciseApiQueryKeys.getExerciseDetails(updatedExercise.id),
                 WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
-                [GET_ALL_WORKOUTS_QUERY_KEY],
+                WorkoutApiQueryKeys.getWorkouts,
             ];
             await Promise.all(
                 queryKeysToInvalidate.map((queryKey) => queryClient.invalidateQueries({ queryKey }))
