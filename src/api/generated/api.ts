@@ -394,6 +394,25 @@ export interface UpdateWeeklyWorkoutGoalDto {
 /**
  * 
  * @export
+ * @interface UserLoginDto
+ */
+export interface UserLoginDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLoginDto
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLoginDto
+     */
+    'password': string;
+}
+/**
+ * 
+ * @export
  * @interface UserProfileDto
  */
 export interface UserProfileDto {
@@ -906,13 +925,13 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {string} xDeviceId 
+         * @param {UserLoginDto} userLoginDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        login: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('login', 'xDeviceId', xDeviceId)
+        login: async (userLoginDto: UserLoginDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userLoginDto' is not null or undefined
+            assertParamExists('login', 'userLoginDto', userLoginDto)
             const localVarPath = `/auth/login`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -927,12 +946,12 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
 
 
     
-            if (xDeviceId != null) {
-                localVarHeaderParameter['x-device-id'] = String(xDeviceId);
-            }
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userLoginDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -941,13 +960,10 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        logout: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('logout', 'xDeviceId', xDeviceId)
+        logout: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/auth/logout`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -966,9 +982,6 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
 
 
     
-            if (xDeviceId != null) {
-                localVarHeaderParameter['x-device-id'] = String(xDeviceId);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -980,13 +993,10 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshToken: async (xDeviceId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('refreshToken', 'xDeviceId', xDeviceId)
+        refreshToken: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/auth/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1005,9 +1015,6 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
 
 
     
-            if (xDeviceId != null) {
-                localVarHeaderParameter['x-device-id'] = String(xDeviceId);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -1054,14 +1061,11 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {UserSignupDto} userSignupDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signup: async (xDeviceId: string, userSignupDto: UserSignupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'xDeviceId' is not null or undefined
-            assertParamExists('signup', 'xDeviceId', xDeviceId)
+        signup: async (userSignupDto: UserSignupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userSignupDto' is not null or undefined
             assertParamExists('signup', 'userSignupDto', userSignupDto)
             const localVarPath = `/auth/signup`;
@@ -1080,9 +1084,6 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            if (xDeviceId != null) {
-                localVarHeaderParameter['x-device-id'] = String(xDeviceId);
-            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -1164,36 +1165,34 @@ export const AuthApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} xDeviceId 
+         * @param {UserLoginDto} userLoginDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async login(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.login(xDeviceId, options);
+        async login(userLoginDto: UserLoginDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.login(userLoginDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AuthApi.login']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async logout(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(xDeviceId, options);
+        async logout(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AuthApi.logout']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refreshToken(xDeviceId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshToken(xDeviceId, options);
+        async refreshToken(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshToken(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AuthApi.refreshToken']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1212,13 +1211,12 @@ export const AuthApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {UserSignupDto} userSignupDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async signup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.signup(xDeviceId, userSignupDto, options);
+        async signup(userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthenticationResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.signup(userSignupDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AuthApi.signup']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1265,30 +1263,28 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @param {string} xDeviceId 
+         * @param {UserLoginDto} userLoginDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        login(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
-            return localVarFp.login(xDeviceId, options).then((request) => request(axios, basePath));
+        login(userLoginDto: UserLoginDto, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
+            return localVarFp.login(userLoginDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        logout(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.logout(xDeviceId, options).then((request) => request(axios, basePath));
+        logout(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.logout(options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshToken(xDeviceId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
-            return localVarFp.refreshToken(xDeviceId, options).then((request) => request(axios, basePath));
+        refreshToken(options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
+            return localVarFp.refreshToken(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1301,13 +1297,12 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @param {string} xDeviceId 
          * @param {UserSignupDto} userSignupDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
-            return localVarFp.signup(xDeviceId, userSignupDto, options).then((request) => request(axios, basePath));
+        signup(userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig): AxiosPromise<AuthenticationResponseDto> {
+            return localVarFp.signup(userSignupDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1352,35 +1347,33 @@ export class AuthApi extends BaseAPI {
 
     /**
      * 
-     * @param {string} xDeviceId 
+     * @param {UserLoginDto} userLoginDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public login(xDeviceId: string, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).login(xDeviceId, options).then((request) => request(this.axios, this.basePath));
+    public login(userLoginDto: UserLoginDto, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).login(userLoginDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {string} xDeviceId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public logout(xDeviceId: string, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).logout(xDeviceId, options).then((request) => request(this.axios, this.basePath));
+    public logout(options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {string} xDeviceId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public refreshToken(xDeviceId: string, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).refreshToken(xDeviceId, options).then((request) => request(this.axios, this.basePath));
+    public refreshToken(options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).refreshToken(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1396,14 +1389,13 @@ export class AuthApi extends BaseAPI {
 
     /**
      * 
-     * @param {string} xDeviceId 
      * @param {UserSignupDto} userSignupDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public signup(xDeviceId: string, userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).signup(xDeviceId, userSignupDto, options).then((request) => request(this.axios, this.basePath));
+    public signup(userSignupDto: UserSignupDto, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).signup(userSignupDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
