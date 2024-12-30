@@ -12,3 +12,7 @@ export const WorkoutApiQueryKeys = {
 export const WorkoutTemplateQueryKeys = {
     getAllWorkoutTemplates: ['workoutTemplates'],
 };
+
+export const UserApiQueryKeys = {
+    getCurrentUser: ['users', 'me'],
+};
