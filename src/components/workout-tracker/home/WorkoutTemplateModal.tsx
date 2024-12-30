@@ -1,25 +1,20 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import { IErrorResponse } from 'src/api/client';
-import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
-import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
-import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
-import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
+import { WorkoutTemplateResponseDto } from 'src/api/generated';
+import { useDeleteWorkoutTemplate, useGetExercisesWithWorkoutDetails } from 'src/api/hooks';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
-import { useDeleteWorkoutTemplate } from 'src/hooks/workout-tracker/workout-template-form/useDeleteWorkoutTemplate';
 import { initializeWorkoutFromTemplate } from 'src/redux/workout-form/WorkoutFormSlice';
 import { Button, SizableText, Spinner, useTheme, View, XStack, YStack } from 'tamagui';
 
 interface Props {
     isModalOpen: boolean;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-    workoutTemplate: IWorkoutTemplateResponse;
+    workoutTemplate: WorkoutTemplateResponseDto;
 }
 
 export default function WorkoutTemplateModal({
@@ -28,7 +23,7 @@ export default function WorkoutTemplateModal({
     workoutTemplate,
 }: Props) {
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
-    const { deleteWorkoutTemplate, isDeleting } = useDeleteWorkoutTemplate(
+    const { deleteWorkoutTemplate, isPending } = useDeleteWorkoutTemplate(
         () => setIsModalOpen(false),
         (e) => Alert.alert('Error deleting workout template: ' + e.message)
     );
@@ -36,12 +31,7 @@ export default function WorkoutTemplateModal({
         data: exerciseDetails,
         isLoading: isExerciseDetailsLoading,
         error: exerciseDetailsError,
-    } = useQuery<IExerciseWithWorkoutDetailsResponse[], IErrorResponse>({
-        queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
-        queryFn: getExercisesWithWorkoutDetails,
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
+    } = useGetExercisesWithWorkoutDetails();
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -113,7 +103,7 @@ export default function WorkoutTemplateModal({
                         onPress={onDeletePress}
                         backgroundColor='$red6'
                     >
-                        {isDeleting ? (
+                        {isPending ? (
                             <Spinner />
                         ) : (
                             <IonIcons name='trash-outline' size={24} color={theme.red10.val} />

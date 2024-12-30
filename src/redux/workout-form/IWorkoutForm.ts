@@ -1,4 +1,4 @@
-import { IRecentSet } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { RecentSetDto } from 'src/api/generated';
 
 interface IWorkoutForm {
     name: string;
@@ -25,5 +25,5 @@ export interface IWorkoutFormState {
     workout: IWorkoutForm;
     exercises: Record<string, IWorkoutExerciseForm>;
     sets: Record<string, IWorkoutSetForm>;
-    recentSets: Record<string, IRecentSet>;
+    recentSets: Record<string, RecentSetDto>;
 }

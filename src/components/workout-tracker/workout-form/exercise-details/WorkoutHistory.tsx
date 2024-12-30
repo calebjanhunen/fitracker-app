@@ -1,12 +1,12 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { FlatList } from 'react-native';
-import { IExerciseWorkoutHistoryResponse } from 'src/api/exercise-service/interfaces/responses/IExerciseWorkoutHistoryResponse';
+import { ExerciseWorkoutHistoryDto } from 'src/api/generated';
 import { formatDate, formatWorkoutDuration } from 'src/utils';
 import { Card, SizableText, XStack } from 'tamagui';
 
 interface Props {
-    workout: IExerciseWorkoutHistoryResponse;
+    workout: ExerciseWorkoutHistoryDto;
 }
 
 export default function WorkoutHistory({ workout }: Props) {

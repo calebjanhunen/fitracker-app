@@ -1,13 +1,10 @@
 import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { IBodyPartResponse } from 'src/api/body-part-service/interfaces/IBodyPartResponse';
 import { IErrorResponse } from 'src/api/client';
-import { IEquipmentResponse } from 'src/api/equipment-service/interfaces/IEquipmentResponse';
-import { IExerciseResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { BodyPartDto, EquipmentDto, ExerciseResponseDto } from 'src/api/generated';
+import { useGetEquipmentAndBodyParts, useUpdateExercise } from 'src/api/hooks';
 import { useEditExerciseModal } from 'src/context/workout-tracker/EditExerciseModalContext';
-import { useGetEquipmentAndBodyParts } from 'src/hooks/common/useGetEquipmentAndBodyParts';
-import { useUpdateExercise } from 'src/hooks/workout-tracker/useUpdateExercise';
 import { Button, Dialog, H4, Input, Spinner, XStack, YStack } from 'tamagui';
 import DropdownMenu from '../../common/DropdownMenu';
 
@@ -81,9 +78,11 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
         ) {
             updateExercise({
                 id: exerciseToEdit.id,
-                name: newExerciseName,
-                bodyPartId: Number(selectedBodyPart),
-                equipmentId: Number(selectedEquipment),
+                request: {
+                    name: newExerciseName,
+                    bodyPartId: Number(selectedBodyPart),
+                    equipmentId: Number(selectedEquipment),
+                },
             });
         } else {
             handleCloseModal(false);
@@ -98,7 +97,7 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
         }
     }
 
-    async function onUpdateExerciseSuccess(response: IExerciseResponse) {
+    async function onUpdateExerciseSuccess(response: ExerciseResponseDto) {
         updateExerciseNameInForm(response.id, response.name);
         handleCloseModal(false);
     }
@@ -208,9 +207,9 @@ export default function EditExerciseModal({ updateExerciseNameInForm }: Props) {
     );
 }
 
-function getEquipmentId(name: string, equipment: IEquipmentResponse[]): string {
+function getEquipmentId(name: string, equipment: EquipmentDto[]): string {
     return equipment.find((eq) => eq.name === name)?.id.toString() ?? '';
 }
-function getBodyPartId(name: string, bodyParts: IBodyPartResponse[]): string {
+function getBodyPartId(name: string, bodyParts: BodyPartDto[]): string {
     return bodyParts.find((bp) => bp.name === name)?.id.toString() ?? '';
 }

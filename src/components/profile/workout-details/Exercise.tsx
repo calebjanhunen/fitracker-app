@@ -2,12 +2,12 @@ import React from 'react';
 
 import { FlatList } from 'react-native-gesture-handler';
 
-import { IWorkoutExerciseResponse } from 'src/api/workout-service/responses/IWorkoutResponse';
+import { WorkoutExerciseResponseDto } from 'src/api/generated';
 import { H4, SizableText, View, XStack } from 'tamagui';
 import Set from './Set';
 
 interface Props {
-    exercise: IWorkoutExerciseResponse;
+    exercise: WorkoutExerciseResponseDto;
 }
 
 export default function Exercise({ exercise }: Props) {

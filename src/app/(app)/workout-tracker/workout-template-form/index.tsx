@@ -8,9 +8,9 @@ import { Button, Input, Spinner, View, YStack } from 'tamagui';
 import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IErrorResponse } from 'src/api/client';
+import { useCreateWorkoutTemplate } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import WorkoutTemplateFormExercise from 'src/components/workout-tracker/workout-template-form/WorkoutTemplateFormExercise';
-import { useCreateWorkoutTemplate } from 'src/hooks/workout-tracker/workout-template-form/useCreateWorkoutTemplate';
 import { RootState } from 'src/redux/Store';
 import {
     clearWorkoutTemplate,

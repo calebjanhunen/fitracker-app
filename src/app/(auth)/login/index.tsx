@@ -3,16 +3,22 @@ import React, { useEffect, useState } from 'react';
 import fitrackerLogo from '../../../../assets/fitracker-transparent-logo.png';
 
 import { IErrorResponse } from 'src/api/client';
+import { useLogin } from 'src/api/hooks';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useLogin } from 'src/hooks/auth/useLogin';
+import { useAuth } from 'src/context/auth-context/AuthContext';
 import { Button, Image, Input, Spinner, Text, XStack, YStack } from 'tamagui';
 
 export default function Login() {
-    const { login, isLoading, error } = useLogin(onLoginError);
+    const { login, isPending, error } = useLogin(onLoginSuccess, onLoginError);
     const [username, setUsername] = useState<string>('caleb_test');
     const [password, setPassword] = useState<string>('123');
     const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
     const router = useRouter();
+    const { setAccessToken } = useAuth();
+
+    function onLoginSuccess(accessToken: string) {
+        setAccessToken(accessToken);
+    }
 
     function onLoginError(e: IErrorResponse) {
         if (e.statusCode === 403) {
@@ -28,7 +34,7 @@ export default function Login() {
     }
 
     useEffect(() => {
-        setButtonDisabled(!username || !password || isLoading);
+        setButtonDisabled(!username || !password || isPending);
     }, [username, password]);
 
     return (
@@ -53,7 +59,7 @@ export default function Login() {
                     disabled={buttonDisabled}
                     opacity={buttonDisabled ? 0.5 : 1}
                 >
-                    {isLoading ? <Spinner /> : 'Login'}
+                    {isPending ? <Spinner /> : 'Login'}
                 </Button>
                 {error && (
                     <Text color='$red11Light' textAlign='center'>

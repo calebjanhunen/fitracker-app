@@ -4,11 +4,11 @@ import { useAuth } from 'src/context/auth-context/AuthContext';
 import { Spinner, View } from 'tamagui';
 
 export default function AuthLayout() {
-    const { isRefreshTokenFetching, status } = useAuth();
+    const { isRefreshTokenFetching, status, accessToken } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (status === 'success') {
+        if (status === 'success' && accessToken) {
             router.replace('/workout-tracker');
         }
     }, [status]);

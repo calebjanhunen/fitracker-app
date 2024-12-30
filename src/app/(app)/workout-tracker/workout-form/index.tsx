@@ -8,17 +8,16 @@ import { Button, H4, Input, Spinner, View, XStack, YStack } from 'tamagui';
 import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IErrorResponse } from 'src/api/client';
-import { ICreateWorkoutResponse } from 'src/api/workout-service/responses/ICreateWorkoutResponse';
+import { CreateWorkoutResponseDto } from 'src/api/generated';
+import { useCreateWorkout } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import EditExerciseModal from 'src/components/workout-tracker/common/EditExerciseModal';
 import WorkoutFormExercise from 'src/components/workout-tracker/workout-form/WorkoutFormExercise';
 import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
-import { useCreateWorkout } from 'src/hooks/workout-tracker/useCreateWorkout';
 import { useStopwatch } from 'src/hooks/workout-tracker/useStopwatch';
 import { RootState } from 'src/redux/Store';
-import { updateTotalXP } from 'src/redux/user/UserSlice';
 import {
     clearWorkout,
     reorderExercises,
@@ -143,17 +142,16 @@ export default function WorkoutForm() {
         );
     }
 
-    function onCreateWorkoutSuccess(response: ICreateWorkoutResponse) {
+    function onCreateWorkoutSuccess(response: CreateWorkoutResponseDto) {
         resetWorkout();
         router.push({
             pathname: 'workout-tracker/workout-form/PostWorkoutSummary',
             params: {
-                xpGainedFromWeeklyGoal: response.workoutStats.xpGainedFromWeeklyGoal.toString(),
-                totalGainedXp: response.workoutStats.totalGainedXp.toString(),
-                totalUserXp: response.workoutStats.totalUserXp.toString(),
+                totalWorkoutXp: response.workoutStats.totalWorkoutXp.toString(),
+                workoutEffortXp: response.workoutStats.workoutEffortXp.toString(),
             },
         });
-        dispatch(updateTotalXP(response.workoutStats.totalUserXp));
+        // dispatch(updateTotalXP(response.workoutStats.totalUserXp));
     }
 
     function onCreateWorkoutError(error: IErrorResponse) {

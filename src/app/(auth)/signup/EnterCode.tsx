@@ -1,15 +1,15 @@
 import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useConfirmEmailVerificationCode } from 'src/api/hooks';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useConfirmEmailVerificationCode } from 'src/hooks/auth/useConfirmEmailVerificationCode';
 import { updateCodeVerified } from 'src/redux/signup-form/SignupFormSlice';
 import { RootState } from 'src/redux/Store';
 import { H3, Input, SizableText } from 'tamagui';
 
 export default function EnterCode() {
-    const { confirmCode, isLoading, error } = useConfirmEmailVerificationCode(onSuccess);
+    const { confirmCode, isPending, error } = useConfirmEmailVerificationCode(onSuccess);
     const dispatch = useDispatch();
     const signupForm = useSelector((state: RootState) => state.signupForm);
     const router = useRouter();
@@ -37,7 +37,7 @@ export default function EnterCode() {
                         <Button
                             backgroundColor='$blue6'
                             color='$blue10'
-                            disabled={!code || isLoading}
+                            disabled={!code || isPending}
                         >
                             Next
                         </Button>
@@ -48,7 +48,7 @@ export default function EnterCode() {
                     onPress={() => confirmCode({ code, email: signupForm.email })}
                     backgroundColor='$blue6'
                     color='$blue10'
-                    disabled={!code || isLoading}
+                    disabled={!code || isPending}
                 >
                     Next
                 </Button>

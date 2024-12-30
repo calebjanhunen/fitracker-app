@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUserResponse } from 'src/api/user-service/interfaces/IUserResponse';
+import { UserProfileDto } from 'src/api/generated';
 import { IUser } from './IUser';
 
 const initialState: IUser = {
-    id: '',
     username: '',
     firstName: '',
     lastName: '',
@@ -15,16 +14,13 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<IUserResponse>) => {
-            state.id = action.payload.id;
-            state.username = action.payload.username;
+        setUser: (state, action: PayloadAction<UserProfileDto>) => {
             state.firstName = action.payload.firstName;
             state.lastName = action.payload.lastName;
             state.totalXp = action.payload.totalXp;
             state.weeklyWorkoutGoal = action.payload.weeklyWorkoutGoal;
         },
         clearUser: (state) => {
-            state.id = '';
             state.username = '';
             state.firstName = '';
             state.lastName = '';
@@ -37,8 +33,12 @@ const userSlice = createSlice({
         updateWeeklyWorkoutGoal: (state, action: PayloadAction<number>) => {
             state.weeklyWorkoutGoal = action.payload;
         },
+        updateUsername: (state, action: PayloadAction<string>) => {
+            state.username = action.payload;
+        },
     },
 });
 
-export const { setUser, clearUser, updateTotalXP, updateWeeklyWorkoutGoal } = userSlice.actions;
+export const { setUser, clearUser, updateTotalXP, updateWeeklyWorkoutGoal, updateUsername } =
+    userSlice.actions;
 export default userSlice.reducer;

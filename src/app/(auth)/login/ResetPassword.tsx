@@ -1,8 +1,8 @@
 import { Link, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
+import { useResetPassword } from 'src/api/hooks';
 import { Button } from 'src/components/common/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
-import { useResetPassword } from 'src/hooks/auth/useResetPassword';
 import { H3, Input, SizableText, View, XStack, YStack } from 'tamagui';
 
 export default function ResetPassword() {

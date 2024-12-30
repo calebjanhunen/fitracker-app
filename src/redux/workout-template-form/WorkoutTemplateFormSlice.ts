@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { ExerciseWithWorkoutDetailsDto } from 'src/api/generated';
 import { IWorkoutTemplateFormState } from './IWorkoutTemplateForm';
 
 const initialState: IWorkoutTemplateFormState = {
@@ -23,7 +23,7 @@ const workoutTemplateFormSlice = createSlice({
             state,
             action: PayloadAction<{
                 selectedExerciseIds: string[];
-                allExercises: IExerciseWithWorkoutDetailsResponse[];
+                allExercises: ExerciseWithWorkoutDetailsDto[];
             }>
         ) => {
             const { selectedExerciseIds, allExercises } = action.payload;
@@ -72,7 +72,7 @@ const workoutTemplateFormSlice = createSlice({
             state,
             action: PayloadAction<{
                 oldExerciseId: string;
-                newExercise: IExerciseWithWorkoutDetailsResponse;
+                newExercise: ExerciseWithWorkoutDetailsDto;
             }>
         ) => {
             const { oldExerciseId, newExercise } = action.payload;

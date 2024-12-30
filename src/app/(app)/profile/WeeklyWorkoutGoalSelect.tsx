@@ -2,14 +2,18 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 import { IErrorResponse } from 'src/api/client';
+import { UserProfileDto } from 'src/api/generated';
+import { useUpdateWeeklyWorkoutGoal } from 'src/api/hooks/useUserApi';
 import { Button } from 'src/components/common/button';
-import { useUpdateWeeklyWorkoutGoal } from 'src/hooks/profile/useUpdateWeeklyWorkoutGoal';
+import { updateWeeklyWorkoutGoal } from 'src/redux/user/UserSlice';
 import { Label, RadioGroup, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
 
 export default function WeeklyWorkoutGoalSelect() {
-    const { updateGoal, isPending } = useUpdateWeeklyWorkoutGoal(onSuccess, onError);
+    const { updateWeeklyGoal, isPending } = useUpdateWeeklyWorkoutGoal(onSuccess, onError);
     const router = useRouter();
+    const dispatch = useDispatch();
     const { currentGoal } = useLocalSearchParams<{ currentGoal: string }>();
     const [selectedGoal, setSelectedGoal] = useState<number>(Number(currentGoal));
 
@@ -17,7 +21,8 @@ export default function WeeklyWorkoutGoalSelect() {
         setSelectedGoal(Number(goal));
     }
 
-    function onSuccess() {
+    function onSuccess(response: UserProfileDto) {
+        dispatch(updateWeeklyWorkoutGoal(response.weeklyWorkoutGoal));
         router.back();
     }
 
@@ -58,7 +63,7 @@ export default function WeeklyWorkoutGoalSelect() {
                 <Button
                     color='$green10'
                     backgroundColor='$green6'
-                    onPress={() => updateGoal({ weeklyWorkoutGoal: selectedGoal })}
+                    onPress={() => updateWeeklyGoal({ weeklyWorkoutGoal: selectedGoal })}
                     disabled={selectedGoal === Number(currentGoal)}
                     marginBottom='$space.3'
                 >

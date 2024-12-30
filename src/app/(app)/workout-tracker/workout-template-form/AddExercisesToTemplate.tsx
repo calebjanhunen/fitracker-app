@@ -1,13 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { IErrorResponse } from 'src/api/client';
-import { GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY } from 'src/api/exercise-service/ExerciseApiConfig';
-import { getExercisesWithWorkoutDetails } from 'src/api/exercise-service/ExerciseApiService';
-import { IExerciseWithWorkoutDetailsResponse } from 'src/api/exercise-service/interfaces/responses/ExerciseResponse';
+import { ExerciseWithWorkoutDetailsDto } from 'src/api/generated';
+import { useGetExercisesWithWorkoutDetails } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import CreateExerciseModal from 'src/components/workout-tracker/common/CreateExerciseModal';
 import { RootState } from 'src/redux/Store';
@@ -32,16 +29,7 @@ export default function AddExercisesToWorkoutModal() {
     const exerciseIdsInWorkoutTemplate = useSelector(
         (state: RootState) => state.workoutTemplateForm.workoutTemplate.exercises
     );
-    const {
-        data: exercises,
-        isLoading,
-        error,
-    } = useQuery<IExerciseWithWorkoutDetailsResponse[], IErrorResponse>({
-        queryKey: [GET_EXERCISES_WITH_WORKOUT_DETAILS_QUERY_KEY],
-        queryFn: getExercisesWithWorkoutDetails,
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
+    const { data: exercises, isLoading, error } = useGetExercisesWithWorkoutDetails();
 
     function onAddToTemplatePress() {
         if (!exercises) return;
@@ -170,7 +158,7 @@ export default function AddExercisesToWorkoutModal() {
 }
 
 interface Props {
-    exercise: IExerciseWithWorkoutDetailsResponse;
+    exercise: ExerciseWithWorkoutDetailsDto;
     setSelectedExercises: Dispatch<SetStateAction<string[]>>;
     isSelected: boolean;
     isAlreadyInForm: boolean;

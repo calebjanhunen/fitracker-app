@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
@@ -6,10 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { Button, H4, useTheme, View, XStack } from 'tamagui';
 
-import { IErrorResponse } from 'src/api/client';
-import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
-import { GET_ALL_WORKOUT_TEMPLATES_QUERY_KEY } from 'src/api/workout-template-service/WorkoutTemplateApiConfig';
-import { getAllWorkoutTemplates } from 'src/api/workout-template-service/WorkoutTemplateApiService';
+import { useGetAllWorkoutTemplates } from 'src/api/hooks';
 import WorkoutTemplateCard from 'src/components/workout-tracker/home/WorkoutTemplateCard';
 import WorkoutTemplatesContainer from 'src/components/workout-tracker/home/WorkoutTemplatesContainer';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
@@ -19,14 +15,7 @@ export default function Home() {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();
-    const {
-        data: workoutTemplates,
-        isLoading,
-        error,
-    } = useQuery<IWorkoutTemplateResponse[], IErrorResponse>({
-        queryFn: getAllWorkoutTemplates,
-        queryKey: [GET_ALL_WORKOUT_TEMPLATES_QUERY_KEY],
-    });
+    const { data: workoutTemplates, isLoading, error } = useGetAllWorkoutTemplates();
 
     function onStartWorkoutPress() {
         if (!isWorkoutInProgress) {

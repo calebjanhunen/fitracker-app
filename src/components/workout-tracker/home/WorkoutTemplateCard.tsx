@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { IWorkoutTemplateResponse } from 'src/api/workout-template-service/responses/IWorkoutTemplateResponse';
+import { WorkoutTemplateResponseDto } from 'src/api/generated';
 import { Card, SizableText } from 'tamagui';
 import WorkoutTemplateModal from './WorkoutTemplateModal';
 
 interface Props {
-    workoutTemplate: IWorkoutTemplateResponse;
+    workoutTemplate: WorkoutTemplateResponseDto;
 }
 
 export default function WorkoutTemplateCard({ workoutTemplate }: Props) {

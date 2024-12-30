@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/return-await */
 import { InternalAxiosRequestConfig } from 'axios';
-import { AuthEndpoints } from '../auth-service/login-endpoints';
-import * as AuthApi from '../auth-service/login-service';
 import { apiClient } from '../client';
+import { authApiService } from '../services';
 
 export function setupRequestInterceptor(accessToken: string | null) {
     return apiClient.interceptors.request.use(
@@ -14,6 +13,11 @@ export function setupRequestInterceptor(accessToken: string | null) {
         }
     );
 }
+
+const noTokenRefreshEndpoints = {
+    login: '/auth/login',
+    refreshToken: '/auth/refresh',
+};
 
 export function setupResponseInterceptor(
     updateAccessToken: (accessToken: string) => void,
@@ -27,13 +31,11 @@ export function setupResponseInterceptor(
             if (
                 error.response?.status === 401 &&
                 !originalRequest._retry &&
-                originalRequest.url !== AuthEndpoints.refreshToken() &&
-                originalRequest.url !== AuthEndpoints.login()
+                !Object.values(noTokenRefreshEndpoints).includes(originalRequest.url)
             ) {
                 originalRequest._retry = true;
-
                 try {
-                    const response = await AuthApi.refreshToken();
+                    const response = await authApiService.refreshToken();
                     updateAccessToken(response.accessToken);
                     originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
                     return apiClient(originalRequest);
@@ -42,7 +44,10 @@ export function setupResponseInterceptor(
                 }
             }
             // eslint-disable-next-line prefer-promise-reject-errors
-            return Promise.reject(error);
+            return Promise.reject({
+                message: error.response?.data?.message ?? 'Unknown Error',
+                statusCode: error.response?.data?.statusCode,
+            });
         }
     );
 }

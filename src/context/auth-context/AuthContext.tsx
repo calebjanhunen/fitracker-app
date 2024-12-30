@@ -8,20 +8,22 @@ import React, {
     useState,
 } from 'react';
 import { apiClient } from 'src/api/client';
+import { useRefreshToken } from 'src/api/hooks';
 import { setupRequestInterceptor, setupResponseInterceptor } from 'src/api/utils/api-interceptors';
-import { useRefreshToken } from 'src/hooks/auth/useRefreshToken';
 
 interface Props {
     children: React.ReactNode;
 }
 
 interface IAuthContext {
+    accessToken: string | null;
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     isRefreshTokenFetching: boolean;
     status: string;
 }
 
 const AuthContext = createContext<IAuthContext>({
+    accessToken: null,
     setAccessToken: () => {},
     isRefreshTokenFetching: false,
     status: '',
@@ -61,7 +63,9 @@ export function AuthProvider({ children }: Props) {
     }
 
     return (
-        <AuthContext.Provider value={{ setAccessToken, isRefreshTokenFetching: isPending, status }}>
+        <AuthContext.Provider
+            value={{ setAccessToken, isRefreshTokenFetching: isPending, status, accessToken }}
+        >
             {children}
         </AuthContext.Provider>
     );
