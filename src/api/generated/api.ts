@@ -713,6 +713,24 @@ export interface WorkoutStatsDto {
      * @memberof WorkoutStatsDto
      */
     'workoutEffortXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutStatsDto
+     */
+    'workoutGoalXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutStatsDto
+     */
+    'workoutGoalStreakXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutStatsDto
+     */
+    'daysWithWorkoutsThisWeek': number;
 }
 /**
  * 
