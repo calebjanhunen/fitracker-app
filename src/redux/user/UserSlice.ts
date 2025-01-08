@@ -27,8 +27,8 @@ const userSlice = createSlice({
             state.totalXp = 0;
             state.weeklyWorkoutGoal = 0;
         },
-        updateTotalXP: (state, action: PayloadAction<number>) => {
-            state.totalXp = action.payload;
+        incrementTotalXp: (state, action: PayloadAction<number>) => {
+            state.totalXp += action.payload;
         },
         updateWeeklyWorkoutGoal: (state, action: PayloadAction<number>) => {
             state.weeklyWorkoutGoal = action.payload;
@@ -39,6 +39,6 @@ const userSlice = createSlice({
     },
 });
 
-export const { setUser, clearUser, updateTotalXP, updateWeeklyWorkoutGoal, updateUsername } =
+export const { setUser, clearUser, incrementTotalXp, updateWeeklyWorkoutGoal, updateUsername } =
     userSlice.actions;
 export default userSlice.reducer;

@@ -4,9 +4,18 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, H2, H4, H6, Separator, SizableText, View, XStack, YStack } from 'tamagui';
 export default function PostWorkoutSummary() {
-    const { totalWorkoutXp, workoutEffortXp } = useLocalSearchParams<{
+    const {
+        totalWorkoutXp,
+        workoutEffortXp,
+        workoutGoalXp,
+        workoutGoalStreakXp,
+        daysWithWorkoutsThisWeek,
+    } = useLocalSearchParams<{
         totalWorkoutXp: string;
         workoutEffortXp: string;
+        workoutGoalXp: string;
+        workoutGoalStreakXp: string;
+        daysWithWorkoutsThisWeek: string;
     }>();
 
     return (
@@ -37,8 +46,10 @@ export default function PostWorkoutSummary() {
                         <XStack gap='$space.3'>
                             <YStack alignItems='flex-end'>
                                 <H6>Workout Effort: </H6>
+                                <H6>Workout Goal: </H6>
+                                <H6>Workout Goal Streak: </H6>
                                 <Separator
-                                    borderWidth='1'
+                                    borderWidth={1}
                                     alignSelf='stretch'
                                     borderColor='$blue10'
                                 />
@@ -46,12 +57,13 @@ export default function PostWorkoutSummary() {
                             </YStack>
                             <YStack alignItems='flex-end'>
                                 <H6>{workoutEffortXp}</H6>
+                                <H6>{workoutGoalXp}</H6>
+                                <H6>{workoutGoalStreakXp}</H6>
                                 <Separator
-                                    borderWidth='1'
+                                    borderWidth={1}
                                     alignSelf='stretch'
                                     borderColor='$blue10'
                                 />
-
                                 <H6>{totalWorkoutXp}</H6>
                             </YStack>
                         </XStack>
