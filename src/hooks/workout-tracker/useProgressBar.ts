@@ -47,36 +47,42 @@ export function useProgressBar(
 
         // Loop through all the xp sources and update the progress bar
         for (const xpSource in allXpSources) {
-            setCurrentlyDisplayedXpSource(xpSource);
-            currentXp += Number(allXpSources[xpSource]);
-
-            // Level up until the xp is less than the xp required for the next level
-            while (currentXp >= xpNeededForNextLevel) {
-                const newLevel = level + 1;
-                xpNeededForNextLevel = calculateXpNeededForNextLevel(newLevel);
-
-                // quickly animate the progress bar to 100%
-                setDuration(QUICK_ANIMATION_DURATION);
-                setIsAnimated(true);
-                setProgress(MAX_PROGRESS_VAL);
-
-                // wait for animation to finish then reset the progress bar to 0
-                await safeSetTimeout(PROGRESS_RESET_DELAY);
-                setIsAnimated(false);
-                setLevel((prevLevel) => prevLevel + 1);
-                setProgress(MIN_PROGRESS_VAL);
-
-                currentXp -= xpNeededForNextLevel;
+            if (allXpSources[xpSource] === '0') {
+                continue;
             }
 
-            // Animate progress bar to final position
-            setIsAnimated(true);
-            setDuration(MEDIUM_ANIMATION_DURATION);
-            setProgress(calculateProgress(currentXp, xpNeededForNextLevel));
+            setCurrentlyDisplayedXpSource(xpSource);
+            currentXp += Number(allXpSources[xpSource]);
+            setTotalXp((prev) => prev + Number(allXpSources[xpSource]));
+
+            // Level up until the xp is less than the xp required for the next level
 
             // Wait for a bit before moving to the next xp source
             await safeSetTimeout(DELAY_BETWEEN_XP_SOURCES);
         }
+
+        while (currentXp >= xpNeededForNextLevel) {
+            const newLevel = level + 1;
+            xpNeededForNextLevel = calculateXpNeededForNextLevel(newLevel);
+
+            // quickly animate the progress bar to 100%
+            setDuration(QUICK_ANIMATION_DURATION);
+            setIsAnimated(true);
+            setProgress(MAX_PROGRESS_VAL);
+
+            // wait for animation to finish then reset the progress bar to 0
+            await safeSetTimeout(PROGRESS_RESET_DELAY);
+            setIsAnimated(false);
+            setLevel((prevLevel) => prevLevel + 1);
+            setProgress(MIN_PROGRESS_VAL);
+
+            currentXp -= xpNeededForNextLevel;
+        }
+
+        // Animate progress bar to final position
+        setIsAnimated(true);
+        setDuration(MEDIUM_ANIMATION_DURATION);
+        setProgress(calculateProgress(currentXp, xpNeededForNextLevel));
     }
 
     function calculateXpNeededForNextLevel(level: number) {
@@ -109,6 +115,6 @@ export function useProgressBar(
                 currentlyDisplayedXpSource as keyof typeof friendlyXpSourceDisplay
             ],
         currentXpSourceVal: Number(allXpSources[currentlyDisplayedXpSource]),
-        handleLevelUp,
+        totalXp,
     };
 }

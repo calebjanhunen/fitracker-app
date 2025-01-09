@@ -1,64 +1,76 @@
-import Constants from 'expo-constants';
 import { Link, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Easing } from 'react-native';
+import React from 'react';
+import { Easing } from 'react-native';
 import * as Progress2 from 'react-native-progress';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
 import { useProgressBar } from 'src/hooks/workout-tracker/useProgressBar';
-import {
-    Button,
-    Circle,
-    H1,
-    H2,
-    H3,
-    H4,
-    H6,
-    Progress,
-    Separator,
-    SizableText,
-    useTheme,
-    View,
-    XStack,
-    YStack,
-} from 'tamagui';
+import { RootState } from 'src/redux/Store';
+import { getOrdinalSuffix } from 'src/utils';
+import { Button, Circle, H3, SizableText, useTheme, View, XStack } from 'tamagui';
 
 export default function PostWorkoutSummary() {
+    const user = useSelector((state: RootState) => state.user);
     const {
         currentXpBeforeWorkout,
         levelBeforeWorkout,
         workoutEffortXp,
         workoutGoalXp,
         workoutGoalStreakXp,
+        daysWithWorkoutThisWeek,
     } = useLocalSearchParams<{
         currentXpBeforeWorkout: string;
         levelBeforeWorkout: string;
         workoutEffortXp: string;
         workoutGoalXp: string;
         workoutGoalStreakXp: string;
+        daysWithWorkoutThisWeek: string;
     }>();
+    const daysUntilWeeklyGoal = user.weeklyWorkoutGoal - Number(daysWithWorkoutThisWeek);
     const theme = useTheme();
-    const { level, progress, isAnimated, duration, currentXpSourceName, currentXpSourceVal } =
-        useProgressBar(Number(levelBeforeWorkout), Number(currentXpBeforeWorkout), {
-            workoutEffortXp,
-            workoutGoalXp,
-            workoutGoalStreakXp,
-        });
+    const {
+        level,
+        progress,
+        isAnimated,
+        duration,
+        currentXpSourceName,
+        currentXpSourceVal,
+        totalXp,
+    } = useProgressBar(Number(levelBeforeWorkout), Number(currentXpBeforeWorkout), {
+        workoutEffortXp,
+        workoutGoalXp,
+        workoutGoalStreakXp,
+    });
+
+    function getGoalMessage() {
+        const ordinalSuffix = getOrdinalSuffix(Number(daysWithWorkoutThisWeek));
+        return daysUntilWeeklyGoal > 0 ? (
+            <SizableText textAlign='center'>
+                This is your {daysWithWorkoutThisWeek}
+                {ordinalSuffix} of the week. Only {daysUntilWeeklyGoal} more workout
+                {daysUntilWeeklyGoal === 1 ? '' : 's'} until you hit your weekly goal!
+            </SizableText>
+        ) : (
+            <SizableText textAlign='center'>
+                You hit your weekly goal of {user.weeklyWorkoutGoal} workouts per week! Well done!
+            </SizableText>
+        );
+    }
 
     return (
         <SafeAreaView
             style={{
                 flex: 1,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 30,
+                paddingHorizontal: 16,
             }}
         >
             <View paddingTop='$space.5' flex={1}>
                 <H3 paddingBottom='$space.3' textAlign='center'>
                     Workout Completed!
                 </H3>
+                <View>{getGoalMessage()}</View>
 
-                <XStack alignItems='center'>
+                <XStack alignItems='center' paddingTop='$space.3'>
                     <Circle
                         size={50}
                         backgroundColor={theme.blue10.val}
@@ -72,7 +84,7 @@ export default function PostWorkoutSummary() {
                         </SizableText>
                     </Circle>
                     <Progress2.Bar
-                        width={350}
+                        width={325}
                         height={20}
                         borderRadius={20}
                         progress={progress}
@@ -84,11 +96,16 @@ export default function PostWorkoutSummary() {
                         borderColor='transparent'
                     />
                 </XStack>
-                {currentXpSourceName && (
-                    <SizableText size='$5' paddingTop='$space.2'>
-                        {currentXpSourceName}: {currentXpSourceVal} XP
-                    </SizableText>
-                )}
+                <XStack justifyContent='space-between' paddingTop='$space.2'>
+                    <View>
+                        {currentXpSourceName && (
+                            <SizableText size='$5'>
+                                {currentXpSourceName}: {currentXpSourceVal} XP
+                            </SizableText>
+                        )}
+                    </View>
+                    <SizableText>{totalXp}</SizableText>
+                </XStack>
             </View>
             <Link href='workout-tracker' asChild>
                 <Button backgroundColor='$blue6' color='$blue10' fontWeight='bold'>
