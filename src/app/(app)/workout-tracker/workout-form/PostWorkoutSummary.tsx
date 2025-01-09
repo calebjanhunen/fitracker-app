@@ -1,22 +1,48 @@
 import Constants from 'expo-constants';
 import { Link, useLocalSearchParams } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Easing } from 'react-native';
+import * as Progress2 from 'react-native-progress';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, H2, H4, H6, Separator, SizableText, View, XStack, YStack } from 'tamagui';
+import { useProgressBar } from 'src/hooks/workout-tracker/useProgressBar';
+import {
+    Button,
+    Circle,
+    H1,
+    H2,
+    H3,
+    H4,
+    H6,
+    Progress,
+    Separator,
+    SizableText,
+    useTheme,
+    View,
+    XStack,
+    YStack,
+} from 'tamagui';
+
 export default function PostWorkoutSummary() {
     const {
-        totalWorkoutXp,
+        currentXpBeforeWorkout,
+        levelBeforeWorkout,
         workoutEffortXp,
         workoutGoalXp,
         workoutGoalStreakXp,
-        daysWithWorkoutsThisWeek,
     } = useLocalSearchParams<{
-        totalWorkoutXp: string;
+        currentXpBeforeWorkout: string;
+        levelBeforeWorkout: string;
         workoutEffortXp: string;
         workoutGoalXp: string;
         workoutGoalStreakXp: string;
-        daysWithWorkoutsThisWeek: string;
     }>();
+    const theme = useTheme();
+    const { level, progress, isAnimated, duration, currentXpSourceName, currentXpSourceVal } =
+        useProgressBar(Number(levelBeforeWorkout), Number(currentXpBeforeWorkout), {
+            workoutEffortXp,
+            workoutGoalXp,
+            workoutGoalStreakXp,
+        });
 
     return (
         <SafeAreaView
@@ -24,50 +50,44 @@ export default function PostWorkoutSummary() {
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                paddingHorizontal: 30,
             }}
         >
-            <View alignItems='center' justifyContent='center' flex={1}>
-                <H2 paddingBottom='$space.3'>Workout Completed!</H2>
-                {Constants.expoConfig?.extra?.ENVIRONMENT !== 'development' ? (
-                    <>
-                        <SizableText color='$orange10'>
-                            ====================================
+            <View paddingTop='$space.5' flex={1}>
+                <H3 paddingBottom='$space.3' textAlign='center'>
+                    Workout Completed!
+                </H3>
+
+                <XStack alignItems='center'>
+                    <Circle
+                        size={50}
+                        backgroundColor={theme.blue10.val}
+                        marginRight={-20}
+                        zIndex={1}
+                        borderColor='$gray12'
+                        borderWidth={2}
+                    >
+                        <SizableText size='$7' fontWeight='bold' color='$gray1'>
+                            {level}
                         </SizableText>
-                        <SizableText color='$orange10' fontWeight='bold'>
-                            Workout XP calculation is under construction
-                        </SizableText>
-                        <SizableText color='$orange10'>
-                            ====================================
-                        </SizableText>
-                    </>
-                ) : (
-                    <>
-                        <H4>XP gained from workout:</H4>
-                        <XStack gap='$space.3'>
-                            <YStack alignItems='flex-end'>
-                                <H6>Workout Effort: </H6>
-                                <H6>Workout Goal: </H6>
-                                <H6>Workout Goal Streak: </H6>
-                                <Separator
-                                    borderWidth={1}
-                                    alignSelf='stretch'
-                                    borderColor='$blue10'
-                                />
-                                <H6>Total XP Gained: </H6>
-                            </YStack>
-                            <YStack alignItems='flex-end'>
-                                <H6>{workoutEffortXp}</H6>
-                                <H6>{workoutGoalXp}</H6>
-                                <H6>{workoutGoalStreakXp}</H6>
-                                <Separator
-                                    borderWidth={1}
-                                    alignSelf='stretch'
-                                    borderColor='$blue10'
-                                />
-                                <H6>{totalWorkoutXp}</H6>
-                            </YStack>
-                        </XStack>
-                    </>
+                    </Circle>
+                    <Progress2.Bar
+                        width={350}
+                        height={20}
+                        borderRadius={20}
+                        progress={progress}
+                        animated={isAnimated}
+                        animationType='timing'
+                        animationConfig={{ duration, easing: Easing.inOut(Easing.ease) }}
+                        color={theme.blue10.val}
+                        unfilledColor={theme.gray8.val}
+                        borderColor='transparent'
+                    />
+                </XStack>
+                {currentXpSourceName && (
+                    <SizableText size='$5' paddingTop='$space.2'>
+                        {currentXpSourceName}: {currentXpSourceVal} XP
+                    </SizableText>
                 )}
             </View>
             <Link href='workout-tracker' asChild>
