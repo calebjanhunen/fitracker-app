@@ -1,19 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
-const friendlyXpSourceDisplay = {
-    workoutEffortXp: 'Workout effort',
-    workoutGoalXp: 'Weekly goal',
-    workoutGoalStreakXp: 'Weekly streak',
-};
-
 const MAX_PROGRESS_VAL = 100;
 const MIN_PROGRESS_VAL = 0;
 const QUICK_ANIMATION_DURATION = 300;
 const MEDIUM_ANIMATION_DURATION = 1000;
 
+// Delays
 const DELAY_BETWEEN_XP_SOURCES = 2000;
 const PROGRESS_RESET_DELAY = 400;
 const INITIAL_PAGE_RENDER_DELAY = 1000;
+const DELAY_BETWEEN_DISPLAYING_XP_SOURCE_AND_INCREASING_XP_VAL = 200;
 
 const XP_CALCULATION_EXPONENT_VAL = 2;
 const XP_CALCULATION_CONSTANT_VAL = 200;
@@ -27,10 +23,11 @@ export function useProgressBar(
     const [progress, setProgress] = useState(calculateProgress(initialXp, xpNeededForNextLevel));
     const [duration, setDuration] = useState(200);
     const [isAnimated, setIsAnimated] = useState(true);
-    const [currentlyDisplayedXpSource, setCurrentlyDisplayedXpSource] =
-        useState<keyof typeof allXpSources>('');
     const isMounted = useRef(true);
     const [totalXp, setTotalXp] = useState(0);
+    const [displayWorkoutEffort, setDisplayWorkoutEffort] = useState(false);
+    const [displayWorkoutGoal, setDisplayWorkoutGoal] = useState(false);
+    const [displayWeeklyStreak, setDisplayWeeklyStreak] = useState(false);
 
     useEffect(() => {
         isMounted.current = true;
@@ -47,11 +44,10 @@ export function useProgressBar(
 
         // Loop through all the xp sources and update the progress bar
         for (const xpSource in allXpSources) {
-            if (allXpSources[xpSource] === '0') {
-                continue;
-            }
-
-            setCurrentlyDisplayedXpSource(xpSource);
+            if (xpSource === 'workoutEffortXp') setDisplayWorkoutEffort(true);
+            if (xpSource === 'workoutGoalXp') setDisplayWorkoutGoal(true);
+            if (xpSource === 'workoutGoalStreakXp') setDisplayWeeklyStreak(true);
+            await safeSetTimeout(DELAY_BETWEEN_DISPLAYING_XP_SOURCE_AND_INCREASING_XP_VAL);
             currentXp += Number(allXpSources[xpSource]);
             setTotalXp((prev) => prev + Number(allXpSources[xpSource]));
 
@@ -110,11 +106,9 @@ export function useProgressBar(
         progress,
         duration,
         isAnimated,
-        currentXpSourceName:
-            friendlyXpSourceDisplay[
-                currentlyDisplayedXpSource as keyof typeof friendlyXpSourceDisplay
-            ],
-        currentXpSourceVal: Number(allXpSources[currentlyDisplayedXpSource]),
         totalXp,
+        displayWeeklyStreak,
+        displayWorkoutGoal,
+        displayWorkoutEffort,
     };
 }

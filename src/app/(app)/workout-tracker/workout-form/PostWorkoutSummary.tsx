@@ -4,10 +4,11 @@ import { Easing } from 'react-native';
 import * as Progress2 from 'react-native-progress';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+import { AnimatedIncreasingNumber } from 'src/components/workout-tracker/post-workout-summary/AnimatedIncreasingNumber';
 import { useProgressBar } from 'src/hooks/workout-tracker/useProgressBar';
 import { RootState } from 'src/redux/Store';
 import { getOrdinalSuffix } from 'src/utils';
-import { Button, Circle, H3, SizableText, useTheme, View, XStack } from 'tamagui';
+import { Button, Circle, H3, SizableText, useTheme, View, XStack, YStack } from 'tamagui';
 
 export default function PostWorkoutSummary() {
     const user = useSelector((state: RootState) => state.user);
@@ -33,9 +34,10 @@ export default function PostWorkoutSummary() {
         progress,
         isAnimated,
         duration,
-        currentXpSourceName,
-        currentXpSourceVal,
         totalXp,
+        displayWeeklyStreak,
+        displayWorkoutEffort,
+        displayWorkoutGoal,
     } = useProgressBar(Number(levelBeforeWorkout), Number(currentXpBeforeWorkout), {
         workoutEffortXp,
         workoutGoalXp,
@@ -96,16 +98,25 @@ export default function PostWorkoutSummary() {
                         borderColor='transparent'
                     />
                 </XStack>
-                <XStack justifyContent='space-between' paddingTop='$space.2'>
-                    <View>
-                        {currentXpSourceName && (
+                <YStack alignItems='center' paddingTop='$space.2' gap='$space.3'>
+                    <XStack alignItems='flex-end' gap='$space.2'>
+                        <AnimatedIncreasingNumber numberToAnimate={totalXp} />
+                        <SizableText size='$7'>XP</SizableText>
+                    </XStack>
+                    <YStack>
+                        {displayWorkoutEffort && (
+                            <SizableText size='$5'>Workout Effort + {workoutEffortXp}</SizableText>
+                        )}
+                        {displayWorkoutGoal && (
+                            <SizableText size='$5'>Workout Goal + {workoutGoalXp} </SizableText>
+                        )}
+                        {displayWeeklyStreak && (
                             <SizableText size='$5'>
-                                {currentXpSourceName}: {currentXpSourceVal} XP
+                                Weekly Streak + {workoutGoalStreakXp}{' '}
                             </SizableText>
                         )}
-                    </View>
-                    <SizableText>{totalXp}</SizableText>
-                </XStack>
+                    </YStack>
+                </YStack>
             </View>
             <Link href='workout-tracker' asChild>
                 <Button backgroundColor='$blue6' color='$blue10' fontWeight='bold'>
