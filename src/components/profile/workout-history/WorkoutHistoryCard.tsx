@@ -11,7 +11,6 @@ import { IErrorResponse } from 'src/api/client';
 import { DeleteWorkoutDto, WorkoutResponseDto } from 'src/api/generated';
 import { useDeleteWorkout } from 'src/api/hooks';
 import { PopoverMenuOptionsV2, PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
-import { updateTotalXP } from 'src/redux/user/UserSlice';
 import { formatDate } from 'src/utils/FormatDate';
 import { formatWorkoutDuration } from 'src/utils/formatWorkoutDuration';
 
@@ -21,8 +20,7 @@ interface Props {
 
 export default function WorkoutHistoryCard({ workout }: Props) {
     const theme = useTheme();
-    const dispatch = useDispatch();
-    const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, onDeleteError);
+    const { deleteWorkout, isDeleting } = useDeleteWorkout(() => {}, onDeleteError);
     const menuOptions: PopoverMenuOptionsV2[] = [
         {
             text: 'Delete',
@@ -42,11 +40,6 @@ export default function WorkoutHistoryCard({ workout }: Props) {
             ]
         );
     }
-
-    function onDeleteSuccess(response: DeleteWorkoutDto) {
-        dispatch(updateTotalXP(response.totalUserXp));
-    }
-
     function onDeleteError(error: IErrorResponse) {
         Alert.alert('Could not delete workout', error.message);
     }

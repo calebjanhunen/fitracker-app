@@ -452,6 +452,24 @@ export interface UserProfileDto {
      * @memberof UserProfileDto
      */
     'totalXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'level': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'currentXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'xpNeededForCurrentLevel': number;
 }
 /**
  * 
@@ -519,7 +537,7 @@ export interface UserStatsAfterWorkoutDto {
      * @type {number}
      * @memberof UserStatsAfterWorkoutDto
      */
-    'xpNeededForNextLevel': number;
+    'xpNeededForCurrentLevel': number;
     /**
      * 
      * @type {number}

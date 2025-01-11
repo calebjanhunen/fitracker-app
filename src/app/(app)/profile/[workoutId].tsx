@@ -2,23 +2,20 @@ import React from 'react';
 
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { H3, useTheme, View, XStack } from 'tamagui';
 
 import { FlatList } from 'react-native-gesture-handler';
 import { IErrorResponse } from 'src/api/client';
-import { DeleteWorkoutDto, WorkoutResponseDto } from 'src/api/generated';
+import { WorkoutResponseDto } from 'src/api/generated';
 import { useDeleteWorkout } from 'src/api/hooks';
 import { IconBtn } from 'src/components/common/icon-btn';
 import Exercise from 'src/components/profile/workout-details/Exercise';
 import TimeAndDateInfo from 'src/components/profile/workout-details/TimeAndDateInfo';
-import { updateTotalXP } from 'src/redux/user/UserSlice';
 
 export default function WorkoutDetailsModal() {
     const { workout } = useLocalSearchParams<{ workout: string }>();
     const decodedWorkout: WorkoutResponseDto = JSON.parse(decodeURIComponent(workout));
-    const { deleteWorkout, isDeleting } = useDeleteWorkout(onDeleteSuccess, onDeleteError);
-    const dispatch = useDispatch();
+    const { deleteWorkout, isDeleting } = useDeleteWorkout(() => {}, onDeleteError);
     const theme = useTheme();
 
     function onDeletePress() {
@@ -35,12 +32,6 @@ export default function WorkoutDetailsModal() {
             ]
         );
     }
-
-    function onDeleteSuccess(response: DeleteWorkoutDto) {
-        dispatch(updateTotalXP(response.totalUserXp));
-        router.back();
-    }
-
     function onDeleteError(error: IErrorResponse) {
         Alert.alert('Could not delete workout', error.message);
     }
