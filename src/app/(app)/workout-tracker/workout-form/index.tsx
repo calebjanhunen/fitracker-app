@@ -145,15 +145,16 @@ export default function WorkoutForm() {
 
     function onCreateWorkoutSuccess(response: CreateWorkoutResponseDto) {
         resetWorkout();
-        const workoutStats = response.workoutStats;
+        const { workoutStats, userStatsBeforeWorkout, userStatsAfterWorkout } = response;
         router.push({
             pathname: 'workout-tracker/workout-form/PostWorkoutSummary',
             params: {
-                totalWorkoutXp: workoutStats.totalWorkoutXp.toString(),
+                currentXpBeforeWorkout: userStatsBeforeWorkout.currentXp.toString(),
+                levelBeforeWorkout: userStatsBeforeWorkout.level.toString(),
                 workoutEffortXp: workoutStats.workoutEffortXp.toString(),
                 workoutGoalXp: workoutStats.workoutGoalXp.toString(),
                 workoutGoalStreakXp: workoutStats.workoutGoalStreakXp.toString(),
-                daysWithWorkoutsThisWeek: workoutStats.daysWithWorkoutsThisWeek.toString(),
+                daysWithWorkoutsThisWeek: userStatsAfterWorkout.daysWithWorkoutsThisWeek.toString(),
             },
         });
         dispatch(incrementTotalXp(workoutStats.totalWorkoutXp));
