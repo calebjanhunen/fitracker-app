@@ -10,7 +10,7 @@ const initialState: IUser = {
     weeklyWorkoutGoal: 0,
     level: 0,
     currentXp: 0,
-    xpNeededForNextLevel: 0,
+    xpNeededForCurrentLevel: 0,
 };
 
 const userSlice = createSlice({
@@ -24,7 +24,7 @@ const userSlice = createSlice({
             state.weeklyWorkoutGoal = action.payload.weeklyWorkoutGoal;
             state.level = action.payload.level;
             state.currentXp = action.payload.currentXp;
-            state.xpNeededForNextLevel = action.payload.xpNeededForNextLevel;
+            state.xpNeededForCurrentLevel = action.payload.xpNeededForCurrentLevel;
         },
         clearUser: (state) => {
             state.username = '';

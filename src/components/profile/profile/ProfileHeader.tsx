@@ -15,7 +15,7 @@ export default function ProfileHeader({ user }: Props) {
     const theme = useTheme();
     useFocusEffect(
         useCallback(() => {
-            setProgress(user.currentXp / user.xpNeededForNextLevel);
+            setProgress(user.currentXp / user.xpNeededForCurrentLevel);
 
             return () => {
                 setProgress(0);

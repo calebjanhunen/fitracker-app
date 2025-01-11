@@ -469,7 +469,7 @@ export interface UserProfileDto {
      * @type {number}
      * @memberof UserProfileDto
      */
-    'xpNeededForNextLevel': number;
+    'xpNeededForCurrentLevel': number;
 }
 /**
  * 
@@ -537,7 +537,7 @@ export interface UserStatsAfterWorkoutDto {
      * @type {number}
      * @memberof UserStatsAfterWorkoutDto
      */
-    'xpNeededForNextLevel': number;
+    'xpNeededForCurrentLevel': number;
     /**
      * 
      * @type {number}
