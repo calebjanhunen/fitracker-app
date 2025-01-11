@@ -104,6 +104,18 @@ export interface CreateWorkoutResponseDto {
      * @memberof CreateWorkoutResponseDto
      */
     'workoutStats': WorkoutStatsDto;
+    /**
+     * 
+     * @type {UserStatsBeforeWorkoutDto}
+     * @memberof CreateWorkoutResponseDto
+     */
+    'userStatsBeforeWorkout': UserStatsBeforeWorkoutDto;
+    /**
+     * 
+     * @type {UserStatsAfterWorkoutDto}
+     * @memberof CreateWorkoutResponseDto
+     */
+    'userStatsAfterWorkout': UserStatsAfterWorkoutDto;
 }
 /**
  * 
@@ -487,6 +499,56 @@ export interface UserSignupDto {
 /**
  * 
  * @export
+ * @interface UserStatsAfterWorkoutDto
+ */
+export interface UserStatsAfterWorkoutDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserStatsAfterWorkoutDto
+     */
+    'level': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserStatsAfterWorkoutDto
+     */
+    'currentXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserStatsAfterWorkoutDto
+     */
+    'xpNeededForNextLevel': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserStatsAfterWorkoutDto
+     */
+    'daysWithWorkoutsThisWeek': number;
+}
+/**
+ * 
+ * @export
+ * @interface UserStatsBeforeWorkoutDto
+ */
+export interface UserStatsBeforeWorkoutDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserStatsBeforeWorkoutDto
+     */
+    'level': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserStatsBeforeWorkoutDto
+     */
+    'currentXp': number;
+}
+/**
+ * 
+ * @export
  * @interface VerifyEmailDto
  */
 export interface VerifyEmailDto {
@@ -713,6 +775,18 @@ export interface WorkoutStatsDto {
      * @memberof WorkoutStatsDto
      */
     'workoutEffortXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutStatsDto
+     */
+    'workoutGoalXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutStatsDto
+     */
+    'workoutGoalStreakXp': number;
 }
 /**
  * 

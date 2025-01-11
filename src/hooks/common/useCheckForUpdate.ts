@@ -28,7 +28,10 @@ export function useCheckForUpdate() {
                 );
             }
         } catch (e) {
-            Alert.alert('Could not update.', 'Error encountered when trying to update:');
+            Alert.alert(
+                'Could not update.',
+                `Error encountered when trying to update: ${e.message as string}`
+            );
         }
     }
 }

@@ -18,6 +18,7 @@ import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInP
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { useStopwatch } from 'src/hooks/workout-tracker/useStopwatch';
 import { RootState } from 'src/redux/Store';
+import { incrementTotalXp } from 'src/redux/user/UserSlice';
 import {
     clearWorkout,
     reorderExercises,
@@ -144,14 +145,19 @@ export default function WorkoutForm() {
 
     function onCreateWorkoutSuccess(response: CreateWorkoutResponseDto) {
         resetWorkout();
+        const { workoutStats, userStatsBeforeWorkout, userStatsAfterWorkout } = response;
         router.push({
             pathname: 'workout-tracker/workout-form/PostWorkoutSummary',
             params: {
-                totalWorkoutXp: response.workoutStats.totalWorkoutXp.toString(),
-                workoutEffortXp: response.workoutStats.workoutEffortXp.toString(),
+                currentXpBeforeWorkout: userStatsBeforeWorkout.currentXp.toString(),
+                levelBeforeWorkout: userStatsBeforeWorkout.level.toString(),
+                workoutEffortXp: workoutStats.workoutEffortXp.toString(),
+                workoutGoalXp: workoutStats.workoutGoalXp.toString(),
+                workoutGoalStreakXp: workoutStats.workoutGoalStreakXp.toString(),
+                daysWithWorkoutsThisWeek: userStatsAfterWorkout.daysWithWorkoutsThisWeek.toString(),
             },
         });
-        // dispatch(updateTotalXP(response.workoutStats.totalUserXp));
+        dispatch(incrementTotalXp(workoutStats.totalWorkoutXp));
     }
 
     function onCreateWorkoutError(error: IErrorResponse) {

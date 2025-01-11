@@ -12,7 +12,7 @@ export default {
                 ? 'Fitracker (Preview)'
                 : 'Fitracker',
         slug: 'fitracker',
-        plugins: ['expo-router', 'expo-font'],
+        plugins: ['expo-router', 'expo-font', 'expo-secure-store'],
         scheme: 'fitracker',
         version: '2.5.1',
         runtimeVersion: {
@@ -60,7 +60,6 @@ export default {
         updates: {
             url: 'https://u.expo.dev/45091350-52c3-4c87-8398-d0988898db85',
         },
-        sdkVersion: '51.0.0',
     },
     name: 'fitracker',
 };
