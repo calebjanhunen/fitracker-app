@@ -1,7 +1,7 @@
 import { Link, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Easing } from 'react-native';
-import * as Progress2 from 'react-native-progress';
+import * as Progress from 'react-native-progress';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { AnimatedIncreasingNumber } from 'src/components/workout-tracker/post-workout-summary/AnimatedIncreasingNumber';
@@ -9,6 +9,15 @@ import { useProgressBar } from 'src/hooks/workout-tracker/useProgressBar';
 import { RootState } from 'src/redux/Store';
 import { getOrdinalSuffix } from 'src/utils';
 import { Button, Circle, H3, SizableText, useTheme, View, XStack, YStack } from 'tamagui';
+
+interface WorkoutStats extends Record<string, string> {
+    currentXpBeforeWorkout: string;
+    levelBeforeWorkout: string;
+    workoutEffortXp: string;
+    workoutGoalXp: string;
+    workoutGoalStreakXp: string;
+    daysWithWorkoutThisWeek: string;
+}
 
 export default function PostWorkoutSummary() {
     const user = useSelector((state: RootState) => state.user);
@@ -19,14 +28,7 @@ export default function PostWorkoutSummary() {
         workoutGoalXp,
         workoutGoalStreakXp,
         daysWithWorkoutThisWeek,
-    } = useLocalSearchParams<{
-        currentXpBeforeWorkout: string;
-        levelBeforeWorkout: string;
-        workoutEffortXp: string;
-        workoutGoalXp: string;
-        workoutGoalStreakXp: string;
-        daysWithWorkoutThisWeek: string;
-    }>();
+    } = useLocalSearchParams<WorkoutStats>();
     const daysUntilWeeklyGoal = user.weeklyWorkoutGoal - Number(daysWithWorkoutThisWeek);
     const theme = useTheme();
     const {
@@ -85,7 +87,7 @@ export default function PostWorkoutSummary() {
                             {level}
                         </SizableText>
                     </Circle>
-                    <Progress2.Bar
+                    <Progress.Bar
                         width={325}
                         height={20}
                         borderRadius={20}
