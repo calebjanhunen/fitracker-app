@@ -452,6 +452,24 @@ export interface UserProfileDto {
      * @memberof UserProfileDto
      */
     'totalXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'level': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'currentXp': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserProfileDto
+     */
+    'xpNeededForNextLevel': number;
 }
 /**
  * 
