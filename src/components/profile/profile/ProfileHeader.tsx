@@ -13,6 +13,7 @@ interface Props {
 export default function ProfileHeader({ user }: Props) {
     const [progress, setProgress] = useState(0);
     const theme = useTheme();
+    const { currentXp, xpNeededForCurrentLevel } = user;
     useFocusEffect(
         useCallback(() => {
             setProgress(user.currentXp / user.xpNeededForCurrentLevel);
@@ -20,7 +21,7 @@ export default function ProfileHeader({ user }: Props) {
             return () => {
                 setProgress(0);
             };
-        }, [])
+        }, [currentXp, xpNeededForCurrentLevel])
     );
 
     return (

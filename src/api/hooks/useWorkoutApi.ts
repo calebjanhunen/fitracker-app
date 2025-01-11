@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { IWorkoutFormState } from 'src/redux/workout-form/IWorkoutForm';
 import { IErrorResponse } from '../client';
 import { CreateWorkoutResponseDto, DeleteWorkoutDto, WorkoutRequestDto } from '../generated';
-import { ExerciseApiQueryKeys, WorkoutApiQueryKeys } from '../QueryKeys';
+import { ExerciseApiQueryKeys, UserApiQueryKeys, WorkoutApiQueryKeys } from '../QueryKeys';
 import { queryClient } from '../react-query-client';
 import { workoutApiService } from '../services';
 
@@ -69,6 +69,7 @@ export function useDeleteWorkout(
         onSuccess: async (response) => {
             await Promise.all([
                 queryClient.refetchQueries({ queryKey: WorkoutApiQueryKeys.getWorkouts }),
+                queryClient.refetchQueries({ queryKey: UserApiQueryKeys.getCurrentUser }),
                 queryClient.invalidateQueries({
                     queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
                 }),
