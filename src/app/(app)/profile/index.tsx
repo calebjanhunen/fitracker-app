@@ -3,8 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { SizableText, useTheme, View } from 'tamagui';
 
-import ProfileHeader from 'src/components/profile/profile/ProfileHeader';
-import WorkoutHistoryContainer from 'src/components/profile/workout-history/WorkoutHistoryContainer';
+import { ProfileHeaderV2, WorkoutHistoryContainer } from 'src/components/profile';
 import { RootState } from 'src/redux/Store';
 
 export default function Profile() {
@@ -18,7 +17,7 @@ export default function Profile() {
             paddingTop='$2'
             backgroundColor={theme.background.val}
         >
-            <ProfileHeader user={user} />
+            <ProfileHeaderV2 user={user} />
             <SizableText size='$5' fontWeight='bold' color='$blue10'>
                 Workout History
             </SizableText>
