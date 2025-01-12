@@ -1,4 +1,4 @@
-name: CI
+name: Continuous Integration
 
 on:
     pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
     lint:
+        name: Lint
         runs-on: ubuntu-latest
 
         steps:
@@ -19,7 +20,7 @@ jobs:
                   node-version: '18'
 
             - name: Install dependencies
-              run: npm install
+              run: npm ci
 
             - name: Run linter
               run: npm run lint
