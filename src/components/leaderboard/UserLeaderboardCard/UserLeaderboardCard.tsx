@@ -1,6 +1,5 @@
 import React from 'react';
-import { UserAvatar } from 'src/components/common';
-import Hexagon from 'src/components/profile/ProfileHeader/Hexagon';
+import { Hexagon, UserAvatar } from 'src/components/common';
 import { Card, SizableText, useTheme, View, XStack } from 'tamagui';
 
 interface Props {
