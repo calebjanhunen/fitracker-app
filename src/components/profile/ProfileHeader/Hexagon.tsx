@@ -5,9 +5,10 @@ import { useTheme } from 'tamagui';
 interface Props {
     size: number;
     text: string | number;
+    fontSize?: number;
 }
 
-export default function Hexagon({ size, text }: Props) {
+export default function Hexagon({ size, text, fontSize }: Props) {
     const theme = useTheme();
     const height = (Math.sqrt(4.5) / 2) * size;
     const halfWidth = size / 2;
@@ -22,8 +23,8 @@ export default function Hexagon({ size, text }: Props) {
     0,${quarterHeight}
   `;
 
-    const fontSize = 20;
-    const adjustedFontSize = fontSize / Math.max(1, text.toString().length / 2); // Scale down for long text
+    const fontSizeActual = fontSize ?? 20;
+    const adjustedFontSize = fontSizeActual / Math.max(1, text.toString().length / 2); // Scale down for long text
 
     return (
         <Svg
