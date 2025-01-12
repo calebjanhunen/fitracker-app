@@ -16,8 +16,7 @@ export default function getBaseUrl(): string {
     }
     if (Constants.expoConfig?.extra?.ENVIRONMENT === 'development') {
         if (Device.isDevice) {
-            // return `${PHYSICAL_DEVICE_API_URL}:${API_PORT}`;
-            return `${PHYSICAL_DEVICE_API_URL}`;
+            return `${PHYSICAL_DEVICE_API_URL}:${API_PORT}`;
         } else {
             return Platform.OS === 'android'
                 ? `${ANDROID_EMULATOR_API_URL}:${API_PORT}`

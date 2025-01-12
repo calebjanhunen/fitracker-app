@@ -8,6 +8,7 @@ on:
             - staging
 jobs:
     check_version:
+        name: Check Version Bump
         runs-on: ubuntu-latest
 
         steps:

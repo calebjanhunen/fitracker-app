@@ -4,11 +4,10 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
 import { Card, H4, SizableText, Spinner, useTheme, XStack } from 'tamagui';
 
 import { IErrorResponse } from 'src/api/client';
-import { DeleteWorkoutDto, WorkoutResponseDto } from 'src/api/generated';
+import { WorkoutResponseDto } from 'src/api/generated';
 import { useDeleteWorkout } from 'src/api/hooks';
 import { PopoverMenuOptionsV2, PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
 import { formatDate } from 'src/utils/FormatDate';

@@ -10,6 +10,7 @@ interface Props {
     user: UserProfileDto;
 }
 
+// Keep in case new profile header is ugly
 export default function ProfileHeader({ user }: Props) {
     const [progress, setProgress] = useState(0);
     const theme = useTheme();
