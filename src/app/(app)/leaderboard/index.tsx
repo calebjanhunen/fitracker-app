@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import UserLeaderboardCard from 'src/components/leaderboard/UserLeaderboardCard/UserLeaderboardCard';
+import { UserLeaderboardCard } from 'src/components/leaderboard';
 import { H4, useTheme, View } from 'tamagui';
 
 export default function Leaderboard() {
