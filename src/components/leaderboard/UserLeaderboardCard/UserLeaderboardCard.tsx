@@ -1,13 +1,15 @@
 import React from 'react';
+import { UserLeaderboardData } from 'src/app/(app)/leaderboard';
 import { Card, SizableText, useTheme, XStack } from 'tamagui';
 import TotalXpDisplay from './TotalXpDisplay';
 import UserInfo from './UserInfo';
 
 interface Props {
+    user: UserLeaderboardData;
     rank: number;
 }
 
-export default function UserLeaderboardCard({ rank }: Props) {
+export default function UserLeaderboardCard({ rank, user }: Props) {
     const theme = useTheme();
     const backgroundColor =
         rank === 1
@@ -27,13 +29,13 @@ export default function UserLeaderboardCard({ rank }: Props) {
             borderRadius={20}
         >
             <XStack alignItems='center' justifyContent='space-between'>
-                <XStack alignItems='center' gap='$space.5'>
+                <XStack alignItems='center' gap='$space.5' flex={1}>
                     <SizableText color='$gray1' size='$9' fontWeight='bold'>
                         {rank}
                     </SizableText>
-                    <UserInfo username='calebjahunen' />
+                    <UserInfo username={user.username} />
                 </XStack>
-                <TotalXpDisplay rank={rank} xpVal={231} />
+                <TotalXpDisplay rank={rank} xpVal={user.xp} flex={0.45} />
             </XStack>
         </Card>
     );

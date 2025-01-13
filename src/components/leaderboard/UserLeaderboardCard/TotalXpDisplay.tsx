@@ -1,13 +1,14 @@
 import React from 'react';
 import { Hexagon } from 'src/components/common';
-import { SizableText, useTheme, View, XStack } from 'tamagui';
+import { FontSizeTokens, SizableText, useTheme, View, XStack } from 'tamagui';
 
 interface Props {
     rank: number;
     xpVal: number;
+    flex: number;
 }
 
-export default function TotalXpDisplay({ rank, xpVal }: Props) {
+export default function TotalXpDisplay({ rank, xpVal, flex }: Props) {
     const theme = useTheme();
     const xpTextBackgroundColor =
         rank === 1
@@ -18,8 +19,33 @@ export default function TotalXpDisplay({ rank, xpVal }: Props) {
             ? '#a46628'
             : theme.blue10Dark.val;
 
+    function formatXp(xp: number) {
+        if (xp >= 1000000000) {
+            return (Math.floor((xp / 1000000000) * 100) / 100).toFixed(2) + 'B';
+        }
+        if (xp >= 1000000) {
+            return (Math.floor((xp / 1000000) * 100) / 100).toFixed(2) + 'M';
+        }
+        if (xp >= 1000) {
+            return (Math.floor((xp / 1000) * 100) / 100).toFixed(2) + 'K';
+        }
+        return xp;
+    }
+
+    function getFontSize(xp: number): FontSizeTokens {
+        if (xp >= 1000000000) {
+            return '$1';
+        }
+        if (xp >= 1000000) {
+            return '$1';
+        }
+        if (xp >= 1000) {
+            return '$2';
+        }
+        return '$3';
+    }
     return (
-        <XStack alignItems='center'>
+        <XStack alignItems='center' flex={flex}>
             <Hexagon size={30} text='XP' fontSize={12} />
             <View
                 zIndex={-1}
@@ -27,15 +53,18 @@ export default function TotalXpDisplay({ rank, xpVal }: Props) {
                 backgroundColor={xpTextBackgroundColor}
                 borderTopRightRadius={20}
                 borderBottomRightRadius={20}
+                width='85%'
             >
                 <SizableText
+                    size={getFontSize(xpVal)}
                     paddingHorizontal='$space.3'
                     paddingVertical='$space.2'
                     paddingLeft='$space.5'
                     fontWeight='bold'
                     color='$gray1'
+                    textAlign='center'
                 >
-                    {xpVal}
+                    {formatXp(xpVal)}
                 </SizableText>
             </View>
         </XStack>
