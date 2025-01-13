@@ -1,6 +1,7 @@
 import React from 'react';
-import { Hexagon, UserAvatar } from 'src/components/common';
-import { Card, SizableText, useTheme, View, XStack } from 'tamagui';
+import { Card, SizableText, useTheme, XStack } from 'tamagui';
+import TotalXpDisplay from './TotalXpDisplay';
+import UserInfo from './UserInfo';
 
 interface Props {
     rank: number;
@@ -16,14 +17,7 @@ export default function UserLeaderboardCard({ rank }: Props) {
             : rank === 3
             ? '#CD7F32'
             : theme.blue10.val;
-    const xpTextBackgroundColor =
-        rank === 1
-            ? theme.yellow8.val
-            : rank === 2
-            ? theme.gray11Dark.val
-            : rank === 3
-            ? '#a46628'
-            : theme.blue10Dark.val;
+
     return (
         <Card
             elevate
@@ -37,33 +31,9 @@ export default function UserLeaderboardCard({ rank }: Props) {
                     <SizableText color='$gray1' size='$9' fontWeight='bold'>
                         {rank}
                     </SizableText>
-                    <XStack alignItems='center' gap='$space.2'>
-                        <UserAvatar size={40} />
-                        <SizableText size='$6' fontWeight='bold' color='$gray1'>
-                            calebjanhunen
-                        </SizableText>
-                    </XStack>
+                    <UserInfo username='calebjahunen' />
                 </XStack>
-                <XStack alignItems='center'>
-                    <Hexagon size={30} text='XP' fontSize={12} />
-                    <View
-                        zIndex={-1}
-                        marginLeft={-20}
-                        backgroundColor={xpTextBackgroundColor}
-                        borderTopRightRadius={20}
-                        borderBottomRightRadius={20}
-                    >
-                        <SizableText
-                            paddingHorizontal='$space.3'
-                            paddingVertical='$space.2'
-                            paddingLeft='$space.5'
-                            fontWeight='bold'
-                            color='$gray1'
-                        >
-                            329
-                        </SizableText>
-                    </View>
-                </XStack>
+                <TotalXpDisplay rank={rank} xpVal={231} />
             </XStack>
         </Card>
     );
