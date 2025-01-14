@@ -16,3 +16,7 @@ export const WorkoutTemplateQueryKeys = {
 export const UserApiQueryKeys = {
     getCurrentUser: ['users', 'me'],
 };
+
+export const LeaderbaordApiQueryKeys = {
+    getTotalXpLeaderbaord: ['leaderboard', 'totalXp'],
+};
