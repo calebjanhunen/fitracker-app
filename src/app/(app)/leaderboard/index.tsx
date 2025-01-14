@@ -12,7 +12,9 @@ export default function Leaderboard() {
         <SafeAreaView
             style={{ flex: 1, paddingHorizontal: 16, backgroundColor: theme.background.val }}
         >
-            <H4 color='$blue10'>Total XP</H4>
+            <H4 textAlign='center' color='$blue10' paddingBottom='$space.5'>
+                Total XP Leaderboard
+            </H4>
             <TotalXpLeaderboardList
                 data={data}
                 isLoading={isLoading}
