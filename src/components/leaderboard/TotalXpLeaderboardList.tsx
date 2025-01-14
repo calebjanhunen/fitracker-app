@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
 
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList } from 'react-native';
 import { IErrorResponse } from 'src/api/client';
 import { TotalXpLeaderboardUserDto } from 'src/api/generated';
-import { SizableText, Spinner, useTheme, View } from 'tamagui';
+import { SizableText, useTheme, View } from 'tamagui';
 import UserLeaderboardCard from './UserLeaderboardCard';
 
 interface Props {
     data: TotalXpLeaderboardUserDto[] | undefined;
     isLoading: boolean;
     error: IErrorResponse | null;
+    updateData: () => void;
 }
 
-export default function TotalXpLeaderboardList({ data, isLoading, error }: Props) {
+export default function TotalXpLeaderboardList({ data, isLoading, error, updateData }: Props) {
     const theme = useTheme();
     const [isRefreshing, setRefreshing] = useState(false);
 
     const onRefresh = () => {
         setRefreshing(true);
         setTimeout(() => {
+            updateData();
             setRefreshing(false);
-        }, 2000);
+        }, 1500);
     };
 
     if (isLoading) {
@@ -62,7 +64,6 @@ export default function TotalXpLeaderboardList({ data, isLoading, error }: Props
     if (data?.length) {
         return (
             <FlatList
-                // refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
                 onRefresh={onRefresh}
                 refreshing={isRefreshing}
                 showsVerticalScrollIndicator={false}
