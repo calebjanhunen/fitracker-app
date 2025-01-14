@@ -393,6 +393,25 @@ export interface ResetPasswordDto {
 /**
  * 
  * @export
+ * @interface TotalXpLeaderboardUserDto
+ */
+export interface TotalXpLeaderboardUserDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof TotalXpLeaderboardUserDto
+     */
+    'username': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TotalXpLeaderboardUserDto
+     */
+    'totalXp': number;
+}
+/**
+ * 
+ * @export
  * @interface UpdateWeeklyWorkoutGoalDto
  */
 export interface UpdateWeeklyWorkoutGoalDto {
@@ -2138,7 +2157,7 @@ export const LeaderboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTotalXpLeaderboard(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+        async getTotalXpLeaderboard(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TotalXpLeaderboardUserDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTotalXpLeaderboard(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LeaderboardApi.getTotalXpLeaderboard']?.[localVarOperationServerIndex]?.url;
@@ -2159,7 +2178,7 @@ export const LeaderboardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTotalXpLeaderboard(options?: RawAxiosRequestConfig): AxiosPromise<Array<object>> {
+        getTotalXpLeaderboard(options?: RawAxiosRequestConfig): AxiosPromise<Array<TotalXpLeaderboardUserDto>> {
             return localVarFp.getTotalXpLeaderboard(options).then((request) => request(axios, basePath));
         },
     };
