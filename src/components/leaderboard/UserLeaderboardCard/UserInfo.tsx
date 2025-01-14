@@ -10,7 +10,7 @@ export default function UserInfo({ username }: Props) {
     return (
         <XStack alignItems='center' gap='$space.4'>
             <UserAvatar size={40} />
-            <SizableText size='$6' fontWeight='bold' color='$gray1'>
+            <SizableText size='$5' fontWeight='bold' color='$gray1'>
                 {username}
             </SizableText>
         </XStack>

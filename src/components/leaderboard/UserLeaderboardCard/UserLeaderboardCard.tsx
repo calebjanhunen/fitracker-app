@@ -35,7 +35,7 @@ export default function UserLeaderboardCard({ rank, user }: Props) {
                     </SizableText>
                     <UserInfo username={user.username} />
                 </XStack>
-                <TotalXpDisplay rank={rank} xpVal={user.totalXp} flex={0.45} />
+                <TotalXpDisplay rank={rank} xpVal={user.totalXp} flex={0.4} />
             </XStack>
         </Card>
     );

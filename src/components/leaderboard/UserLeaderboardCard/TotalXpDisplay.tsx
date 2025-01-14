@@ -19,7 +19,7 @@ export default function TotalXpDisplay({ rank, xpVal, flex }: Props) {
             ? '#a46628'
             : theme.blue10Dark.val;
 
-    function formatXp(xp: number) {
+    function formatXp(xp: number): string {
         if (xp >= 1000000000) {
             return (Math.floor((xp / 1000000000) * 100) / 100).toFixed(2) + 'B';
         }
@@ -29,17 +29,15 @@ export default function TotalXpDisplay({ rank, xpVal, flex }: Props) {
         if (xp >= 1000) {
             return (Math.floor((xp / 1000) * 100) / 100).toFixed(2) + 'K';
         }
-        return xp;
+        return xp.toString();
     }
 
     function getFontSize(xp: number): FontSizeTokens {
-        if (xp >= 1000000000) {
+        const xpDisplay = formatXp(xp);
+        if (xpDisplay.length >= 6) {
             return '$1';
         }
-        if (xp >= 1000000) {
-            return '$1';
-        }
-        if (xp >= 1000) {
+        if (xpDisplay.length === 5) {
             return '$2';
         }
         return '$3';
@@ -49,7 +47,7 @@ export default function TotalXpDisplay({ rank, xpVal, flex }: Props) {
             <Hexagon size={30} text='XP' fontSize={12} />
             <View
                 zIndex={-1}
-                marginLeft={-20}
+                marginLeft={-22}
                 backgroundColor={xpTextBackgroundColor}
                 borderTopRightRadius={20}
                 borderBottomRightRadius={20}
@@ -57,7 +55,7 @@ export default function TotalXpDisplay({ rank, xpVal, flex }: Props) {
             >
                 <SizableText
                     size={getFontSize(xpVal)}
-                    paddingHorizontal='$space.3'
+                    paddingHorizontal='$space.2'
                     paddingVertical='$space.2'
                     paddingLeft='$space.5'
                     fontWeight='bold'
