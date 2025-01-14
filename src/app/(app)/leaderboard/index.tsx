@@ -1,13 +1,17 @@
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetTotalXpLeaderboard } from 'src/api/hooks';
 import { TotalXpLeaderboardList } from 'src/components/leaderboard';
-import { H4, View } from 'tamagui';
+import { H4, useTheme } from 'tamagui';
 
 export default function Leaderboard() {
+    const theme = useTheme();
     const { data, isLoading, error, updateData } = useGetTotalXpLeaderboard();
 
     return (
-        <View flex={1}>
+        <SafeAreaView
+            style={{ flex: 1, paddingHorizontal: 16, backgroundColor: theme.background.val }}
+        >
             <H4 color='$blue10'>Total XP</H4>
             <TotalXpLeaderboardList
                 data={data}
@@ -15,6 +19,6 @@ export default function Leaderboard() {
                 error={error}
                 updateData={updateData}
             />
-        </View>
+        </SafeAreaView>
     );
 }

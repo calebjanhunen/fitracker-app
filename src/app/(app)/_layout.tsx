@@ -39,7 +39,7 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name='leaderboard'
                     options={{
-                        headerTitle: 'Leaderboard',
+                        headerShown: false,
                         tabBarLabel: 'Leaderboard',
                         tabBarIcon: ({ color, size }) => (
                             <IonIcons name='podium-outline' color={color} size={size} />

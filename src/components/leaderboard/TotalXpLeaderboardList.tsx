@@ -67,7 +67,6 @@ export default function TotalXpLeaderboardList({ data, isLoading, error, updateD
                 onRefresh={onRefresh}
                 refreshing={isRefreshing}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ backgroundColor: theme.backgroundStrong.val }}
                 data={data}
                 renderItem={({ item, index }) => (
                     <UserLeaderboardCard rank={index + 1} user={item} />

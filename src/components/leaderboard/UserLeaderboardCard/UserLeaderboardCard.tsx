@@ -22,7 +22,6 @@ export default function UserLeaderboardCard({ rank, user }: Props) {
 
     return (
         <Card
-            elevate
             paddingHorizontal='$space.3'
             paddingVertical='$space.3'
             backgroundColor={backgroundColor}
