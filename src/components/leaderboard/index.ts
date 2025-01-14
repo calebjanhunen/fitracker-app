@@ -1,1 +1,1 @@
-export { default as UserLeaderboardCard } from './UserLeaderboardCard';
+export { default as TotalXpLeaderboardList } from './TotalXpLeaderboardList';

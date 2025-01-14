@@ -1,11 +1,11 @@
 import React from 'react';
-import { UserLeaderboardData } from 'src/app/(app)/leaderboard';
+import { TotalXpLeaderboardUserDto } from 'src/api/generated';
 import { Card, SizableText, useTheme, XStack } from 'tamagui';
 import TotalXpDisplay from './TotalXpDisplay';
 import UserInfo from './UserInfo';
 
 interface Props {
-    user: UserLeaderboardData;
+    user: TotalXpLeaderboardUserDto;
     rank: number;
 }
 
@@ -35,7 +35,7 @@ export default function UserLeaderboardCard({ rank, user }: Props) {
                     </SizableText>
                     <UserInfo username={user.username} />
                 </XStack>
-                <TotalXpDisplay rank={rank} xpVal={user.xp} flex={0.45} />
+                <TotalXpDisplay rank={rank} xpVal={user.totalXp} flex={0.45} />
             </XStack>
         </Card>
     );
