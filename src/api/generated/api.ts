@@ -452,6 +452,12 @@ export interface UserProfileDto {
      * @type {string}
      * @memberof UserProfileDto
      */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserProfileDto
+     */
     'firstName': string;
     /**
      * 
