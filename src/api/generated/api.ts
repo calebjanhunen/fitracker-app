@@ -489,6 +489,12 @@ export interface UserProfileDto {
      * @memberof UserProfileDto
      */
     'xpNeededForCurrentLevel': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserProfileDto
+     */
+    'role': string;
 }
 /**
  * 
