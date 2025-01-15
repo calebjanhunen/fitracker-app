@@ -5,14 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { Button, H4, useTheme, View, XStack } from 'tamagui';
 
-import { useGetAllWorkoutTemplates, useGetCurrentUser } from 'src/api/hooks';
+import { useGetAllWorkoutTemplates } from 'src/api/hooks';
 import WorkoutTemplateCard from 'src/components/workout-tracker/home/WorkoutTemplateCard';
 import WorkoutTemplatesContainer from 'src/components/workout-tracker/home/WorkoutTemplatesContainer';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { updatedCreatedAt } from 'src/redux/workout-form/WorkoutFormSlice';
 
 export default function Home() {
-    useGetCurrentUser();
     const theme = useTheme();
     const dispatch = useDispatch();
     const { isWorkoutInProgress, setWorkoutInProgress } = useIsWorkoutInProgress();

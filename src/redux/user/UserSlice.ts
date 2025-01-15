@@ -11,6 +11,7 @@ const initialState: IUser = {
     level: 0,
     currentXp: 0,
     xpNeededForCurrentLevel: 0,
+    role: '',
 };
 
 const userSlice = createSlice({
@@ -25,6 +26,7 @@ const userSlice = createSlice({
             state.level = action.payload.level;
             state.currentXp = action.payload.currentXp;
             state.xpNeededForCurrentLevel = action.payload.xpNeededForCurrentLevel;
+            state.role = action.payload.role;
         },
         clearUser: (state) => {
             state.username = '';
