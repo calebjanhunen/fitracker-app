@@ -1,13 +1,15 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
+import { Dimensions, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useGetCurrentUser } from 'src/api/hooks';
 import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { Roles } from 'src/constants/roles';
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { loadWorkoutOnRender } from 'src/redux/workout-form/WorkoutFormSlice';
-import { View } from 'tamagui';
+
+const { width, height } = Dimensions.get('window');
 
 export default function AppLayout() {
     const { data: user } = useGetCurrentUser();
@@ -27,7 +29,7 @@ export default function AppLayout() {
     }, []);
 
     return (
-        <View flex={1}>
+        <View style={{ width, height }}>
             <Tabs>
                 <Tabs.Screen
                     name='workout-tracker'
