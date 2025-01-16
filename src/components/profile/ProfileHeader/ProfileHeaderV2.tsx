@@ -15,7 +15,7 @@ interface Props {
 export default function ProfileHeaderV2({ user }: Props) {
     return (
         <View marginBottom='$space.5'>
-            <XStack gap='$space.5'>
+            <XStack gap='$space.3'>
                 <Avatar />
                 <YStack flex={1} gap='$space.3'>
                     <XStack alignItems='center' justifyContent='space-between'>
