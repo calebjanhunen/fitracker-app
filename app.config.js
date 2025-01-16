@@ -14,7 +14,7 @@ export default {
         slug: 'fitracker',
         plugins: ['expo-router', 'expo-font', 'expo-secure-store'],
         scheme: 'fitracker',
-        version: '2.5.1',
+        version: '2.8.1',
         runtimeVersion: {
             policy: 'appVersion',
         },
