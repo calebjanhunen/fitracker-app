@@ -1,6 +1,7 @@
 import React from 'react';
 import { TotalXpLeaderboardUserDto } from 'src/api/generated';
-import { Card, SizableText, useTheme, XStack } from 'tamagui';
+import { getOrdinalSuffix } from 'src/utils';
+import { Card, FontSizeTokens, SizableText, useTheme, XStack } from 'tamagui';
 import TotalXpDisplay from './TotalXpDisplay';
 import UserInfo from './UserInfo';
 
@@ -20,6 +21,8 @@ export default function UserLeaderboardCard({ rank, user }: Props) {
             ? '#CD7F32'
             : theme.blue10.val;
 
+    const rankFontSize: FontSizeTokens = rank < 10 ? '$4' : rank >= 10 && rank < 100 ? '$3' : '$1';
+
     return (
         <Card
             paddingHorizontal='$space.3'
@@ -27,14 +30,21 @@ export default function UserLeaderboardCard({ rank, user }: Props) {
             backgroundColor={backgroundColor}
             borderRadius={20}
         >
-            <XStack alignItems='center' justifyContent='space-between'>
-                <XStack alignItems='center' gap='$space.5' flex={1}>
-                    <SizableText color='$gray1' size='$9' fontWeight='bold'>
+            <XStack alignItems='center'>
+                <XStack alignItems='center' gap='$space.1.5' flex={1}>
+                    <SizableText
+                        textAlign='center'
+                        color='$gray1'
+                        size={rankFontSize}
+                        fontWeight='bold'
+                        width='15%'
+                    >
                         {rank}
+                        {getOrdinalSuffix(rank)}
                     </SizableText>
                     <UserInfo username={user.username} />
                 </XStack>
-                <TotalXpDisplay rank={rank} xpVal={user.totalXp} flex={0.41} />
+                <TotalXpDisplay rank={rank} xpVal={user.totalXp} />
             </XStack>
         </Card>
     );
