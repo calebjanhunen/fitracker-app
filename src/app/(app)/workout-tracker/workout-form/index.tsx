@@ -18,7 +18,7 @@ import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInP
 import { useLocalStorage } from 'src/hooks/common/useLocalStorage';
 import { useStopwatch } from 'src/hooks/workout-tracker/useStopwatch';
 import { RootState } from 'src/redux/Store';
-import { incrementTotalXp } from 'src/redux/user/UserSlice';
+import { updateUserStatsAfterWorkout } from 'src/redux/user/UserSlice';
 import {
     clearWorkout,
     reorderExercises,
@@ -157,7 +157,13 @@ export default function WorkoutForm() {
                 daysWithWorkoutsThisWeek: userStatsAfterWorkout.daysWithWorkoutsThisWeek.toString(),
             },
         });
-        dispatch(incrementTotalXp(workoutStats.totalWorkoutXp));
+        dispatch(
+            updateUserStatsAfterWorkout({
+                totalWorkoutXp: workoutStats.totalWorkoutXp,
+                currentXp: userStatsAfterWorkout.currentXp,
+                level: userStatsAfterWorkout.level,
+            })
+        );
     }
 
     function onCreateWorkoutError(error: IErrorResponse) {

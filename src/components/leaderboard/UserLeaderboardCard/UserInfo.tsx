@@ -8,9 +8,15 @@ interface Props {
 
 export default function UserInfo({ username }: Props) {
     return (
-        <XStack alignItems='center' gap='$space.4'>
+        <XStack alignItems='center' gap='$space.2'>
             <UserAvatar size={40} />
-            <SizableText size='$5' fontWeight='bold' color='$gray1'>
+            <SizableText
+                size='$4'
+                fontWeight='bold'
+                color='$gray1'
+                numberOfLines={1}
+                paddingRight={155}
+            >
                 {username}
             </SizableText>
         </XStack>

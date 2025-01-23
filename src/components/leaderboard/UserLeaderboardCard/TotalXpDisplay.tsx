@@ -5,10 +5,9 @@ import { FontSizeTokens, SizableText, useTheme, View, XStack } from 'tamagui';
 interface Props {
     rank: number;
     xpVal: number;
-    flex: number;
 }
 
-export default function TotalXpDisplay({ rank, xpVal, flex }: Props) {
+export default function TotalXpDisplay({ rank, xpVal }: Props) {
     const theme = useTheme();
     const xpTextBackgroundColor =
         rank === 1
@@ -43,24 +42,24 @@ export default function TotalXpDisplay({ rank, xpVal, flex }: Props) {
         return '$3';
     }
     return (
-        <XStack alignItems='center' flex={flex}>
-            <Hexagon size={30} text='XP' fontSize={12} />
+        <XStack alignItems='center' justifyContent='flex-end' flex={0.35} position='relative'>
+            <View position='absolute' left={-20}>
+                <Hexagon size={30} text='XP' fontSize={12} />
+            </View>
             <View
                 zIndex={-1}
-                marginLeft={-22}
                 backgroundColor={xpTextBackgroundColor}
                 borderTopRightRadius={20}
                 borderBottomRightRadius={20}
-                width='85%'
+                flex={1}
             >
                 <SizableText
-                    size={getFontSize(xpVal)}
-                    paddingHorizontal='$space.2'
+                    fontSize={getFontSize(xpVal)}
                     paddingVertical='$space.2'
-                    paddingLeft='$space.5'
                     fontWeight='bold'
                     color='$gray1'
                     textAlign='center'
+                    paddingLeft='$space.2'
                 >
                     {formatXp(xpVal)}
                 </SizableText>
