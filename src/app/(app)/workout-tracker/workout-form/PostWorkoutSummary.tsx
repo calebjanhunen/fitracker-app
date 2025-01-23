@@ -48,6 +48,14 @@ export default function PostWorkoutSummary() {
 
     function getGoalMessage() {
         const ordinalSuffix = getOrdinalSuffix(Number(daysWithWorkoutThisWeek));
+        if (user.weeklyWorkoutGoal === 0) {
+            return (
+                <SizableText textAlign='center'>
+                    You haven&apos;t set a weekly workout goal yet. Set a goal to get weekly workout
+                    goal xp!
+                </SizableText>
+            );
+        }
         return daysUntilWeeklyGoal > 0 ? (
             <SizableText textAlign='center'>
                 This is your {daysWithWorkoutThisWeek}
@@ -105,16 +113,18 @@ export default function PostWorkoutSummary() {
                         <AnimatedIncreasingNumber numberToAnimate={totalXp} />
                         <SizableText size='$7'>XP</SizableText>
                     </XStack>
-                    <YStack>
+                    <YStack alignItems='center'>
                         {displayWorkoutEffort && (
                             <SizableText size='$5'>Workout Effort + {workoutEffortXp}</SizableText>
                         )}
                         {displayWorkoutGoal && (
-                            <SizableText size='$5'>Workout Goal + {workoutGoalXp} </SizableText>
+                            <SizableText size='$5'>
+                                Weekly Workout Goal + {workoutGoalXp}{' '}
+                            </SizableText>
                         )}
                         {displayWeeklyStreak && (
                             <SizableText size='$5'>
-                                Weekly Streak + {workoutGoalStreakXp}{' '}
+                                Weekly Goal Streak + {workoutGoalStreakXp}{' '}
                             </SizableText>
                         )}
                     </YStack>
