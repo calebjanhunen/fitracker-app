@@ -51,8 +51,8 @@ export default function PostWorkoutSummary() {
         if (user.weeklyWorkoutGoal === 0) {
             return (
                 <SizableText textAlign='center'>
-                    You haven&apos;t set a weekly workout goal yet. Set a goal to get weekly workout
-                    goal xp!
+                    You haven&apos;t set a weekly workout goal yet. Set a goal in your profile
+                    settings to get weekly workout goal xp!
                 </SizableText>
             );
         }
