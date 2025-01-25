@@ -9,17 +9,7 @@ import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import CreateExerciseModal from 'src/components/workout-tracker/common/CreateExerciseModal';
 import { RootState } from 'src/redux/Store';
 import { addExercisesToWorkoutTemplate } from 'src/redux/workout-template-form/WorkoutTemplateFormSlice';
-import {
-    Button,
-    Dialog,
-    H4,
-    Input,
-    Separator,
-    SizableText,
-    Spinner,
-    XStack,
-    YStack,
-} from 'tamagui';
+import { Button, Dialog, Input, Separator, SizableText, Spinner, XStack, YStack } from 'tamagui';
 
 export default function AddExercisesToWorkoutModal() {
     const router = useRouter();
@@ -97,7 +87,7 @@ export default function AddExercisesToWorkoutModal() {
     const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }} edges={['top']}>
             <KeyboardAvoidingView>
                 <XStack
                     alignItems='center'
@@ -188,14 +178,15 @@ const Exercise = memo(function Exercise({
             onPress={onExercisePress}
             justifyContent='space-between'
             alignItems='flex-end'
-            paddingHorizontal='$6'
+            paddingHorizontal='$4'
             paddingVertical='$space.2'
             backgroundColor={backgroundColor}
         >
-            <YStack>
-                <H4>{exercise.name}</H4>
-                <SizableText color='$gray10'>Equipment: {exercise.equipment}</SizableText>
-                <SizableText color='$gray10'>Body Part: {exercise.bodyPart}</SizableText>
+            <YStack flex={1}>
+                <SizableText size='$6' fontWeight='bold'>
+                    {exercise.name} ({exercise.equipment})
+                </SizableText>
+                <SizableText color='$gray10'>{exercise.bodyPart}</SizableText>
             </YStack>
             <SizableText>
                 {exercise.numTimesUsed} {exercise.numTimesUsed === 1 ? 'use' : 'uses'}
