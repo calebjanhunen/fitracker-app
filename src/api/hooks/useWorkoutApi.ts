@@ -49,7 +49,7 @@ export function useCreateWorkout(
             });
             for (const exercise of response.workout.exercises) {
                 await queryClient.invalidateQueries({
-                    queryKey: ExerciseApiQueryKeys.getExerciseDetails(exercise.id),
+                    queryKey: ExerciseApiQueryKeys.getExerciseDetails(exercise.exerciseId),
                 });
             }
             onSuccessCallback(response);

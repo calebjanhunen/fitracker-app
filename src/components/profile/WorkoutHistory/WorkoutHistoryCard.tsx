@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import IonIcons from '@expo/vector-icons/Ionicons';
 
 import { Link } from 'expo-router';
@@ -50,7 +51,7 @@ export default function WorkoutHistoryCard({ workout }: Props) {
     return (
         <Link
             href={{
-                pathname: `/profile/${workout.id as string}`,
+                pathname: `/profile/${workout.id}`,
                 params: { workout: encodeURIComponent(JSON.stringify(workout)) },
             }}
             asChild
