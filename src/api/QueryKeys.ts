@@ -7,6 +7,7 @@ export const ExerciseApiQueryKeys = {
 
 export const WorkoutApiQueryKeys = {
     getWorkouts: ['workouts'],
+    getWorkoutDetails: (workoutId: string) => ['workouts', workoutId],
 };
 
 export const WorkoutTemplateQueryKeys = {
