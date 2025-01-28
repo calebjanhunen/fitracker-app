@@ -155,6 +155,8 @@ export default function WorkoutForm() {
                 workoutGoalXp: workoutStats.workoutGoalXp.toString(),
                 workoutGoalStreakXp: workoutStats.workoutGoalStreakXp.toString(),
                 daysWithWorkoutsThisWeek: userStatsAfterWorkout.daysWithWorkoutsThisWeek.toString(),
+                hasWorkoutGoalAlreadyBeenAchieved:
+                    userStatsAfterWorkout.hasWeeklyGoalAlreadyBeenAchieved.toString(),
             },
         });
         dispatch(

@@ -594,6 +594,12 @@ export interface UserStatsAfterWorkoutDto {
      * @memberof UserStatsAfterWorkoutDto
      */
     'daysWithWorkoutsThisWeek': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserStatsAfterWorkoutDto
+     */
+    'hasWeeklyGoalAlreadyBeenAchieved': boolean;
 }
 /**
  * 
