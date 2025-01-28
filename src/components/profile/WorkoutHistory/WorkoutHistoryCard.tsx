@@ -52,7 +52,6 @@ export default function WorkoutHistoryCard({ workout }: Props) {
         <Link
             href={{
                 pathname: `/profile/${workout.id}`,
-                params: { workout: encodeURIComponent(JSON.stringify(workout)) },
             }}
             asChild
         >
