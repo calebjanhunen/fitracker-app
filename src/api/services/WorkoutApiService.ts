@@ -3,15 +3,15 @@ import {
     CreateWorkoutResponseDto,
     DeleteWorkoutDto,
     WorkoutRequestDto,
-    WorkoutResponseDto,
     WorkoutsApi,
+    WorkoutSummaryDto,
 } from '../generated';
 
 const workoutApi = new WorkoutsApi(undefined, undefined, apiClient);
 
 export const workoutApiService = {
-    async getWorkouts(): Promise<WorkoutResponseDto[]> {
-        const response = await workoutApi.getAllWorkouts();
+    async getWorkouts(): Promise<WorkoutSummaryDto[]> {
+        const response = await workoutApi.getWorkoutSummaries();
         return response.data;
     },
     async createWorkout(request: WorkoutRequestDto): Promise<CreateWorkoutResponseDto> {

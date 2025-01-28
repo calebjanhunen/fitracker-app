@@ -337,6 +337,25 @@ export interface ExerciseWorkoutHistoryDto {
 /**
  * 
  * @export
+ * @interface LookupItemDto
+ */
+export interface LookupItemDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof LookupItemDto
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof LookupItemDto
+     */
+    'name': string;
+}
+/**
+ * 
+ * @export
  * @interface RecentSetDto
  */
 export interface RecentSetDto {
@@ -628,6 +647,12 @@ export interface WorkoutExerciseRequestDto {
     'order': number;
     /**
      * 
+     * @type {boolean}
+     * @memberof WorkoutExerciseRequestDto
+     */
+    'isVariation'?: boolean;
+    /**
+     * 
      * @type {Array<WorkoutSetRequestDto>}
      * @memberof WorkoutExerciseRequestDto
      */
@@ -644,7 +669,7 @@ export interface WorkoutExerciseResponseDto {
      * @type {string}
      * @memberof WorkoutExerciseResponseDto
      */
-    'id': string;
+    'exerciseId': string;
     /**
      * 
      * @type {string}
@@ -724,13 +749,19 @@ export interface WorkoutResponseDto {
      * @type {string}
      * @memberof WorkoutResponseDto
      */
-    'createdAt': string;
+    'workoutDate': string;
     /**
      * 
      * @type {number}
      * @memberof WorkoutResponseDto
      */
     'duration': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutResponseDto
+     */
+    'gainedXp': number;
     /**
      * 
      * @type {Array<WorkoutExerciseResponseDto>}
@@ -836,6 +867,68 @@ export interface WorkoutStatsDto {
      * @memberof WorkoutStatsDto
      */
     'workoutGoalStreakXp': number;
+}
+/**
+ * 
+ * @export
+ * @interface WorkoutSummaryDto
+ */
+export interface WorkoutSummaryDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutSummaryDto
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutSummaryDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutSummaryDto
+     */
+    'workoutDate': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutSummaryDto
+     */
+    'duration': number;
+    /**
+     * 
+     * @type {Array<WorkoutSummaryExerciseDto>}
+     * @memberof WorkoutSummaryDto
+     */
+    'exercises': Array<WorkoutSummaryExerciseDto>;
+}
+/**
+ * 
+ * @export
+ * @interface WorkoutSummaryExerciseDto
+ */
+export interface WorkoutSummaryExerciseDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutSummaryExerciseDto
+     */
+    'exerciseId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutSummaryExerciseDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutSummaryExerciseDto
+     */
+    'numberOfSets': number;
 }
 /**
  * 
@@ -1661,6 +1754,39 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        getAllCableAttachments: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/exercises/cableAttachments`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication access-token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         getAllEquipment: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/equipment`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1885,6 +2011,17 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async getAllCableAttachments(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LookupItemDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllCableAttachments(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.getAllCableAttachments']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async getAllEquipment(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EquipmentDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllEquipment(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
@@ -1979,6 +2116,14 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        getAllCableAttachments(options?: RawAxiosRequestConfig): AxiosPromise<Array<LookupItemDto>> {
+            return localVarFp.getAllCableAttachments(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         getAllEquipment(options?: RawAxiosRequestConfig): AxiosPromise<Array<EquipmentDto>> {
             return localVarFp.getAllEquipment(options).then((request) => request(axios, basePath));
         },
@@ -2057,6 +2202,16 @@ export class ExercisesApi extends BaseAPI {
      */
     public getAllBodyParts(options?: RawAxiosRequestConfig) {
         return ExercisesApiFp(this.configuration).getAllBodyParts(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExercisesApi
+     */
+    public getAllCableAttachments(options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).getAllCableAttachments(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2713,7 +2868,9 @@ export const WorkoutsApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Use /workouts/workoutSummaries instead
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         getAllWorkouts: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
@@ -2750,11 +2907,44 @@ export const WorkoutsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkoutById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getWorkoutDetails: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('getWorkoutById', 'id', id)
+            assertParamExists('getWorkoutDetails', 'id', id)
             const localVarPath = `/api/workouts/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication access-token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getWorkoutSummaries: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/workouts/workoutSummaries`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2860,7 +3050,9 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Use /workouts/workoutSummaries instead
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         async getAllWorkouts(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkoutResponseDto>>> {
@@ -2875,10 +3067,21 @@ export const WorkoutsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getWorkoutById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkoutById(id, options);
+        async getWorkoutDetails(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WorkoutResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkoutDetails(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.getWorkoutById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.getWorkoutDetails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getWorkoutSummaries(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WorkoutSummaryDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkoutSummaries(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkoutsApi.getWorkoutSummaries']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2924,7 +3127,9 @@ export const WorkoutsApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * 
+         * @summary Use /workouts/workoutSummaries instead
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         getAllWorkouts(options?: RawAxiosRequestConfig): AxiosPromise<Array<WorkoutResponseDto>> {
@@ -2936,8 +3141,16 @@ export const WorkoutsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkoutById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutResponseDto> {
-            return localVarFp.getWorkoutById(id, options).then((request) => request(axios, basePath));
+        getWorkoutDetails(id: string, options?: RawAxiosRequestConfig): AxiosPromise<WorkoutResponseDto> {
+            return localVarFp.getWorkoutDetails(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getWorkoutSummaries(options?: RawAxiosRequestConfig): AxiosPromise<Array<WorkoutSummaryDto>> {
+            return localVarFp.getWorkoutSummaries(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2983,7 +3196,9 @@ export class WorkoutsApi extends BaseAPI {
 
     /**
      * 
+     * @summary Use /workouts/workoutSummaries instead
      * @param {*} [options] Override http request option.
+     * @deprecated
      * @throws {RequiredError}
      * @memberof WorkoutsApi
      */
@@ -2998,8 +3213,18 @@ export class WorkoutsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkoutsApi
      */
-    public getWorkoutById(id: string, options?: RawAxiosRequestConfig) {
-        return WorkoutsApiFp(this.configuration).getWorkoutById(id, options).then((request) => request(this.axios, this.basePath));
+    public getWorkoutDetails(id: string, options?: RawAxiosRequestConfig) {
+        return WorkoutsApiFp(this.configuration).getWorkoutDetails(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WorkoutsApi
+     */
+    public getWorkoutSummaries(options?: RawAxiosRequestConfig) {
+        return WorkoutsApiFp(this.configuration).getWorkoutSummaries(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
