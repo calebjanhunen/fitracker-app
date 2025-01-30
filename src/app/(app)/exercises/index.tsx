@@ -1,10 +1,8 @@
 import React from 'react';
-import ContentLoader, { Rect } from 'react-content-loader/native';
-import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetAllExercises } from 'src/api/hooks';
-import { ExerciseList, ExerciseListItem } from 'src/components/exercises';
-import { H3, Input, SizableText, useTheme, View, XStack, YStack } from 'tamagui';
+import { ExerciseList } from 'src/components/exercises';
+import { H3, Input, useTheme, YStack } from 'tamagui';
 
 export default function ExercisesHome() {
     const theme = useTheme();

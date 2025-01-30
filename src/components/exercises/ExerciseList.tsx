@@ -1,9 +1,8 @@
 import React from 'react';
-import ContentLoader, { Rect } from 'react-content-loader/native';
 import { FlatList } from 'react-native-gesture-handler';
 import { IErrorResponse } from 'src/api/client';
 import { ExerciseResponseDto } from 'src/api/generated';
-import { SizableText, useTheme, View } from 'tamagui';
+import { SizableText, View } from 'tamagui';
 import ExerciseListItem from './ExerciseListItem';
 import ExerciseSkeleton from './ExerciseSkeleton';
 
