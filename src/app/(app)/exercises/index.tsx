@@ -1,10 +1,15 @@
 import React from 'react';
+import ContentLoader, { Rect } from 'react-content-loader/native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { H3, Input, SizableText, useTheme, XStack, YStack } from 'tamagui';
+import { useGetAllExercises } from 'src/api/hooks';
+import { ExerciseList, ExerciseListItem } from 'src/components/exercises';
+import { H3, Input, SizableText, useTheme, View, XStack, YStack } from 'tamagui';
 
 export default function ExercisesHome() {
     const theme = useTheme();
+    const { data: exercises, isLoading, error } = useGetAllExercises();
+
     return (
         <SafeAreaView
             style={{ flex: 1, paddingHorizontal: 16, backgroundColor: theme.background.val }}
@@ -14,37 +19,7 @@ export default function ExercisesHome() {
             <YStack paddingBottom='$space.5'>
                 <Input placeholder='Search for exercise' />
             </YStack>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-                renderItem={({ item, index }) => (
-                    <YStack
-                        paddingVertical='$space.2'
-                        gap='$space.1'
-                        borderTopColor='$gray8'
-                        borderTopWidth={index === 0 ? 1 : 0}
-                        borderBottomColor='$gray8'
-                        borderBottomWidth={1}
-                    >
-                        <SizableText size='$5' fontWeight='bold'>
-                            Exercise Name (Equipment)
-                        </SizableText>
-                        <XStack alignItems='center' justifyContent='space-between'>
-                            <SizableText color='$gray10'>Body Part</SizableText>
-                            <YStack
-                                backgroundColor='$blue6'
-                                borderRadius='$10'
-                                paddingHorizontal='$space.2'
-                                paddingVertical='$space.1'
-                            >
-                                <SizableText color='$blue10' size='$2'>
-                                    Variation
-                                </SizableText>
-                            </YStack>
-                        </XStack>
-                    </YStack>
-                )}
-            />
+            <ExerciseList exercises={exercises} isLoading={isLoading} error={error} />
         </SafeAreaView>
     );
 }
