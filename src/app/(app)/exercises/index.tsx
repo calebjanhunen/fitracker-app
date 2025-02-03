@@ -4,7 +4,7 @@ import { useGetAllExercises, useGetEquipmentAndBodyParts } from 'src/api/hooks';
 import DropdownMenu from 'src/components/common/DropdownMenu';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import { ExerciseList } from 'src/components/exercises';
-import { useFilteredExercises } from 'src/hooks/common/useFilteredData';
+import { useFilteredExercises } from 'src/hooks/common';
 import { H3, Input, useTheme, XStack, YStack } from 'tamagui';
 
 export default function ExercisesHome() {
