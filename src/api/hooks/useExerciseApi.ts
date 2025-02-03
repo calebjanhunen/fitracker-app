@@ -6,6 +6,15 @@ import { ExerciseApiQueryKeys, WorkoutApiQueryKeys, WorkoutTemplateQueryKeys } f
 import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
 
+export function useGetAllExercises() {
+    const { data, isLoading, error } = useQuery({
+        queryFn: exerciseApiService.getAllExercises,
+        queryKey: ExerciseApiQueryKeys.getAllExercises,
+    });
+
+    return { data, isLoading, error };
+}
+
 export function useGetExercisesWithWorkoutDetails() {
     const { data, isLoading, error } = useQuery({
         queryFn: exerciseApiService.getExercisesWithWorkoutDetails,

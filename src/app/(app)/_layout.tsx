@@ -37,6 +37,16 @@ export default function AppLayout() {
                         headerShown: false,
                         tabBarLabel: 'Start Workout',
                         tabBarIcon: ({ color, size }) => (
+                            <IonIcons name='home-outline' color={color} size={size} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name='exercises'
+                    options={{
+                        headerShown: false,
+                        tabBarLabel: 'Exercises',
+                        tabBarIcon: ({ color, size }) => (
                             <IonIcons name='barbell-outline' color={color} size={size} />
                         ),
                     }}

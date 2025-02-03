@@ -1,4 +1,5 @@
 export const ExerciseApiQueryKeys = {
+    getAllExercises: ['exercises'],
     getExercisesWithWorkoutDetails: ['exercisesWithWorkoutDetails'],
     getEquipment: ['equipment'],
     getBodyParts: ['bodyParts'],
