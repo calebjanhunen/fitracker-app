@@ -7,6 +7,8 @@ import { ExerciseApiQueryKeys, UserApiQueryKeys, WorkoutApiQueryKeys } from '../
 import { queryClient } from '../react-query-client';
 import { workoutApiService } from '../services';
 
+const GET_WORKOUT_DETAILS_STALE_TIME_MS = 300000;
+
 export function useGetWorkouts() {
     const { data, isLoading, error, isSuccess } = useQuery({
         queryFn: workoutApiService.getWorkouts,
@@ -16,6 +18,16 @@ export function useGetWorkouts() {
     });
 
     return { data, isLoading, error, isSuccess };
+}
+
+export function useGetWorkoutDetails(workoutId: string) {
+    const { data, isLoading, error } = useQuery({
+        queryFn: async () => await workoutApiService.getWorkoutDetails(workoutId),
+        queryKey: WorkoutApiQueryKeys.getWorkoutDetails(workoutId),
+        staleTime: GET_WORKOUT_DETAILS_STALE_TIME_MS,
+    });
+
+    return { data, isLoading, error };
 }
 
 export function useCreateWorkout(
@@ -49,7 +61,7 @@ export function useCreateWorkout(
             });
             for (const exercise of response.workout.exercises) {
                 await queryClient.invalidateQueries({
-                    queryKey: ExerciseApiQueryKeys.getExerciseDetails(exercise.id),
+                    queryKey: ExerciseApiQueryKeys.getExerciseDetails(exercise.exerciseId),
                 });
             }
             onSuccessCallback(response);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import IonIcons from '@expo/vector-icons/Ionicons';
 
 import { Link } from 'expo-router';
@@ -7,14 +8,14 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Card, H4, SizableText, Spinner, useTheme, XStack } from 'tamagui';
 
 import { IErrorResponse } from 'src/api/client';
-import { WorkoutResponseDto } from 'src/api/generated';
+import { WorkoutSummaryDto } from 'src/api/generated';
 import { useDeleteWorkout } from 'src/api/hooks';
 import { PopoverMenuOptionsV2, PopoverMenuV2 } from 'src/components/common/popover-menu-v2';
 import { formatDate } from 'src/utils/FormatDate';
 import { formatWorkoutDuration } from 'src/utils/formatWorkoutDuration';
 
 interface Props {
-    workout: WorkoutResponseDto;
+    workout: WorkoutSummaryDto;
 }
 
 export default function WorkoutHistoryCard({ workout }: Props) {
@@ -51,7 +52,6 @@ export default function WorkoutHistoryCard({ workout }: Props) {
         <Link
             href={{
                 pathname: `/profile/${workout.id}`,
-                params: { workout: encodeURIComponent(JSON.stringify(workout)) },
             }}
             asChild
         >
@@ -65,7 +65,7 @@ export default function WorkoutHistoryCard({ workout }: Props) {
                         <XStack alignItems='center' gap='$space.2'>
                             <IonIcons name='calendar-outline' size={15} />
                             <SizableText color='$gray10'>
-                                {formatDate(workout.createdAt)}
+                                {formatDate(workout.workoutDate)}
                             </SizableText>
                         </XStack>
                         <XStack alignItems='center' gap='$space.2'>
@@ -81,11 +81,12 @@ export default function WorkoutHistoryCard({ workout }: Props) {
                             <SizableText fontWeight='bold'>Exercises</SizableText>
                         )}
                         data={workout.exercises}
+                        keyExtractor={(item) => item.exerciseId}
                         renderItem={({ item }) => (
                             <XStack gap='$space.3'>
                                 <SizableText>
-                                    {item.name} - {item.sets.length}{' '}
-                                    {item.sets.length === 1 ? 'Set' : 'Sets'}
+                                    {item.name} - {item.numberOfSets}{' '}
+                                    {item.numberOfSets === 1 ? 'Set' : 'Sets'}
                                 </SizableText>
                             </XStack>
                         )}

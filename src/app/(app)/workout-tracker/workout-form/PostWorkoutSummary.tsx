@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { AnimatedIncreasingNumber } from 'src/components/workout-tracker/post-workout-summary/AnimatedIncreasingNumber';
 import { useProgressBar } from 'src/hooks/workout-tracker/useProgressBar';
 import { RootState } from 'src/redux/Store';
-import { getOrdinalSuffix } from 'src/utils';
 import { Button, Circle, H3, SizableText, useTheme, View, XStack, YStack } from 'tamagui';
 
 interface WorkoutStats extends Record<string, string> {
@@ -16,7 +15,8 @@ interface WorkoutStats extends Record<string, string> {
     workoutEffortXp: string;
     workoutGoalXp: string;
     workoutGoalStreakXp: string;
-    daysWithWorkoutThisWeek: string;
+    daysWithWorkoutsThisWeek: string;
+    hasWorkoutGoalAlreadyBeenAchieved: string;
 }
 
 export default function PostWorkoutSummary() {
@@ -27,9 +27,9 @@ export default function PostWorkoutSummary() {
         workoutEffortXp,
         workoutGoalXp,
         workoutGoalStreakXp,
-        daysWithWorkoutThisWeek,
+        daysWithWorkoutsThisWeek,
+        hasWorkoutGoalAlreadyBeenAchieved,
     } = useLocalSearchParams<WorkoutStats>();
-    const daysUntilWeeklyGoal = user.weeklyWorkoutGoal - Number(daysWithWorkoutThisWeek);
     const theme = useTheme();
     const {
         level,
@@ -47,7 +47,7 @@ export default function PostWorkoutSummary() {
     });
 
     function getGoalMessage() {
-        const ordinalSuffix = getOrdinalSuffix(Number(daysWithWorkoutThisWeek));
+        const daysUntilWeeklyGoal = user.weeklyWorkoutGoal - Number(daysWithWorkoutsThisWeek);
         if (user.weeklyWorkoutGoal === 0) {
             return (
                 <SizableText textAlign='center'>
@@ -56,15 +56,36 @@ export default function PostWorkoutSummary() {
                 </SizableText>
             );
         }
-        return daysUntilWeeklyGoal > 0 ? (
+        if (daysUntilWeeklyGoal > 0) {
+            if (Number(daysWithWorkoutsThisWeek) === 1) {
+                return (
+                    <SizableText textAlign='center'>
+                        Way to kick off the week! You&apos;ve worked out 1 day so far! Keep it going
+                        to hit your goal of {user.weeklyWorkoutGoal} days!
+                    </SizableText>
+                );
+            }
+            return (
+                <SizableText textAlign='center'>
+                    You&apos;ve worked out for {daysWithWorkoutsThisWeek}{' '}
+                    {Number(daysWithWorkoutsThisWeek) === 1 ? 'day' : 'days'} this week! Only{' '}
+                    {daysUntilWeeklyGoal} more {daysUntilWeeklyGoal === 1 ? 'day' : 'days'} to reach
+                    your goal of {user.weeklyWorkoutGoal} days. Keep it up!
+                </SizableText>
+            );
+        }
+        if (daysUntilWeeklyGoal === 0 && hasWorkoutGoalAlreadyBeenAchieved !== 'true') {
+            return (
+                <SizableText textAlign='center'>
+                    Fantastic! You hit your goal of {user.weeklyWorkoutGoal} workouts per week! Well
+                    done!
+                </SizableText>
+            );
+        }
+        return (
             <SizableText textAlign='center'>
-                This is your {daysWithWorkoutThisWeek}
-                {ordinalSuffix} of the week. Only {daysUntilWeeklyGoal} more workout
-                {daysUntilWeeklyGoal === 1 ? '' : 's'} until you hit your weekly goal!
-            </SizableText>
-        ) : (
-            <SizableText textAlign='center'>
-                You hit your weekly goal of {user.weeklyWorkoutGoal} workouts per week! Well done!
+                You already hit your goal of {user.weeklyWorkoutGoal} per week. You&apos;ll continue
+                to get bonus xp for each extra workout this week!
             </SizableText>
         );
     }
