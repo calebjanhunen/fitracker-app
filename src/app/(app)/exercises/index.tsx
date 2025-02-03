@@ -65,28 +65,3 @@ export default function ExercisesHome() {
         </SafeAreaView>
     );
 }
-
-const items = [
-    { id: 1, name: 'Appleqwdqwdqwdoqjidowij' },
-    { id: 2, name: 'Pear' },
-    { id: 3, name: 'Blackberry' },
-    { id: 4, name: 'Peach' },
-    { id: 5, name: 'Apricot' },
-    { id: 6, name: 'Melon' },
-    { id: 7, name: 'Honeydew' },
-    { id: 8, name: 'Starfruit' },
-    { id: 9, name: 'Blueberry' },
-    { id: 10, name: 'Raspberry' },
-    { id: 11, name: 'Strawberry' },
-    { id: 12, name: 'Mango' },
-    { id: 13, name: 'Pineapple' },
-    { id: 14, name: 'Lime' },
-    { id: 15, name: 'Lemon' },
-    { id: 16, name: 'Coconut' },
-    { id: 17, name: 'Guava' },
-    { id: 18, name: 'Papaya' },
-    { id: 19, name: 'Orange' },
-    { id: 20, name: 'Grape' },
-    { id: 21, name: 'Jackfruit' },
-    { id: 22, name: 'Durian' },
-];
