@@ -49,6 +49,7 @@ export default function ExerciseList({ isLoading, error, exercises }: Props) {
 
     return (
         <FlatList
+            initialNumToRender={10}
             showsVerticalScrollIndicator={false}
             data={exercises}
             renderItem={({ item, index }) => <ExerciseListItem exercise={item} index={index} />}
