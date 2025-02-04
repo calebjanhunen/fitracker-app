@@ -89,6 +89,31 @@ export interface ConfirmEmailVerificationCodeDto {
 /**
  * 
  * @export
+ * @interface CreateExerciseVariationDto
+ */
+export interface CreateExerciseVariationDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseVariationDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateExerciseVariationDto
+     */
+    'cableAttachmentId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseVariationDto
+     */
+    'notes': string;
+}
+/**
+ * 
+ * @export
  * @interface CreateWorkoutResponseDto
  */
 export interface CreateWorkoutResponseDto {
@@ -191,6 +216,12 @@ export interface ExerciseDetailsDto {
      * @memberof ExerciseDetailsDto
      */
     'workoutHistory': Array<ExerciseWorkoutHistoryDto>;
+    /**
+     * 
+     * @type {Array<ExerciseVariationDto>}
+     * @memberof ExerciseDetailsDto
+     */
+    'exerciseVariations': Array<ExerciseVariationDto>;
 }
 /**
  * 
@@ -253,6 +284,37 @@ export interface ExerciseResponseDto {
      * @memberof ExerciseResponseDto
      */
     'isCustom': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ExerciseVariationDto
+ */
+export interface ExerciseVariationDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseVariationDto
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseVariationDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseVariationDto
+     */
+    'cableAttachment': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseVariationDto
+     */
+    'notes': string;
 }
 /**
  * 
@@ -1687,6 +1749,49 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @param {string} exerciseId 
+         * @param {CreateExerciseVariationDto} createExerciseVariationDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExerciseVariation: async (exerciseId: string, createExerciseVariationDto: CreateExerciseVariationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'exerciseId' is not null or undefined
+            assertParamExists('createExerciseVariation', 'exerciseId', exerciseId)
+            // verify required parameter 'createExerciseVariationDto' is not null or undefined
+            assertParamExists('createExerciseVariation', 'createExerciseVariationDto', createExerciseVariationDto)
+            const localVarPath = `/api/exercises/{exerciseId}/exerciseVariation`
+                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication access-token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createExerciseVariationDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1991,6 +2096,19 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} exerciseId 
+         * @param {CreateExerciseVariationDto} createExerciseVariationDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createExerciseVariation(exerciseId: string, createExerciseVariationDto: CreateExerciseVariationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createExerciseVariation(exerciseId, createExerciseVariationDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.createExerciseVariation']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2102,6 +2220,16 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
+         * @param {string} exerciseId 
+         * @param {CreateExerciseVariationDto} createExerciseVariationDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExerciseVariation(exerciseId: string, createExerciseVariationDto: CreateExerciseVariationDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.createExerciseVariation(exerciseId, createExerciseVariationDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2187,6 +2315,18 @@ export class ExercisesApi extends BaseAPI {
      */
     public createExercise(exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig) {
         return ExercisesApiFp(this.configuration).createExercise(exerciseRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} exerciseId 
+     * @param {CreateExerciseVariationDto} createExerciseVariationDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExercisesApi
+     */
+    public createExerciseVariation(exerciseId: string, createExerciseVariationDto: CreateExerciseVariationDto, options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).createExerciseVariation(exerciseId, createExerciseVariationDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
