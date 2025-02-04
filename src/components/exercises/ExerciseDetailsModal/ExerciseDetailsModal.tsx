@@ -1,8 +1,10 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import React, { Dispatch, SetStateAction } from 'react';
 import { ExerciseResponseDto } from 'src/api/generated';
+import { useGetExerciseDetailsV2 } from 'src/api/hooks';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { Button, SizableText, XStack } from 'tamagui';
+import ExerciseDetailsModalBody from './ExerciseDetailsModalBody';
 
 interface Props {
     isOpen: boolean;
@@ -11,6 +13,7 @@ interface Props {
 }
 
 export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Props) {
+    const { data: exerciseDetails, isLoading, error } = useGetExerciseDetailsV2(exercise?.id);
     if (!exercise) {
         return;
     }
@@ -40,6 +43,11 @@ export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Pr
                         <IonIcons name='create-outline' size={24} />
                     </Button>
                 </XStack>
+                <ExerciseDetailsModalBody
+                    isLoading={isLoading}
+                    error={error}
+                    exerciseDetails={exerciseDetails}
+                />
             </ModalContent>
         </Modal>
     );
