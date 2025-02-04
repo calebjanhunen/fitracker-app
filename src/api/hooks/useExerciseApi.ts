@@ -6,6 +6,8 @@ import { ExerciseApiQueryKeys, WorkoutApiQueryKeys, WorkoutTemplateQueryKeys } f
 import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
 
+const GET_EXERCISE_DETAILS_STALE_TIME_MS = 300000;
+
 export function useGetAllExercises() {
     const { data, isLoading, error } = useQuery({
         queryFn: exerciseApiService.getAllExercises,
@@ -32,6 +34,23 @@ export function useGetExerciseDetails(exerciseId: string) {
         queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId),
         staleTime: Infinity,
         gcTime: Infinity,
+    });
+
+    return { data, isLoading, error };
+}
+
+export function useGetExerciseDetailsV2(exerciseId: string | undefined) {
+    const { data, isLoading, error } = useQuery({
+        queryFn: async () => {
+            if (!exerciseId) {
+                return;
+            }
+            console.log('fetching: ', exerciseId);
+            return await exerciseApiService.getExerciseDetails(exerciseId);
+        },
+        queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId ?? ''),
+        staleTime: GET_EXERCISE_DETAILS_STALE_TIME_MS,
+        enabled: !!exerciseId,
     });
 
     return { data, isLoading, error };
