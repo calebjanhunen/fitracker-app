@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IErrorResponse } from 'src/api/client';
 import { ExerciseDetailsDto } from 'src/api/generated';
 import { SizableText, Spinner, Tabs, View } from 'tamagui';
-import ExerciseInfo from './ExerciseInfo';
+import ExerciseInfo from './Tabs/ExerciseInfo';
 
 interface Props {
     isLoading: boolean;
