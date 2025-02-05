@@ -212,6 +212,18 @@ export interface ExerciseDetailsDto {
     'isCustom': boolean;
     /**
      * 
+     * @type {string}
+     * @memberof ExerciseDetailsDto
+     */
+    'parentExerciseId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseDetailsDto
+     */
+    'parentExerciseName': string;
+    /**
+     * 
      * @type {Array<ExerciseWorkoutHistoryDto>}
      * @memberof ExerciseDetailsDto
      */
