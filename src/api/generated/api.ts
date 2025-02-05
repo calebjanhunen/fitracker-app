@@ -224,6 +224,12 @@ export interface ExerciseDetailsDto {
     'parentExerciseName': string;
     /**
      * 
+     * @type {string}
+     * @memberof ExerciseDetailsDto
+     */
+    'exerciseType': ExerciseDetailsDtoExerciseTypeEnum;
+    /**
+     * 
      * @type {Array<ExerciseWorkoutHistoryDto>}
      * @memberof ExerciseDetailsDto
      */
@@ -235,6 +241,14 @@ export interface ExerciseDetailsDto {
      */
     'exerciseVariations': Array<ExerciseVariationDto>;
 }
+
+export const ExerciseDetailsDtoExerciseTypeEnum = {
+    Exercise: 'exercise',
+    Variation: 'variation'
+} as const;
+
+export type ExerciseDetailsDtoExerciseTypeEnum = typeof ExerciseDetailsDtoExerciseTypeEnum[keyof typeof ExerciseDetailsDtoExerciseTypeEnum];
+
 /**
  * 
  * @export
