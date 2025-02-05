@@ -12,14 +12,14 @@ export default function ExerciseVariationListItem({ exerciseVariation }: Props) 
             <YStack gap='$space.2'>
                 <XStack gap='$space.2' alignItems='center'>
                     <SizableText fontWeight='bold'>{exerciseVariation.name}</SizableText>
-                    <SizableText>({exerciseVariation.cableAttachment})</SizableText>
+                    {exerciseVariation.cableAttachment && (
+                        <SizableText>({exerciseVariation.cableAttachment})</SizableText>
+                    )}
                 </XStack>
                 {exerciseVariation.notes && (
                     <YStack>
                         <SizableText color='$gray10'>Notes</SizableText>
-                        <SizableText>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </SizableText>
+                        <SizableText marginTop={-5}>{exerciseVariation.notes}</SizableText>
                     </YStack>
                 )}
             </YStack>
