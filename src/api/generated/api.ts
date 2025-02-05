@@ -284,7 +284,27 @@ export interface ExerciseResponseDto {
      * @memberof ExerciseResponseDto
      */
     'isCustom': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseResponseDto
+     */
+    'exerciseType': ExerciseResponseDtoExerciseTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseResponseDto
+     */
+    'parentExerciseId': string;
 }
+
+export const ExerciseResponseDtoExerciseTypeEnum = {
+    Exercise: 'exercise',
+    Variation: 'variation'
+} as const;
+
+export type ExerciseResponseDtoExerciseTypeEnum = typeof ExerciseResponseDtoExerciseTypeEnum[keyof typeof ExerciseResponseDtoExerciseTypeEnum];
+
 /**
  * 
  * @export
