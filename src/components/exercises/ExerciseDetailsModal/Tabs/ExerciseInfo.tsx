@@ -8,9 +8,17 @@ interface Props {
     bodyPart: string;
     equipment: string;
     exerciseVariations: ExerciseVariationDto[];
+    isVariation: boolean;
+    parentExerciseName?: string;
 }
 
-export default function ExerciseInfo({ bodyPart, exerciseVariations, equipment }: Props) {
+export default function ExerciseInfo({
+    bodyPart,
+    exerciseVariations,
+    equipment,
+    isVariation,
+    parentExerciseName,
+}: Props) {
     return (
         <View flex={1}>
             <YStack gap='$space.5' flex={1}>
@@ -24,17 +32,24 @@ export default function ExerciseInfo({ bodyPart, exerciseVariations, equipment }
                         <SizableText marginTop={-5}>{equipment}</SizableText>
                     </YStack>
                 </XStack>
-                <YStack flex={1}>
-                    <SizableText color='$gray10'>Exercise Variations</SizableText>
-                    <FlatList
-                        ListEmptyComponent={<SizableText>No Exercise Variations</SizableText>}
-                        ItemSeparatorComponent={() => <View height='$space.3' />}
-                        data={exerciseVariations}
-                        renderItem={({ item }) => (
-                            <ExerciseVariationListItem exerciseVariation={item} />
-                        )}
-                    />
-                </YStack>
+                {isVariation ? (
+                    <YStack>
+                        <SizableText color='$gray10'>Parent Exercise</SizableText>
+                        <SizableText marginTop={-5}>{parentExerciseName}</SizableText>
+                    </YStack>
+                ) : (
+                    <YStack flex={1}>
+                        <SizableText color='$gray10'>Exercise Variations</SizableText>
+                        <FlatList
+                            ListEmptyComponent={<SizableText>No Exercise Variations</SizableText>}
+                            ItemSeparatorComponent={() => <View height='$space.3' />}
+                            data={exerciseVariations}
+                            renderItem={({ item }) => (
+                                <ExerciseVariationListItem exerciseVariation={item} />
+                            )}
+                        />
+                    </YStack>
+                )}
             </YStack>
         </View>
     );

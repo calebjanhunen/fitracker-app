@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IErrorResponse } from 'src/api/client';
-import { ExerciseDetailsDto } from 'src/api/generated';
+import { ExerciseDetailsDto, ExerciseDetailsDtoExerciseTypeEnum } from 'src/api/generated';
 import { SizableText, Spinner, Tabs, View } from 'tamagui';
 import ExerciseInfo from './Tabs/ExerciseInfo';
 import ExerciseWorkoutHistory from './Tabs/ExerciseWorkoutHistoryList';
@@ -79,6 +79,11 @@ export default function ExerciseDetailsModalBody({ isLoading, error, exerciseDet
                         equipment={exerciseDetails.equipment}
                         bodyPart={exerciseDetails.bodyPart}
                         exerciseVariations={exerciseDetails.exerciseVariations}
+                        isVariation={
+                            exerciseDetails.exerciseType ===
+                            ExerciseDetailsDtoExerciseTypeEnum.Variation
+                        }
+                        parentExerciseName={exerciseDetails.parentExerciseName}
                     />
                 </Tabs.Content>
                 <Tabs.Content flex={1} value={HISTORY_TAB_NAME} paddingTop='$space.3'>
