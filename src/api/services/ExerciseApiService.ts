@@ -24,8 +24,8 @@ export const exerciseApiService = {
         const response = await exerciseApi.getAllBodyParts();
         return response.data;
     },
-    async getExerciseDetails(id: string): Promise<ExerciseDetailsDto> {
-        const response = await exerciseApi.getExerciseDetails(id);
+    async getExerciseDetails(id: string, isVariation: boolean): Promise<ExerciseDetailsDto> {
+        const response = await exerciseApi.getExerciseDetails(id, isVariation);
         return response.data;
     },
     async getExercisesWithWorkoutDetails(): Promise<ExerciseWithWorkoutDetailsDto[]> {

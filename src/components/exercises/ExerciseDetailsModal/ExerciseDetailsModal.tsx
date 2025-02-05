@@ -1,6 +1,6 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
 import React, { Dispatch, SetStateAction } from 'react';
-import { ExerciseResponseDto } from 'src/api/generated';
+import { ExerciseResponseDto, ExerciseResponseDtoExerciseTypeEnum } from 'src/api/generated';
 import { useGetExerciseDetailsV2 } from 'src/api/hooks';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { Button, SizableText, XStack } from 'tamagui';
@@ -13,7 +13,14 @@ interface Props {
 }
 
 export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Props) {
-    const { data: exerciseDetails, isLoading, error } = useGetExerciseDetailsV2(exercise?.id);
+    const {
+        data: exerciseDetails,
+        isLoading,
+        error,
+    } = useGetExerciseDetailsV2(
+        exercise?.id,
+        exercise?.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation
+    );
     if (!exercise) {
         return;
     }

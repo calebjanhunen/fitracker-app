@@ -30,7 +30,7 @@ export function useGetExercisesWithWorkoutDetails() {
 
 export function useGetExerciseDetails(exerciseId: string) {
     const { data, isLoading, error } = useQuery({
-        queryFn: async () => await exerciseApiService.getExerciseDetails(exerciseId),
+        queryFn: async () => await exerciseApiService.getExerciseDetails(exerciseId, false),
         queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId),
         staleTime: Infinity,
         gcTime: Infinity,
@@ -39,13 +39,13 @@ export function useGetExerciseDetails(exerciseId: string) {
     return { data, isLoading, error };
 }
 
-export function useGetExerciseDetailsV2(exerciseId: string | undefined) {
+export function useGetExerciseDetailsV2(exerciseId: string | undefined, isVariation: boolean) {
     const { data, isLoading, error } = useQuery({
         queryFn: async () => {
             if (!exerciseId) {
                 return;
             }
-            return await exerciseApiService.getExerciseDetails(exerciseId);
+            return await exerciseApiService.getExerciseDetails(exerciseId, isVariation);
         },
         queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId ?? ''),
         staleTime: GET_EXERCISE_DETAILS_STALE_TIME_MS,
