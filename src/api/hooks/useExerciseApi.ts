@@ -45,7 +45,6 @@ export function useGetExerciseDetailsV2(exerciseId: string | undefined) {
             if (!exerciseId) {
                 return;
             }
-            console.log('fetching: ', exerciseId);
             return await exerciseApiService.getExerciseDetails(exerciseId);
         },
         queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId ?? ''),
