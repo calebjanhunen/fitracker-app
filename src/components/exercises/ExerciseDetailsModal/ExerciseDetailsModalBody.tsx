@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IErrorResponse } from 'src/api/client';
 import { ExerciseDetailsDto } from 'src/api/generated';
 import { SizableText, Spinner, Tabs, View } from 'tamagui';
+import ExerciseInfo from './ExerciseInfo';
 
 interface Props {
     isLoading: boolean;
@@ -13,7 +14,7 @@ const INFO_TAB_NAME = 'info';
 const HISTORY_TAB_NAME = 'workoutHistory';
 
 export default function ExerciseDetailsModalBody({ isLoading, error, exerciseDetails }: Props) {
-    const [selectedTab, setSelectedTab] = useState('');
+    const [selectedTab, setSelectedTab] = useState(INFO_TAB_NAME);
 
     if (isLoading) {
         return (
@@ -35,12 +36,9 @@ export default function ExerciseDetailsModalBody({ isLoading, error, exerciseDet
         );
     }
 
-    console.log(selectedTab);
-
     return (
         <View flex={1} paddingTop='$space.3'>
             <Tabs
-                defaultValue='tab1'
                 orientation='horizontal'
                 flexDirection='column'
                 value={selectedTab}
@@ -74,6 +72,13 @@ export default function ExerciseDetailsModalBody({ isLoading, error, exerciseDet
                         </SizableText>
                     </Tabs.Tab>
                 </Tabs.List>
+                <Tabs.Content value={INFO_TAB_NAME} paddingTop='$space.3'>
+                    <ExerciseInfo
+                        equipment={exerciseDetails.equipment}
+                        bodyPart={exerciseDetails.bodyPart}
+                        exerciseVariations={exerciseDetails.exerciseVariations}
+                    />
+                </Tabs.Content>
             </Tabs>
         </View>
     );
