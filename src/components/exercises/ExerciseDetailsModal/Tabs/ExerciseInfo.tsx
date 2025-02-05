@@ -12,8 +12,8 @@ interface Props {
 
 export default function ExerciseInfo({ bodyPart, exerciseVariations, equipment }: Props) {
     return (
-        <View>
-            <YStack gap='$space.5'>
+        <View flex={1}>
+            <YStack gap='$space.5' flex={1}>
                 <XStack gap='$space.10'>
                     <YStack>
                         <SizableText color='$gray10'>Body Part</SizableText>
@@ -24,7 +24,7 @@ export default function ExerciseInfo({ bodyPart, exerciseVariations, equipment }
                         <SizableText marginTop={-5}>{equipment}</SizableText>
                     </YStack>
                 </XStack>
-                <YStack>
+                <YStack flex={1}>
                     <SizableText color='$gray10'>Exercise Variations</SizableText>
                     <FlatList
                         ListEmptyComponent={<SizableText>No Exercise Variations</SizableText>}

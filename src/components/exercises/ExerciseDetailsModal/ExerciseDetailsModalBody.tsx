@@ -3,6 +3,7 @@ import { IErrorResponse } from 'src/api/client';
 import { ExerciseDetailsDto } from 'src/api/generated';
 import { SizableText, Spinner, Tabs, View } from 'tamagui';
 import ExerciseInfo from './Tabs/ExerciseInfo';
+import ExerciseWorkoutHistory from './Tabs/ExerciseWorkoutHistoryList';
 
 interface Props {
     isLoading: boolean;
@@ -43,6 +44,7 @@ export default function ExerciseDetailsModalBody({ isLoading, error, exerciseDet
                 flexDirection='column'
                 value={selectedTab}
                 onValueChange={setSelectedTab}
+                flex={1}
             >
                 <Tabs.List>
                     <Tabs.Tab
@@ -72,12 +74,15 @@ export default function ExerciseDetailsModalBody({ isLoading, error, exerciseDet
                         </SizableText>
                     </Tabs.Tab>
                 </Tabs.List>
-                <Tabs.Content value={INFO_TAB_NAME} paddingTop='$space.3'>
+                <Tabs.Content flex={1} value={INFO_TAB_NAME} paddingTop='$space.3'>
                     <ExerciseInfo
                         equipment={exerciseDetails.equipment}
                         bodyPart={exerciseDetails.bodyPart}
                         exerciseVariations={exerciseDetails.exerciseVariations}
                     />
+                </Tabs.Content>
+                <Tabs.Content flex={1} value={HISTORY_TAB_NAME} paddingTop='$space.3'>
+                    <ExerciseWorkoutHistory workoutHistoryList={exerciseDetails.workoutHistory} />
                 </Tabs.Content>
             </Tabs>
         </View>
