@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Keyboard } from 'react-native';
 import { ExerciseResponseDto } from 'src/api/generated';
 import { SizableText, YStack } from 'tamagui';
 import ExerciseDetailsModal from './ExerciseDetailsModal/ExerciseDetailsModal';
@@ -12,6 +13,7 @@ export default function ExerciseListItem({ exercise, index }: Props) {
     const [selectedExercise, setSelectedExercise] = useState<ExerciseResponseDto | null>(null);
 
     function onExercisePress() {
+        Keyboard.dismiss();
         setSelectedExercise(exercise);
         setIsModalOpen(true);
     }
