@@ -1,8 +1,11 @@
-import React from 'react';
-import { Button as Btn, ButtonProps, TamaguiElement } from 'tamagui';
+import React, { ComponentProps } from 'react';
+import { Button as Btn, TamaguiElement } from 'tamagui';
 
-const Button = React.forwardRef<TamaguiElement, ButtonProps>(function Button(
-    { backgroundColor, color, disabled, children, ...btnProps },
+interface Props extends ComponentProps<typeof Btn> {
+    autoHeight?: boolean;
+}
+const Button = React.forwardRef<TamaguiElement, Props>(function Button(
+    { backgroundColor, color, disabled, children, autoHeight, ...btnProps },
     ref
 ) {
     return (
@@ -13,6 +16,7 @@ const Button = React.forwardRef<TamaguiElement, ButtonProps>(function Button(
             color={disabled ? '$gray10' : color}
             fontWeight='bold'
             disabled={disabled}
+            height={autoHeight ? 'auto' : btnProps.height}
         >
             {children}
         </Btn>
