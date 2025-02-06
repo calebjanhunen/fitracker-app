@@ -2,7 +2,7 @@ import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useConfirmEmailVerificationCode } from 'src/api/hooks';
-import { Button } from 'src/components/common/button';
+import { Button } from 'src/components/common/buttons/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
 import { updateCodeVerified } from 'src/redux/signup-form/SignupFormSlice';
 import { RootState } from 'src/redux/Store';

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { IErrorResponse } from 'src/api/client';
 import { UserProfileDto } from 'src/api/generated';
 import { useUpdateWeeklyWorkoutGoal } from 'src/api/hooks/useUserApi';
-import { Button } from 'src/components/common/button';
+import { Button } from 'src/components/common/buttons/button';
 import { updateWeeklyWorkoutGoal } from 'src/redux/user/UserSlice';
 import { Label, RadioGroup, SizableText, Spinner, View, XStack, YStack } from 'tamagui';
 

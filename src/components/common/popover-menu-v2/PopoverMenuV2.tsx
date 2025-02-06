@@ -10,7 +10,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { Keyboard } from 'react-native';
 import { Separator, SizableText, useTheme, View, XStack } from 'tamagui';
-import { IconBtn } from '../icon-btn';
+import { IconBtn } from '../buttons/icon-btn';
 
 export interface PopoverMenuOptionsV2 {
     text: string;

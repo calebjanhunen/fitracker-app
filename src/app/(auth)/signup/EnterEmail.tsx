@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useVerifyEmail } from 'src/api/hooks';
-import { Button } from 'src/components/common/button';
+import { Button } from 'src/components/common/buttons/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
 import { updateEmail } from 'src/redux/signup-form/SignupFormSlice';
 import { H3, Input, SizableText, Spinner, View } from 'tamagui';

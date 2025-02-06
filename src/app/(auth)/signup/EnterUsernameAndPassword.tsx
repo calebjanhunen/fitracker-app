@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSignup } from 'src/api/hooks';
-import { Button } from 'src/components/common/button';
+import { Button } from 'src/components/common/buttons/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
 import { useAuth } from 'src/context/auth-context/AuthContext';
 import { RootState } from 'src/redux/Store';
