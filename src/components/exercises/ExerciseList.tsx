@@ -49,6 +49,7 @@ export default function ExerciseList({ isLoading, error, exercises }: Props) {
 
     return (
         <FlatList
+            keyboardShouldPersistTaps='handled'
             initialNumToRender={10}
             showsVerticalScrollIndicator={false}
             data={exercises}

@@ -6,6 +6,8 @@ import { ExerciseApiQueryKeys, WorkoutApiQueryKeys, WorkoutTemplateQueryKeys } f
 import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
 
+const GET_EXERCISE_DETAILS_STALE_TIME_MS = 300000;
+
 export function useGetAllExercises() {
     const { data, isLoading, error } = useQuery({
         queryFn: exerciseApiService.getAllExercises,
@@ -28,10 +30,26 @@ export function useGetExercisesWithWorkoutDetails() {
 
 export function useGetExerciseDetails(exerciseId: string) {
     const { data, isLoading, error } = useQuery({
-        queryFn: async () => await exerciseApiService.getExerciseDetails(exerciseId),
+        queryFn: async () => await exerciseApiService.getExerciseDetails(exerciseId, false),
         queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId),
         staleTime: Infinity,
         gcTime: Infinity,
+    });
+
+    return { data, isLoading, error };
+}
+
+export function useGetExerciseDetailsV2(exerciseId: string | undefined, isVariation: boolean) {
+    const { data, isLoading, error } = useQuery({
+        queryFn: async () => {
+            if (!exerciseId) {
+                return;
+            }
+            return await exerciseApiService.getExerciseDetails(exerciseId, isVariation);
+        },
+        queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId ?? ''),
+        staleTime: GET_EXERCISE_DETAILS_STALE_TIME_MS,
+        enabled: !!exerciseId,
     });
 
     return { data, isLoading, error };
