@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetAllExercises, useGetEquipmentAndBodyParts } from 'src/api/hooks';
+import { ButtonWithIcon } from 'src/components/common/buttons';
 import DropdownMenu from 'src/components/common/DropdownMenu';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import { ExerciseList } from 'src/components/exercises';
@@ -29,7 +30,10 @@ export default function ExercisesHome() {
             edges={['top']}
         >
             <KeyboardAvoidingView>
-                <H3 paddingBottom='$space.3'>Exercises</H3>
+                <XStack justifyContent='space-between' alignItems='center' paddingBottom='$space.3'>
+                    <H3>Exercises</H3>
+                    <ButtonWithIcon text='Create Exercise' iconName='create-outline' />
+                </XStack>
                 <YStack paddingBottom='$space.5' gap='$space.2'>
                     <Input
                         placeholder='Search for exercise'
