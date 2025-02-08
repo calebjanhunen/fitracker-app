@@ -11,7 +11,7 @@ import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 
 export default function getBaseUrl(): string {
-    if (USE_NGROK) {
+    if (USE_NGROK === Boolean('true')) {
         return NGROK_URL;
     }
     if (Constants.expoConfig?.extra?.ENVIRONMENT === 'development') {
