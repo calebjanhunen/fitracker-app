@@ -7,11 +7,13 @@ import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
 
 const GET_EXERCISE_DETAILS_STALE_TIME_MS = 300000;
+const GET_ALL_EXERCISES_STALE_TIME = 300000;
 
 export function useGetAllExercises() {
     const { data, isLoading, error } = useQuery({
         queryFn: exerciseApiService.getAllExercises,
         queryKey: ExerciseApiQueryKeys.getAllExercises,
+        staleTime: GET_ALL_EXERCISES_STALE_TIME,
     });
 
     return { data, isLoading, error };
