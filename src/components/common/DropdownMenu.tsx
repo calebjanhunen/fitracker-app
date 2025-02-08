@@ -1,9 +1,10 @@
 import IonIcons from '@expo/vector-icons/Ionicons';
-import React, { Dispatch, SetStateAction, useMemo } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Keyboard } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { Adapt, Select, Sheet, useTheme } from 'tamagui';
 interface IDropdownOption {
-    id: number;
+    id: number | string;
     name: string;
 }
 
@@ -59,43 +60,32 @@ export default function DropdownMenu<T extends IDropdownOption>({
             <Adapt when='sm' platform='touch'>
                 <Sheet native modal dismissOnSnapToBottom snapPoints={[60]}>
                     <Sheet.Frame>
-                        <Sheet.ScrollView>
-                            <Adapt.Contents />
-                        </Sheet.ScrollView>
+                        <Adapt.Contents />
                     </Sheet.Frame>
-                    <Sheet.Overlay
-                        animation='lazy'
-                        enterStyle={{ opacity: 0 }}
-                        exitStyle={{ opacity: 0 }}
-                    />
+                    <Sheet.Overlay />
                 </Sheet>
             </Adapt>
             <Select.Content zIndex={200000}>
                 <Select.Viewport>
                     <Select.Group>
                         <Select.Label>{label}</Select.Label>
-                        {useMemo(
-                            () =>
-                                options.map((item, i) => {
-                                    return (
-                                        <Select.Item
-                                            index={i}
-                                            key={item.id}
-                                            value={item.id.toString()}
-                                        >
-                                            <Select.ItemText>{item.name}</Select.ItemText>
-                                            <Select.ItemIndicator marginLeft='auto'>
-                                                <IonIcons
-                                                    color={theme.blue10.val}
-                                                    size={20}
-                                                    name='checkmark'
-                                                />
-                                            </Select.ItemIndicator>
-                                        </Select.Item>
-                                    );
-                                }),
-                            [options]
-                        )}
+                        <FlatList
+                            initialNumToRender={1}
+                            nestedScrollEnabled
+                            data={options}
+                            renderItem={({ item, index }) => (
+                                <Select.Item index={index} key={item.id} value={item.id.toString()}>
+                                    <Select.ItemText>{item.name}</Select.ItemText>
+                                    <Select.ItemIndicator marginLeft='auto'>
+                                        <IonIcons
+                                            color={theme.blue10.val}
+                                            size={20}
+                                            name='checkmark'
+                                        />
+                                    </Select.ItemIndicator>
+                                </Select.Item>
+                            )}
+                        />
                     </Select.Group>
                 </Select.Viewport>
             </Select.Content>
