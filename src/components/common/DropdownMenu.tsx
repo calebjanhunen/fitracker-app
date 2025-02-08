@@ -47,7 +47,7 @@ export default function DropdownMenu<T extends IDropdownOption>({
         >
             <Select.Trigger
                 width={width ?? 'auto'}
-                justifyContent='center'
+                justifyContent={iconAfter !== false ? 'space-between' : 'center'}
                 backgroundColor={selectedVal && selectedColor ? selectedColor : '$gray6'}
                 iconAfter={iconAfter !== false ? () => <IonIcons name='chevron-down' /> : null}
             >
@@ -70,8 +70,6 @@ export default function DropdownMenu<T extends IDropdownOption>({
                     <Select.Group>
                         <Select.Label>{label}</Select.Label>
                         <FlatList
-                            initialNumToRender={1}
-                            nestedScrollEnabled
                             data={options}
                             renderItem={({ item, index }) => (
                                 <Select.Item index={index} key={item.id} value={item.id.toString()}>
