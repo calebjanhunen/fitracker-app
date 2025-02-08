@@ -2,12 +2,19 @@ import React from 'react';
 import { Keyboard, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import { useTheme, View } from 'tamagui';
 
-export default function ScreenViewWithKeyboard({ children }: { children: React.ReactNode }) {
+interface Props {
+    children: React.ReactNode;
+    padding?: boolean;
+}
+
+export default function ScreenViewWithKeyboard({ children, padding }: Props) {
     const theme = useTheme();
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.val }}>
-                <View paddingHorizontal='$space.5' flex={1}>
+            <SafeAreaView
+                style={{ flex: 1, backgroundColor: theme.background.val, borderRadius: 10 }}
+            >
+                <View paddingHorizontal={padding !== false ? '$space.5' : 0} flex={1}>
                     {children}
                 </View>
             </SafeAreaView>
