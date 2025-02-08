@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Keyboard } from 'react-native';
 import { ExerciseResponseDto, ExerciseResponseDtoExerciseTypeEnum } from 'src/api/generated';
 import { SizableText, View, XStack, YStack } from 'tamagui';
@@ -8,7 +8,7 @@ interface Props {
     exercise: ExerciseResponseDto;
     index: number;
 }
-export default function ExerciseListItem({ exercise, index }: Props) {
+const ExerciseListItem = memo(function ExerciseListItem({ exercise, index }: Props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedExercise, setSelectedExercise] = useState<ExerciseResponseDto | null>(null);
 
@@ -54,4 +54,6 @@ export default function ExerciseListItem({ exercise, index }: Props) {
             </YStack>
         </>
     );
-}
+});
+
+export default ExerciseListItem;
