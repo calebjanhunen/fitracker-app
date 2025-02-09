@@ -30,8 +30,8 @@ export default function CreateExerciseVariationForm() {
     }, [exercises]);
 
     return (
-        <View flex={1}>
-            <YStack gap='$space.4' flex={1}>
+        <View>
+            <YStack gap='$space.2'>
                 <SizableText>* = Required</SizableText>
                 <DropdownMenu
                     selectedVal={selectedParentExercise}
@@ -39,10 +39,7 @@ export default function CreateExerciseVariationForm() {
                     options={exerciseOptions}
                     placeholder='* Parent Exercise'
                     label='Exercises'
-                    selectedColor='$blue8'
                 />
-                <Input placeholder='* Name' value={name} onChangeText={setName} />
-                <Input placeholder='Notes' value={notes} onChangeText={setNotes} />
                 {exercises?.find(
                     (e) => e.id === selectedParentExercise && e.equipment === 'Cable'
                 ) && (
@@ -52,11 +49,14 @@ export default function CreateExerciseVariationForm() {
                         options={cableAttachments}
                         placeholder='Cable Attachment'
                         label='Cable Attachments'
-                        selectedColor='$blue8'
                     />
                 )}
+                <Input placeholder='* Name' value={name} onChangeText={setName} />
+                <Input placeholder='Notes' value={notes} onChangeText={setNotes} />
+                <Button backgroundColor='$blue10' color='$gray1' disabled={isCreateBtnDisabled}>
+                    Create
+                </Button>
             </YStack>
-            {/* <Button disabled={isCreateBtnDisabled}>Create</Button> */}
         </View>
     );
 }

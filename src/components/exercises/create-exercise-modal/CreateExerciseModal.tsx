@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { ScreenViewWithKeyboard } from 'src/components/common';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { SizableText, Tabs } from 'tamagui';
 import CreateExerciseVariationForm from './create-exercise-variation-form/CreateExerciseVariationForm';
-import { ScreenViewWithKeyboard } from 'src/components/common';
-import { KeyboardAvoidingView, Platform } from 'react-native';
 
 interface Props {
     isOpen: boolean;
@@ -17,6 +17,7 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
     const [selectedTab, setSelectedTab] = useState(EXERCISE_TAB);
     return (
         <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
+            <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
             <KeyboardAvoidingView
                 style={{
                     width: '100%',
@@ -27,15 +28,12 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                 }}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
-                <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
-                <ModalContent
-                    key='content'
-                    height='50%'
-                    width='90%'
-                    padding={0}
-                    backgroundColor='orange'
-                >
-                    <ScreenViewWithKeyboard paddingVertical='$space.3' paddingHorizontal='$space.4'>
+                <ModalContent key='content' padding={0} width='90%'>
+                    <ScreenViewWithKeyboard
+                        isFlex={false}
+                        paddingVertical='$space.3'
+                        paddingHorizontal='$space.4'
+                    >
                         <SizableText size='$6' fontWeight='bold' paddingBottom='$space.3'>
                             Create Exercise {selectedTab === VARIATION_TAB ? 'Variation' : ''}
                         </SizableText>
@@ -44,7 +42,6 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                             flexDirection='column'
                             value={selectedTab}
                             onValueChange={setSelectedTab}
-                            flex={1}
                         >
                             <Tabs.List>
                                 <Tabs.Tab
@@ -79,7 +76,7 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                                 </Tabs.Tab>
                             </Tabs.List>
                             <Tabs.Content value={EXERCISE_TAB} paddingTop='$space.3'></Tabs.Content>
-                            <Tabs.Content flex={1} value={VARIATION_TAB} paddingTop='$space.3'>
+                            <Tabs.Content value={VARIATION_TAB} paddingTop='$space.3'>
                                 <CreateExerciseVariationForm />
                             </Tabs.Content>
                         </Tabs>

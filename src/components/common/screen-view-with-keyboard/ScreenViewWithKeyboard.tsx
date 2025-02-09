@@ -5,19 +5,24 @@ import { useTheme, View } from 'tamagui';
 interface Props extends ComponentProps<typeof View> {
     children: React.ReactNode;
     padding?: boolean;
+    isFlex?: boolean;
 }
 
-export default function ScreenViewWithKeyboard({ children, padding, ...viewProps }: Props) {
+export default function ScreenViewWithKeyboard({ children, padding, isFlex, ...viewProps }: Props) {
     const theme = useTheme();
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView
-                style={{ flex: 1, backgroundColor: theme.background.val, borderRadius: 10 }}
+                style={{
+                    flex: isFlex !== false ? 1 : 0,
+                    backgroundColor: theme.background.val,
+                    borderRadius: 10,
+                }}
             >
                 <View
-                    {...viewProps}
                     paddingHorizontal={padding !== false ? '$space.5' : 0}
-                    flex={1}
+                    {...viewProps}
+                    flex={isFlex !== false ? 1 : 0}
                 >
                     {children}
                 </View>
