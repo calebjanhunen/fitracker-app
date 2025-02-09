@@ -58,7 +58,7 @@ export default function DropdownMenu<T extends IDropdownOption>({
                 />
             </Select.Trigger>
             <Adapt when='sm' platform='touch'>
-                <Sheet native modal dismissOnSnapToBottom snapPoints={[60]}>
+                <Sheet native modal dismissOnSnapToBottom disableDrag snapPoints={[60]}>
                     <Sheet.Frame>
                         <Adapt.Contents />
                     </Sheet.Frame>
@@ -66,10 +66,11 @@ export default function DropdownMenu<T extends IDropdownOption>({
                 </Sheet>
             </Adapt>
             <Select.Content zIndex={200000}>
-                <Select.Viewport>
-                    <Select.Group>
+                <Select.Viewport flex={1}>
+                    <Select.Group flex={1}>
                         <Select.Label>{label}</Select.Label>
                         <FlatList
+                            style={{ flex: 1 }}
                             data={options}
                             renderItem={({ item, index }) => (
                                 <Select.Item index={index} key={item.id} value={item.id.toString()}>
