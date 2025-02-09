@@ -88,6 +88,16 @@ export function useGetEquipmentAndBodyParts() {
     };
 }
 
+export function useGetCableAttachments() {
+    const { data } = useQuery({
+        queryFn: exerciseApiService.getCableAttachments,
+        queryKey: ExerciseApiQueryKeys.getCableAttachments,
+        staleTime: Infinity,
+    });
+
+    return { cableAttachments: data ?? [] };
+}
+
 export function useCreateExercise(
     onSuccessCallback: (createdExercise: ExerciseResponseDto) => void,
     onErrorCallback: (error: IErrorResponse) => void

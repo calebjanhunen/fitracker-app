@@ -7,6 +7,7 @@ import {
     ExerciseResponseDto,
     ExercisesApi,
     ExerciseWithWorkoutDetailsDto,
+    LookupItemDto,
 } from '../generated';
 
 const exerciseApi = new ExercisesApi(undefined, undefined, apiClient);
@@ -22,6 +23,10 @@ export const exerciseApiService = {
     },
     async getBodyParts(): Promise<BodyPartDto[]> {
         const response = await exerciseApi.getAllBodyParts();
+        return response.data;
+    },
+    async getCableAttachments(): Promise<LookupItemDto[]> {
+        const response = await exerciseApi.getAllCableAttachments();
         return response.data;
     },
     async getExerciseDetails(id: string, isVariation: boolean): Promise<ExerciseDetailsDto> {
