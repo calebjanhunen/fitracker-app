@@ -21,6 +21,13 @@ export default function CreateExerciseVariationForm() {
         }
     }, [selectedParentExercise, name]);
 
+    // Reset selected cable attachment if non cable parent exercise is selected
+    useEffect(() => {
+        if (exercises?.find((e) => e.id === selectedParentExercise && e.equipment !== 'Cable')) {
+            setSelectedCableAttachment('');
+        }
+    }, [selectedParentExercise]);
+
     const exerciseOptions = useMemo(() => {
         if (!exercises) return [];
 
