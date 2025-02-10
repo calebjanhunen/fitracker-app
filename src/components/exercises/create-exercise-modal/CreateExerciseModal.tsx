@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { ScreenViewWithKeyboard } from 'src/components/common';
+import { IconBtnV2 } from 'src/components/common/buttons';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
-import { SizableText, Tabs } from 'tamagui';
+import { SizableText, Tabs, View, XStack } from 'tamagui';
 import CreateExerciseVariationForm from './create-exercise-variation-form/CreateExerciseVariationForm';
 
 interface Props {
@@ -15,6 +16,7 @@ const VARIATION_TAB = 'variation';
 
 export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
     const [selectedTab, setSelectedTab] = useState(EXERCISE_TAB);
+
     return (
         <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
             <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
@@ -34,10 +36,22 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                         paddingVertical='$space.3'
                         paddingHorizontal='$space.4'
                     >
-                        <SizableText size='$6' fontWeight='bold' paddingBottom='$space.3'>
-                            Create Exercise {selectedTab === VARIATION_TAB ? 'Variation' : ''}
-                        </SizableText>
+                        <XStack alignItems='center' position='relative' justifyContent='center'>
+                            <IconBtnV2
+                                iconSize={20}
+                                backgroundColor='$gray7'
+                                onPress={() => setIsOpen(false)}
+                                iconName='close-outline'
+                                position='absolute'
+                                left={0}
+                            />
+                            <SizableText size='$6' fontWeight='bold'>
+                                Create Exercise {selectedTab === VARIATION_TAB ? 'Variation' : ''}
+                            </SizableText>
+                            <View />
+                        </XStack>
                         <Tabs
+                            paddingTop='$space.3'
                             orientation='horizontal'
                             flexDirection='column'
                             value={selectedTab}
