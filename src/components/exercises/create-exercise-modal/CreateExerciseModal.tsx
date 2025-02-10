@@ -1,9 +1,10 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { ScreenViewWithKeyboard } from 'src/components/common';
 import { IconBtnV2 } from 'src/components/common/buttons';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { SizableText, Tabs, View, XStack } from 'tamagui';
+import CreateExerciseForm from './CreateExerciseForm';
 import CreateExerciseVariationForm from './CreateExerciseVariationForm';
 
 interface Props {
@@ -17,9 +18,14 @@ const VARIATION_TAB = 'variation';
 export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
     const [selectedTab, setSelectedTab] = useState(EXERCISE_TAB);
 
+    useEffect(() => {
+        if (isOpen) {
+            setSelectedTab(EXERCISE_TAB);
+        }
+    }, [isOpen]);
+
     return (
         <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
-            <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
             <KeyboardAvoidingView
                 style={{
                     width: '100%',
@@ -30,7 +36,8 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                 }}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
-                <ModalContent key='content' padding={0} width='90%'>
+                <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
+                <ModalContent key='content' padding={0} width='90%' height='42%'>
                     <ScreenViewWithKeyboard
                         isFlex={false}
                         paddingVertical='$space.3'
@@ -89,7 +96,9 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                                     </SizableText>
                                 </Tabs.Tab>
                             </Tabs.List>
-                            <Tabs.Content value={EXERCISE_TAB} paddingTop='$space.3'></Tabs.Content>
+                            <Tabs.Content flex={1} value={EXERCISE_TAB} paddingTop='$space.3'>
+                                <CreateExerciseForm />
+                            </Tabs.Content>
                             <Tabs.Content value={VARIATION_TAB} paddingTop='$space.3'>
                                 <CreateExerciseVariationForm />
                             </Tabs.Content>
