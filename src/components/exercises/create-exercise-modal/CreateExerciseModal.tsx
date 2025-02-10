@@ -4,7 +4,7 @@ import { ScreenViewWithKeyboard } from 'src/components/common';
 import { IconBtnV2 } from 'src/components/common/buttons';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { SizableText, Tabs, View, XStack } from 'tamagui';
-import CreateExerciseVariationForm from './create-exercise-variation-form/CreateExerciseVariationForm';
+import CreateExerciseVariationForm from './CreateExerciseVariationForm';
 
 interface Props {
     isOpen: boolean;
