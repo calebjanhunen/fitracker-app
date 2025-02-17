@@ -54,6 +54,7 @@ export default function CreateExerciseVariationForm() {
                         setSelectedValue={setSelectedCableAttachment}
                         data={cableAttachments}
                         placeholder='Select Cable Attachment'
+                        isOptional
                     />
                 )}
                 <Input placeholder='* Name' value={name} onChangeText={setName} />

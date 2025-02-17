@@ -14,6 +14,7 @@ interface Props<T extends DropdownOption> {
     selectedValue: T | null;
     setSelectedValue: Dispatch<SetStateAction<T | null>>;
     placeholder: string;
+    isOptional?: boolean;
 }
 
 export default function Dropdown<T extends DropdownOption>({
@@ -21,8 +22,31 @@ export default function Dropdown<T extends DropdownOption>({
     selectedValue,
     setSelectedValue,
     placeholder,
+    isOptional = false,
 }: Props<T>) {
     const theme = useTheme();
+
+    function onValueChange(value: T) {
+        if (isOptional && value.id === selectedValue?.id) {
+            setSelectedValue(null);
+        } else {
+            setSelectedValue(value);
+        }
+    }
+
+    const renderItem = (item: DropdownOption) => (
+        <XStack
+            alignItems='center'
+            justifyContent='space-between'
+            paddingVertical='$space.2'
+            paddingHorizontal='$space.3'
+        >
+            <SizableText>{item.name}</SizableText>
+            {item.id === selectedValue?.id && (
+                <IonIcons name='checkmark' color={theme.blue10.val} size={15} />
+            )}
+        </XStack>
+    );
 
     return (
         <RNDropdown
@@ -39,21 +63,11 @@ export default function Dropdown<T extends DropdownOption>({
             data={data}
             labelField={'name'}
             valueField={'id'}
-            onChange={(x) => setSelectedValue(x)}
+            value={selectedValue}
+            autoScroll={false}
+            onChange={onValueChange}
             placeholder={placeholder}
-            renderItem={(item: DropdownOption) => (
-                <XStack
-                    alignItems='center'
-                    justifyContent='space-between'
-                    paddingVertical='$space.2'
-                    paddingHorizontal='$space.3'
-                >
-                    <SizableText>{item.name}</SizableText>
-                    {item.id === selectedValue?.id && (
-                        <IonIcons name='checkmark' color={theme.blue10.val} size={15} />
-                    )}
-                </XStack>
-            )}
+            renderItem={renderItem}
         />
     );
 }
