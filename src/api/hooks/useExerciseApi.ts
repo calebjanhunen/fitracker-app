@@ -16,7 +16,7 @@ export function useGetAllExercises() {
         staleTime: GET_ALL_EXERCISES_STALE_TIME,
     });
 
-    return { data, isLoading, error };
+    return { data: data ?? [], isLoading, error };
 }
 
 export function useGetExercisesWithWorkoutDetails() {

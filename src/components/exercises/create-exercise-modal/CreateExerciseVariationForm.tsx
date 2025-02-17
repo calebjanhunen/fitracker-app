@@ -1,12 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { ExerciseResponseDto, LookupItemDto } from 'src/api/generated';
 import { useGetAllExercises, useGetCableAttachments } from 'src/api/hooks';
+import { Dropdown } from 'src/components/common';
 import { Button } from 'src/components/common/buttons';
-import DropdownMenu from 'src/components/common/DropdownMenu';
 import { Input, SizableText, View, YStack } from 'tamagui';
 
 export default function CreateExerciseVariationForm() {
-    const [selectedParentExercise, setSelectedParentExercise] = useState('');
-    const [selectedCableAttachment, setSelectedCableAttachment] = useState('');
+    const [selectedParentExercise, setSelectedParentExercise] =
+        useState<ExerciseResponseDto | null>(null);
+    const [selectedCableAttachment, setSelectedCableAttachment] = useState<LookupItemDto | null>(
+        null
+    );
     const [name, setName] = useState('');
     const [notes, setNotes] = useState('');
     const [isCreateBtnDisabled, setIsCreateBtnDisabled] = useState(true);
@@ -23,39 +27,33 @@ export default function CreateExerciseVariationForm() {
 
     // Reset selected cable attachment if non cable parent exercise is selected
     useEffect(() => {
-        if (exercises?.find((e) => e.id === selectedParentExercise && e.equipment !== 'Cable')) {
-            setSelectedCableAttachment('');
+        if (selectedParentExercise?.equipment !== 'Cable') {
+            setSelectedCableAttachment(null);
         }
     }, [selectedParentExercise]);
 
     const exerciseOptions = useMemo(() => {
         if (!exercises) return [];
 
-        return exercises
-            .filter((e) => e.exerciseType === 'exercise')
-            .map((e) => ({ id: e.id, name: `${e.name} (${e.equipment})` }));
+        return exercises.map((e) => ({ ...e, name: `${e.name} (${e.equipment})` }));
     }, [exercises]);
 
     return (
         <View>
             <YStack gap='$space.2'>
                 <SizableText>* = Required</SizableText>
-                <DropdownMenu
-                    selectedVal={selectedParentExercise}
-                    setSelectedVal={setSelectedParentExercise}
-                    options={exerciseOptions}
-                    placeholder='* Parent Exercise'
-                    label='Exercises'
+                <Dropdown
+                    selectedValue={selectedParentExercise}
+                    setSelectedValue={setSelectedParentExercise}
+                    data={exerciseOptions}
+                    placeholder='* Select Parent Exercise'
                 />
-                {exercises?.find(
-                    (e) => e.id === selectedParentExercise && e.equipment === 'Cable'
-                ) && (
-                    <DropdownMenu
-                        selectedVal={selectedCableAttachment}
-                        setSelectedVal={setSelectedCableAttachment}
-                        options={cableAttachments}
-                        placeholder='Cable Attachment'
-                        label='Cable Attachments'
+                {selectedParentExercise?.equipment === 'Cable' && (
+                    <Dropdown
+                        selectedValue={selectedCableAttachment}
+                        setSelectedValue={setSelectedCableAttachment}
+                        data={cableAttachments}
+                        placeholder='Select Cable Attachment'
                     />
                 )}
                 <Input placeholder='* Name' value={name} onChangeText={setName} />
