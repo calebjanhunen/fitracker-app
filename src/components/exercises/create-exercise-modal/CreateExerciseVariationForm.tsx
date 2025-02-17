@@ -1,11 +1,27 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Alert } from 'react-native';
+import { IErrorResponse } from 'src/api/client';
 import { ExerciseResponseDto, LookupItemDto } from 'src/api/generated';
-import { useGetAllExercises, useGetCableAttachments } from 'src/api/hooks';
+import {
+    useCreateExerciseVariation,
+    useGetAllExercises,
+    useGetCableAttachments,
+} from 'src/api/hooks';
 import { Dropdown } from 'src/components/common';
 import { Button } from 'src/components/common/buttons';
 import { Input, SizableText, View, YStack } from 'tamagui';
 
-export default function CreateExerciseVariationForm() {
+interface Props {
+    setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function CreateExerciseVariationForm({ setIsModalOpen }: Props) {
+    const { data: exercises } = useGetAllExercises();
+    const { cableAttachments } = useGetCableAttachments();
+    const { createExerciseVariation, isPending } = useCreateExerciseVariation(
+        onCreateSuccess,
+        onCreateError
+    );
     const [selectedParentExercise, setSelectedParentExercise] =
         useState<ExerciseResponseDto | null>(null);
     const [selectedCableAttachment, setSelectedCableAttachment] = useState<LookupItemDto | null>(
@@ -14,8 +30,6 @@ export default function CreateExerciseVariationForm() {
     const [name, setName] = useState('');
     const [notes, setNotes] = useState('');
     const [isCreateBtnDisabled, setIsCreateBtnDisabled] = useState(true);
-    const { data: exercises } = useGetAllExercises();
-    const { cableAttachments } = useGetCableAttachments();
 
     useEffect(() => {
         if (selectedParentExercise && name) {
@@ -38,6 +52,31 @@ export default function CreateExerciseVariationForm() {
         return exercises.map((e) => ({ ...e, name: `${e.name} (${e.equipment})` }));
     }, [exercises]);
 
+    function onCreateButtonPress() {
+        if (!name || !selectedParentExercise) {
+            return;
+        }
+
+        const createVariationDto = {
+            name,
+            notes: notes ?? undefined,
+            cableAttachmentId: selectedCableAttachment?.id,
+        };
+
+        createExerciseVariation({
+            parentExerciseId: selectedParentExercise.id,
+            dto: createVariationDto,
+        });
+    }
+
+    function onCreateSuccess() {
+        setIsModalOpen(false);
+    }
+
+    function onCreateError(error: IErrorResponse) {
+        Alert.alert('Failed to create exercise', `${error.message} (${error.statusCode})`);
+    }
+
     return (
         <View>
             <YStack gap='$space.2'>
@@ -59,8 +98,14 @@ export default function CreateExerciseVariationForm() {
                 )}
                 <Input placeholder='* Name' value={name} onChangeText={setName} />
                 <Input placeholder='Notes' value={notes} onChangeText={setNotes} />
-                <Button backgroundColor='$blue10' color='$gray1' disabled={isCreateBtnDisabled}>
-                    Create
+                <Button
+                    marginTop='$space.7'
+                    backgroundColor='$green8'
+                    color='$gray1'
+                    disabled={isCreateBtnDisabled}
+                    onPress={onCreateButtonPress}
+                >
+                    {isPending ? <ActivityIndicator /> : 'Create'}
                 </Button>
             </YStack>
         </View>

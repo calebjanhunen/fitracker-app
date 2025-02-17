@@ -1,6 +1,7 @@
 import { apiClient } from '../client';
 import {
     BodyPartDto,
+    CreateExerciseVariationDto,
     EquipmentDto,
     ExerciseDetailsDto,
     ExerciseRequestDto,
@@ -11,6 +12,11 @@ import {
 } from '../generated';
 
 const exerciseApi = new ExercisesApi(undefined, undefined, apiClient);
+
+interface ICreateExerciseVariation {
+    parentExerciseId: string;
+    dto: CreateExerciseVariationDto;
+}
 
 export const exerciseApiService = {
     async getAllExercises(): Promise<ExerciseResponseDto[]> {
@@ -40,6 +46,9 @@ export const exerciseApiService = {
     async createExercise(request: ExerciseRequestDto): Promise<ExerciseResponseDto> {
         const response = await exerciseApi.createExercise(request);
         return response.data;
+    },
+    async createExerciseVariation(request: ICreateExerciseVariation): Promise<void> {
+        await exerciseApi.createExerciseVariation(request.parentExerciseId, request.dto);
     },
     async updateExercise({
         id,

@@ -123,6 +123,24 @@ export function useCreateExercise(
     return { createExercise, isPending, error };
 }
 
+export function useCreateExerciseVariation(
+    onSuccessCallback: () => void,
+    onErrorCallback?: (error: IErrorResponse) => void
+) {
+    const { mutate: createExerciseVariation, isPending } = useMutation({
+        mutationFn: exerciseApiService.createExerciseVariation,
+        onSuccess: async () => {
+            await queryClient.refetchQueries({
+                queryKey: ExerciseApiQueryKeys.getAllExercises,
+            });
+            onSuccessCallback();
+        },
+        onError: onErrorCallback,
+    });
+
+    return { createExerciseVariation, isPending };
+}
+
 export function useUpdateExercise(
     onSuccessCallback: (updatedExercise: ExerciseResponseDto) => void,
     onErrorCallback: (error: IErrorResponse) => void
