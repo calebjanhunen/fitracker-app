@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGetEquipmentAndBodyParts } from 'src/api/hooks';
 import { Button } from 'src/components/common/buttons';
 import DropdownMenu from 'src/components/common/DropdownMenu';
-import { Input, View, YStack } from 'tamagui';
+import { Input, YStack } from 'tamagui';
 
 export default function CreateExerciseForm() {
     const { bodyParts, equipment } = useGetEquipmentAndBodyParts();
@@ -20,7 +20,7 @@ export default function CreateExerciseForm() {
     }, [selectedBodyPart, selectedEquipment, name]);
 
     return (
-        <YStack flex={1} justifyContent='space-between'>
+        <YStack justifyContent='space-between'>
             <YStack gap='$space.2'>
                 <Input placeholder='* Name' value={name} onChangeText={setName} />
                 <DropdownMenu
@@ -38,9 +38,14 @@ export default function CreateExerciseForm() {
                     label='Equipment'
                 />
             </YStack>
-            {/* <Button backgroundColor='$blue10' color='$gray1' disabled={isCreateBtnDisabled}>
+            <Button
+                marginTop='$space.7'
+                backgroundColor='$blue10'
+                color='$gray1'
+                disabled={isCreateBtnDisabled}
+            >
                 Create
-            </Button> */}
+            </Button>
         </YStack>
     );
 }

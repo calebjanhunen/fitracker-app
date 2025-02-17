@@ -96,7 +96,7 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                                     </SizableText>
                                 </Tabs.Tab>
                             </Tabs.List>
-                            <Tabs.Content flex={1} value={EXERCISE_TAB} paddingTop='$space.3'>
+                            <Tabs.Content value={EXERCISE_TAB} paddingTop='$space.3'>
                                 <CreateExerciseForm />
                             </Tabs.Content>
                             <Tabs.Content value={VARIATION_TAB} paddingTop='$space.3'>
