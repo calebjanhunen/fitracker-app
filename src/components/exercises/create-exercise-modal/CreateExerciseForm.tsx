@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { BodyPartDto, EquipmentDto } from 'src/api/generated';
 import { useGetEquipmentAndBodyParts } from 'src/api/hooks';
+import { Dropdown } from 'src/components/common';
 import { Button } from 'src/components/common/buttons';
-import DropdownMenu from 'src/components/common/DropdownMenu';
 import { Input, YStack } from 'tamagui';
 
 export default function CreateExerciseForm() {
     const { bodyParts, equipment } = useGetEquipmentAndBodyParts();
-    const [selectedBodyPart, setSelectedBodyPart] = useState('');
-    const [selectedEquipment, setSelectedEquipment] = useState('');
+    const [selectedBodyPart, setSelectedBodyPart] = useState<BodyPartDto | null>(null);
+    const [selectedEquipment, setSelectedEquipment] = useState<EquipmentDto | null>(null);
     const [name, setName] = useState('');
     const [isCreateBtnDisabled, setIsCreateBtnDisabled] = useState(true);
 
@@ -23,24 +24,22 @@ export default function CreateExerciseForm() {
         <YStack justifyContent='space-between'>
             <YStack gap='$space.2'>
                 <Input placeholder='* Name' value={name} onChangeText={setName} />
-                <DropdownMenu
-                    selectedVal={selectedBodyPart}
-                    setSelectedVal={setSelectedBodyPart}
-                    options={bodyParts}
-                    placeholder='Select Body Part'
-                    label='Body Parts'
+                <Dropdown
+                    selectedValue={selectedBodyPart}
+                    setSelectedValue={setSelectedBodyPart}
+                    data={bodyParts}
+                    placeholder='* Select Body Part'
                 />
-                <DropdownMenu
-                    selectedVal={selectedEquipment}
-                    setSelectedVal={setSelectedEquipment}
-                    options={equipment}
-                    placeholder='Select Equipment'
-                    label='Equipment'
+                <Dropdown
+                    data={equipment}
+                    selectedValue={selectedEquipment}
+                    setSelectedValue={setSelectedEquipment}
+                    placeholder='* Select Equipment'
                 />
             </YStack>
             <Button
                 marginTop='$space.7'
-                backgroundColor='$blue10'
+                backgroundColor='$green8'
                 color='$gray1'
                 disabled={isCreateBtnDisabled}
             >
