@@ -2,6 +2,7 @@ import { SizableText, useTheme, XStack } from 'tamagui';
 import { Dropdown as RNDropdown } from 'react-native-element-dropdown';
 import IonIcons from '@expo/vector-icons/Ionicons';
 import React, { Dispatch, SetStateAction } from 'react';
+import { Keyboard } from 'react-native';
 
 interface DropdownOption {
     id: number | string;
@@ -56,6 +57,7 @@ export default function Dropdown<T extends DropdownOption>({
                 paddingVertical: 12,
                 paddingHorizontal: 10,
             }}
+            onFocus={() => Keyboard.dismiss()}
             fontFamily='Inter'
             placeholderStyle={{ fontWeight: 'bold', fontSize: 14 }}
             selectedTextStyle={{ fontWeight: 'bold', fontSize: 14 }}

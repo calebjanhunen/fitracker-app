@@ -1,24 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { ActivityIndicator, Alert } from 'react-native';
+import { IErrorResponse } from 'src/api/client';
 import { BodyPartDto, EquipmentDto } from 'src/api/generated';
-import { useGetEquipmentAndBodyParts } from 'src/api/hooks';
+import { useCreateExercise, useGetEquipmentAndBodyParts } from 'src/api/hooks';
 import { Dropdown } from 'src/components/common';
 import { Button } from 'src/components/common/buttons';
 import { Input, YStack } from 'tamagui';
 
-export default function CreateExerciseForm() {
+interface Props {
+    setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function CreateExerciseForm({ setIsModalOpen }: Props) {
     const { bodyParts, equipment } = useGetEquipmentAndBodyParts();
+    const { createExercise, isPending } = useCreateExercise(onCreateSuccess, onCreateError);
     const [selectedBodyPart, setSelectedBodyPart] = useState<BodyPartDto | null>(null);
     const [selectedEquipment, setSelectedEquipment] = useState<EquipmentDto | null>(null);
     const [name, setName] = useState('');
-    const [isCreateBtnDisabled, setIsCreateBtnDisabled] = useState(true);
 
-    useEffect(() => {
-        if (selectedBodyPart && selectedEquipment && name) {
-            setIsCreateBtnDisabled(false);
-        } else {
-            setIsCreateBtnDisabled(true);
+    const isCreateBtnDisabled = useMemo(() => {
+        if (isPending) {
+            return true;
         }
-    }, [selectedBodyPart, selectedEquipment, name]);
+
+        if (selectedBodyPart && selectedEquipment && name) {
+            return false;
+        }
+        return true;
+    }, [isPending, selectedBodyPart, selectedEquipment, name]);
+
+    function onCreateButtonPress() {
+        if (!name || !selectedBodyPart || !selectedEquipment) {
+            return;
+        }
+
+        createExercise({
+            name,
+            bodyPartId: selectedBodyPart.id,
+            equipmentId: selectedEquipment.id,
+        });
+    }
+
+    function onCreateSuccess() {
+        setIsModalOpen(false);
+    }
+
+    function onCreateError(error: IErrorResponse) {
+        Alert.alert('Failed to create exercise', `${error.message} (${error.statusCode})`);
+    }
 
     return (
         <YStack justifyContent='space-between'>
@@ -42,8 +71,9 @@ export default function CreateExerciseForm() {
                 backgroundColor='$green8'
                 color='$gray1'
                 disabled={isCreateBtnDisabled}
+                onPress={onCreateButtonPress}
             >
-                Create
+                {isPending ? <ActivityIndicator /> : 'Create'}
             </Button>
         </YStack>
     );

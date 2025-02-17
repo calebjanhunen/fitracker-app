@@ -100,7 +100,7 @@ export function useGetCableAttachments() {
 
 export function useCreateExercise(
     onSuccessCallback: (createdExercise: ExerciseResponseDto) => void,
-    onErrorCallback: (error: IErrorResponse) => void
+    onErrorCallback?: (error: IErrorResponse) => void
 ) {
     const {
         mutate: createExercise,
@@ -111,6 +111,9 @@ export function useCreateExercise(
         onSuccess: async (createdExercise) => {
             await queryClient.invalidateQueries({
                 queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+            });
+            await queryClient.refetchQueries({
+                queryKey: ExerciseApiQueryKeys.getAllExercises,
             });
             onSuccessCallback(createdExercise);
         },
