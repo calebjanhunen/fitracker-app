@@ -49,7 +49,9 @@ export default function CreateExerciseVariationForm({ setIsModalOpen }: Props) {
     const exerciseOptions = useMemo(() => {
         if (!exercises) return [];
 
-        return exercises.map((e) => ({ ...e, name: `${e.name} (${e.equipment})` }));
+        return exercises
+            .filter((e) => e.exerciseType === 'exercise')
+            .map((e) => ({ ...e, name: `${e.name} (${e.equipment})` }));
     }, [exercises]);
 
     function onCreateButtonPress() {
