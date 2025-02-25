@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from 'src/components/common/button';
+import { Button } from 'src/components/common/buttons/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
 import { updateAccountInfo } from 'src/redux/signup-form/SignupFormSlice';
 import { H3, Input, YStack } from 'tamagui';

@@ -103,13 +103,13 @@ export interface CreateExerciseVariationDto {
      * @type {number}
      * @memberof CreateExerciseVariationDto
      */
-    'cableAttachmentId': number;
+    'cableAttachmentId'?: number;
     /**
      * 
      * @type {string}
      * @memberof CreateExerciseVariationDto
      */
-    'notes': string;
+    'notes'?: string;
 }
 /**
  * 

@@ -3,6 +3,7 @@ export const ExerciseApiQueryKeys = {
     getExercisesWithWorkoutDetails: ['exercisesWithWorkoutDetails'],
     getEquipment: ['equipment'],
     getBodyParts: ['bodyParts'],
+    getCableAttachments: ['cableAttachments'],
     getExerciseDetails: (exerciseId: string) => ['exercises', exerciseId, 'details'],
 };
 

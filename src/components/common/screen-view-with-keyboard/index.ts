@@ -1,1 +1,1 @@
-export * from './ScreenViewWithKeyboard';
+export { default as ScreenViewWithKeyboard } from './ScreenViewWithKeyboard';

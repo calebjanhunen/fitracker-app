@@ -1,15 +1,22 @@
 import { apiClient } from '../client';
 import {
     BodyPartDto,
+    CreateExerciseVariationDto,
     EquipmentDto,
     ExerciseDetailsDto,
     ExerciseRequestDto,
     ExerciseResponseDto,
     ExercisesApi,
     ExerciseWithWorkoutDetailsDto,
+    LookupItemDto,
 } from '../generated';
 
 const exerciseApi = new ExercisesApi(undefined, undefined, apiClient);
+
+interface ICreateExerciseVariation {
+    parentExerciseId: string;
+    dto: CreateExerciseVariationDto;
+}
 
 export const exerciseApiService = {
     async getAllExercises(): Promise<ExerciseResponseDto[]> {
@@ -24,6 +31,10 @@ export const exerciseApiService = {
         const response = await exerciseApi.getAllBodyParts();
         return response.data;
     },
+    async getCableAttachments(): Promise<LookupItemDto[]> {
+        const response = await exerciseApi.getAllCableAttachments();
+        return response.data;
+    },
     async getExerciseDetails(id: string, isVariation: boolean): Promise<ExerciseDetailsDto> {
         const response = await exerciseApi.getExerciseDetails(id, isVariation);
         return response.data;
@@ -35,6 +46,9 @@ export const exerciseApiService = {
     async createExercise(request: ExerciseRequestDto): Promise<ExerciseResponseDto> {
         const response = await exerciseApi.createExercise(request);
         return response.data;
+    },
+    async createExerciseVariation(request: ICreateExerciseVariation): Promise<void> {
+        await exerciseApi.createExerciseVariation(request.parentExerciseId, request.dto);
     },
     async updateExercise({
         id,

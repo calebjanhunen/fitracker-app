@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { Button } from 'src/components/common/button';
+import { Button } from 'src/components/common/buttons/button';
 import { H1, Image, useTheme, View, XStack, YStack } from 'tamagui';
 import fitrackerLogo from '../../../assets/fitracker-transparent-logo.png';
 

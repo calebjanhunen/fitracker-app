@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForgotPassword } from 'src/api/hooks';
-import { Button } from 'src/components/common/button';
+import { Button } from 'src/components/common/buttons/button';
 import ScreenViewWithKeyboard from 'src/components/common/screen-view-with-keyboard/ScreenViewWithKeyboard';
 import { H3, Input, SizableText, Spinner } from 'tamagui';
 

@@ -53,6 +53,7 @@ export default function ExerciseList({ isLoading, error, exercises }: Props) {
             initialNumToRender={10}
             showsVerticalScrollIndicator={false}
             data={exercises}
+            keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => <ExerciseListItem exercise={item} index={index} />}
         />
     );

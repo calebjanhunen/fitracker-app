@@ -7,14 +7,16 @@ import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
 
 const GET_EXERCISE_DETAILS_STALE_TIME_MS = 300000;
+const GET_ALL_EXERCISES_STALE_TIME = 300000;
 
 export function useGetAllExercises() {
     const { data, isLoading, error } = useQuery({
         queryFn: exerciseApiService.getAllExercises,
         queryKey: ExerciseApiQueryKeys.getAllExercises,
+        staleTime: GET_ALL_EXERCISES_STALE_TIME,
     });
 
-    return { data, isLoading, error };
+    return { data: data ?? [], isLoading, error };
 }
 
 export function useGetExercisesWithWorkoutDetails() {
@@ -86,9 +88,19 @@ export function useGetEquipmentAndBodyParts() {
     };
 }
 
+export function useGetCableAttachments() {
+    const { data } = useQuery({
+        queryFn: exerciseApiService.getCableAttachments,
+        queryKey: ExerciseApiQueryKeys.getCableAttachments,
+        staleTime: Infinity,
+    });
+
+    return { cableAttachments: data ?? [] };
+}
+
 export function useCreateExercise(
     onSuccessCallback: (createdExercise: ExerciseResponseDto) => void,
-    onErrorCallback: (error: IErrorResponse) => void
+    onErrorCallback?: (error: IErrorResponse) => void
 ) {
     const {
         mutate: createExercise,
@@ -100,12 +112,33 @@ export function useCreateExercise(
             await queryClient.invalidateQueries({
                 queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
             });
+            await queryClient.refetchQueries({
+                queryKey: ExerciseApiQueryKeys.getAllExercises,
+            });
             onSuccessCallback(createdExercise);
         },
         onError: onErrorCallback,
     });
 
     return { createExercise, isPending, error };
+}
+
+export function useCreateExerciseVariation(
+    onSuccessCallback: () => void,
+    onErrorCallback?: (error: IErrorResponse) => void
+) {
+    const { mutate: createExerciseVariation, isPending } = useMutation({
+        mutationFn: exerciseApiService.createExerciseVariation,
+        onSuccess: async () => {
+            await queryClient.refetchQueries({
+                queryKey: ExerciseApiQueryKeys.getAllExercises,
+            });
+            onSuccessCallback();
+        },
+        onError: onErrorCallback,
+    });
+
+    return { createExerciseVariation, isPending };
 }
 
 export function useUpdateExercise(

@@ -7,7 +7,7 @@ import { H3, SizableText, useTheme, View, XStack } from 'tamagui';
 import { FlatList } from 'react-native-gesture-handler';
 import { IErrorResponse } from 'src/api/client';
 import { useDeleteWorkout, useGetWorkoutDetails } from 'src/api/hooks';
-import { IconBtn } from 'src/components/common/icon-btn';
+import { IconBtn } from 'src/components/common/buttons/icon-btn';
 import Exercise from 'src/components/profile/workout-details/Exercise';
 import TimeAndDateInfo from 'src/components/profile/workout-details/TimeAndDateInfo';
 
