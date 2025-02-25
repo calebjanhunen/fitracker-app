@@ -1,9 +1,11 @@
-import IonIcons from '@expo/vector-icons/Ionicons';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ExerciseResponseDto, ExerciseResponseDtoExerciseTypeEnum } from 'src/api/generated';
 import { useGetExerciseDetailsV2 } from 'src/api/hooks';
+import { IconBtnV2 } from 'src/components/common/buttons';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
-import { Button, SizableText, XStack } from 'tamagui';
+import { SizableText, XStack } from 'tamagui';
+import EditExerciseModal from '../edit-exercise-modal/EditExerciseModal';
+import { MODAL_TRANSITION_DELAY_MS } from '../ExerciseComponentConstants';
 import ExerciseDetailsModalBody from './ExerciseDetailsModalBody';
 
 interface Props {
@@ -13,6 +15,7 @@ interface Props {
 }
 
 export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Props) {
+    const [isEditExerciseModalOpen, setIsEditExerciseModalOpen] = useState(false);
     const {
         data: exerciseDetails,
         isLoading,
@@ -25,37 +28,55 @@ export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Pr
         return;
     }
 
+    async function onEditButtonPress() {
+        setIsOpen(false);
+        await new Promise((resolve) => setTimeout(resolve, MODAL_TRANSITION_DELAY_MS));
+        setIsEditExerciseModalOpen(true);
+    }
+
     return (
-        <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
-            <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
-            <ModalContent key='content' height='85%' width='90%'>
-                <XStack alignItems='center' justifyContent='space-between' gap='$space.1'>
-                    <Button
-                        paddingHorizontal='$2'
-                        paddingVertical='$1'
-                        height='auto'
-                        onPress={() => setIsOpen(false)}
-                    >
-                        <IonIcons name='close-outline' size={24} />
-                    </Button>
-                    <SizableText numberOfLines={1} flex={1} fontWeight='bold' textAlign='center'>
-                        {exercise.name} ({exercise.equipment})
-                    </SizableText>
-                    <Button
-                        paddingHorizontal='$2'
-                        paddingVertical='$1'
-                        height='auto'
-                        onPress={() => {}}
-                    >
-                        <IonIcons name='create-outline' size={24} />
-                    </Button>
-                </XStack>
-                <ExerciseDetailsModalBody
-                    isLoading={isLoading}
-                    error={error}
-                    exerciseDetails={exerciseDetails}
-                />
-            </ModalContent>
-        </Modal>
+        <>
+            <EditExerciseModal
+                isOpen={isEditExerciseModalOpen}
+                setIsOpen={setIsEditExerciseModalOpen}
+                setIsParentModalOpen={setIsOpen}
+                exerciseToEdit={exercise}
+            />
+            <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
+                <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
+                <ModalContent key='content' height='85%' width='90%'>
+                    <XStack alignItems='center' justifyContent='space-between' gap='$space.1'>
+                        <IconBtnV2
+                            iconSize={24}
+                            height='auto'
+                            backgroundColor='$gray4'
+                            onPress={() => setIsOpen(false)}
+                            iconName='close-outline'
+                        />
+                        <SizableText
+                            numberOfLines={1}
+                            flex={1}
+                            fontWeight='bold'
+                            textAlign='center'
+                        >
+                            {exercise.name} ({exercise.equipment})
+                        </SizableText>
+                        <IconBtnV2
+                            iconSize={24}
+                            height='auto'
+                            backgroundColor='$gray4'
+                            onPress={onEditButtonPress}
+                            iconName='create-outline'
+                            disabled={!exercise.isCustom}
+                        />
+                    </XStack>
+                    <ExerciseDetailsModalBody
+                        isLoading={isLoading}
+                        error={error}
+                        exerciseDetails={exerciseDetails}
+                    />
+                </ModalContent>
+            </Modal>
+        </>
     );
 }
