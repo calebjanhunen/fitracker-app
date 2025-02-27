@@ -29,7 +29,7 @@ export default function EditExerciseModal({
     return (
         <Modal avoidKeyboard key='edit-exercise-modal' open={isOpen} onOpenChange={setIsOpen}>
             <ModalOverlay key='edit-exercise-overlay' onPress={closeModal} />
-            <ModalContent key='edit-exercise-content' padding={0} width='90%' height='50%'>
+            <ModalContent key='edit-exercise-content' padding={0} width='90%' height='46%'>
                 <ScreenViewWithKeyboard
                     isFlex={false}
                     paddingVertical='$space.3'
@@ -55,7 +55,7 @@ export default function EditExerciseModal({
                         </SizableText>
                     </XStack>
                     {exerciseToEdit.exerciseType === 'exercise' ? (
-                        <EditExerciseForm exerciseToEdit={exerciseToEdit} />
+                        <EditExerciseForm closeModal={closeModal} exerciseToEdit={exerciseToEdit} />
                     ) : null}
                 </ScreenViewWithKeyboard>
             </ModalContent>
