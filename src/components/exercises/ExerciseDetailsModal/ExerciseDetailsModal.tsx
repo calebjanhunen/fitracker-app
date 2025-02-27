@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ExerciseResponseDto, ExerciseResponseDtoExerciseTypeEnum } from 'src/api/generated';
 import { useGetExerciseDetailsV2 } from 'src/api/hooks';
 import { IconBtnV2 } from 'src/components/common/buttons';
@@ -11,7 +11,7 @@ import ExerciseDetailsModalBody from './ExerciseDetailsModalBody';
 interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
-    exercise: ExerciseResponseDto | null;
+    exercise: ExerciseResponseDto;
     setSelectedExercise: Dispatch<SetStateAction<ExerciseResponseDto | null>>;
 }
 
@@ -27,17 +27,9 @@ export default function ExerciseDetailsModal({
         isLoading,
         error,
     } = useGetExerciseDetailsV2(
-        exercise?.id,
-        exercise?.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation
+        exercise.id,
+        exercise.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation
     );
-
-    useEffect(() => {
-        console.log('render: ', exercise?.name);
-    }, [exercise]);
-
-    if (!exercise) {
-        return;
-    }
 
     async function onEditButtonPress() {
         setIsOpen(false);
@@ -75,7 +67,7 @@ export default function ExerciseDetailsModal({
                             fontWeight='bold'
                             textAlign='center'
                         >
-                            {exercise.name} ({exercise.equipment})
+                            {exerciseDetails?.name} ({exerciseDetails?.equipment})
                         </SizableText>
                         <IconBtnV2
                             iconSize={24}

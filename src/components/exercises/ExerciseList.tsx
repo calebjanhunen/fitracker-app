@@ -59,12 +59,14 @@ export default function ExerciseList({ isLoading, error, exercises }: Props) {
 
     return (
         <>
-            <ExerciseDetailsModal
-                isOpen={isModalOpen}
-                setIsOpen={setIsModalOpen}
-                exercise={selectedExercise}
-                setSelectedExercise={setSelectedExercise}
-            />
+            {selectedExercise && (
+                <ExerciseDetailsModal
+                    isOpen={isModalOpen}
+                    setIsOpen={setIsModalOpen}
+                    exercise={selectedExercise}
+                    setSelectedExercise={setSelectedExercise}
+                />
+            )}
             <FlatList
                 keyboardShouldPersistTaps='handled'
                 initialNumToRender={10}
