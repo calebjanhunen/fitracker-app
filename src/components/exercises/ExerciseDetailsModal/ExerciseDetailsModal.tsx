@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ExerciseResponseDto, ExerciseResponseDtoExerciseTypeEnum } from 'src/api/generated';
 import { useGetExerciseDetailsV2 } from 'src/api/hooks';
 import { IconBtnV2 } from 'src/components/common/buttons';
@@ -12,9 +12,15 @@ interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     exercise: ExerciseResponseDto | null;
+    setSelectedExercise: Dispatch<SetStateAction<ExerciseResponseDto | null>>;
 }
 
-export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Props) {
+export default function ExerciseDetailsModal({
+    isOpen,
+    setIsOpen,
+    exercise,
+    setSelectedExercise,
+}: Props) {
     const [isEditExerciseModalOpen, setIsEditExerciseModalOpen] = useState(false);
     const {
         data: exerciseDetails,
@@ -24,6 +30,11 @@ export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Pr
         exercise?.id,
         exercise?.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation
     );
+
+    useEffect(() => {
+        console.log('render: ', exercise?.name);
+    }, [exercise]);
+
     if (!exercise) {
         return;
     }
@@ -32,6 +43,11 @@ export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Pr
         setIsOpen(false);
         await new Promise((resolve) => setTimeout(resolve, MODAL_TRANSITION_DELAY_MS));
         setIsEditExerciseModalOpen(true);
+    }
+
+    function onModalClose() {
+        setSelectedExercise(null);
+        setIsOpen(false);
     }
 
     return (
@@ -43,14 +59,14 @@ export default function ExerciseDetailsModal({ isOpen, setIsOpen, exercise }: Pr
                 exerciseToEdit={exercise}
             />
             <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
-                <ModalOverlay key='overlay' onPress={() => setIsOpen(false)} />
+                <ModalOverlay key='overlay' onPress={onModalClose} />
                 <ModalContent key='content' height='85%' width='90%'>
                     <XStack alignItems='center' justifyContent='space-between' gap='$space.1'>
                         <IconBtnV2
                             iconSize={24}
                             height='auto'
                             backgroundColor='$gray4'
-                            onPress={() => setIsOpen(false)}
+                            onPress={onModalClose}
                             iconName='close-outline'
                         />
                         <SizableText
