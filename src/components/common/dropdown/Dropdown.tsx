@@ -1,8 +1,8 @@
-import { SizableText, useTheme, XStack } from 'tamagui';
-import { Dropdown as RNDropdown } from 'react-native-element-dropdown';
 import IonIcons from '@expo/vector-icons/Ionicons';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Keyboard } from 'react-native';
+import { Dropdown as RNDropdown } from 'react-native-element-dropdown';
+import { SizableText, useTheme, XStack } from 'tamagui';
 
 interface DropdownOption {
     id: number | string;
@@ -16,6 +16,7 @@ interface Props<T extends DropdownOption> {
     setSelectedValue: Dispatch<SetStateAction<T | null>>;
     placeholder: string;
     isOptional?: boolean;
+    isDisabled?: boolean;
 }
 
 export default function Dropdown<T extends DropdownOption>({
@@ -24,6 +25,7 @@ export default function Dropdown<T extends DropdownOption>({
     setSelectedValue,
     placeholder,
     isOptional = false,
+    isDisabled = false,
 }: Props<T>) {
     const theme = useTheme();
 
@@ -57,6 +59,14 @@ export default function Dropdown<T extends DropdownOption>({
                 paddingVertical: 12,
                 paddingHorizontal: 10,
             }}
+            renderRightIcon={() => (
+                <IonIcons
+                    name={isDisabled ? 'lock-closed' : 'chevron-down'}
+                    size={18}
+                    color={theme.gray10.val}
+                />
+            )}
+            disable={isDisabled}
             onFocus={() => Keyboard.dismiss()}
             fontFamily='Inter'
             placeholderStyle={{ fontWeight: 'bold', fontSize: 14 }}
