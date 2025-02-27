@@ -9,22 +9,24 @@ interface Props extends DialogProps {
 export default function Modal({ children, avoidKeyboard = false, ...dialogProps }: Props) {
     return (
         <Dialog {...dialogProps} modal>
-            {avoidKeyboard ? (
-                <KeyboardAvoidingView
-                    style={{
-                        width: '100%',
-                        flex: 1,
-                        zIndex: 2,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                >
-                    <Dialog.Portal>{children}</Dialog.Portal>
-                </KeyboardAvoidingView>
-            ) : (
-                <Dialog.Portal>{children}</Dialog.Portal>
-            )}
+            <Dialog.Portal>
+                {avoidKeyboard ? (
+                    <KeyboardAvoidingView
+                        style={{
+                            width: '100%',
+                            flex: 1,
+                            zIndex: 2,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    >
+                        {children}
+                    </KeyboardAvoidingView>
+                ) : (
+                    children
+                )}
+            </Dialog.Portal>
         </Dialog>
     );
 }
