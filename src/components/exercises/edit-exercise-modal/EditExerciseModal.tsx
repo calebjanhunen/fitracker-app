@@ -63,7 +63,10 @@ export default function EditExerciseModal({
                     {exerciseToEdit.exerciseType === 'exercise' ? (
                         <EditExerciseForm closeModal={closeModal} exerciseToEdit={exerciseToEdit} />
                     ) : (
-                        <EditExerciseVariationForm exerciseVariationToEdit={exerciseToEdit} />
+                        <EditExerciseVariationForm
+                            exerciseVariationToEdit={exerciseToEdit}
+                            closeModal={closeModal}
+                        />
                     )}
                 </ScreenViewWithKeyboard>
             </ModalContent>

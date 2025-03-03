@@ -9,6 +9,7 @@ import {
     ExercisesApi,
     ExerciseWithWorkoutDetailsDto,
     LookupItemDto,
+    UpdateExerciseVariationDto,
 } from '../generated';
 
 const exerciseApi = new ExercisesApi(undefined, undefined, apiClient);
@@ -58,6 +59,16 @@ export const exerciseApiService = {
         request: ExerciseRequestDto;
     }): Promise<ExerciseResponseDto> {
         const response = await exerciseApi.updateExercise(id, request);
+        return response.data;
+    },
+    async updateExerciseVariation({
+        exerciseVariationId,
+        request,
+    }: {
+        exerciseVariationId: string;
+        request: UpdateExerciseVariationDto;
+    }): Promise<ExerciseResponseDto> {
+        const response = await exerciseApi.updateExerciseVaration(exerciseVariationId, request);
         return response.data;
     },
     async deleteExercise(id: string): Promise<void> {

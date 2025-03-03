@@ -173,3 +173,42 @@ export function useUpdateExercise(
 
     return { updateExercise, isPending, error };
 }
+
+export function useUpdateExerciseVariation(
+    onSuccessCallback: (updatedExercise: ExerciseResponseDto) => void,
+    onErrorCallback: (error: IErrorResponse) => void
+) {
+    const {
+        mutate: updateExerciseVariation,
+        error,
+        isPending,
+    } = useMutation({
+        mutationFn: exerciseApiService.updateExerciseVariation,
+        onSuccess: async (updatedExercise) => {
+            const queryKeysToInvalidate = [
+                ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
+                WorkoutApiQueryKeys.getWorkouts,
+            ];
+            await Promise.all(
+                queryKeysToInvalidate.map((queryKey) =>
+                    queryClient.invalidateQueries({ queryKey, exact: true })
+                )
+            );
+
+            const queriesToRefetch = [
+                ExerciseApiQueryKeys.getAllExercises,
+                ExerciseApiQueryKeys.getExerciseDetails(updatedExercise.id),
+            ];
+            await Promise.all(
+                queriesToRefetch.map((queryKey) =>
+                    queryClient.refetchQueries({ queryKey, exact: true })
+                )
+            );
+            onSuccessCallback(updatedExercise);
+        },
+        onError: onErrorCallback,
+    });
+
+    return { updateExerciseVariation, isPending, error };
+}
