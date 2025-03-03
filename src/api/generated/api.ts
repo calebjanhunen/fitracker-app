@@ -103,13 +103,13 @@ export interface CreateExerciseVariationDto {
      * @type {number}
      * @memberof CreateExerciseVariationDto
      */
-    'cableAttachmentId'?: number;
+    'cableAttachmentId': number;
     /**
      * 
      * @type {string}
      * @memberof CreateExerciseVariationDto
      */
-    'notes'?: string;
+    'notes': string;
 }
 /**
  * 
@@ -192,6 +192,12 @@ export interface ExerciseDetailsDto {
      * @memberof ExerciseDetailsDto
      */
     'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseDetailsDto
+     */
+    'notes'?: string;
     /**
      * 
      * @type {string}
@@ -321,7 +327,7 @@ export interface ExerciseResponseDto {
      * @type {string}
      * @memberof ExerciseResponseDto
      */
-    'parentExerciseId': string;
+    'parentExerciseId'?: string;
 }
 
 export const ExerciseResponseDtoExerciseTypeEnum = {
@@ -535,6 +541,25 @@ export interface TotalXpLeaderboardUserDto {
      * @memberof TotalXpLeaderboardUserDto
      */
     'totalXp': number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateExerciseVariationDto
+ */
+export interface UpdateExerciseVariationDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseVariationDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseVariationDto
+     */
+    'notes'?: string;
 }
 /**
  * 
@@ -2125,6 +2150,49 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateExerciseVariationDto} updateExerciseVariationDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExerciseVaration: async (id: string, updateExerciseVariationDto: UpdateExerciseVariationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateExerciseVaration', 'id', id)
+            // verify required parameter 'updateExerciseVariationDto' is not null or undefined
+            assertParamExists('updateExerciseVaration', 'updateExerciseVariationDto', updateExerciseVariationDto)
+            const localVarPath = `/api/exercises/{id}/variation`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication access-token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateExerciseVariationDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2253,6 +2321,19 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['ExercisesApi.updateExercise']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateExerciseVariationDto} updateExerciseVariationDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateExerciseVaration(id: string, updateExerciseVariationDto: UpdateExerciseVariationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateExerciseVaration(id, updateExerciseVariationDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExercisesApi.updateExerciseVaration']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2350,6 +2431,16 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
          */
         updateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseResponseDto> {
             return localVarFp.updateExercise(id, exerciseRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdateExerciseVariationDto} updateExerciseVariationDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExerciseVaration(id: string, updateExerciseVariationDto: UpdateExerciseVariationDto, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseResponseDto> {
+            return localVarFp.updateExerciseVaration(id, updateExerciseVariationDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2467,6 +2558,18 @@ export class ExercisesApi extends BaseAPI {
      */
     public updateExercise(id: string, exerciseRequestDto: ExerciseRequestDto, options?: RawAxiosRequestConfig) {
         return ExercisesApiFp(this.configuration).updateExercise(id, exerciseRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {UpdateExerciseVariationDto} updateExerciseVariationDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExercisesApi
+     */
+    public updateExerciseVaration(id: string, updateExerciseVariationDto: UpdateExerciseVariationDto, options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).updateExerciseVaration(id, updateExerciseVariationDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

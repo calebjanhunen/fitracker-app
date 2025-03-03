@@ -84,6 +84,7 @@ export default function ExerciseDetailsModalBody({ isLoading, error, exerciseDet
                             ExerciseDetailsDtoExerciseTypeEnum.Variation
                         }
                         parentExerciseName={exerciseDetails.parentExerciseName}
+                        notes={exerciseDetails.notes}
                     />
                 </Tabs.Content>
                 <Tabs.Content flex={1} value={HISTORY_TAB_NAME} paddingTop='$space.3'>

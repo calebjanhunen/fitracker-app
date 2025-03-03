@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ExerciseVariationDto } from 'src/api/generated';
 import { SizableText, View, XStack, YStack } from 'tamagui';
@@ -10,6 +11,7 @@ interface Props {
     exerciseVariations: ExerciseVariationDto[];
     isVariation: boolean;
     parentExerciseName?: string;
+    notes?: string;
 }
 
 export default function ExerciseInfo({
@@ -18,6 +20,7 @@ export default function ExerciseInfo({
     equipment,
     isVariation,
     parentExerciseName,
+    notes,
 }: Props) {
     return (
         <View flex={1}>
@@ -33,9 +36,21 @@ export default function ExerciseInfo({
                     </YStack>
                 </XStack>
                 {isVariation ? (
-                    <YStack>
-                        <SizableText color='$gray10'>Parent Exercise</SizableText>
-                        <SizableText marginTop={-5}>{parentExerciseName}</SizableText>
+                    <YStack gap='$space.5'>
+                        <YStack>
+                            <SizableText color='$gray10'>Parent Exercise</SizableText>
+                            <SizableText marginTop={-5}>{parentExerciseName}</SizableText>
+                        </YStack>
+                        <YStack>
+                            <SizableText color='$gray10'>Notes</SizableText>
+                            {notes ? (
+                                <SizableText marginTop={-5}>{notes}</SizableText>
+                            ) : (
+                                <Text style={{ fontStyle: 'italic', fontWeight: '300' }}>
+                                    No Notes - Edit Exercise to add notes
+                                </Text>
+                            )}
+                        </YStack>
                     </YStack>
                 ) : (
                     <YStack flex={1}>

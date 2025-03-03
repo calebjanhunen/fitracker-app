@@ -1,0 +1,1 @@
+export const MODAL_TRANSITION_DELAY_MS = 200;

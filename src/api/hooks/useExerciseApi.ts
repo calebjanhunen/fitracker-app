@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { IErrorResponse } from '../client';
-import { ExerciseDetailsDto, ExerciseResponseDto } from '../generated';
+import { ExerciseResponseDto } from '../generated';
 import { ExerciseApiQueryKeys, WorkoutApiQueryKeys, WorkoutTemplateQueryKeys } from '../QueryKeys';
 import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
@@ -41,17 +41,11 @@ export function useGetExerciseDetails(exerciseId: string) {
     return { data, isLoading, error };
 }
 
-export function useGetExerciseDetailsV2(exerciseId: string | undefined, isVariation: boolean) {
+export function useGetExerciseDetailsV2(exerciseId: string, isVariation: boolean) {
     const { data, isLoading, error } = useQuery({
-        queryFn: async () => {
-            if (!exerciseId) {
-                return;
-            }
-            return await exerciseApiService.getExerciseDetails(exerciseId, isVariation);
-        },
-        queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId ?? ''),
+        queryFn: () => exerciseApiService.getExerciseDetails(exerciseId, isVariation),
+        queryKey: ExerciseApiQueryKeys.getExerciseDetails(exerciseId),
         staleTime: GET_EXERCISE_DETAILS_STALE_TIME_MS,
-        enabled: !!exerciseId,
     });
 
     return { data, isLoading, error };
@@ -154,25 +148,67 @@ export function useUpdateExercise(
         onSuccess: async (updatedExercise) => {
             const queryKeysToInvalidate = [
                 ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
-                ExerciseApiQueryKeys.getExerciseDetails(updatedExercise.id),
                 WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
                 WorkoutApiQueryKeys.getWorkouts,
             ];
             await Promise.all(
-                queryKeysToInvalidate.map((queryKey) => queryClient.invalidateQueries({ queryKey }))
+                queryKeysToInvalidate.map((queryKey) =>
+                    queryClient.invalidateQueries({ queryKey, exact: true })
+                )
+            );
+
+            const queriesToRefetch = [
+                ExerciseApiQueryKeys.getAllExercises,
+                ExerciseApiQueryKeys.getExerciseDetails(updatedExercise.id),
+            ];
+            await Promise.all(
+                queriesToRefetch.map((queryKey) =>
+                    queryClient.refetchQueries({ queryKey, exact: true })
+                )
             );
             onSuccessCallback(updatedExercise);
-
-            // Update exercise details in cache to immediately reflect in ui
-            queryClient.setQueryData(
-                ExerciseApiQueryKeys.getExerciseDetails(updatedExercise.id),
-                (oldData: ExerciseDetailsDto) => {
-                    return { ...oldData, ...updatedExercise };
-                }
-            );
         },
         onError: onErrorCallback,
     });
 
     return { updateExercise, isPending, error };
+}
+
+export function useUpdateExerciseVariation(
+    onSuccessCallback: (updatedExercise: ExerciseResponseDto) => void,
+    onErrorCallback: (error: IErrorResponse) => void
+) {
+    const {
+        mutate: updateExerciseVariation,
+        error,
+        isPending,
+    } = useMutation({
+        mutationFn: exerciseApiService.updateExerciseVariation,
+        onSuccess: async (updatedExercise) => {
+            const queryKeysToInvalidate = [
+                ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
+                WorkoutApiQueryKeys.getWorkouts,
+            ];
+            await Promise.all(
+                queryKeysToInvalidate.map((queryKey) =>
+                    queryClient.invalidateQueries({ queryKey, exact: true })
+                )
+            );
+
+            const queriesToRefetch = [
+                ExerciseApiQueryKeys.getAllExercises,
+                ExerciseApiQueryKeys.getExerciseDetails(updatedExercise.id),
+            ];
+            await Promise.all(
+                queriesToRefetch.map((queryKey) =>
+                    queryClient.refetchQueries({ queryKey, exact: true })
+                )
+            );
+            onSuccessCallback(updatedExercise);
+        },
+        onError: onErrorCallback,
+    });
+
+    return { updateExerciseVariation, isPending, error };
 }
