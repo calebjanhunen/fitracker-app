@@ -28,7 +28,7 @@ export default function EditExerciseVariationForm({ exerciseVariationToEdit, clo
             exerciseVariationId: exerciseVariationToEdit.id,
             request: {
                 name,
-                notes: notes || undefined,
+                notes: notes ?? undefined,
             },
         });
     }
