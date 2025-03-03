@@ -44,12 +44,15 @@ export default function ExerciseDetailsModal({
 
     return (
         <>
-            <EditExerciseModal
-                isOpen={isEditExerciseModalOpen}
-                setIsOpen={setIsEditExerciseModalOpen}
-                setIsParentModalOpen={setIsOpen}
-                exerciseToEdit={exercise}
-            />
+            {exerciseDetails && (
+                <EditExerciseModal
+                    isOpen={isEditExerciseModalOpen}
+                    setIsOpen={setIsEditExerciseModalOpen}
+                    setIsParentModalOpen={setIsOpen}
+                    exerciseToEdit={exerciseDetails}
+                />
+            )}
+
             <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
                 <ModalOverlay key='overlay' onPress={onModalClose} />
                 <ModalContent key='content' height='85%' width='90%'>

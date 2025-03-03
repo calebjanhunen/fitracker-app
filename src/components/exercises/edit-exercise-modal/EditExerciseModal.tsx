@@ -1,17 +1,18 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { ExerciseResponseDto } from 'src/api/generated';
+import { ExerciseDetailsDto } from 'src/api/generated';
 import { ScreenViewWithKeyboard } from 'src/components/common';
 import { IconBtnV2 } from 'src/components/common/buttons';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { SizableText, XStack } from 'tamagui';
 import { MODAL_TRANSITION_DELAY_MS } from '../ExerciseComponentConstants';
 import EditExerciseForm from './EditExerciseForm';
+import EditExerciseVariationForm from './EditExerciseVariationForm';
 
 interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     setIsParentModalOpen: Dispatch<SetStateAction<boolean>>;
-    exerciseToEdit: ExerciseResponseDto;
+    exerciseToEdit: ExerciseDetailsDto;
 }
 
 export default function EditExerciseModal({
@@ -29,7 +30,12 @@ export default function EditExerciseModal({
     return (
         <Modal avoidKeyboard key='edit-exercise-modal' open={isOpen} onOpenChange={setIsOpen}>
             <ModalOverlay key='edit-exercise-overlay' onPress={closeModal} />
-            <ModalContent key='edit-exercise-content' padding={0} width='90%' height='46%'>
+            <ModalContent
+                key='edit-exercise-content'
+                padding={0}
+                width='90%'
+                height={exerciseToEdit.exerciseType === 'variation' ? '30%' : '46%'}
+            >
                 <ScreenViewWithKeyboard
                     isFlex={false}
                     paddingVertical='$space.3'
@@ -56,7 +62,9 @@ export default function EditExerciseModal({
                     </XStack>
                     {exerciseToEdit.exerciseType === 'exercise' ? (
                         <EditExerciseForm closeModal={closeModal} exerciseToEdit={exerciseToEdit} />
-                    ) : null}
+                    ) : (
+                        <EditExerciseVariationForm exerciseVariationToEdit={exerciseToEdit} />
+                    )}
                 </ScreenViewWithKeyboard>
             </ModalContent>
         </Modal>
