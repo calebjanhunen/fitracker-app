@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { ExerciseResponseDto, WorkoutTemplateResponseDto } from 'src/api/generated';
+import {
+    ExerciseResponseDto,
+    ExerciseResponseDtoExerciseTypeEnum,
+    WorkoutTemplateResponseDto,
+} from 'src/api/generated';
 import { IWorkoutFormState } from './IWorkoutForm';
 
 const initialState: IWorkoutFormState = {
@@ -53,6 +57,8 @@ const workoutFormSlice = createSlice({
                         name: e.name,
                         sets: [],
                         recentSets: e.mostRecentWorkoutSets?.map((recentSet) => recentSet.id) ?? [],
+                        isVariation:
+                            e.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation,
                     };
 
                     e.mostRecentWorkoutSets?.forEach((recentSet) => {
@@ -90,6 +96,8 @@ const workoutFormSlice = createSlice({
                 id: newExercise.id,
                 name: newExercise.name,
                 sets: state.exercises[oldExerciseId].sets,
+                isVariation:
+                    newExercise.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation,
                 recentSets:
                     newExercise.mostRecentWorkoutSets?.map((recentSet) => {
                         state.recentSets[recentSet.id] = {
@@ -182,6 +190,7 @@ const workoutFormSlice = createSlice({
                 state.exercises[e.exerciseId] = {
                     id: e.exerciseId,
                     name: e.exerciseName,
+                    isVariation: false, // TODO: UPDATE THIS TO GET THE CORRECT VALUE
                     recentSets:
                         matchedExerciseDetails?.mostRecentWorkoutSets?.map((set) => set.id) ?? [],
                     sets: e.sets.map((set) => set.id),

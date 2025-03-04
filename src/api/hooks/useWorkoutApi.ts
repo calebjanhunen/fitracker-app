@@ -54,7 +54,8 @@ export function useCreateWorkout(
         },
         onSuccess: async (response) => {
             await queryClient.invalidateQueries({
-                queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                queryKey: ExerciseApiQueryKeys.getExercisesForWorkout,
+                exact: true,
             });
             await queryClient.invalidateQueries({
                 queryKey: WorkoutApiQueryKeys.getWorkouts,
@@ -83,7 +84,8 @@ export function useDeleteWorkout(
                 queryClient.refetchQueries({ queryKey: WorkoutApiQueryKeys.getWorkouts }),
                 queryClient.refetchQueries({ queryKey: UserApiQueryKeys.getCurrentUser }),
                 queryClient.invalidateQueries({
-                    queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                    queryKey: ExerciseApiQueryKeys.getExercisesForWorkout,
+                    exact: true,
                 }),
             ]);
             onSuccessCallback(response);
@@ -140,6 +142,7 @@ function fromWorkoutFormToWorkoutRequest(
             return {
                 exerciseId,
                 order: index + 1,
+                isVariation: workoutForm.exercises[exerciseId].isVariation,
                 sets: workoutForm.exercises[exerciseId].sets.map((setId, index) => {
                     return {
                         // shouldn't default to 0 because sets with null weight are removed in `removeInvalidSets`

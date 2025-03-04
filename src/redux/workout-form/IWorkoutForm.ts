@@ -12,6 +12,7 @@ export interface IWorkoutExerciseForm {
     name: string;
     sets: string[];
     recentSets: string[];
+    isVariation: boolean;
 }
 
 export interface IWorkoutSetForm {
