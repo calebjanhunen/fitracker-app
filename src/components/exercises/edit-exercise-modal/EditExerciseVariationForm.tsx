@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import { IErrorResponse } from 'src/api/client';
-import { ExerciseDetailsDto } from 'src/api/generated';
+import { ExerciseDetailsDto, ExerciseResponseDto } from 'src/api/generated';
 import { useUpdateExerciseVariation } from 'src/api/hooks';
 import { Button } from 'src/components/common/buttons';
 import { Input, SizableText, Spinner, YStack } from 'tamagui';
 
 interface Props {
     exerciseVariationToEdit: ExerciseDetailsDto;
-    closeModal: () => void;
+    onUpdateSuccess: (exercise: ExerciseResponseDto) => void;
 }
 
-export default function EditExerciseVariationForm({ exerciseVariationToEdit, closeModal }: Props) {
+export default function EditExerciseVariationForm({
+    exerciseVariationToEdit,
+    onUpdateSuccess,
+}: Props) {
     const [name, setName] = useState(exerciseVariationToEdit.name);
     const [notes, setNotes] = useState(exerciseVariationToEdit.notes);
     const { updateExerciseVariation, isPending } = useUpdateExerciseVariation(
-        closeModal,
+        onUpdateSuccess,
         onUpdateExerciseVariationError
     );
 

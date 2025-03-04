@@ -26,6 +26,7 @@ export default function IconBtnV2({
             paddingVertical={3}
             borderRadius={10}
             backgroundColor={disabled ? theme.gray3.val : backgroundColor}
+            disabled={disabled}
         >
             <IonIcons
                 name={iconName}

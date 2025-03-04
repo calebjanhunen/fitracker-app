@@ -23,6 +23,11 @@ export default function ExerciseList({ isLoading, error, exercises }: Props) {
         }
     }, [selectedExercise]);
 
+    function onCloseModal() {
+        setSelectedExercise(null);
+        setIsModalOpen(false);
+    }
+
     if (isLoading) {
         return (
             <FlatList
@@ -63,8 +68,9 @@ export default function ExerciseList({ isLoading, error, exercises }: Props) {
                 <ExerciseDetailsModal
                     isOpen={isModalOpen}
                     setIsOpen={setIsModalOpen}
-                    exercise={selectedExercise}
-                    setSelectedExercise={setSelectedExercise}
+                    exerciseId={selectedExercise.id}
+                    exerciseType={selectedExercise.exerciseType}
+                    onClose={onCloseModal}
                 />
             )}
             <FlatList

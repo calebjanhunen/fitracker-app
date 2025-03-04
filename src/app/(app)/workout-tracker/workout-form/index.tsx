@@ -8,10 +8,14 @@ import { Button, H4, Input, Spinner, View, XStack, YStack } from 'tamagui';
 import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IErrorResponse } from 'src/api/client';
-import { CreateWorkoutResponseDto } from 'src/api/generated';
+import {
+    CreateWorkoutResponseDto,
+    ExerciseDetailsDtoExerciseTypeEnum,
+    ExerciseResponseDto,
+} from 'src/api/generated';
 import { useCreateWorkout } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
-import EditExerciseModal from 'src/components/workout-tracker/common/EditExerciseModal';
+import ExerciseDetailsModal from 'src/components/exercises/ExerciseDetailsModal/ExerciseDetailsModal';
 import WorkoutFormExercise from 'src/components/workout-tracker/workout-form/WorkoutFormExercise';
 import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
@@ -55,6 +59,11 @@ export default function WorkoutForm() {
         onCreateWorkoutSuccess,
         onCreateWorkoutError
     );
+    const [selectedExercise, setSelectedExercise] = useState<{
+        id: string;
+        exerciseType: ExerciseDetailsDtoExerciseTypeEnum;
+    } | null>(null);
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
     function resetWorkout() {
         removeFromStorage(LocalStorageKeys.workoutForm)
@@ -209,54 +218,76 @@ export default function WorkoutForm() {
             isDragging={isDragging}
             setIsDragging={setIsDragging}
             validatedSets={validatedSets}
+            openDetailsModal={onDetailsModalOpen}
         />
     );
 
+    function onDetailsModalOpen(id: string, exerciseType: ExerciseDetailsDtoExerciseTypeEnum) {
+        setIsDetailsModalOpen(true);
+        setSelectedExercise({ id, exerciseType });
+    }
+
+    function onDetailsModalClose() {
+        setIsDetailsModalOpen(false);
+        setSelectedExercise(null);
+    }
+
+    function onUpdateExerciseSuccess(exercise: ExerciseResponseDto) {
+        dispatch(updateExerciseName({ exerciseId: exercise.id, newName: exercise.name }));
+    }
+
     return (
-        <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-            <KeyboardAvoidingView>
-                <View flex={1} backgroundColor='$background' paddingHorizontal='$3'>
-                    <XStack justifyContent='space-between' alignItems='center' marginTop='$3'>
-                        <H4>{formatStopwatchTime(elapsedTime)}</H4>
-                        <Button
-                            backgroundColor={finishWorkoutBtnDisabled ? '$gray6' : '$green6'}
-                            fontWeight='bold'
-                            color={finishWorkoutBtnDisabled ? '$gray10' : '$green10'}
-                            disabled={finishWorkoutBtnDisabled}
-                            onPress={onFinishWorkoutPress}
-                            width='40%'
-                        >
-                            {isPending ? <Spinner /> : 'Finish Workout'}
-                        </Button>
-                    </XStack>
-                    <Input
-                        placeholder='Workout Name'
-                        size='$5'
-                        marginVertical='$4'
-                        onChangeText={(text) => dispatch(updateName(text))}
-                        value={workoutFormState.workout.name}
-                    />
-                    <DraggableFlatList
-                        containerStyle={{ flex: 1 }}
-                        keyboardShouldPersistTaps='handled'
-                        data={workoutFormState.workout.exercises}
-                        showsVerticalScrollIndicator={false}
-                        initialNumToRender={7}
-                        renderItem={renderExercise}
-                        keyExtractor={(item) => item.toString()}
-                        ListFooterComponent={renderListFooter}
-                        onDragEnd={({ data }) => {
-                            setIsDragging(false);
-                            dispatch(reorderExercises(data));
-                        }}
-                    />
-                </View>
-                <EditExerciseModal
-                    updateExerciseNameInForm={(exerciseId: string, newName: string) =>
-                        dispatch(updateExerciseName({ exerciseId, newName }))
-                    }
+        <>
+            {selectedExercise && (
+                <ExerciseDetailsModal
+                    isOpen={isDetailsModalOpen}
+                    setIsOpen={setIsDetailsModalOpen}
+                    exerciseId={selectedExercise.id}
+                    exerciseType={selectedExercise.exerciseType}
+                    onClose={onDetailsModalClose}
+                    onUpdateSuccess={onUpdateExerciseSuccess}
                 />
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+            )}
+            <SafeAreaView style={{ flex: 1 }} edges={['top']}>
+                <KeyboardAvoidingView>
+                    <View flex={1} backgroundColor='$background' paddingHorizontal='$3'>
+                        <XStack justifyContent='space-between' alignItems='center' marginTop='$3'>
+                            <H4>{formatStopwatchTime(elapsedTime)}</H4>
+                            <Button
+                                backgroundColor={finishWorkoutBtnDisabled ? '$gray6' : '$green6'}
+                                fontWeight='bold'
+                                color={finishWorkoutBtnDisabled ? '$gray10' : '$green10'}
+                                disabled={finishWorkoutBtnDisabled}
+                                onPress={onFinishWorkoutPress}
+                                width='40%'
+                            >
+                                {isPending ? <Spinner /> : 'Finish Workout'}
+                            </Button>
+                        </XStack>
+                        <Input
+                            placeholder='Workout Name'
+                            size='$5'
+                            marginVertical='$4'
+                            onChangeText={(text) => dispatch(updateName(text))}
+                            value={workoutFormState.workout.name}
+                        />
+                        <DraggableFlatList
+                            containerStyle={{ flex: 1 }}
+                            keyboardShouldPersistTaps='handled'
+                            data={workoutFormState.workout.exercises}
+                            showsVerticalScrollIndicator={false}
+                            initialNumToRender={7}
+                            renderItem={renderExercise}
+                            keyExtractor={(item) => item.toString()}
+                            ListFooterComponent={renderListFooter}
+                            onDragEnd={({ data }) => {
+                                setIsDragging(false);
+                                dispatch(reorderExercises(data));
+                            }}
+                        />
+                    </View>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        </>
     );
 }

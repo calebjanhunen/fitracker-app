@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { ExerciseDetailsDto } from 'src/api/generated';
+import { ExerciseDetailsDto, ExerciseResponseDto } from 'src/api/generated';
 import { ScreenViewWithKeyboard } from 'src/components/common';
 import { IconBtnV2 } from 'src/components/common/buttons';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
@@ -13,6 +13,7 @@ interface Props {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     setIsParentModalOpen: Dispatch<SetStateAction<boolean>>;
     exerciseToEdit: ExerciseDetailsDto;
+    onUpdateSuccess?: (exercise: ExerciseResponseDto) => void;
 }
 
 export default function EditExerciseModal({
@@ -20,6 +21,7 @@ export default function EditExerciseModal({
     setIsOpen,
     setIsParentModalOpen,
     exerciseToEdit,
+    onUpdateSuccess,
 }: Props) {
     async function closeModal() {
         setIsOpen(false);
@@ -61,11 +63,20 @@ export default function EditExerciseModal({
                         </SizableText>
                     </XStack>
                     {exerciseToEdit.exerciseType === 'exercise' ? (
-                        <EditExerciseForm closeModal={closeModal} exerciseToEdit={exerciseToEdit} />
+                        <EditExerciseForm
+                            exerciseToEdit={exerciseToEdit}
+                            onUpdateSuccess={async (updatedExercise) => {
+                                await closeModal();
+                                onUpdateSuccess?.(updatedExercise);
+                            }}
+                        />
                     ) : (
                         <EditExerciseVariationForm
                             exerciseVariationToEdit={exerciseToEdit}
-                            closeModal={closeModal}
+                            onUpdateSuccess={async (updatedExercise) => {
+                                await closeModal();
+                                onUpdateSuccess?.(updatedExercise);
+                            }}
                         />
                     )}
                 </ScreenViewWithKeyboard>
