@@ -328,6 +328,18 @@ export interface ExerciseResponseDto {
      * @memberof ExerciseResponseDto
      */
     'parentExerciseId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExerciseResponseDto
+     */
+    'numTimesUsed'?: number;
+    /**
+     * 
+     * @type {Array<RecentSetDto>}
+     * @memberof ExerciseResponseDto
+     */
+    'mostRecentWorkoutSets'?: Array<RecentSetDto>;
 }
 
 export const ExerciseResponseDtoExerciseTypeEnum = {
@@ -496,7 +508,7 @@ export interface RecentSetDto {
      * @type {number}
      * @memberof RecentSetDto
      */
-    'rpe': number;
+    'rpe'?: number;
 }
 /**
  * 
@@ -1999,10 +2011,11 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @param {boolean} [isForWorkout] If true - returns numTimesExerciseUsed and mostRecentWorkoutSets
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllExercises: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAllExercises: async (isForWorkout?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/exercises`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2018,6 +2031,10 @@ export const ExercisesApiAxiosParamCreator = function (configuration?: Configura
             // authentication access-token required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (isForWorkout !== undefined) {
+                localVarQueryParameter['isForWorkout'] = isForWorkout;
+            }
 
 
     
@@ -2275,11 +2292,12 @@ export const ExercisesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {boolean} [isForWorkout] If true - returns numTimesExerciseUsed and mostRecentWorkoutSets
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllExercises(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseResponseDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllExercises(options);
+        async getAllExercises(isForWorkout?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseResponseDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllExercises(isForWorkout, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ExercisesApi.getAllExercises']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -2398,11 +2416,12 @@ export const ExercisesApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
+         * @param {boolean} [isForWorkout] If true - returns numTimesExerciseUsed and mostRecentWorkoutSets
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllExercises(options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseResponseDto>> {
-            return localVarFp.getAllExercises(options).then((request) => request(axios, basePath));
+        getAllExercises(isForWorkout?: boolean, options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseResponseDto>> {
+            return localVarFp.getAllExercises(isForWorkout, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2518,12 +2537,13 @@ export class ExercisesApi extends BaseAPI {
 
     /**
      * 
+     * @param {boolean} [isForWorkout] If true - returns numTimesExerciseUsed and mostRecentWorkoutSets
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ExercisesApi
      */
-    public getAllExercises(options?: RawAxiosRequestConfig) {
-        return ExercisesApiFp(this.configuration).getAllExercises(options).then((request) => request(this.axios, this.basePath));
+    public getAllExercises(isForWorkout?: boolean, options?: RawAxiosRequestConfig) {
+        return ExercisesApiFp(this.configuration).getAllExercises(isForWorkout, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

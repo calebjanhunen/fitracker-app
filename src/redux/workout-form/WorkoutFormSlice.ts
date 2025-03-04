@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { ExerciseWithWorkoutDetailsDto, WorkoutTemplateResponseDto } from 'src/api/generated';
+import { ExerciseResponseDto, WorkoutTemplateResponseDto } from 'src/api/generated';
 import { IWorkoutFormState } from './IWorkoutForm';
 
 const initialState: IWorkoutFormState = {
@@ -40,7 +40,7 @@ const workoutFormSlice = createSlice({
             state,
             action: PayloadAction<{
                 selectedExerciseIds: string[];
-                allExercises: ExerciseWithWorkoutDetailsDto[];
+                allExercises: ExerciseResponseDto[];
             }>
         ) => {
             const { selectedExerciseIds, allExercises } = action.payload;
@@ -52,10 +52,10 @@ const workoutFormSlice = createSlice({
                         id: e.id,
                         name: e.name,
                         sets: [],
-                        recentSets: e.recentSets.map((recentSet) => recentSet.id),
+                        recentSets: e.mostRecentWorkoutSets?.map((recentSet) => recentSet.id) ?? [],
                     };
 
-                    e.recentSets.forEach((recentSet) => {
+                    e.mostRecentWorkoutSets?.forEach((recentSet) => {
                         state.recentSets[recentSet.id] = recentSet;
                     });
                 });
@@ -70,7 +70,7 @@ const workoutFormSlice = createSlice({
             state,
             action: PayloadAction<{
                 oldExerciseId: string;
-                newExercise: ExerciseWithWorkoutDetailsDto;
+                newExercise: ExerciseResponseDto;
             }>
         ) => {
             const { oldExerciseId, newExercise } = action.payload;
@@ -90,15 +90,16 @@ const workoutFormSlice = createSlice({
                 id: newExercise.id,
                 name: newExercise.name,
                 sets: state.exercises[oldExerciseId].sets,
-                recentSets: newExercise.recentSets.map((recentSet) => {
-                    state.recentSets[recentSet.id] = {
-                        id: recentSet.id,
-                        weight: recentSet.weight,
-                        reps: recentSet.reps,
-                        rpe: recentSet.rpe,
-                    };
-                    return recentSet.id;
-                }),
+                recentSets:
+                    newExercise.mostRecentWorkoutSets?.map((recentSet) => {
+                        state.recentSets[recentSet.id] = {
+                            id: recentSet.id,
+                            weight: recentSet.weight,
+                            reps: recentSet.reps,
+                            rpe: recentSet.rpe,
+                        };
+                        return recentSet.id;
+                    }) ?? [],
             };
             // Remove old exercise object
             state.exercises = _.omit(state.exercises, oldExerciseId);
@@ -165,7 +166,7 @@ const workoutFormSlice = createSlice({
             state,
             action: PayloadAction<{
                 template: WorkoutTemplateResponseDto;
-                exerciseDetails: ExerciseWithWorkoutDetailsDto[];
+                exerciseDetails: ExerciseResponseDto[];
             }>
         ) => {
             const { template, exerciseDetails } = action.payload;
@@ -181,7 +182,8 @@ const workoutFormSlice = createSlice({
                 state.exercises[e.exerciseId] = {
                     id: e.exerciseId,
                     name: e.exerciseName,
-                    recentSets: matchedExerciseDetails?.recentSets.map((set) => set.id) ?? [],
+                    recentSets:
+                        matchedExerciseDetails?.mostRecentWorkoutSets?.map((set) => set.id) ?? [],
                     sets: e.sets.map((set) => set.id),
                 };
 
@@ -196,7 +198,7 @@ const workoutFormSlice = createSlice({
                 });
 
                 // Add recent sets from the matched exercise to recent sets Record in workout form state
-                matchedExerciseDetails?.recentSets.forEach((e) => {
+                matchedExerciseDetails?.mostRecentWorkoutSets?.forEach((e) => {
                     state.recentSets[e.id] = {
                         id: e.id,
                         weight: e.weight,
