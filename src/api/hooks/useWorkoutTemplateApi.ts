@@ -67,6 +67,7 @@ function mapFromWorkoutTemplateFormToWorkoutTemplateRequest(
             return {
                 exerciseId,
                 order: index + 1,
+                isVariation: workoutTemplateForm.exercises[exerciseId].isVariation,
                 sets: workoutTemplateForm.exercises[exerciseId].sets.map((_, index) => {
                     return {
                         order: index + 1,

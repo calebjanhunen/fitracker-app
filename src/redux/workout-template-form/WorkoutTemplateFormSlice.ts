@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { ExerciseResponseDto } from 'src/api/generated';
+import { ExerciseResponseDto, ExerciseResponseDtoExerciseTypeEnum } from 'src/api/generated';
 import { IWorkoutTemplateFormState } from './IWorkoutTemplateForm';
 
 const initialState: IWorkoutTemplateFormState = {
@@ -33,6 +33,8 @@ const workoutTemplateFormSlice = createSlice({
                 .forEach((e) => {
                     state.exercises[e.id] = {
                         id: e.id,
+                        isVariation:
+                            e.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation,
                         name: e.name,
                         sets: [],
                     };
@@ -88,6 +90,8 @@ const workoutTemplateFormSlice = createSlice({
             state.exercises[newExercise.id] = {
                 id: newExercise.id,
                 name: newExercise.name,
+                isVariation:
+                    newExercise.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation,
                 sets: state.exercises[oldExerciseId].sets,
             };
 
