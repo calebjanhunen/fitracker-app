@@ -190,7 +190,7 @@ const workoutFormSlice = createSlice({
                 state.exercises[e.exerciseId] = {
                     id: e.exerciseId,
                     name: e.exerciseName,
-                    isVariation: false, // TODO: UPDATE THIS TO GET THE CORRECT VALUE
+                    isVariation: e.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation,
                     recentSets:
                         matchedExerciseDetails?.mostRecentWorkoutSets?.map((set) => set.id) ?? [],
                     sets: e.sets.map((set) => set.id),

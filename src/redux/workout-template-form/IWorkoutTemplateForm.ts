@@ -6,6 +6,7 @@ interface IWorkoutTemplateForm {
 export interface IWorkoutTemplateExerciseForm {
     id: string;
     name: string;
+    isVariation: boolean;
     sets: string[];
 }
 
