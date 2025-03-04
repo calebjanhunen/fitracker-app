@@ -5,7 +5,7 @@ import { Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import { WorkoutTemplateResponseDto } from 'src/api/generated';
-import { useDeleteWorkoutTemplate, useGetExercisesWithWorkoutDetails } from 'src/api/hooks';
+import { useDeleteWorkoutTemplate, useGetExercisesForWorkout } from 'src/api/hooks';
 import { Modal, ModalContent, ModalOverlay } from 'src/components/common/modal';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
 import { initializeWorkoutFromTemplate } from 'src/redux/workout-form/WorkoutFormSlice';
@@ -31,7 +31,7 @@ export default function WorkoutTemplateModal({
         data: exerciseDetails,
         isLoading: isExerciseDetailsLoading,
         error: exerciseDetailsError,
-    } = useGetExercisesWithWorkoutDetails();
+    } = useGetExercisesForWorkout();
     const dispatch = useDispatch();
     const theme = useTheme();
 

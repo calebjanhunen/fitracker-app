@@ -7,7 +7,6 @@ import {
     ExerciseRequestDto,
     ExerciseResponseDto,
     ExercisesApi,
-    ExerciseWithWorkoutDetailsDto,
     LookupItemDto,
     UpdateExerciseVariationDto,
 } from '../generated';
@@ -20,8 +19,8 @@ interface ICreateExerciseVariation {
 }
 
 export const exerciseApiService = {
-    async getAllExercises(): Promise<ExerciseResponseDto[]> {
-        const response = await exerciseApi.getAllExercises();
+    async getAllExercises(isForWorkout?: boolean): Promise<ExerciseResponseDto[]> {
+        const response = await exerciseApi.getAllExercises(isForWorkout);
         return response.data;
     },
     async getEquipment(): Promise<EquipmentDto[]> {
@@ -38,10 +37,6 @@ export const exerciseApiService = {
     },
     async getExerciseDetails(id: string, isVariation: boolean): Promise<ExerciseDetailsDto> {
         const response = await exerciseApi.getExerciseDetails(id, isVariation);
-        return response.data;
-    },
-    async getExercisesWithWorkoutDetails(): Promise<ExerciseWithWorkoutDetailsDto[]> {
-        const response = await exerciseApi.getExercisesWithWorkoutDetails();
         return response.data;
     },
     async createExercise(request: ExerciseRequestDto): Promise<ExerciseResponseDto> {

@@ -3,8 +3,8 @@ import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { ExerciseWithWorkoutDetailsDto } from 'src/api/generated';
-import { useGetExercisesWithWorkoutDetails } from 'src/api/hooks';
+import { ExerciseResponseDto } from 'src/api/generated';
+import { useGetExercisesForWorkout } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import CreateExerciseModal from 'src/components/workout-tracker/common/CreateExerciseModal';
 import { RootState } from 'src/redux/Store';
@@ -30,7 +30,7 @@ export default function ReplaceExercise() {
         (state: RootState) => state.workoutForm.workout.exercises
     );
     const { oldExerciseId } = useLocalSearchParams<{ oldExerciseId: string }>();
-    const { data: exercises, isLoading, error } = useGetExercisesWithWorkoutDetails();
+    const { data: exercises, isLoading, error } = useGetExercisesForWorkout();
 
     function onReplaceExercisePress() {
         if (!exercises) {
@@ -160,7 +160,7 @@ export default function ReplaceExercise() {
 }
 
 interface Props {
-    exercise: ExerciseWithWorkoutDetailsDto;
+    exercise: ExerciseResponseDto;
     setSelectedExercises: Dispatch<SetStateAction<string[]>>;
     isSelected: boolean;
     isAlreadyInForm: boolean;

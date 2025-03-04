@@ -8,10 +8,11 @@ import { exerciseApiService } from '../services';
 
 const GET_EXERCISE_DETAILS_STALE_TIME_MS = 300000;
 const GET_ALL_EXERCISES_STALE_TIME = 300000;
+const GET_EXERCISES_FOR_WORKOUT_STALE_TIME = 300000;
 
 export function useGetAllExercises() {
     const { data, isLoading, error } = useQuery({
-        queryFn: exerciseApiService.getAllExercises,
+        queryFn: () => exerciseApiService.getAllExercises(),
         queryKey: ExerciseApiQueryKeys.getAllExercises,
         staleTime: GET_ALL_EXERCISES_STALE_TIME,
     });
@@ -19,12 +20,11 @@ export function useGetAllExercises() {
     return { data: data ?? [], isLoading, error };
 }
 
-export function useGetExercisesWithWorkoutDetails() {
+export function useGetExercisesForWorkout() {
     const { data, isLoading, error } = useQuery({
-        queryFn: exerciseApiService.getExercisesWithWorkoutDetails,
-        queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
-        staleTime: Infinity,
-        gcTime: Infinity,
+        queryFn: () => exerciseApiService.getAllExercises(true),
+        queryKey: ExerciseApiQueryKeys.getExercisesForWorkout,
+        staleTime: GET_EXERCISES_FOR_WORKOUT_STALE_TIME,
     });
 
     return { data, isLoading, error };
@@ -104,7 +104,8 @@ export function useCreateExercise(
         mutationFn: exerciseApiService.createExercise,
         onSuccess: async (createdExercise) => {
             await queryClient.invalidateQueries({
-                queryKey: ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                queryKey: ExerciseApiQueryKeys.getExercisesForWorkout,
+                exact: true,
             });
             await queryClient.refetchQueries({
                 queryKey: ExerciseApiQueryKeys.getAllExercises,
@@ -147,7 +148,7 @@ export function useUpdateExercise(
         mutationFn: exerciseApiService.updateExercise,
         onSuccess: async (updatedExercise) => {
             const queryKeysToInvalidate = [
-                ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                ExerciseApiQueryKeys.getExercisesForWorkout,
                 WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
                 WorkoutApiQueryKeys.getWorkouts,
             ];
@@ -186,7 +187,7 @@ export function useUpdateExerciseVariation(
         mutationFn: exerciseApiService.updateExerciseVariation,
         onSuccess: async (updatedExercise) => {
             const queryKeysToInvalidate = [
-                ExerciseApiQueryKeys.getExercisesWithWorkoutDetails,
+                ExerciseApiQueryKeys.getExercisesForWorkout,
                 WorkoutTemplateQueryKeys.getAllWorkoutTemplates,
                 WorkoutApiQueryKeys.getWorkouts,
             ];
