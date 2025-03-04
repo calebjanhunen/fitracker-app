@@ -9,13 +9,13 @@ import { Input, SizableText, Spinner, YStack } from 'tamagui';
 
 interface Props {
     exerciseToEdit: ExerciseResponseDto;
-    closeModal: () => void;
+    onUpdateSuccess: (exercise: ExerciseResponseDto) => void;
 }
 
-export default function EditExerciseForm({ exerciseToEdit, closeModal }: Props) {
+export default function EditExerciseForm({ exerciseToEdit, onUpdateSuccess }: Props) {
     const { bodyParts, equipment } = useGetEquipmentAndBodyParts();
     const [name, setName] = useState(exerciseToEdit.name);
-    const { updateExercise, isPending } = useUpdateExercise(closeModal, onUpdateExerciseError);
+    const { updateExercise, isPending } = useUpdateExercise(onUpdateSuccess, onUpdateExerciseError);
     const [selectedBodyPart, setSelectedBodyPart] = useState<BodyPartDto | null>(
         bodyParts.find((bp) => bp.name === exerciseToEdit.bodyPart) ?? null
     );

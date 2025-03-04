@@ -11,15 +11,19 @@ import ExerciseDetailsModalBody from './ExerciseDetailsModalBody';
 interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
-    exercise: ExerciseResponseDto;
-    setSelectedExercise: Dispatch<SetStateAction<ExerciseResponseDto | null>>;
+    exerciseId: string;
+    exerciseType: ExerciseResponseDtoExerciseTypeEnum;
+    onClose: () => void;
+    onUpdateSuccess?: (exercise: ExerciseResponseDto) => void;
 }
 
 export default function ExerciseDetailsModal({
     isOpen,
     setIsOpen,
-    exercise,
-    setSelectedExercise,
+    exerciseId,
+    exerciseType,
+    onClose,
+    onUpdateSuccess,
 }: Props) {
     const [isEditExerciseModalOpen, setIsEditExerciseModalOpen] = useState(false);
     const {
@@ -27,19 +31,14 @@ export default function ExerciseDetailsModal({
         isLoading,
         error,
     } = useGetExerciseDetailsV2(
-        exercise.id,
-        exercise.exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation
+        exerciseId,
+        exerciseType === ExerciseResponseDtoExerciseTypeEnum.Variation
     );
 
     async function onEditButtonPress() {
         setIsOpen(false);
         await new Promise((resolve) => setTimeout(resolve, MODAL_TRANSITION_DELAY_MS));
         setIsEditExerciseModalOpen(true);
-    }
-
-    function onModalClose() {
-        setSelectedExercise(null);
-        setIsOpen(false);
     }
 
     return (
@@ -50,18 +49,19 @@ export default function ExerciseDetailsModal({
                     setIsOpen={setIsEditExerciseModalOpen}
                     setIsParentModalOpen={setIsOpen}
                     exerciseToEdit={exerciseDetails}
+                    onUpdateSuccess={onUpdateSuccess}
                 />
             )}
 
             <Modal key='modal' open={isOpen} onOpenChange={setIsOpen}>
-                <ModalOverlay key='overlay' onPress={onModalClose} />
+                <ModalOverlay key='overlay' onPress={onClose} />
                 <ModalContent key='content' height='85%' width='90%'>
                     <XStack alignItems='center' justifyContent='space-between' gap='$space.1'>
                         <IconBtnV2
                             iconSize={24}
                             height='auto'
                             backgroundColor='$gray4'
-                            onPress={onModalClose}
+                            onPress={onClose}
                             iconName='close-outline'
                         />
                         <SizableText
@@ -78,7 +78,7 @@ export default function ExerciseDetailsModal({
                             backgroundColor='$gray4'
                             onPress={onEditButtonPress}
                             iconName='create-outline'
-                            disabled={!exercise.isCustom}
+                            disabled={!exerciseDetails?.isCustom}
                         />
                     </XStack>
                     <ExerciseDetailsModalBody

@@ -9,7 +9,6 @@ export default function WorkoutFormLayout() {
                 <Stack.Screen name='index' />
                 <Stack.Screen name='AddExercisesToWorkout' />
                 <Stack.Screen name='ReplaceExercise' />
-                <Stack.Screen name='[exerciseId]' options={{ presentation: 'modal' }} />
                 <Stack.Screen name='PostWorkoutSummary' options={{ gestureEnabled: false }} />
             </Stack>
         </EditExerciseModalProvider>
