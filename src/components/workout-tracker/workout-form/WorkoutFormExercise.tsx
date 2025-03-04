@@ -5,6 +5,7 @@ import { Button, H3, SizableText, useTheme, XStack } from 'tamagui';
 
 import { useRouter } from 'expo-router';
 import { FlatList } from 'react-native-gesture-handler';
+import { ExerciseResponseDtoExerciseTypeEnum } from 'src/api/generated';
 import { useDeleteAnimation } from 'src/hooks/workout-tracker/useDeleteAnimation';
 import { RootState } from 'src/redux/Store';
 import {
@@ -22,6 +23,7 @@ interface Props {
     isDragging: boolean;
     setIsDragging: Dispatch<SetStateAction<boolean>>;
     validatedSets: string[];
+    openDetailsModal: (id: string, exerciseType: ExerciseResponseDtoExerciseTypeEnum) => void;
 }
 
 const WorkoutFormExercise = memo(function WorkoutFormExercise({
@@ -31,6 +33,7 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
     isDragging,
     setIsDragging,
     validatedSets,
+    openDetailsModal,
 }: Props) {
     const exercise = useSelector((state: RootState) => state.workoutForm.exercises[id]);
     const recentSets = useSelector((state: RootState) => state.workoutForm.recentSets);
@@ -95,10 +98,12 @@ const WorkoutFormExercise = memo(function WorkoutFormExercise({
                     color='$blue10'
                     onLongPress={startDrag}
                     onPress={() =>
-                        router.push({
-                            pathname: `/workout-tracker/workout-form/${id}`,
-                            params: { exerciseName: exercise.name },
-                        })
+                        openDetailsModal(
+                            exercise.id,
+                            exercise.isVariation
+                                ? ExerciseResponseDtoExerciseTypeEnum.Variation
+                                : ExerciseResponseDtoExerciseTypeEnum.Exercise
+                        )
                     }
                     userSelect='none'
                 >
