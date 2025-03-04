@@ -10,12 +10,13 @@ import CreateExerciseVariationForm from './CreateExerciseVariationForm';
 interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
+    onCreateSuccess?: (exerciseId: string) => void;
 }
 
 const EXERCISE_TAB = 'exercise';
 const VARIATION_TAB = 'variation';
 
-export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
+export default function CreateExerciseModal({ isOpen, setIsOpen, onCreateSuccess }: Props) {
     const [selectedTab, setSelectedTab] = useState(EXERCISE_TAB);
 
     useEffect(() => {
@@ -97,10 +98,16 @@ export default function CreateExerciseModal({ isOpen, setIsOpen }: Props) {
                                 </Tabs.Tab>
                             </Tabs.List>
                             <Tabs.Content value={EXERCISE_TAB} paddingTop='$space.3'>
-                                <CreateExerciseForm setIsModalOpen={setIsOpen} />
+                                <CreateExerciseForm
+                                    setIsModalOpen={setIsOpen}
+                                    onSuccess={onCreateSuccess}
+                                />
                             </Tabs.Content>
                             <Tabs.Content value={VARIATION_TAB} paddingTop='$space.3'>
-                                <CreateExerciseVariationForm setIsModalOpen={setIsOpen} />
+                                <CreateExerciseVariationForm
+                                    setIsModalOpen={setIsOpen}
+                                    onSuccess={onCreateSuccess}
+                                />
                             </Tabs.Content>
                         </Tabs>
                     </ScreenViewWithKeyboard>

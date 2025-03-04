@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import { IErrorResponse } from 'src/api/client';
-import { BodyPartDto, EquipmentDto } from 'src/api/generated';
+import { BodyPartDto, EquipmentDto, ExerciseResponseDto } from 'src/api/generated';
 import { useCreateExercise, useGetEquipmentAndBodyParts } from 'src/api/hooks';
 import { Dropdown } from 'src/components/common';
 import { Button } from 'src/components/common/buttons';
@@ -9,9 +9,10 @@ import { Input, YStack } from 'tamagui';
 
 interface Props {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+    onSuccess?: (id: string) => void;
 }
 
-export default function CreateExerciseForm({ setIsModalOpen }: Props) {
+export default function CreateExerciseForm({ setIsModalOpen, onSuccess }: Props) {
     const { bodyParts, equipment } = useGetEquipmentAndBodyParts();
     const { createExercise, isPending } = useCreateExercise(onCreateSuccess, onCreateError);
     const [selectedBodyPart, setSelectedBodyPart] = useState<BodyPartDto | null>(null);
@@ -41,8 +42,9 @@ export default function CreateExerciseForm({ setIsModalOpen }: Props) {
         });
     }
 
-    function onCreateSuccess() {
+    function onCreateSuccess(exercise: ExerciseResponseDto) {
         setIsModalOpen(false);
+        onSuccess?.(exercise.id);
     }
 
     function onCreateError(error: IErrorResponse) {

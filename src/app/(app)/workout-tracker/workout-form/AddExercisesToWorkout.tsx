@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ExerciseResponseDto } from 'src/api/generated';
 import { useGetExercisesForWorkout } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
-import CreateExerciseModal from 'src/components/workout-tracker/common/CreateExerciseModal';
+import { CreateExerciseModal } from 'src/components/exercises';
 import { RootState } from 'src/redux/Store';
 import { addExercisesToWorkout } from 'src/redux/workout-form/WorkoutFormSlice';
-import { Button, Dialog, Input, Separator, SizableText, Spinner, XStack, YStack } from 'tamagui';
+import { Button, Input, Separator, SizableText, Spinner, XStack, YStack } from 'tamagui';
 
 export default function AddExercisesToWorkout() {
     const router = useRouter();
@@ -20,6 +20,7 @@ export default function AddExercisesToWorkout() {
         (state: RootState) => state.workoutForm.workout.exercises
     );
     const { data: exercises, isLoading, error } = useGetExercisesForWorkout();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     function onAddToWorkoutOrTemplatePress() {
         if (!exercises) return;
@@ -85,66 +86,63 @@ export default function AddExercisesToWorkout() {
         }
     }
 
-    const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
-
     return (
-        <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-            <KeyboardAvoidingView>
-                <XStack
-                    alignItems='center'
-                    justifyContent='space-between'
-                    marginHorizontal='$space.3'
-                    marginBottom='$space.3'
-                >
-                    <Button
-                        fontWeight='bold'
-                        paddingHorizontal='$2'
-                        paddingVertical='$1'
-                        height='auto'
-                        onPress={onCancelPress}
-                        backgroundColor='$gray8'
+        <>
+            <CreateExerciseModal
+                isOpen={isModalOpen}
+                setIsOpen={setIsModalOpen}
+                onCreateSuccess={onCreateExerciseSuccess}
+            />
+            <SafeAreaView style={{ flex: 1 }} edges={['top']}>
+                <KeyboardAvoidingView>
+                    <XStack
+                        alignItems='center'
+                        justifyContent='space-between'
+                        marginHorizontal='$space.3'
+                        marginBottom='$space.3'
                     >
-                        X
-                    </Button>
-                    <Button
-                        backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
-                        color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
-                        fontWeight='bold'
-                        disabled={selectedExercises.length === 0}
-                        onPress={onAddToWorkoutOrTemplatePress}
-                    >
-                        Add to Workout
-                    </Button>
-                </XStack>
-                <Dialog modal open={isModalOpen} onOpenChange={setIsModelOpen}>
-                    <Dialog.Trigger asChild>
                         <Button
-                            marginHorizontal='$space.3'
-                            marginBottom='$space.4'
-                            size='$2'
-                            backgroundColor='$blue6'
-                            color='$blue10'
                             fontWeight='bold'
+                            paddingHorizontal='$2'
+                            paddingVertical='$1'
+                            height='auto'
+                            onPress={onCancelPress}
+                            backgroundColor='$gray8'
                         >
-                            Create Exercise
+                            X
                         </Button>
-                    </Dialog.Trigger>
-                    <CreateExerciseModal
-                        isOpen={isModalOpen}
-                        setIsOpen={setIsModelOpen}
-                        setSelectedExercises={onCreateExerciseSuccess}
+                        <Button
+                            backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
+                            color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
+                            fontWeight='bold'
+                            disabled={selectedExercises.length === 0}
+                            onPress={onAddToWorkoutOrTemplatePress}
+                        >
+                            Add to Workout
+                        </Button>
+                    </XStack>
+                    <Button
+                        marginHorizontal='$space.3'
+                        marginBottom='$space.4'
+                        size='$2'
+                        backgroundColor='$blue6'
+                        color='$blue10'
+                        fontWeight='bold'
+                        onPress={() => setIsModalOpen(true)}
+                    >
+                        Create Exercise
+                    </Button>
+                    <Input
+                        placeholder='Search for Exercise'
+                        marginBottom='$2'
+                        marginHorizontal='$space.3'
+                        size='$5'
+                        onChangeText={setExerciseSearchQuery}
                     />
-                </Dialog>
-                <Input
-                    placeholder='Search for Exercise'
-                    marginBottom='$2'
-                    marginHorizontal='$space.3'
-                    size='$5'
-                    onChangeText={setExerciseSearchQuery}
-                />
-                {renderBody()}
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+                    {renderBody()}
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        </>
     );
 }
 

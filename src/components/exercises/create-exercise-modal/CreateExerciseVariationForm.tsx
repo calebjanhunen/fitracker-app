@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import { IErrorResponse } from 'src/api/client';
-import { ExerciseResponseDto, LookupItemDto } from 'src/api/generated';
+import { ExerciseResponseDto, ExerciseVariationDto, LookupItemDto } from 'src/api/generated';
 import {
     useCreateExerciseVariation,
     useGetAllExercises,
@@ -13,9 +13,10 @@ import { Input, SizableText, View, YStack } from 'tamagui';
 
 interface Props {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+    onSuccess?: (exerciseId: string) => void;
 }
 
-export default function CreateExerciseVariationForm({ setIsModalOpen }: Props) {
+export default function CreateExerciseVariationForm({ setIsModalOpen, onSuccess }: Props) {
     const { data: exercises } = useGetAllExercises();
     const { cableAttachments } = useGetCableAttachments();
     const { createExerciseVariation, isPending } = useCreateExerciseVariation(
@@ -62,17 +63,18 @@ export default function CreateExerciseVariationForm({ setIsModalOpen }: Props) {
         const createVariationDto = {
             name,
             notes: notes ?? undefined,
-            cableAttachmentId: selectedCableAttachment?.id,
+            cableAttachmentId: selectedCableAttachment?.id ?? undefined,
         };
 
         createExerciseVariation({
             parentExerciseId: selectedParentExercise.id,
-            dto: createVariationDto,
+            dto: createVariationDto, // TODO: Set as optional in backend and update frontend
         });
     }
 
-    function onCreateSuccess() {
+    function onCreateSuccess(exercise: ExerciseVariationDto) {
         setIsModalOpen(false);
+        onSuccess?.(exercise.id);
     }
 
     function onCreateError(error: IErrorResponse) {

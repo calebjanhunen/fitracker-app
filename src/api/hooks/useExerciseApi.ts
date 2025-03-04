@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { IErrorResponse } from '../client';
-import { ExerciseResponseDto } from '../generated';
+import { ExerciseResponseDto, ExerciseVariationDto } from '../generated';
 import { ExerciseApiQueryKeys, WorkoutApiQueryKeys, WorkoutTemplateQueryKeys } from '../QueryKeys';
 import { queryClient } from '../react-query-client';
 import { exerciseApiService } from '../services';
@@ -119,16 +119,16 @@ export function useCreateExercise(
 }
 
 export function useCreateExerciseVariation(
-    onSuccessCallback: () => void,
+    onSuccessCallback: (exercise: ExerciseVariationDto) => void,
     onErrorCallback?: (error: IErrorResponse) => void
 ) {
     const { mutate: createExerciseVariation, isPending } = useMutation({
         mutationFn: exerciseApiService.createExerciseVariation,
-        onSuccess: async () => {
+        onSuccess: async (createdExercise) => {
             await queryClient.refetchQueries({
                 queryKey: ExerciseApiQueryKeys.getAllExercises,
             });
-            onSuccessCallback();
+            onSuccessCallback(createdExercise);
         },
         onError: onErrorCallback,
     });

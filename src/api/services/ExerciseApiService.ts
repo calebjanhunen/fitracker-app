@@ -7,6 +7,7 @@ import {
     ExerciseRequestDto,
     ExerciseResponseDto,
     ExercisesApi,
+    ExerciseVariationDto,
     LookupItemDto,
     UpdateExerciseVariationDto,
 } from '../generated';
@@ -43,8 +44,14 @@ export const exerciseApiService = {
         const response = await exerciseApi.createExercise(request);
         return response.data;
     },
-    async createExerciseVariation(request: ICreateExerciseVariation): Promise<void> {
-        await exerciseApi.createExerciseVariation(request.parentExerciseId, request.dto);
+    async createExerciseVariation(
+        request: ICreateExerciseVariation
+    ): Promise<ExerciseVariationDto> {
+        const response = await exerciseApi.createExerciseVariation(
+            request.parentExerciseId,
+            request.dto
+        );
+        return response.data; // TODO: Update backend docs to add ApiResponse
     },
     async updateExercise({
         id,
