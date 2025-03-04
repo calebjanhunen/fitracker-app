@@ -16,7 +16,6 @@ import {
 import { useCreateWorkout } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
 import ExerciseDetailsModal from 'src/components/exercises/ExerciseDetailsModal/ExerciseDetailsModal';
-import EditExerciseModal from 'src/components/workout-tracker/common/EditExerciseModal';
 import WorkoutFormExercise from 'src/components/workout-tracker/workout-form/WorkoutFormExercise';
 import { LocalStorageKeys } from 'src/constants/LocalStorageKeys';
 import { useIsWorkoutInProgress } from 'src/context/workout-tracker/IsWorkoutInProgressContext';
@@ -287,11 +286,6 @@ export default function WorkoutForm() {
                             }}
                         />
                     </View>
-                    <EditExerciseModal
-                        updateExerciseNameInForm={(exerciseId: string, newName: string) =>
-                            dispatch(updateExerciseName({ exerciseId, newName }))
-                        }
-                    />
                 </KeyboardAvoidingView>
             </SafeAreaView>
         </>

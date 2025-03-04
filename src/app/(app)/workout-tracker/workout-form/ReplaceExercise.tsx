@@ -6,20 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ExerciseResponseDto } from 'src/api/generated';
 import { useGetExercisesForWorkout } from 'src/api/hooks';
 import KeyboardAvoidingView from 'src/components/common/keyboard-avoiding-view';
-import CreateExerciseModal from 'src/components/workout-tracker/common/CreateExerciseModal';
+import { CreateExerciseModal } from 'src/components/exercises';
 import { RootState } from 'src/redux/Store';
 import { replaceExercise } from 'src/redux/workout-form/WorkoutFormSlice';
-import {
-    Button,
-    Dialog,
-    H4,
-    Input,
-    Separator,
-    SizableText,
-    Spinner,
-    XStack,
-    YStack,
-} from 'tamagui';
+import { Button, H4, Input, Separator, SizableText, Spinner, XStack, YStack } from 'tamagui';
 
 export default function ReplaceExercise() {
     const router = useRouter();
@@ -99,63 +89,63 @@ export default function ReplaceExercise() {
     const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <KeyboardAvoidingView>
-                <XStack
-                    alignItems='center'
-                    justifyContent='space-between'
-                    marginHorizontal='$space.3'
-                    marginBottom='$space.3'
-                >
-                    <Button
-                        fontWeight='bold'
-                        paddingHorizontal='$2'
-                        paddingVertical='$1'
-                        height='0'
-                        onPress={onCancelPress}
-                        backgroundColor='$gray8'
+        <>
+            <CreateExerciseModal
+                isOpen={isModalOpen}
+                setIsOpen={setIsModelOpen}
+                onCreateSuccess={onCreateExerciseSuccess}
+            />
+            <SafeAreaView style={{ flex: 1 }}>
+                <KeyboardAvoidingView>
+                    <XStack
+                        alignItems='center'
+                        justifyContent='space-between'
+                        marginHorizontal='$space.3'
+                        marginBottom='$space.3'
                     >
-                        X
-                    </Button>
-                    <Button
-                        backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
-                        color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
-                        fontWeight='bold'
-                        disabled={selectedExercises.length === 0}
-                        onPress={onReplaceExercisePress}
-                    >
-                        Replace Exercise
-                    </Button>
-                </XStack>
-                <Dialog modal open={isModalOpen} onOpenChange={setIsModelOpen}>
-                    <Dialog.Trigger asChild>
                         <Button
-                            marginHorizontal='$space.3'
-                            marginBottom='$space.4'
-                            size='$2'
-                            backgroundColor='$blue6'
-                            color='$blue10'
                             fontWeight='bold'
+                            paddingHorizontal='$2'
+                            paddingVertical='$1'
+                            height='0'
+                            onPress={onCancelPress}
+                            backgroundColor='$gray8'
                         >
-                            Create Exercise
+                            X
                         </Button>
-                    </Dialog.Trigger>
-                    <CreateExerciseModal
-                        isOpen={isModalOpen}
-                        setIsOpen={setIsModelOpen}
-                        setSelectedExercises={onCreateExerciseSuccess}
+                        <Button
+                            backgroundColor={selectedExercises.length === 0 ? '$gray6' : '$green6'}
+                            color={selectedExercises.length === 0 ? '$gray11' : '$green11'}
+                            fontWeight='bold'
+                            disabled={selectedExercises.length === 0}
+                            onPress={onReplaceExercisePress}
+                        >
+                            Replace Exercise
+                        </Button>
+                    </XStack>
+                    <Button
+                        marginHorizontal='$space.3'
+                        marginBottom='$space.4'
+                        size='$2'
+                        backgroundColor='$blue6'
+                        color='$blue10'
+                        fontWeight='bold'
+                        onPress={() => setIsModelOpen(true)}
+                    >
+                        Create Exercise
+                    </Button>
+
+                    <Input
+                        placeholder='Search for Exercise'
+                        marginBottom='$2'
+                        marginHorizontal='$space.3'
+                        size='$5'
+                        onChangeText={setExerciseSearchQuery}
                     />
-                </Dialog>
-                <Input
-                    placeholder='Search for Exercise'
-                    marginBottom='$2'
-                    marginHorizontal='$space.3'
-                    size='$5'
-                    onChangeText={setExerciseSearchQuery}
-                />
-                {renderBody()}
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+                    {renderBody()}
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        </>
     );
 }
 
